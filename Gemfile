@@ -7,11 +7,13 @@ ruby '2.6.5'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'config'
+gem 'http'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 6.0.0'
 gem 'sqlite3', '~> 1.4'
 gem 'turbolinks', '~> 5'
 gem 'webpacker', '~> 4.0'
+gem 'warden'
 
 group :development do
   gem 'better_errors'
