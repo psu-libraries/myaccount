@@ -16,10 +16,11 @@ class SymphonyClient
   end
 
   def login(library_id, pin)
-    response = authenticated_request('/user/patron/login', method: :post, json: {
-        barcode: library_id,
-        password: pin
-    })
+    # response = authenticated_request('/user/patron/login', method: :post, json: {
+    #     barcode: library_id,
+    #     password: pin
+    # })
+    response = request('/user/patron/login', method: :post, json: Settings.symws.login_params)
 
     JSON.parse(response.body)
   end
