@@ -2,14 +2,14 @@
 
 Warden::Strategies.add(:library_id) do
   def valid?
-    params['library_id'].present? && params['pin'].present?
+    params['user_id'].present? && params['password'].present?
   end
 
   def authenticate!
-    response = SymphonyClient.new.login(params['library_id'], params['pin'])
+    response = SymphonyClient.new.login(params['user_id'], params['password'])
 
     if response['patronKey']
-      u = { username: params['library_id'], name: response['name'], patronKey: response['patronKey'] }
+      u = { username: params['user_id'], name: response['name'], patronKey: response['patronKey'] }
       success!(u)
     else
       fail!('Could not log in')
