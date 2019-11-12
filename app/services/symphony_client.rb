@@ -34,24 +34,23 @@ class SymphonyClient
 
   def patron_info(patron_key, item_details: {})
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
-        includeFields: [
-            '*',
-            'address1',
-            *patron_linked_resources_fields(item_details)
-        ].join(',')
+                                       includeFields: [
+                                         '*',
+                                         'address1',
+                                         *patron_linked_resources_fields(item_details)
+                                       ].join(',')
                                      })
     JSON.parse(response.body)
   end
-
 
   ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
 
   def patron_linked_resources_fields(item_details = {})
     [
-        "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
-        'circRecordList{*,circulationRule{loanPeriod{periodType{key}},renewFromPeriod},' \
-        "#{ITEM_RESOURCES if item_details[:circRecordList]}}",
-        "blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"
+      "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
+      'circRecordList{*,circulationRule{loanPeriod{periodType{key}},renewFromPeriod},' \
+      "#{ITEM_RESOURCES if item_details[:circRecordList]}}",
+      "blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"
     ]
   end
 
