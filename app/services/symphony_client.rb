@@ -15,12 +15,11 @@ class SymphonyClient
     false
   end
 
-  def login(library_id, pin)
-    # response = authenticated_request('/user/patron/login', method: :post, json: {
-    #     barcode: library_id,
-    #     password: pin
-    # })
-    response = request('/user/patron/login', method: :post, json: Settings.symws.login_params)
+  def login(user_id, password)
+    response = authenticated_request('/user/patron/login', method: :post, json: {
+        login: user_id,
+        password: password
+    })
 
     JSON.parse(response.body)
   end
@@ -28,15 +27,18 @@ class SymphonyClient
   # get a session token by authenticating to symws
   def session_token
     @session_token ||= begin
-      @response = request('/user/patron/login', json: Settings.symws.login_params, method: :post)
+      response = request('/user/patron/login', method: :post, json: Settings.symws.login_params)
 
-      JSON.parse(@response.body)['sessionToken']
+      JSON.parse(response.body)['sessionToken']
     end
   end
 
-  # get a session token by authenticating to symws
-  def name
-    JSON.parse(@response.body)['name']
+  def patron_info(patron_key, item_details: {})
+    response = authenticated_request("/user/patron/key/#{patron_key}", params: {
+        includeFields: '*'
+    })
+
+    JSON.parse(response.body)
   end
 
   private
