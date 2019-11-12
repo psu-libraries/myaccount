@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  helper_method :patron, :symphony_client
+  helper_method :current_user, :current_user?, :patron, :symphony_client
 
   def current_user
     session_data = request.env['warden'].user
@@ -25,10 +25,14 @@ class ApplicationController < ActionController::Base
     end
 
     def patron_info_response
-      symphony_client.patron_info(current_user.patronKey)
+      symphony_client.patron_info(current_user.patronKey, item_details: item_details)
     end
 
     def authenticate_user!
       redirect_to root_url unless current_user?
+    end
+
+    def item_details
+      {}
     end
 end
