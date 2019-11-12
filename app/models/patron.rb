@@ -13,10 +13,24 @@ class Patron
   end
 
   def barcode
-    record['fields']['barcode']
+    fields['barcode']
   end
 
-  def name
-    record['fields']['firstName']
+  def first_name
+    fields['firstName']
   end
+
+  def last_name
+    fields['lastName']
+  end
+
+  def display_name
+    "#{first_name} #{last_name}"
+  end
+
+  private
+
+    def fields
+      record['fields']
+    end
 end
