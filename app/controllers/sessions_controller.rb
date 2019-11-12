@@ -4,15 +4,8 @@ class SessionsController < ApplicationController
   def index
     # @symphony_ok = symphony_client.ping
 
-    if current_user?
-      redirect_to summaries_url
-    else
-      if request.env['warden'].authenticate(:library_id)
-        redirect_to summaries_url
-      else
-        # flash.now.alert = request.env['warden'].message
-        # redirect_to errors_url, alert: 'Unable to authenticate.'
-      end
-    end
+    redirect_to summaries_url if current_user? || request.env['warden'].authenticate(:library_id)
+    # TODO: redirect_to errors_url, alert: 'Unable to authenticate.'
+    # TODO: flash.now.alert = request.env['warden'].message
   end
 end
