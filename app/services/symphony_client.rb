@@ -2,10 +2,9 @@
 
 # HTTP client wrapper for making requests to Symws
 class SymphonyClient
-
   DEFAULT_HEADERS = {
-      accept: 'application/json',
-      content_type: 'application/json'
+    accept: 'application/json',
+    content_type: 'application/json'
   }.freeze
 
   # ping the symphony endpoint to make sure we can establish a connection
@@ -17,9 +16,9 @@ class SymphonyClient
 
   def login(user_id, password)
     response = authenticated_request('/user/patron/login', method: :post, json: {
-        login: user_id,
-        password: password
-    })
+                                       login: user_id,
+                                       password: password
+                                     })
 
     JSON.parse(response.body)
   end
@@ -35,30 +34,30 @@ class SymphonyClient
 
   def patron_info(patron_key, item_details: {})
     response = authenticated_request("/user/patron/key/#{patron_key}", params: {
-        includeFields: '*'
-    })
+                                       includeFields: '*'
+                                     })
 
     JSON.parse(response.body)
   end
 
   private
 
-  def authenticated_request(path, headers: {}, **other)
-    request(path, headers: headers.merge('x-sirs-sessionToken': session_token), **other)
-  end
+    def authenticated_request(path, headers: {}, **other)
+      request(path, headers: headers.merge('x-sirs-sessionToken': session_token), **other)
+    end
 
-  def request(path, headers: {}, method: :get, **other)
-    HTTP
+    def request(path, headers: {}, method: :get, **other)
+      HTTP
         .use(instrumentation: { instrumenter: ActiveSupport::Notifications.instrumenter, namespace: 'symphony' })
         .headers(default_headers.merge(headers))
         .request(method, base_url + path, **other)
-  end
+    end
 
-  def base_url
-    Settings.symws.url
-  end
+    def base_url
+      Settings.symws.url
+    end
 
-  def default_headers
-    DEFAULT_HEADERS.merge(Settings.symws.headers || {})
-  end
+    def default_headers
+      DEFAULT_HEADERS.merge(Settings.symws.headers || {})
+    end
 end

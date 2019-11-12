@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-
   helper_method :patron, :symphony_client
 
   def current_user
@@ -21,15 +20,15 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def symphony_client
-    @symphony_client ||= SymphonyClient.new
-  end
+    def symphony_client
+      @symphony_client ||= SymphonyClient.new
+    end
 
-  def patron_info_response
-    symphony_client.patron_info(current_user.patronKey)
-  end
+    def patron_info_response
+      symphony_client.patron_info(current_user.patronKey)
+    end
 
-  def authenticate_user!
-    redirect_to root_url unless current_user?
-  end
+    def authenticate_user!
+      redirect_to root_url unless current_user?
+    end
 end

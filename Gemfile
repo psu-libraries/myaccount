@@ -12,8 +12,8 @@ gem 'puma', '~> 3.11'
 gem 'rails', '~> 6.0.0'
 gem 'sqlite3', '~> 1.4'
 gem 'turbolinks', '~> 5'
-gem 'webpacker', '~> 4.0'
 gem 'warden'
+gem 'webpacker', '~> 4.0'
 
 group :development do
   gem 'better_errors'
