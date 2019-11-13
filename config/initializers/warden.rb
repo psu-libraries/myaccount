@@ -9,7 +9,10 @@ Warden::Strategies.add(:library_id) do
     response = SymphonyClient.new.login(params['user_id'], params['password'])
 
     if response['patronKey']
-      u = { username: params['user_id'], name: response['name'], patronKey: response['patronKey'], sessionToken: response['sessionToken'] }
+      u = { username: params['user_id'],
+            name: response['name'],
+            patronKey: response['patronKey'],
+            sessionToken: response['sessionToken'] }
       success!(u)
     else
       fail!('Could not log in')

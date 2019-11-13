@@ -9,15 +9,15 @@ class SymphonyClient
 
   def login(user_id, password)
     response = request('/user/patron/login', method: :post, json: {
-                                       login: user_id,
-                                       password: password
-                                     })
+                         login: user_id,
+                         password: password
+                       })
     JSON.parse(response.body)
   end
 
   def patron_info(user, item_details: {})
     response = authenticated_request("/user/patron/key/#{user.patronKey}",
-                                     headers: {'x-sirs-sessionToken': user.sessionToken },
+                                     headers: { 'x-sirs-sessionToken': user.sessionToken },
                                      params: {
                                        includeFields: [
                                          '*',
