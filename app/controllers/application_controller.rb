@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     end
 
     def patron_info_response
-      symphony_client.patron_info(current_user.patronKey, item_details: item_details)
+      symphony_client.patron_info(current_user, item_details: item_details)
     end
 
     def authenticate_user!
