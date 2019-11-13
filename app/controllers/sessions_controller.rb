@@ -2,7 +2,6 @@
 
 class SessionsController < ApplicationController
   def index
-    # @symphony_ok = symphony_client.ping
 
     redirect_to summaries_url if current_user? || request.env['warden'].authenticate(:library_id)
     # TODO: redirect_to errors_url, alert: 'Unable to authenticate.'
