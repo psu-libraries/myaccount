@@ -20,4 +20,15 @@
     cd myaccount
     bundle install --without production test
     ```
+1.  The application authenticates via webaccess which provides the `user_id` and `password` required for symphony web services access. Then uses `Warden` to login the user and retrieve a patron key and a session token from 
+    symphony.
+    
+    For running the application in development mode, we use a development environment specific settings file provided by the `config` gem. Make sure that your [`config/settings.local.yml`](https://psu.app.box.com/file/558113824635) file sets `webaccess_url`, symphony web services `url` and `headers`:  
+    
+    ```
+    symws:
+      webaccess_url: 
+      url: 
+      headers: {}
+    ```
     
