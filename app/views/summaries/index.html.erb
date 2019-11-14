@@ -1,2 +1,8 @@
-<h1>Hello <%= patron.display_name %>, <%= patron.key %>, <%= patron.barcode %></h1>
+<h1 class="sr-only">Summary</h1>
 
+<h3>
+  Library account record for <%= patron.display_name %>
+  <%= link_to "logout", logout_url, data: { turbolinks: false } if current_user? %>
+</h3>
+
+<p><%= patron.key %>, <%= patron.barcode %></p>
