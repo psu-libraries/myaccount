@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-
   # Render the application home page
   #
   # GET /
@@ -17,5 +16,4 @@ class SessionsController < ApplicationController
 
     redirect_to root_url
   end
-
 end
