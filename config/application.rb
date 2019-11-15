@@ -35,5 +35,9 @@ module Myaccount
     config.generators.system_tests = nil
     # Use rspec instead
     config.generators { |generator| generator.test_framework :rspec }
+
+    config.middleware.use Warden::Manager do |manager|
+      manager.default_strategies :library_id
+    end
   end
 end
