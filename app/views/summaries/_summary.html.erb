@@ -1,0 +1,7 @@
+<div class="page-section">
+  <h3>Holds: <%= patron.holds.length %></h3>
+  <% count = patron.holds.select(&:ready_for_pickup?).length %>
+  <% if count.positive? %>
+      <div class="ml-4"><%= count %> ready for pickup</div>
+  <% end %>
+</div>
