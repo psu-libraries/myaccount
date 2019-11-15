@@ -16,8 +16,8 @@ class SymphonyClient
   end
 
   def patron_info(user, item_details: {})
-    response = authenticated_request("/user/patron/key/#{user.patronKey}",
-                                     headers: { 'x-sirs-sessionToken': user.sessionToken },
+    response = authenticated_request("/user/patron/key/#{user.patron_key}",
+                                     headers: { 'x-sirs-sessionToken': user.session_token },
                                      params: {
                                        includeFields: [
                                          '*',
