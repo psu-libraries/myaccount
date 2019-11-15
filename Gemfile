@@ -25,7 +25,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug'
   gem 'niftany'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
@@ -35,6 +35,3 @@ group :development, :test do
   gem 'webdrivers', '~> 4.0'
   gem 'webmock', require: false
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
