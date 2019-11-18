@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ApplicationController, type: :controller do
@@ -46,6 +48,37 @@ RSpec.describe ApplicationController, type: :controller do
   end
 
   describe '#patron' do
+    let(:patron) { Patron.new('fields' => { 'address1' => [], 'standing' => { 'key' => '' } }) }
 
+    context 'with a logged in user' do
+      before do
+        allow(mock_client).to receive(:patron_info).and_return(patron)
+        warden.set_user(user)
+      end
+
+      it 'is a new instance of the Patron class' do
+        expect(controller.patron).to be_an_instance_of Patron
+      end
+    end
+
+    context 'with some needed item details' do
+      before do
+        allow(mock_client).to receive(:patron_info)
+        warden.set_user(user)
+      end
+
+      it 'passes through the details' do
+        allow(controller).to receive(:item_details).and_return(some: :value)
+        allow(controller).to receive(:current_user).and_return(user)
+        controller.patron
+        expect(mock_client).to have_received(:patron_info).with(user, item_details: { some: :value })
+      end
+    end
+
+    context 'without a logged in user' do
+      it 'is a new instance of the Patron class' do
+        expect(controller.patron).to be nil
+      end
+    end
   end
 end
