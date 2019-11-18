@@ -1,0 +1,28 @@
+dist: xenial
+language: ruby
+rvm:
+  - 2.6.5
+bundler_args: --without development
+sudo: false
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - tmp/solr_dl/
+env:
+  global:
+    - RAILS_ENV=test
+addons:
+  chrome: stable
+
+before_install:
+  - gem update --system
+  - gem install bundler
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+
+before_script:
+  - bundle exec rails assets:precompile
+
+script:
+  - bundle exec niftany
+  - bundle exec rake
