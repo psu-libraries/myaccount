@@ -5,6 +5,7 @@ scss_files: "**/*.scss"
 
 # Files to exclude
 exclude:
+  - 'vendor/*'
   - 'node_modules/**/*'
 
 # List of gem names to load custom linters from (make sure they are already
