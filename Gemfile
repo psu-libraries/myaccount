@@ -29,7 +29,7 @@ group :development, :test do
   gem 'niftany'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 4.0.0.beta1'
   gem 'selenium-webdriver'
   gem 'warden-rspec-rails'
   gem 'webdrivers', '~> 4.0'
