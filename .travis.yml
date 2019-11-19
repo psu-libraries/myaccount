@@ -7,8 +7,6 @@ sudo: false
 cache:
   bundler: true
   yarn: true
-  directories:
-    - tmp/solr_dl/
 env:
   global:
     - RAILS_ENV=test
