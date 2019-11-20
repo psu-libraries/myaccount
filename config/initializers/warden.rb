@@ -11,8 +11,8 @@ Warden::Strategies.add(:library_id) do
     if response['patronKey']
       u = { username: params['user_id'],
             name: response['name'],
-            patronKey: response['patronKey'],
-            sessionToken: response['sessionToken'] }
+            patron_key: response['patronKey'],
+            session_token: response['sessionToken'] }
       success!(u)
     else
       fail!('Could not log in')

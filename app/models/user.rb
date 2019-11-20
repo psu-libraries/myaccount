@@ -3,9 +3,9 @@
 # Class to model User information
 class User
   include ActiveModel::Model
-  attr_accessor :username, :name, :patronKey, :sessionToken
+  attr_accessor :username, :name, :patron_key, :session_token
 
   def initialize(attributes)
-    super(attributes.with_indifferent_access.slice(:username, :name, :patronKey, :sessionToken))
+    super(attributes.with_indifferent_access.slice(:username, :name, :patron_key, :session_token))
   end
 end
