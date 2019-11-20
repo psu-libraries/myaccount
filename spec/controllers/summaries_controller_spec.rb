@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe SummariesController do
   let(:mock_client) { instance_double(SymphonyClient) }
-  let(:mock_app_controller) { instance_double(ApplicationController) }
 
   before do
     allow(SymphonyClient).to receive(:new).and_return(mock_client)
@@ -35,7 +34,6 @@ RSpec.describe SummariesController do
     before do
       allow(controller).to receive(:current_user).and_return(user)
       allow(mock_client).to receive(:patron_info).with(user, item_details: {}).and_return(mock_response)
-      # allow(mock_app_controller).to receive(:current_user).and_return(user)
       warden.set_user(user)
     end
 
