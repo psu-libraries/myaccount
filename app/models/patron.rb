@@ -35,6 +35,7 @@ class Patron
   def holds
     @holds ||= fields['holdRecordList'].map { |hold| Hold.new(hold) }
   end
+
   private
 
     def fields
