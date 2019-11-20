@@ -28,6 +28,10 @@ class Patron
     "#{first_name} #{last_name}"
   end
 
+  def checkouts
+    @checkouts ||= fields['circRecordList'].map { |checkout| Checkout.new(checkout) }
+  end
+
   def holds
     @holds ||= fields['holdRecordList'].map { |hold| Hold.new(hold) }
   end

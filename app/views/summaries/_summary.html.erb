@@ -1,4 +1,18 @@
 <div class="page-section">
+  <h3>Checkouts: <%= patron.checkouts.length %></h3>
+
+  <% count = patron.checkouts.select(&:recalled?).length %>
+  <% if count.positive? %>
+      <div class="ml-4"><%= count %> recalled</div>
+  <% end %>
+
+  <% count = patron.checkouts.select(&:overdue?).length %>
+  <% if count.positive? %>
+      <div class="ml-4"><%= count %> overdue</div>
+  <% end %>
+</div>
+
+<div class="page-section">
   <h3>Holds: <%= patron.holds.length %></h3>
   <% count = patron.holds.select(&:ready_for_pickup?).length %>
   <% if count.positive? %>
