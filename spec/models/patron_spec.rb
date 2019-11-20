@@ -4,19 +4,19 @@ require 'rails_helper'
 
 RSpec.describe Patron, type: :model do
   subject(:patron) do
-    Patron.new(
-        {
-            key: '1',
-            fields: fields
-        }.with_indifferent_access
+    described_class.new(
+      {
+        key: '1',
+        fields: fields
+      }.with_indifferent_access
     )
   end
 
   let(:fields) do
     {
-        firstName: 'Student',
-        lastName: 'Borrower',
-        barcode: '1234',
+      firstName: 'Student',
+      lastName: 'Borrower',
+      barcode: '1234'
     }
   end
 

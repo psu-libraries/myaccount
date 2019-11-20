@@ -48,15 +48,15 @@ module BibRecord
 
   private
 
-  def item
-    fields.dig('item', 'fields') || {}
-  end
+    def item
+      fields.dig('item', 'fields') || {}
+    end
 
-  def bib
-    fields.dig('bib', 'fields') || fields.dig('item', 'fields', 'bib', 'fields') || {}
-  end
+    def bib
+      fields.dig('bib', 'fields') || fields.dig('item', 'fields', 'bib', 'fields') || {}
+    end
 
-  def call
-    item.dig('call', 'fields') || {}
-  end
+    def call
+      item.dig('call', 'fields') || {}
+    end
 end
