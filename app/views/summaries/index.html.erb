@@ -2,7 +2,7 @@
 
 <h3>
   Library account record for <%= patron.display_name %>
-  <%= link_to "logout", logout_url, data: { turbolinks: false } if current_user? %>
+  <%= link_to 'logout', logout_url, data: { turbolinks: false } if current_user? %>
 </h3>
 
 <p><%= patron.key %>, <%= patron.barcode %></p>
