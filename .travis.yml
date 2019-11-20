@@ -13,7 +13,7 @@ env:
 addons:
   chrome: stable
 nodejs:
-  - 1
+  - $TRAVIS_NODE_VERSION
 
 before_install:
   - gem update --system
