@@ -12,7 +12,8 @@ env:
     - RAILS_ENV=test
 addons:
   chrome: stable
-nodejs: 1
+nodejs:
+  - 1
 
 before_install:
   - gem update --system
