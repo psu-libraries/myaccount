@@ -34,6 +34,14 @@ class Hold
     status == 'BEING_HELD'
   end
 
+  def pickup_library
+    fields['pickupLibrary']['key']
+  end
+
+  def placed_library
+    fields['placedLibrary']['key']
+  end
+
   private
 
     def fields
