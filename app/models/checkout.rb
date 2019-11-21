@@ -38,6 +38,10 @@ class Checkout
     fields['overdue']
   end
 
+  def library
+    fields['library']['key']
+  end
+
   private
 
     def fields
