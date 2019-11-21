@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hold do
+RSpec.describe Hold, type: :model do
   subject do
     described_class.new({
       key: '1',
