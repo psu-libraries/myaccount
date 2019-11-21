@@ -5,42 +5,42 @@ require 'rails_helper'
 RSpec.describe Hold do
   subject do
     described_class.new({
-                            key: '1',
-                            fields: fields
-                        }.with_indifferent_access)
+      key: '1',
+      fields: fields
+    }.with_indifferent_access)
   end
 
   let(:hold) { subject }
   let(:fields) do
     {
-        status: 'ACTIVE',
-        pickupLibrary: { key: 'UP-PAT' },
-        placedLibrary: { key: 'UP-PAT' },
-        library: {
-            key: 'UP-PAT'
-        },
-        patron: {
-            key: '123'
-        },
-        item: {
+      status: 'ACTIVE',
+      pickupLibrary: { key: 'UP-PAT' },
+      placedLibrary: { key: 'UP-PAT' },
+      library: {
+        key: 'UP-PAT'
+      },
+      patron: {
+        key: '123'
+      },
+      item: {
+        fields: {
+          barcode: 'xyz',
+          currentLocation: { key: 'CHECKEDOUT' },
+          bib: {
+            key: '123456',
             fields: {
-                barcode: 'xyz',
-                currentLocation: { key: 'CHECKEDOUT' },
-                bib: {
-                    key: '123456',
-                    fields: {
-                        title: 'Some Title',
-                        author: 'Somebody'
-                    }
-                },
-                call: {
-                    fields: {
-                        dispCallNumber: 'ABC 123',
-                        sortCallNumber: 'ABC 00123'
-                    }
-                }
+              title: 'Some Title',
+              author: 'Somebody'
             }
+          },
+          call: {
+            fields: {
+              dispCallNumber: 'ABC 123',
+              sortCallNumber: 'ABC 00123'
+            }
+          }
         }
+      }
     }
   end
 
@@ -59,9 +59,9 @@ RSpec.describe Hold do
   context 'when the item is ready for pickup' do
     before { fields[:status] = 'BEING_HELD' }
 
-      it 'has a status' do
-        expect(hold.status).to eq 'BEING_HELD'
-      end
+    it 'has a status' do
+      expect(hold.status).to eq 'BEING_HELD'
+    end
   end
 
   it 'has a placed library' do
