@@ -2,6 +2,6 @@
 
 require 'rails_helper'
 
-RSpec.describe Patron, type: :model do
+RSpec.describe Patron do
   pending "add some examples to (or delete) #{__FILE__}"
 end
