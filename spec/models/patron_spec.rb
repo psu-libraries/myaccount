@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Patron, type: :model do
-  subject(:patron) do
+  subject do
     described_class.new(
       {
         key: '1',
@@ -21,23 +21,23 @@ RSpec.describe Patron, type: :model do
   end
 
   it 'has a key' do
-    expect(patron.key).to eq '1'
+    expect(subject.key).to eq '1'
   end
 
   it 'has a first name' do
-    expect(patron.first_name).to eq 'Student'
+    expect(subject.first_name).to eq 'Student'
   end
 
   it 'has a last name' do
-    expect(patron.last_name).to eq 'Borrower'
+    expect(subject.last_name).to eq 'Borrower'
   end
 
   it 'has a display name' do
-    expect(patron.display_name).to eq 'Student Borrower'
+    expect(subject.display_name).to eq 'Student Borrower'
   end
 
   it 'has a barcode' do
-    expect(patron.barcode).to eq '1234'
+    expect(subject.barcode).to eq '1234'
   end
 
   context 'with checkouts' do
@@ -47,7 +47,7 @@ RSpec.describe Patron, type: :model do
 
     describe '#checkouts' do
       it 'returns a list of checkouts for the patron' do
-        expect(patron.checkouts).to include a_kind_of(Checkout).and(have_attributes(key: 1))
+        expect(subject.checkouts).to include a_kind_of(Checkout).and(have_attributes(key: 1))
       end
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe Patron, type: :model do
 
     describe '#holds' do
       it 'returns a list of holds for the patron' do
-        expect(patron.holds).to include a_kind_of(Hold).and(have_attributes(key: 1))
+        expect(subject.holds).to include a_kind_of(Hold).and(have_attributes(key: 1))
       end
     end
   end

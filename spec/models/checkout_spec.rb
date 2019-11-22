@@ -10,7 +10,6 @@ RSpec.describe Checkout, type: :model do
     }.with_indifferent_access)
   end
 
-  let(:checkout) { subject }
   let(:fields) do
     {
       status: 'ACTIVE',
@@ -46,27 +45,27 @@ RSpec.describe Checkout, type: :model do
   end
 
   it 'has a key' do
-    expect(checkout.key).to eq '1'
+    expect(subject.key).to eq '1'
   end
 
   it 'has a patron key' do
-    expect(checkout.patron_key).to eq '123'
+    expect(subject.patron_key).to eq '123'
   end
 
   it 'has a status' do
-    expect(checkout.status).to eq 'ACTIVE'
+    expect(subject.status).to eq 'ACTIVE'
   end
 
   it 'has an overdue state' do
-    expect(checkout.overdue?).to be true
+    expect(subject.overdue?).to be true
   end
 
   it 'does not have a recalled date' do
-    expect(checkout.recalled_date).to be_nil
+    expect(subject.recalled_date).to be_nil
   end
 
   it 'is not recalled' do
-    expect(checkout).not_to be_recalled
+    expect(subject).not_to be_recalled
   end
 
   context 'with a record that has been recalled' do
@@ -76,47 +75,47 @@ RSpec.describe Checkout, type: :model do
     end
 
     it 'has a recalled date' do
-      expect(checkout.recalled_date.strftime('%m/%d/%Y')).to eq '07/11/2019'
+      expect(subject.recalled_date.strftime('%m/%d/%Y')).to eq '07/11/2019'
     end
 
     it 'is recalled' do
-      expect(checkout).to be_recalled
+      expect(subject).to be_recalled
     end
   end
 
   it 'has a library' do
-    expect(checkout.library).to eq 'UP-PAT'
+    expect(subject.library).to eq 'UP-PAT'
   end
 
   it 'has a title' do
-    expect(checkout.title).to eq 'Some Title'
+    expect(subject.title).to eq 'Some Title'
   end
 
   it 'has an author' do
-    expect(checkout.author).to eq 'Somebody'
+    expect(subject.author).to eq 'Somebody'
   end
 
   it 'has a call number' do
-    expect(checkout.call_number).to eq 'ABC 123'
+    expect(subject.call_number).to eq 'ABC 123'
   end
 
   it 'has a shelf key' do
-    expect(checkout.shelf_key).to eq 'ABC 00123'
+    expect(subject.shelf_key).to eq 'ABC 00123'
   end
 
   it 'has a barcode' do
-    expect(checkout.barcode).to eq 'xyz'
+    expect(subject.barcode).to eq 'xyz'
   end
 
   it 'has a catkey' do
-    expect(checkout.catkey).to eq '123456'
+    expect(subject.catkey).to eq '123456'
   end
 
   it 'has a current location' do
-    expect(checkout.current_location).to eq 'CHECKEDOUT'
+    expect(subject.current_location).to eq 'CHECKEDOUT'
   end
 
   it 'is not lost' do
-    expect(checkout).not_to be_lost
+    expect(subject).not_to be_lost
   end
 end
