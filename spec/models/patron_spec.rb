@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Patron, type: :model do
+RSpec.describe Patron do
   subject(:patron) do
     described_class.new(
       {

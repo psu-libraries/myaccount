@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ApplicationController, type: :controller do
+RSpec.describe ApplicationController do
   let(:mock_client) { instance_double(SymphonyClient) }
 
   let(:user) do
