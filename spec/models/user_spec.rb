@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject { described_class.new(user_attributes) }
+  subject(:user) { described_class.new(user_attributes) }
 
   let(:user_attributes) { { username: 'user_id', name: 'Name', patron_key: '123', session_token: '123' } }
 
   it 'has attributes' do
-    expect(subject).to have_attributes(user_attributes)
+    expect(user).to have_attributes(user_attributes)
   end
 end
