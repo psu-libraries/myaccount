@@ -12,3 +12,7 @@ AllCops:
     - 'node_modules/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+  - 'spec/**/*'
