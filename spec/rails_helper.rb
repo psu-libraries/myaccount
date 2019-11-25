@@ -14,7 +14,7 @@ require 'webmock/rspec'
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(
-  allow_localhost: true,
+  allow_localhost: true
 )
 
 # Add additional requires below this line. Rails is not loaded until this point!
