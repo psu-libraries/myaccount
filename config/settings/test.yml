@@ -1,0 +1,7 @@
+symws:
+  url: https://example.com/symwsbc
+  headers: {}
+  login_params:
+    login: 'fake_user'
+    password: 'some_password'
+  patron_key: 'some_patron_key'
