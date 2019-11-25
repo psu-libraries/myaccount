@@ -7,7 +7,7 @@ RSpec.describe SymphonyClient do
 
   describe '#login' do
     before do
-      stub_request(:post, Settings.symws.url + '/user/patron/login')
+      stub_request(:post, "#{Settings.symws.url}/user/patron/login")
         .with(body: Settings.symws.login_params.to_h,
               headers: Settings.symws.headers)
         .to_return(body: { patronKey: Settings.symws.patron_key }.to_json)
@@ -28,7 +28,7 @@ RSpec.describe SymphonyClient do
     end
 
     before do
-      stub_request(:get, 'https://example.com/symwsbc/user/patron/key/some_patron_key')
+      stub_request(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
         .with(query: hash_including(includeFields: match(/\*/)))
         .to_return(body: { key: 'some_patron_key' }.to_json)
     end
@@ -41,21 +41,21 @@ RSpec.describe SymphonyClient do
       it 'requests the item details for checkouts' do
         client.patron_info(user, item_details: { circRecordList: true })
 
-        expect(WebMock).to have_requested(:get, 'https://example.com/symwsbc/user/patron/key/some_patron_key')
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
           .with(query: hash_including(includeFields: match(/circRecordList{.*,item{.*}}/)))
       end
 
       it 'requests the item details for requests' do
         client.patron_info(user, item_details: { holdRecordList: true })
 
-        expect(WebMock).to have_requested(:get, 'https://example.com/symwsbc/user/patron/key/some_patron_key')
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
           .with(query: hash_including(includeFields: match(/holdRecordList{.*,item{.*}}/)))
       end
 
       it 'requests the item details for fines' do
         client.patron_info(user, item_details: { blockList: true })
 
-        expect(WebMock).to have_requested(:get, 'https://example.com/symwsbc/user/patron/key/some_patron_key')
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
           .with(query: hash_including(includeFields: match(/blockList{.*,item{.*}}/)))
       end
     end
