@@ -14,8 +14,7 @@ RSpec.describe SymphonyClient do
     end
 
     it 'authenticates the user against symphony' do
-      expect(client.login(Settings.symws.login_params.login,
-                          Settings.symws.login_params.password)).to include 'patronKey' => Settings.symws.patron_key
+      expect(client.login('fake_user', 'some_password')).to include 'patronKey' => 'some_patron_key'
     end
   end
 
