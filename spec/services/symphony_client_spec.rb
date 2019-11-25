@@ -45,7 +45,7 @@ RSpec.describe SymphonyClient do
           .with(query: hash_including(includeFields: match(/circRecordList{.*,item{.*}}/)))
       end
 
-      it 'requests the item details for requests' do
+      it 'requests the item details for holds' do
         client.patron_info(user, item_details: { holdRecordList: true })
 
         expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
