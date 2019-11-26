@@ -9,5 +9,16 @@ class SummariesController < ApplicationController
   # GET /summaries.json
   def index
     @patron = patron
+
+    if stale?
+      request.env['warden'].logout
+      redirect_to Settings.symws.webaccess_url + request.base_url
+    end
   end
+
+  private
+
+    def stale?
+      patron.record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
+    end
 end

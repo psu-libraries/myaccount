@@ -40,5 +40,23 @@ RSpec.describe SummariesController do
     it 'redirects to the home page' do
       expect(get(:index)).to render_template 'index'
     end
+
+    context 'with a stale session' do
+      let(:patron) { instance_double(Patron) }
+      let(:mock_patron_response) { { 'messageList' => [{
+        'code' => 'sessionTimedOut',
+        'message' => 'The session has timed out.'
+      }] } }
+
+      before do
+        allow(Patron).to receive(:new).and_return(patron)
+        allow(patron).to receive(:record).and_return(mock_patron_response)
+      end
+
+      it 'redirects to the application authentication mechanism' do
+        get(:index)
+        expect(response).to have_http_status '302'
+      end
+    end
   end
 end
