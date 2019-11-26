@@ -30,16 +30,16 @@ class SymphonyClient
 
   ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
 
-  def patron_linked_resources_fields(item_details = {})
-    [
-      "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
-      'circRecordList{*,circulationRule{loanPeriod{periodType{key}},renewFromPeriod},' \
-      "#{ITEM_RESOURCES if item_details[:circRecordList]}}",
-      "blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"
-    ]
-  end
-
   private
+
+    def patron_linked_resources_fields(item_details = {})
+      [
+        "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
+        'circRecordList{*,circulationRule{loanPeriod{periodType{key}},renewFromPeriod},' \
+        "#{ITEM_RESOURCES if item_details[:circRecordList]}}",
+        "blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"
+      ]
+    end
 
     def authenticated_request(path, headers: {}, **other)
       request(path, headers: headers, **other)
