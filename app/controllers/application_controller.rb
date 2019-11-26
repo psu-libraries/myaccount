@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   def current_user
     session_data = request.env['warden'].user
+    # Assuming the && is used solely to guard against nil. A new User is minted with every request based upon details
+    # Warden set in the session data in cookies. So, new user every request, same SWS session data.
     session_data && User.new(session_data)
   end
 
