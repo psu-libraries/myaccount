@@ -43,14 +43,10 @@ RSpec.describe SummariesController do
 
     context 'with a stale session' do
       let(:patron) { instance_double(Patron) }
-      let(:mock_patron_response) { { 'messageList' => [{
-        'code' => 'sessionTimedOut',
-        'message' => 'The session has timed out.'
-      }] } }
 
       before do
         allow(Patron).to receive(:new).and_return(patron)
-        allow(patron).to receive(:record).and_return(mock_patron_response)
+        allow(patron).to receive(:stale?).and_return(true)
       end
 
       it 'redirects to the application authentication mechanism' do
