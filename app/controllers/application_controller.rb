@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :current_user?, :patron, :symphony_client
+  helper_method :current_user, :current_user?, :patron, :renew_session_token, :symphony_client
 
   def current_user
     session_data = request.env['warden'].user
+    # Assuming the && is used solely to guard against nil. A new User is minted with every request based upon details
+    # Warden set in the session data in cookies. So, new user every request, same SWS session data.
     session_data && User.new(session_data)
   end
 
@@ -16,6 +18,12 @@ class ApplicationController < ActionController::Base
     return unless current_user?
 
     @patron ||= Patron.new(patron_info_response)
+  end
+
+  def renew_session_token
+    request.env['warden'].logout
+
+    redirect_to Settings.symws.webaccess_url + request.base_url
   end
 
   private

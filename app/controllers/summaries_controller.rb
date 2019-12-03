@@ -9,5 +9,7 @@ class SummariesController < ApplicationController
   # GET /summaries.json
   def index
     @patron = patron
+
+    renew_session_token if @patron.stale?
   end
 end

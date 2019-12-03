@@ -1,4 +1,5 @@
 symws:
+  webaccess_url: https://example.com/webaccess
   url: https://example.com/symwsbc
   headers:
       x_sirs_clientID: SymWSTestClient
