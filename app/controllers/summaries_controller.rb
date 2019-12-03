@@ -15,10 +15,4 @@ class SummariesController < ApplicationController
       redirect_to Settings.symws.webaccess_url + request.base_url
     end
   end
-
-  private
-
-    def stale?
-      patron.record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
-    end
 end

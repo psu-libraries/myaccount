@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :current_user?, :patron, :symphony_client
+  helper_method :current_user, :current_user?, :stale?, :patron, :symphony_client
 
   def current_user
     session_data = request.env['warden'].user
@@ -36,5 +36,9 @@ class ApplicationController < ActionController::Base
 
     def item_details
       {}
+    end
+
+    def stale?
+      @patron.record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
     end
 end
