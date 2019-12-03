@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :current_user?, :stale?, :patron, :symphony_client
+  helper_method :current_user, :current_user?, :patron, :renew_session_token, :symphony_client
 
   def current_user
+    # byebug
     session_data = request.env['warden'].user
     # Assuming the && is used solely to guard against nil. A new User is minted with every request based upon details
     # Warden set in the session data in cookies. So, new user every request, same SWS session data.
@@ -18,6 +19,12 @@ class ApplicationController < ActionController::Base
     return unless current_user?
 
     @patron ||= Patron.new(patron_info_response)
+  end
+
+  def renew_session_token
+    request.env['warden'].logout
+
+    redirect_to Settings.symws.webaccess_url + request.base_url
   end
 
   private
@@ -36,9 +43,5 @@ class ApplicationController < ActionController::Base
 
     def item_details
       {}
-    end
-
-    def stale?
-      @patron.record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
     end
 end

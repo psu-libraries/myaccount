@@ -36,6 +36,10 @@ class Patron
     @holds ||= fields['holdRecordList'].map { |hold| Hold.new(hold) }
   end
 
+  def stale?
+    record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
+  end
+
   private
 
     def fields

@@ -10,9 +10,6 @@ class SummariesController < ApplicationController
   def index
     @patron = patron
 
-    if stale?
-      request.env['warden'].logout
-      redirect_to Settings.symws.webaccess_url + request.base_url
-    end
+    renew_session_token if @patron.stale?
   end
 end

@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Patron do
-  subject(:patron) do
-    described_class.new(
-      {
-        key: '1',
-        fields: fields
-      }.with_indifferent_access
-    )
+  subject(:patron) { described_class.new(record) }
+
+  let(:record) do
+    {
+      key: '1',
+      fields: fields
+    }.with_indifferent_access
   end
 
   let(:fields) do
@@ -40,6 +40,10 @@ RSpec.describe Patron do
     expect(patron.barcode).to eq '1234'
   end
 
+  it 'has a valid session' do
+    expect(patron).not_to be_stale
+  end
+
   context 'with checkouts' do
     before do
       fields[:circRecordList] = [{ key: 1, fields: {} }]
@@ -61,6 +65,18 @@ RSpec.describe Patron do
       it 'returns a list of holds for the patron' do
         expect(patron.holds).to include a_kind_of(Hold).and(have_attributes(key: 1))
       end
+    end
+  end
+
+  context 'with a stale session' do
+    let(:record) do
+      {
+        'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }]
+      }
+    end
+
+    it 'has a stale patron session token' do
+      expect(patron).to be_stale
     end
   end
 end
