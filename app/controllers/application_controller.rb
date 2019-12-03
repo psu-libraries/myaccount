@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :current_user?, :patron, :renew_session_token, :symphony_client
 
   def current_user
-    # byebug
     session_data = request.env['warden'].user
     # Assuming the && is used solely to guard against nil. A new User is minted with every request based upon details
     # Warden set in the session data in cookies. So, new user every request, same SWS session data.
