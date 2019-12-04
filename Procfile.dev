@@ -1,0 +1,2 @@
+web: rails s -p 3001
+webpacker: bin/webpack-dev-server
