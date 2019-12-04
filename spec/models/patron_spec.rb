@@ -16,7 +16,10 @@ RSpec.describe Patron do
     {
       firstName: 'Student',
       lastName: 'Borrower',
-      barcode: '1234'
+      barcode: '1234',
+      standing: {
+        key: 'OK'
+      }
     }
   end
 
@@ -77,6 +80,26 @@ RSpec.describe Patron do
 
     it 'has a stale patron session token' do
       expect(patron).to be_stale
+    end
+  end
+
+  it 'has a patron standing info' do
+    expect(patron.standing).to eq 'OK'
+  end
+
+  it 'has no patron standing alerts' do
+    expect(patron).not_to be_standing_alert
+  end
+
+  context 'with a patron standing alert' do
+    let(:fields) do
+      {
+        standing: { key: 'DELINQUENT' }
+      }
+    end
+
+    it 'has a patron standing alert' do
+      expect(patron).to be_standing_alert
     end
   end
 end
