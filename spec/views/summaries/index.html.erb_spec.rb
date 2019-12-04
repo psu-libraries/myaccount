@@ -19,6 +19,7 @@ RSpec.describe 'summaries/index', type: :view do
       protected
 
         def patron; end
+
         def current_user?; end
 
         helper_method :patron, :current_user?
