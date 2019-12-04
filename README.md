@@ -20,6 +20,7 @@
     cd myaccount
     bundle install --without production test
     ```
+    
 1.  The application authenticates via webaccess which provides the `user_id` and `password` required for symphony web services access. Then uses `Warden` to login the user and retrieve a patron key and a session token from 
     symphony.
     
@@ -31,4 +32,9 @@
       url: 
       headers: {}
     ```
+
+1.  Start the application
+    ```
+    bundle exec foreman start -f Procfile.dev
+    ```  
     
