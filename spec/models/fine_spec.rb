@@ -11,10 +11,26 @@ RSpec.describe Fine do
   end
 
   let(:fields) do
-    { 'amount' => { 'currencyCode' => 'USD', 'amount' => '12.00' }, 'tax' => { 'currencyCode' => 'USD', 'amount' => '0.00' }, 'billDate' => '2019-10-08', 'estimatedOverdueAmount' => { 'currencyCode' => 'USD', 'amount' => '0.00' }, 'title' => 'This changes everything : capitalism vs. the climate', 'owed' => { 'currencyCode' => 'USD', 'amount' => '12.00' }, 'library' => { 'resource' => '/policy/library', 'key' => 'UP-PAT' }, 'callNumber' => 'HC79.E5K56 2014', 'block' => { 'resource' => '/policy/block', 'key' => 'RECALLOVD' }, 'comment' => nil, 'itemLibrary' => { 'resource' => '/policy/library', 'key' => 'UP-PAT' }, 'createDate' => '2019-10-08' }
+    {
+      'amount' => {
+        'currencyCode' => 'USD', 'amount' => '12.00'
+      }, 'tax' => {
+        'currencyCode' => 'USD', 'amount' => '0.00'
+      }, 'billDate' => '2019-10-08', 'estimatedOverdueAmount' => {
+        'currencyCode' => 'USD', 'amount' => '0.00'
+      }, 'title' => 'This changes everything : capitalism vs. the climate', 'owed' => {
+        'currencyCode' => 'USD', 'amount' => '12.00'
+      }, 'library' => {
+        'resource' => '/policy/library', 'key' => 'UP-PAT'
+      }, 'callNumber' => 'HC79.E5K56 2014', 'block' => {
+        'resource' => '/policy/block', 'key' => 'RECALLOVD'
+      }, 'comment' => nil, 'itemLibrary' => {
+        'resource' => '/policy/library', 'key' => 'UP-PAT'
+      }, 'createDate' => '2019-10-08'
+    }
   end
 
   it 'has a fee' do
-    expect(fine.fee).to eql? 12
+    expect(fine.fee).to eq 12
   end
 end
