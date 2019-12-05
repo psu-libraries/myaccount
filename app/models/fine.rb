@@ -8,7 +8,7 @@ class Fine
   end
 
   def fee
-    fields['amount']['amount'].to_d
+    fields['owed']['amount'].to_d
   end
 
   private
