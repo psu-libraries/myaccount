@@ -68,6 +68,18 @@ RSpec.describe Patron do
     end
   end
 
+  context 'with fines' do
+    before do
+      fields[:blockList] = [{ key: 1, fields: {} }]
+    end
+
+    describe '#fines' do
+      it 'makes a new Fine' do
+        expect(patron.fines).to include a_kind_of(Fine)
+      end
+    end
+  end
+
   context 'with a stale session' do
     let(:record) do
       {
