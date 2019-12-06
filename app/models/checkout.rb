@@ -22,6 +22,16 @@ class Checkout
     fields['status']
   end
 
+  def due_date
+    recall_due_date || original_due_date
+  end
+
+  def days_overdue
+    return 0 unless overdue?
+
+    ((Time.zone.now - due_date).to_i / 60 / 60 / 24) + 1
+  end
+
   def recalled_date
     Time.zone.parse(fields['recalledDate']) if fields['recalledDate']
   end
@@ -42,9 +52,21 @@ class Checkout
     fields['library']['key']
   end
 
+  def renewal_count
+    fields['renewalCount'] || 0
+  end
+
   private
 
     def fields
       record['fields']
+    end
+
+    def original_due_date
+      fields['dueDate'] && Time.zone.parse(fields['dueDate'])
+    end
+
+    def recall_due_date
+      fields['recallDueDate'] && Time.zone.parse(fields['recallDueDate'])
     end
 end
