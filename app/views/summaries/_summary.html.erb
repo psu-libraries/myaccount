@@ -8,9 +8,9 @@
 <div class="page-section">
   <h2>Summary</h2>
 
-  <% if patron.fines.sum(&:fee).positive? %>
+  <% if patron.fines.sum(&:owed_amount).positive? %>
     <h3>You owe</h3>
-    <p><%= number_to_currency patron.fines.sum(&:fee) %></p>
+    <p><%= number_to_currency patron.fines.sum(&:owed_amount) %></p>
   <% end %>
 
   <h3>Checkouts: <%= patron.checkouts.length %></h3>
