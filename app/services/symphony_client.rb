@@ -35,8 +35,7 @@ class SymphonyClient
     def patron_linked_resources_fields(item_details = {})
       [
         "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
-        'circRecordList{*,circulationRule{loanPeriod{periodType{key}},renewFromPeriod},' \
-        "#{ITEM_RESOURCES if item_details[:circRecordList]}}",
+        "circRecordList{*,#{ITEM_RESOURCES if item_details[:circRecordList]}}",
         "blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"
       ]
     end
