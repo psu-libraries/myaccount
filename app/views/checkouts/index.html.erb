@@ -20,9 +20,11 @@
   <tr>
     <th scope="col">Title</th>
     <th scope="col">Author</th>
+    <th scope="col">Format</th>
     <th scope="col">Times Renewed</th>
     <th scope="col">Due Date</th>
     <th scope="col">Status</th>
+    <th scope="col">Days Remaining</th>
     <th scope="col">You Owe</th>
   </tr>
   </thead>
@@ -30,12 +32,17 @@
   <tbody>
   <% @checkouts.each do |checkout| %>
       <tr>
-        <td scope="row"><%= checkout.title %></td>
+        <td scope="row">
+          <%= link_to checkout.title, "https://catalog.libraries.psu.edu/catalog/#{checkout.catkey}" %>
+        </td>
         <td><%= checkout.author %></td>
-        <td><%= checkout.renewal_count %></td>
-        <td><%= l(checkout.due_date, format: :short) %> </td>
-        <td><%= checkout.status %></td>
-        <td>#</td>
+        <td><%= checkout.item_type %></td>
+        <td><%= checkout.renewal_count if checkout.renewal_count.positive?%></td>
+        <td><%= render_checkout_due_date(checkout) %></td>
+        <td><%= render_checkout_status(checkout) %></td>
+        <td><%= checkout.days_remaining %></td>
+        <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
+        </td>
       </tr>
   <% end %>
   </tbody>

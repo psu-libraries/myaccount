@@ -89,6 +89,10 @@ module BibRecord
     fields.dig('item', 'key')
   end
 
+  def item_type
+    item.dig('itemType', 'key')
+  end
+
   def home_location
     item.dig('homeLocation', 'key')
   end
