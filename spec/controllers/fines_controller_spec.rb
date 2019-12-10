@@ -4,13 +4,13 @@ require 'rails_helper'
 
 RSpec.describe FinesController do
   let(:mock_patron) { instance_double(Patron) }
-  let(:fines) {     [instance_double(Fine, owed_amount: 0.50 ), instance_double(Fine, owed_amount: 0.50 )]}
+  let(:fines) {     [instance_double(Fine, owed_amount: 0.50), instance_double(Fine, owed_amount: 0.50)] }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
   end
 
-  context 'unauthenticated user' do
+  context 'with unauthenticated user' do
     it 'goes somewheres' do
       get(:index)
       expect(response).to redirect_to root_url
@@ -46,5 +46,4 @@ RSpec.describe FinesController do
       expect(assigns(:total_owed)).to eq 1
     end
   end
-
 end
