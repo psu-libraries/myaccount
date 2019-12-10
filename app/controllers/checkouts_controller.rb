@@ -12,11 +12,11 @@ class CheckoutsController < ApplicationController
 
   private
 
-  def checkouts
-    patron.checkouts.sort_by(&:due_date)
-  end
+    def checkouts
+      patron.checkouts.sort_by(&:due_date)
+    end
 
-  def item_details
-    { circRecordList: true }
-  end
+    def item_details
+      { circRecordList: true }
+    end
 end

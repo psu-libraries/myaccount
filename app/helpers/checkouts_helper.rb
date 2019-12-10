@@ -18,5 +18,4 @@ module CheckoutsHelper
 
     content_tag 'span', contents.join('<br>'), nil, false
   end
-
 end
