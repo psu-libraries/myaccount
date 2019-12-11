@@ -102,6 +102,28 @@ RSpec.describe Checkout, type: :model do
     expect(checkout.overdue?).to be true
   end
 
+  it 'does not have a claimed returned date' do
+    expect(checkout.claims_returned_date).to be_nil
+  end
+
+  it 'is not claimed returned' do
+    expect(checkout).not_to be_claims_returned
+  end
+
+  context 'with an item claimed returned' do
+    before do
+      fields[:claimsReturnedDate] = '2019-12-01'
+    end
+
+    it 'is claimed returned' do
+      expect(checkout).to be_claims_returned
+    end
+
+    it 'has a claimed returned date' do
+      expect(checkout.claims_returned_date.strftime('%m/%d/%Y')).to eq '12/01/2019'
+    end
+  end
+
   it 'has an accrued' do
     expect(checkout.accrued).to eq 10.00
   end
