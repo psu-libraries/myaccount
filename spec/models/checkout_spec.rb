@@ -14,8 +14,11 @@ RSpec.describe Checkout, type: :model do
     {
       status: 'ACTIVE',
       overdue: true,
-      checkOutDate: '2019-07-08T21:28:00-07:00',
-      dueDate: '2019-07-09T23:59:00-07:00',
+      dueDate: '2019-12-19T23:59:00-05:00',
+      estimatedOverdueAmount: {
+          amount: '10.00',
+          currencyCode: 'USD'
+      },
       item: {
         fields: {
           barcode: 'xyz',
@@ -48,6 +51,56 @@ RSpec.describe Checkout, type: :model do
 
   it 'has an overdue state' do
     expect(checkout.overdue?).to be true
+  end
+
+  context 'with a record that has not been recalled' do
+    it 'has an original due date' do
+      expect(checkout.original_due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
+    end
+
+    it 'has no recalled date' do
+      expect(checkout.recalled_date).to eq nil
+    end
+
+    it 'has no recall due date' do
+      expect(checkout.recall_due_date).to eq nil
+    end
+
+    it 'has a due date' do
+      expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
+    end
+  end
+
+  context 'with a record that has been recalled' do
+    before do
+      fields[:recalledDate] = '2019-11-10'
+      fields[:recallDueDate] = '2019-11-20T23:59:00-05:00'
+    end
+
+    it 'has an original due date' do
+      expect(checkout.original_due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
+    end
+
+
+    it 'has a recalled date' do
+      expect(checkout.recalled_date.strftime('%m/%d/%Y')).to eq '11/10/2019'
+    end
+
+    it 'has a recall due date' do
+      expect(checkout.recall_due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
+    end
+
+    it 'is recalled' do
+      expect(checkout).to be_recalled
+    end
+
+    it 'has a due date' do
+      expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
+    end
+  end
+
+  it 'has an accrued' do
+    expect(checkout.accrued).to eq 10.00
   end
 
   it 'does not have a recalled date' do

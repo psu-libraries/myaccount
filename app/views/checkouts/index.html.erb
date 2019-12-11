@@ -1,7 +1,7 @@
 <h1>Checkouts/Renewals</h1>
 
 <p>
-  <h4>Total Checked Out: <%= @checkouts.length %></h4>
+  <div class="ml-4">Total Checked Out: <%= @checkouts.length %></div>
 
   <% count = @checkouts.select(&:recalled?).length %>
   <% if count.positive? %>
