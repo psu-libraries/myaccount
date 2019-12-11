@@ -49,25 +49,25 @@ RSpec.describe Checkout, type: :model do
     expect(checkout.status).to eq 'ACTIVE'
   end
 
-  it 'has an overdue state' do
-    expect(checkout.overdue?).to be true
-  end
-
   context 'with a record that has not been recalled' do
     it 'has an original due date' do
       expect(checkout.original_due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
 
     it 'has no recalled date' do
-      expect(checkout.recalled_date).to eq nil
+      expect(checkout.recalled_date).to be_nil
     end
 
     it 'has no recall due date' do
-      expect(checkout.recall_due_date).to eq nil
+      expect(checkout.recall_due_date).to be_nil
     end
 
     it 'has a due date' do
       expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
+    end
+
+    it 'is not recalled' do
+      expect(checkout).not_to be_recalled
     end
   end
 
@@ -89,40 +89,21 @@ RSpec.describe Checkout, type: :model do
       expect(checkout.recall_due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
     end
 
-    it 'is recalled' do
-      expect(checkout).to be_recalled
-    end
-
     it 'has a due date' do
       expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
     end
+
+    it 'is recalled' do
+      expect(checkout).to be_recalled
+    end
+  end
+
+  it 'has an overdue state' do
+    expect(checkout.overdue?).to be true
   end
 
   it 'has an accrued' do
     expect(checkout.accrued).to eq 10.00
-  end
-
-  it 'does not have a recalled date' do
-    expect(checkout.recalled_date).to be_nil
-  end
-
-  it 'is not recalled' do
-    expect(checkout).not_to be_recalled
-  end
-
-  context 'with a record that has been recalled' do
-    before do
-      fields[:recalledDate] = '2019-07-11T13:59:00-07:00'
-      fields[:recallDueDate] = '2019-08-11T13:59:00-07:00'
-    end
-
-    it 'has a recalled date' do
-      expect(checkout.recalled_date.strftime('%m/%d/%Y')).to eq '07/11/2019'
-    end
-
-    it 'is recalled' do
-      expect(checkout).to be_recalled
-    end
   end
 
   it 'has a title' do
