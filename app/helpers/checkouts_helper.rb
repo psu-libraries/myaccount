@@ -2,6 +2,12 @@
 
 # Helper for checkouts views
 module CheckoutsHelper
+  def render_checkout_title(checkout)
+    title = checkout.title
+    title += " / #{checkout.author}" if checkout.author.present?
+    link_to title, "https://catalog.libraries.psu.edu/catalog/#{checkout.catkey}"
+  end
+
   def render_checkout_status(checkout)
     return unless checkout.overdue?
 
