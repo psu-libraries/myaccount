@@ -30,7 +30,7 @@ RSpec.describe Fine do
     }
   end
 
-  it 'has tallies all the fees into a total amount owed' do
+  it 'tallies all the fees into a total amount owed' do
     expect(fine.owed_amount).to eq 12
   end
 
