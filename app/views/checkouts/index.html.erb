@@ -1,14 +1,14 @@
 <h1>Checkouts/Renewals</h1>
 
 <p>
-  <h4>Total Checked Out: <%= patron.checkouts.length %></h4>
+  <h4>Total Checked Out: <%= @checkouts.length %></h4>
 
-  <% count = patron.checkouts.select(&:recalled?).length %>
+  <% count = @checkouts.select(&:recalled?).length %>
   <% if count.positive? %>
       <div class="ml-4">Recalled: <%= count %></div>
   <% end %>
 
-  <% count = patron.checkouts.select(&:overdue?).length %>
+  <% count = @checkouts.select(&:overdue?).length %>
   <% if count.positive? %>
       <div class="ml-4">Overdue: <%= count %></div>
   <% end %>
@@ -34,7 +34,7 @@
           <%= link_to "#{checkout.title} / #{checkout.author}", "https://catalog.libraries.psu.edu/catalog/#{checkout.catkey}" %>
         </td>
         <td><%= checkout.item_type %></td>
-        <td><%= checkout.renewal_count if checkout.renewal_count.positive?%></td>
+        <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
         <td><%= render_checkout_due_date(checkout) %></td>
         <td><%= render_checkout_status(checkout) %></td>
         <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
