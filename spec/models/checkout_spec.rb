@@ -16,12 +16,6 @@ RSpec.describe Checkout, type: :model do
       overdue: true,
       checkOutDate: '2019-07-08T21:28:00-07:00',
       dueDate: '2019-07-09T23:59:00-07:00',
-      library: {
-        key: 'UP-PAT'
-      },
-      patron: {
-        key: '123'
-      },
       item: {
         fields: {
           barcode: 'xyz',
@@ -46,10 +40,6 @@ RSpec.describe Checkout, type: :model do
 
   it 'has a key' do
     expect(checkout.key).to eq '1'
-  end
-
-  it 'has a patron key' do
-    expect(checkout.patron_key).to eq '123'
   end
 
   it 'has a status' do
@@ -81,10 +71,6 @@ RSpec.describe Checkout, type: :model do
     it 'is recalled' do
       expect(checkout).to be_recalled
     end
-  end
-
-  it 'has a library' do
-    expect(checkout.library).to eq 'UP-PAT'
   end
 
   it 'has a title' do
