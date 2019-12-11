@@ -16,8 +16,8 @@ RSpec.describe Checkout, type: :model do
       overdue: true,
       dueDate: '2019-12-19T23:59:00-05:00',
       estimatedOverdueAmount: {
-          amount: '10.00',
-          currencyCode: 'USD'
+        amount: '10.00',
+        currencyCode: 'USD'
       },
       item: {
         fields: {
@@ -80,7 +80,6 @@ RSpec.describe Checkout, type: :model do
     it 'has an original due date' do
       expect(checkout.original_due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
-
 
     it 'has a recalled date' do
       expect(checkout.recalled_date.strftime('%m/%d/%Y')).to eq '11/10/2019'
