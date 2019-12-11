@@ -3,7 +3,7 @@
 class FinesController < ApplicationController
   before_action :authenticate_user!
 
-  # Render a patron or groups fines or checkouts
+  # Render patron fines
   #
   # GET /fines
   def index
