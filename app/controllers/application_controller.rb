@@ -23,10 +23,14 @@ class ApplicationController < ActionController::Base
   def renew_session_token
     request.env['warden'].logout
 
-    redirect_to Settings.symws.webaccess_url + request.base_url
+    authenticate_webaccess
   end
 
   private
+
+    def authenticate_webaccess
+      redirect_to Settings.symws.webaccess_url + request.base_url
+    end
 
     def symphony_client
       @symphony_client ||= SymphonyClient.new

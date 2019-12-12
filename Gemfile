@@ -26,6 +26,7 @@ end
 group :development, :test do
   gem 'byebug'
   gem 'capybara'
+  gem 'factory_bot_rails'
   gem 'niftany'
   gem 'pry-byebug'
   gem 'rails-controller-testing'

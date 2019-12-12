@@ -11,6 +11,7 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 
 require 'rspec/rails'
 require 'webmock/rspec'
+require 'support/factory_bot'
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(

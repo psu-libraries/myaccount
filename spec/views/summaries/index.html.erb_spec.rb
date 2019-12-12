@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'summaries/index', type: :view do
+  let(:fine) { build(:fine) }
   let(:patron_standing) { {} }
   let(:patron) do
     instance_double(
@@ -10,6 +11,7 @@ RSpec.describe 'summaries/index', type: :view do
       display_name: 'Test First Last',
       checkouts: [],
       holds: [],
+      fines: [fine],
       **patron_standing
     )
   end

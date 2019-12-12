@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # get 'sessions/index'
   root to: 'sessions#index'
 
-  resources :summaries
+  resources :summaries, :fines
 
   get '/logout', to: 'sessions#destroy', as: :logout
 end

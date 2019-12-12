@@ -56,6 +56,10 @@ RSpec.describe SymphonyClient do
 
         expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
           .with(query: hash_including(includeFields: match(/blockList{.*,item{.*}}/)))
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+          .with(query: hash_excluding(includeFields: match(/circRecordList/)))
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+          .with(query: hash_excluding(includeFields: match(/holdRecordList/)))
       end
     end
   end
