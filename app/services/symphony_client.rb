@@ -36,6 +36,8 @@ class SymphonyClient
       case item_details
       when ->(h) { h[:blockList] }
         ["blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"]
+      when ->(h) { h[:circRecordList] }
+        ["circRecordList{*,#{ITEM_RESOURCES if item_details[:circRecordList]}}"]
       else
         [
           'blockList{*}',
