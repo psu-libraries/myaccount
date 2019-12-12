@@ -40,7 +40,7 @@ class SymphonyClient
         [
           'blockList{*}',
           "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
-          "circRecordList{*,#{ITEM_RESOURCES if item_details[:circRecordList]}}",
+          "circRecordList{*,#{ITEM_RESOURCES if item_details[:circRecordList]}}"
         ]
       end
     end
