@@ -33,14 +33,20 @@ class SymphonyClient
   private
 
     def patron_linked_resources_fields(item_details = {})
-      [
-        "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
-        "circRecordList{*,#{ITEM_RESOURCES if item_details[:circRecordList]}}",
-        "blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"
-      ]
+      case item_details
+      when ->(h) { h[:blockList] }
+        ["blockList{*,#{ITEM_RESOURCES if item_details[:blockList]}}"]
+      else
+        [
+          'blockList{*}',
+          "holdRecordList{*,#{ITEM_RESOURCES if item_details[:holdRecordList]}}",
+          "circRecordList{*,#{ITEM_RESOURCES if item_details[:circRecordList]}}",
+        ]
+      end
     end
 
     def authenticated_request(path, headers: {}, **other)
+      # binding.pry
       request(path, headers: headers, **other)
     end
 

@@ -9,7 +9,6 @@ class FinesController < ApplicationController
   def index
     @fines = fines
     @total_owed = fines.sum(&:owed_amount)
-    # @checkouts = checkouts
   end
 
   private

@@ -15,7 +15,9 @@
   <tbody>
     <% @fines.each do |fine| %>
     <tr>
-      <th scope="row"><%= fine.title %></th>
+      <th scope="row"><%= fine.title %><br>
+      <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{fine.catkey}" %></em><br>
+      <%= fine.item_type_human %></th>
       <td><%= fine.author %></td>
       <td><%= fine.status_human %></td>
       <td><%= number_to_currency fine.owed_amount %></td>
