@@ -4,6 +4,8 @@
 class Patron
   attr_reader :record
 
+  PATRON_STANDING_ALERTS = %w[BARRED BLOCKED DELINQUENT].freeze
+
   def initialize(record)
     @record = record
   end
@@ -42,6 +44,14 @@ class Patron
 
   def stale?
     record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
+  end
+
+  def standing
+    fields.dig('standing', 'key')
+  end
+
+  def standing_alert?
+    PATRON_STANDING_ALERTS.include?(standing)
   end
 
   private
