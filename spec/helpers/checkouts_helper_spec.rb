@@ -80,7 +80,10 @@ RSpec.describe CheckoutsHelper do
 
     context 'when an item is recalled' do
       before do
-        allow(checkout).to receive_messages(recalled?: true, recall_due_date: Time.zone.parse('2019-11-10T23:59:00-05:00'))
+        allow(checkout).to receive_messages(
+          recalled?: true,
+          recall_due_date: Time.zone.parse('2019-11-10T23:59:00-05:00')
+        )
       end
 
       it 'renders the right html' do
