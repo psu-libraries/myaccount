@@ -31,7 +31,7 @@
   <% @checkouts.each do |checkout| %>
       <tr>
         <td scope="row"><%= render_checkout_title checkout %></td>
-        <td><%= checkout.item_type %></td>
+        <td><%= checkout.item_type_human %></td>
         <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
         <td><%= render_checkout_due_date checkout %></td>
         <td><%= render_checkout_status checkout %></td>
