@@ -20,7 +20,7 @@ module CheckoutsHelper
       contents << 'Recalled'
       contents << l(checkout.recall_due_date, format: :long)
     end
-    contents << l(checkout.original_due_date, format: :long)
+    contents << l(checkout.due_date, format: :long)
 
     content_tag 'span', contents.join('<br>'), nil, false
   end

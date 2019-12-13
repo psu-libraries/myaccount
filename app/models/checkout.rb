@@ -19,10 +19,6 @@ class Checkout
   end
 
   def due_date
-    recall_due_date || original_due_date
-  end
-
-  def original_due_date
     fields['dueDate'] && Time.zone.parse(fields['dueDate'])
   end
 

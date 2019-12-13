@@ -8,7 +8,7 @@ RSpec.describe CheckoutsHelper do
       Checkout,
       title: 'Test Title',
       catkey: 123,
-      original_due_date: Time.zone.parse('2019-11-14T23:59:00-05:00'),
+      due_date: Time.zone.parse('2019-11-14T23:59:00-05:00'),
       overdue?: false,
       recalled?: false,
       claims_returned?: false

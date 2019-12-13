@@ -50,8 +50,8 @@ RSpec.describe Checkout, type: :model do
   end
 
   context 'with a record that has not been recalled' do
-    it 'has an original due date' do
-      expect(checkout.original_due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
+    it 'has a due date' do
+      expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
 
     it 'has no recalled date' do
@@ -60,10 +60,6 @@ RSpec.describe Checkout, type: :model do
 
     it 'has no recall due date' do
       expect(checkout.recall_due_date).to be_nil
-    end
-
-    it 'has a due date' do
-      expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
 
     it 'is not recalled' do
@@ -77,8 +73,8 @@ RSpec.describe Checkout, type: :model do
       fields[:recallDueDate] = '2019-11-20T23:59:00-05:00'
     end
 
-    it 'has an original due date' do
-      expect(checkout.original_due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
+    it 'has a due date' do
+      expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
 
     it 'has a recalled date' do
@@ -87,10 +83,6 @@ RSpec.describe Checkout, type: :model do
 
     it 'has a recall due date' do
       expect(checkout.recall_due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
-    end
-
-    it 'has a due date' do
-      expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
     end
 
     it 'is recalled' do
