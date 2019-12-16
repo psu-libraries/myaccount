@@ -1,7 +1,7 @@
 {
   "name": "myaccount",
   "private": true,
-  "engines" : { "node" : "12.x" },
+  "engines" : { "node" : ">=12.12.0" },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "@rails/actioncable": "^6.0.0-alpha",
