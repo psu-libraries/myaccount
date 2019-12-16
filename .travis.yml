@@ -15,8 +15,6 @@ addons:
 
 before_install:
   - nvm install
-  - bundle update --bundler
-  - gem update --system
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
