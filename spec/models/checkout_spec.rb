@@ -90,10 +90,6 @@ RSpec.describe Checkout, type: :model do
     end
   end
 
-  it 'does not have a claimed returned date' do
-    expect(checkout.claims_returned_date).to be_nil
-  end
-
   it 'is not claimed returned' do
     expect(checkout).not_to be_claims_returned
   end
@@ -105,10 +101,6 @@ RSpec.describe Checkout, type: :model do
 
     it 'is claimed returned' do
       expect(checkout).to be_claims_returned
-    end
-
-    it 'has a claimed returned date' do
-      expect(checkout.claims_returned_date.strftime('%m/%d/%Y')).to eq '12/01/2019'
     end
   end
 

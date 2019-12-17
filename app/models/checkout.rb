@@ -34,10 +34,6 @@ class Checkout
     recalled_date.present?
   end
 
-  def claims_returned_date
-    Time.zone.parse(fields['claimsReturnedDate']) if fields['claimsReturnedDate']
-  end
-
   def claims_returned?
     claims_returned_date.present?
   end
@@ -62,5 +58,9 @@ class Checkout
 
     def fields
       record['fields']
+    end
+
+    def claims_returned_date
+      Time.zone.parse(fields['claimsReturnedDate']) if fields['claimsReturnedDate']
     end
 end
