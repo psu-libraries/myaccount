@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'checkouts/index.html.erb' do
+RSpec.describe 'checkouts/index.html.erb', type: :view do
   context 'when a single checkout exists' do
     let(:checkout) { build(:checkout) }
 
