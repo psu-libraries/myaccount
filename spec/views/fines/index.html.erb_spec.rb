@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'fines/index.html.erb' do
+RSpec.describe 'fines/index.html.erb', type: :view do
   context 'when a single fine exists' do
     let(:fine) { build(:fine) }
 

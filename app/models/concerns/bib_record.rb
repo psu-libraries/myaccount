@@ -69,36 +69,12 @@ module BibRecord
     bib['author']
   end
 
-  def call_number
-    call['dispCallNumber']
-  end
-
-  def shelf_key
-    call['sortCallNumber']
-  end
-
-  def barcode
-    item['barcode']
-  end
-
   def resource
     fields.dig('item', 'resource')
   end
 
   def item_key
     fields.dig('item', 'key')
-  end
-
-  def home_location
-    item.dig('homeLocation', 'key')
-  end
-
-  def current_location
-    item.dig('currentLocation', 'key')
-  end
-
-  def lost?
-    current_location == 'LOST-ASSUM'
   end
 
   private

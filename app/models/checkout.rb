@@ -10,16 +10,20 @@ class Checkout
     @record = record
   end
 
-  def to_partial_path
-    'checkouts/checkout'
-  end
-
   def key
     record['key']
   end
 
   def status
     fields['status']
+  end
+
+  def due_date
+    fields['dueDate'] && Time.zone.parse(fields['dueDate'])
+  end
+
+  def recall_due_date
+    fields['recallDueDate'] && Time.zone.parse(fields['recallDueDate'])
   end
 
   def recalled_date
@@ -30,21 +34,29 @@ class Checkout
     recalled_date.present?
   end
 
-  def patron_key
-    fields['patron']['key']
+  def claims_returned?
+    claims_returned_date.present?
   end
 
   def overdue?
     fields['overdue']
   end
 
-  def library
-    fields['library']['key']
+  def accrued
+    fields.dig('estimatedOverdueAmount', 'amount').to_d
+  end
+
+  def renewal_count
+    fields['renewalCount'] || 0
   end
 
   private
 
     def fields
       record['fields']
+    end
+
+    def claims_returned_date
+      Time.zone.parse(fields['claimsReturnedDate']) if fields['claimsReturnedDate']
     end
 end

@@ -16,3 +16,11 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
   - 'spec/**/*'
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/services/symphony_client_spec.rb'
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/services/symphony_client_spec.rb'

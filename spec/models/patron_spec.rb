@@ -49,7 +49,7 @@ RSpec.describe Patron do
 
   context 'with checkouts' do
     before do
-      fields[:circRecordList] = [{ key: 1, fields: {} }]
+      fields[:circRecordList] = [{ key: 1, fields: { status: 'ACTIVE' } }]
     end
 
     describe '#checkouts' do
