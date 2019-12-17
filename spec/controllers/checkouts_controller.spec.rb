@@ -34,7 +34,7 @@ RSpec.describe CheckoutsController do
       expect(response).to render_template 'index'
     end
 
-    it 'assigns a list of fines' do
+    it 'assigns a list of checkouts' do
       get(:index)
 
       expect(assigns(:checkouts)).to eq checkouts
