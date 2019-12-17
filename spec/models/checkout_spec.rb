@@ -143,27 +143,7 @@ RSpec.describe Checkout, type: :model do
     expect(checkout.author).to eq 'Somebody'
   end
 
-  it 'has a call number' do
-    expect(checkout.call_number).to eq 'ABC 123'
-  end
-
-  it 'has a shelf key' do
-    expect(checkout.shelf_key).to eq 'ABC 00123'
-  end
-
-  it 'has a barcode' do
-    expect(checkout.barcode).to eq 'xyz'
-  end
-
   it 'has a catkey' do
     expect(checkout.catkey).to eq '123456'
-  end
-
-  it 'has a current location' do
-    expect(checkout.current_location).to eq 'CHECKEDOUT'
-  end
-
-  it 'is not lost' do
-    expect(checkout).not_to be_lost
   end
 end

@@ -79,19 +79,7 @@ RSpec.describe Hold, type: :model do
     expect(hold.author).to eq 'Somebody'
   end
 
-  it 'has a call number' do
-    expect(hold.call_number).to eq 'ABC 123'
-  end
-
-  it 'has a shelf key' do
-    expect(hold.shelf_key).to eq 'ABC 00123'
-  end
-
   it 'has a catkey' do
     expect(hold.catkey).to eq '123456'
-  end
-
-  it 'has a barcode' do
-    expect(hold.barcode).to eq 'xyz'
   end
 end
