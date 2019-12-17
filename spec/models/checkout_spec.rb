@@ -104,18 +104,9 @@ RSpec.describe Checkout, type: :model do
     end
   end
 
-  it 'does not have a renewal date' do
-    expect(checkout.renewal_date).to be_nil
-  end
-
   context 'with a record that has been renewed' do
     before do
-      fields[:renewalDate] = '2019-07-10T13:59:00-05:00'
       fields[:renewalCount] = 2
-    end
-
-    it 'has a renewal date' do
-      expect(checkout.renewal_date.strftime('%m/%d/%Y')).to eq '07/10/2019'
     end
 
     it 'has a renewal count' do

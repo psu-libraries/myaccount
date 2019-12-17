@@ -38,10 +38,6 @@ class Checkout
     claims_returned_date.present?
   end
 
-  def renewal_date
-    Time.zone.parse(fields['renewalDate']) if fields['renewalDate']
-  end
-
   def overdue?
     fields['overdue']
   end
