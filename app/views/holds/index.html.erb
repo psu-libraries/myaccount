@@ -1,0 +1,56 @@
+<h1>Holds</h1>
+<table class="table">
+  <caption>Holds that are ready for pickup</caption>
+  <thead>
+  <tr>
+    <th scope="col">Title</th>
+    <th scope="col">Pickup at</th>
+    <th scope="col">Expires</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    <% @holds_ready.each do |hold| %>
+      <tr>
+        <th scope="row">
+          <%= hold.title %><br>
+          <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{hold.catkey}" %></em><br>
+          <%= hold.item_type_human %>
+        </th>
+        <td><%= hold.pickup_library_human %></td>
+        <td><%= hold.expiration_date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
+
+<table class="table">
+  <caption>Holds that are not ready for pickup</caption>
+  <thead>
+  <tr>
+    <th scope="col">Title</th>
+    <th scope="col">Availability</th>
+    <th scope="col">Pickup at</th>
+    <th scope="col">Expires</th>
+    <th scope="col">Status</th>
+  </tr>
+  </thead>
+
+  <tbody>
+    <% @holds_not_ready.each do |hold| %>
+      <tr>
+        <th scope="row">
+          <%= hold.title %><br>
+          <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{hold.catkey}" %></em><br>
+          <%= hold.item_type_human %>
+        </th>
+        <td><%= render_queue_position hold %></td>
+        <td><%= hold.pickup_library_human %></td>
+        <td><%= l(hold.fill_by_date, format: :short) %></td>
+        <td>Active</td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>
