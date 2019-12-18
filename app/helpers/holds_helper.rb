@@ -26,4 +26,9 @@ module HoldsHelper
       'Active'
     end
   end
+
+  def render_hold_select(hold)
+    status = hold.ready_for_pickup? ? 'ready' : 'pending'
+    check_box_tag 'hold_list[]', hold.key, false, data: { checkbox_type: status }, class: 'checkbox', multiple: true
+  end
 end
