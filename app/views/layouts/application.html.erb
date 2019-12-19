@@ -39,20 +39,19 @@
       <nav role="navigation" aria-label="Main navigation" id="mainnav" class="pt-3 pb-3">
         <ul class="nav nav-pills nav-justified container pr-0">
           <li class="nav-item">
-            <%= link_to "Account Summary", summaries_path, class: "nav-link", aria: {current: controller_name == 'summaries' ? 'page' : false } %>
+            <%= link_to 'Account Summary', summaries_path, class: 'nav-link', aria: { current: controller_name == 'summaries' ? 'page' : false } %>
           </li>
           <li class="nav-item">
-            <%= link_to "Checkouts/Renewals", checkouts_path, class: "nav-link", aria: {current: controller_name == 'checkouts' ? 'page' : false } %>
+            <%= link_to 'Checkouts/Renewals', checkouts_path, class: 'nav-link', aria: { current: controller_name == 'checkouts' ? 'page' : false } %>
           </li>
           <li class="nav-item">
-            <%= link_to "Holds", holds_path, class: "nav-link", aria: {current: controller_name == 'holds' ? 'page' : false } %>
+            <%= link_to 'Holds', holds_path, class: 'nav-link', aria: { current: controller_name == 'holds' ? 'page' : false } %>
           </li>
           <li class="nav-item">
-            <%= link_to "Bills", fines_path, class: "nav-link", aria: {current: controller_name == 'fines' ? 'page' : false } %>
+            <%= link_to 'Bills', fines_path, class: 'nav-link', aria: { current: controller_name == 'fines' ? 'page' : false } %>
           </li>
         </ul>
       </nav>
-
     </main>
     <div id="main-container" class="container">
       <div class="row">

@@ -18,7 +18,7 @@
           <%= hold.item_type_human %>
         </th>
         <td><%= hold.pickup_library_human %></td>
-        <td><%= hold.expiration_date %></td>
+        <td><%= render_expiration_date hold %></td>
       </tr>
     <% end %>
   </tbody>
@@ -48,7 +48,7 @@
         <td><%= render_queue_position hold %></td>
         <td><%= hold.pickup_library_human %></td>
         <td><%= l(hold.fill_by_date, format: :short) %></td>
-        <td>Active</td>
+        <td><%= render_status hold %></td>
       </tr>
     <% end %>
   </tbody>

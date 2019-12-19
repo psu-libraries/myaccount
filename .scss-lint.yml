@@ -14,3 +14,7 @@ plugin_gems: []
 
 # Default severity of all linters.
 severity: warning
+
+linters:
+  PlaceholderInExtend:
+    enabled: false
