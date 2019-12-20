@@ -3,9 +3,9 @@
 class HoldsController < ApplicationController
   before_action :authenticate_user!
 
-  # Render patron fines
+  # Render patron holds
   #
-  # GET /fines
+  # GET /holds
   def index
     @holds_ready = holds_ready
     @holds_not_ready = holds_not_ready
