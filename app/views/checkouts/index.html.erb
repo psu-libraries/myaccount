@@ -14,31 +14,36 @@
   <% end %>
 </p>
 
-<table class="table">
-  <caption>Checkouts Table</caption>
-  <thead>
-  <tr>
-    <th scope="col">Title/Author</th>
-    <th scope="col">Format</th>
-    <th scope="col">Times Renewed</th>
-    <th scope="col">Due Date</th>
-    <th scope="col">Status</th>
-    <th scope="col">You Owe</th>
-  </tr>
-  </thead>
-
-  <tbody>
-  <% @checkouts.each do |checkout| %>
+<% if @checkouts.length.positive? %>
+  <%= form_tag renewals_path, method: :post do %>
+    <table class="table">
+      <caption>Checkouts Table</caption>
+      <thead>
       <tr>
-        <td scope="row"><%= render_checkout_title checkout %></td>
-        <td><%= checkout.item_type_human %></td>
-        <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
-        <td><%= render_checkout_due_date checkout %></td>
-        <td><%= render_checkout_status checkout %></td>
-        <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
-        </td>
+        <th scope="col">Renew</th>
+        <th scope="col">Title/Author</th>
+        <th scope="col">Format</th>
+        <th scope="col">Times Renewed</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Status</th>
+        <th scope="col">You Owe</th>
       </tr>
-  <% end %>
-  </tbody>
-
-</table>
+      </thead>
+      <tbody>
+      <% @checkouts.each do |checkout| %>
+          <tr>
+            <td scope="row"><%= render_renewal_select checkout %></td>
+            <td><%= render_checkout_title checkout %></td>
+            <td><%= checkout.item_type_human %></td>
+            <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
+            <td><%= render_checkout_due_date checkout %></td>
+            <td><%= render_checkout_status checkout %></td>
+            <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= render_renew_button %>
+    <% end %>
+<% end %>
