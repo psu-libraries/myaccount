@@ -5,10 +5,12 @@ class SessionsController < ApplicationController
   #
   # GET /
   def index
-    redirect_to summaries_url if current_user?
     if request.env['warden'].authenticate(:library_id) == nil
+      # Run it through webaccess and have it come back to this same method
       authenticate_webaccess
     end
+
+    redirect_to summaries_url if current_user?
   end
 
   # Handle user logout
