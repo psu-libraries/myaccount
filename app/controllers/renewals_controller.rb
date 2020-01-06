@@ -9,7 +9,7 @@ class RenewalsController < ApplicationController
   #
   # POST /renewals
   def create
-    @response = symphony_client.renew_items(current_user,renewal_list)
+    @response = symphony_client.renew_items(current_user, renewal_list)
 
     bulk_renewal_flash(@response, :success)
     bulk_renewal_flash(@response, :error)
@@ -19,26 +19,35 @@ class RenewalsController < ApplicationController
 
   private
 
-  def item_details
-    { circRecordList: true }
-  end
+    def item_details
+      { circRecordList: true }
+    end
 
-  def renewal_list
-    patron.checkouts.select { |checkout| params[:renewal_list].include? checkout.catkey }
-  end
+    def renewal_list
+      patron.checkouts.select { |checkout| params[:renewal_list].include? checkout.catkey }
+    end
 
-  def bulk_renewal_flash(response, type)
-    return unless response[type].any?
+    def bulk_renewal_flash(response, type)
+      return unless response[type].any?
 
-    flash[type] = I18n.t(
-      "renew_all_items.#{type}_html",
-      count: response[type].length,
-      items: content_tag(
-        'ul',
-        safe_join(response[type].collect { |renewal| content_tag('li', renewal.title) }, '')
+      flash[type] = I18n.t(
+        "renew_all_items.#{type}_html",
+        count: response[type].length,
+        items: content_tag(
+          :ul,
+          safe_join(response[type].map do |renewal|
+            content_tag(:li,
+                        renewal.title + error_message(renewal),
+                        {},
+                        false)
+          end, '')
+        )
       )
-    )
-  end
+    end
 
+    def error_message(renewal)
+      return unless renewal.no_renewal_reason
 
+      content_tag(:div, "Denied: #{renewal.no_renewal_reason}")
+    end
 end

@@ -26,10 +26,10 @@ module CheckoutsHelper
   end
 
   def render_renewal_select(checkout)
-    check_box_tag "renewal_list[]",checkout.catkey,false, {class: "checkbox", multiple: true}
+    check_box_tag 'renewal_list[]', checkout.catkey, false, class: 'checkbox', multiple: true
   end
 
   def render_renew_button
-    button_tag 'Renew',type: 'submit', class: 'btn btn-primary btn-renewable-submit'
+    button_tag 'Renew', type: 'submit', class: 'btn btn-primary btn-renewable-submit'
   end
 end

@@ -30,12 +30,16 @@ class SymphonyClient
 
   def renew_items(user, checkouts)
     checkouts.each_with_object(success: [], error: []) do |checkout, status|
-      response = renew_item_request(checkout.resource, checkout.item_key, headers: { 'x-sirs-sessionToken': user.session_token })
+      response = renew_item_request(checkout.resource,
+                                    checkout.item_key,
+                                    headers: { 'x-sirs-sessionToken': user.session_token })
+
       case response.status
-        when 200
-          status[:success] << checkout
-        else
-          status[:error] << checkout
+      when 200
+        status[:success] << checkout
+      else
+        checkout.no_renewal_reason = response_prompt(response)
+        status[:error] << checkout
       end
     end
   end
@@ -46,11 +50,19 @@ class SymphonyClient
 
     def renew_item_request(resource, item_key, headers: {})
       authenticated_request('/circulation/circRecord/renew', headers: headers, method: :post, json: {
-        item: {
-          resource: resource,
-          key: item_key
-        }
-      })
+                              item: {
+                                resource: resource,
+                                key: item_key
+                              }
+                            })
+    end
+
+    def response_prompt(response)
+      return if response.status.ok?
+
+      JSON.parse(response.body).dig('messageList')[0].dig('message')
+    rescue JSON::ParserError
+      nil
     end
 
     def patron_linked_resources_fields(item_details = {})
