@@ -28,7 +28,9 @@ before_script:
 
 script:
   - bundle exec niftany
+  - yarn lint
   - bundle exec rake
+  - yarn test
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
