@@ -10,6 +10,7 @@ cache:
 env:
   global:
     - RAILS_ENV=test
+    - CC_TEST_REPORTER_ID=8f8554cdb6c9dd989fac690002e68f97075010f27f9fd9929dd87a8fc35587ac
 addons:
   chrome: stable
 
@@ -20,8 +21,14 @@ before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - bundle exec rails assets:precompile
 
 script:
   - bundle exec niftany
   - bundle exec rake
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

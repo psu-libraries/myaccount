@@ -14,6 +14,9 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'webmock/rspec'
 require 'support/factory_bot'
+require 'simplecov'
+
+SimpleCov.start
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(

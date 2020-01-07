@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/39523975626d856a4997/maintainability)](https://codeclimate.com/github/psu-libraries/myaccount/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/39523975626d856a4997/test_coverage)](https://codeclimate.com/github/psu-libraries/myaccount/test_coverage)
+
 # Setup Your Environment 
 
 ## Mac
