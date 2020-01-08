@@ -38,7 +38,7 @@ class SymphonyClient
       when 200
         status[:success] << checkout
       else
-        checkout.no_renewal_reason = response_prompt(response)
+        checkout.non_renewal_reason = response_prompt(response)
         status[:error] << checkout
       end
     end

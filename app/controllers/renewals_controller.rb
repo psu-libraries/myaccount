@@ -24,7 +24,7 @@ class RenewalsController < ApplicationController
     end
 
     def renewal_list
-      patron.checkouts.select { |checkout| params[:renewal_list].include? checkout.catkey }
+      patron.checkouts.select { |checkout| params[:renewal_list].include? checkout.item_key }
     end
 
     def bulk_renewal_flash(response, type)
@@ -37,7 +37,7 @@ class RenewalsController < ApplicationController
           :ul,
           safe_join(response[type].map do |renewal|
             content_tag(:li,
-                        renewal.title + error_message(renewal),
+                        renewal_message(renewal),
                         {},
                         false)
           end, '')
@@ -46,8 +46,12 @@ class RenewalsController < ApplicationController
     end
 
     def error_message(renewal)
-      return unless renewal.no_renewal_reason
+      return unless renewal.non_renewal_reason
 
-      content_tag(:div, "Denied: #{renewal.no_renewal_reason}")
+      content_tag(:div, "Denied: #{renewal.non_renewal_reason}")
+    end
+
+    def renewal_message(renewal)
+      renewal.title + (error_message(renewal) if error_message(renewal))
     end
 end
