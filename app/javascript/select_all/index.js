@@ -1,19 +1,10 @@
 const selectAll = {
     start() {
         const targetKeywords = this.extractCheckboxTargets();
-        this.setListeners(targetKeywords);
-    },
+        let that = this;
 
-    setListeners(targetKeywords) {
         targetKeywords.forEach(function(targetKeyword){
-            const boxesToSelect = document.querySelectorAll(`input[data-checkbox-type=${targetKeyword}`);
-            const controllerCheckbox = document.querySelector(`input[data-select-all=${targetKeyword}]`);
-            controllerCheckbox.onclick = function() {
-                let checkedStatus = controllerCheckbox.checked;
-                boxesToSelect.forEach(function(targetBox) {
-                        targetBox.checked = checkedStatus
-                });
-            }
+            that.bindCheckboxes(targetKeyword);
         });
     },
 
@@ -26,6 +17,17 @@ const selectAll = {
 
         return targetKeywords;
     },
+
+    bindCheckboxes(targetKeyword) {
+        const boxesToSelect = document.querySelectorAll(`input[data-checkbox-type=${targetKeyword}`);
+        const controllerCheckbox = document.querySelector(`input[data-select-all=${targetKeyword}]`);
+        controllerCheckbox.onclick = function() {
+            let checkedStatus = controllerCheckbox.checked;
+            boxesToSelect.forEach(function(targetBox) {
+                targetBox.checked = checkedStatus
+            });
+        }
+    }
 }
 
 export default selectAll;
