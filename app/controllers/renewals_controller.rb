@@ -52,6 +52,6 @@ class RenewalsController < ApplicationController
     end
 
     def renewal_message(renewal)
-      renewal.title + (error_message(renewal) if error_message(renewal))
+      renewal.title + (error_message(renewal) || '')
     end
 end
