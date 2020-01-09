@@ -1,0 +1,89 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe RenewalsController do
+  let(:user) do
+    { username: 'zzz123',
+      name: 'Zeke',
+      patron_key: '1234567',
+      session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
+  end
+
+  let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
+  let(:checkouts) { [
+    instance_double(Checkout, item_key: '123', title: 'Renewal 1', non_renewal_reason: ''),
+    instance_double(Checkout, item_key: '456', title: 'Renewal 2', non_renewal_reason: ''),
+    instance_double(Checkout, item_key: '789', title: 'Renewal 3', non_renewal_reason: 'Item has holds')
+  ] }
+
+  let(:renew_items_response) {}
+
+  let(:mock_client) do
+    instance_double(SymphonyClient, renew_items: renew_items_response)
+  end
+
+  before do
+    warden.set_user(user)
+    allow(SymphonyClient).to receive(:new).and_return(mock_client)
+    allow(controller).to receive(:patron).and_return(mock_patron)
+  end
+
+  describe '#create' do
+    it 'requires list of checkouts to be renewed as params' do
+      expect { post :create, params: {} }.to raise_error(ActionController::ParameterMissing)
+    end
+
+    context 'when all items returns 200' do
+      let(:renew_items_response) { { success: [checkouts[0], checkouts[1]], error: [] } }
+
+      it 'renews the items and sets flash messages' do
+        post :create, params: { renewal_list: ['123', '456'] }
+
+        expect(flash[:success]).to match(/Success!/)
+      end
+
+      it 'renews the items and redirects to checkouts_path' do
+        post :create, params: { renewal_list: ['123', '456'] }
+
+        expect(response).to redirect_to checkouts_path
+      end
+    end
+
+    context 'when not all items return 200' do
+      let(:renew_items_response) { { success: [checkouts[1]], error: [checkouts[2]] } }
+
+      it 'renews the eligible items and sets flash messages' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(flash[:success]).to match(/Success!/)
+      end
+
+      it 'does not renew those items and sets flash messages' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(flash[:error]).to match(/Item has holds/)
+      end
+
+      it 'does not renew those item and redirects to checkouts_path' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(response).to redirect_to checkouts_path
+      end
+    end
+
+    context 'when the requested item is not checked out to the patron' do
+      it 'does not renew the item and sets flash messages' do
+        post :create, params: { renewal_list: ['some_made_up_checkout'] }
+
+        expect(flash[:error]).to match('An unexpected error has occurred')
+      end
+
+      it 'does not renew the item and redirects to checkouts_path' do
+        post :create, params: { renewal_list: ['some_made_up_checkout'] }
+
+        expect(response).to redirect_to checkouts_path
+      end
+    end
+  end
+end
