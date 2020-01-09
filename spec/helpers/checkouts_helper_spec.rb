@@ -91,4 +91,27 @@ RSpec.describe CheckoutsHelper do
       end
     end
   end
+
+  describe '#render_renewal_select' do
+    let(:content) { helper.render_renewal_select(checkout) }
+
+    before do
+      allow(checkout).to receive_messages(item_key: '1111111:1:1')
+    end
+
+    it 'renders the right html' do
+      checkbox = '<input type="checkbox" name="renewal_list[]" id="renewal_list_" '
+      checkbox += "value=\"#{checkout.item_key}\" class=\"checkbox\" multiple=\"multiple\" />"
+      expect(content).to include(checkbox)
+    end
+  end
+
+  describe '#render_renew_button' do
+    let(:content) { helper.render_renew_button }
+
+    it 'renders the right html' do
+      renew_button = '<button name="button" type="submit" class="btn btn-primary btn-renewable-submit">Renew</button>'
+      expect(content).to include(renew_button)
+    end
+  end
 end
