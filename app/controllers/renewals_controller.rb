@@ -4,15 +4,17 @@
 class RenewalsController < ApplicationController
   include ActionView::Helpers::TagHelper
   before_action :authenticate_user!
+  before_action :authorize_update!, only: :create
+  rescue_from RenewalException, with: :deny_access
 
   # Renew items for a patron
   #
   # POST /renewals
   def create
-    @response = symphony_client.renew_items(current_user, renewal_list)
+    @renew_items_response = symphony_client.renew_items(current_user, renewal_list)
 
-    bulk_renewal_flash(@response, :success)
-    bulk_renewal_flash(@response, :error)
+    bulk_renewal_flash(@renew_items_response, :success)
+    bulk_renewal_flash(@renew_items_response, :error)
 
     redirect_to checkouts_path
   end
@@ -24,7 +26,23 @@ class RenewalsController < ApplicationController
     end
 
     def renewal_list
-      patron.checkouts.select { |checkout| params[:renewal_list].include? checkout.item_key }
+      patron.checkouts.select { |checkout| renew_params.include? checkout.item_key }
+    end
+
+    def renew_params
+      params.require(:renewal_list)
+    end
+
+    def authorize_update!
+      return unless renewal_list.empty?
+
+      raise RenewalException, 'Error'
+    end
+
+    def deny_access
+      flash[:error] = 'An unexpected error has occurred'
+
+      redirect_to checkouts_path
     end
 
     def bulk_renewal_flash(response, type)
