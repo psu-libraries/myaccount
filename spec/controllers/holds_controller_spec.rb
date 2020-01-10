@@ -32,8 +32,6 @@ RSpec.describe HoldsController, type: :controller do
     before do
       warden.set_user(user)
       allow(mock_patron).to receive(:holds).and_return(holds)
-      stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
-        .to_return(status: 200, body: '', headers: {})
     end
 
     it 'renders the index template' do
@@ -53,10 +51,32 @@ RSpec.describe HoldsController, type: :controller do
       expect(assigns(:holds_not_ready).count).to eq 1
     end
 
-    it 'deletes holds' do
-      delete :destroy, params: { id: 'multiple', hold_list: [2] }
+    describe '#destroy' do
+      before do
+        stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
+          .to_return(status: 200, body: '', headers: {})
+      end
 
-      expect(flash[:success]).to match(/Some Good Book/)
+      context 'when everything is good' do
+        it 'a delete is attempted and succeeds' do
+          delete :destroy, params: { id: 'multiple', hold_list: [2] }
+
+          expect(flash[:success]).to match(/Some Good Book/)
+        end
+      end
+
+      context 'when the web service does not respond with a 200' do
+        before do
+          stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
+            .to_return(status: 400, body: 'A bad thing', headers: {})
+        end
+
+        it 'deletes holds and fails' do
+          delete :destroy, params: { id: 'multiple', hold_list: [2] }
+
+          expect(flash[:errors]).to match(/Sorry!/)
+        end
+      end
     end
   end
 end

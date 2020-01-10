@@ -24,8 +24,8 @@ class HoldsController < ApplicationController
       when 200
         flash[:success] = "#{flash[:success]} #{t 'myaccount.hold.cancel.success_html', title: hold_title}<br>"
       else
-        Rails.logger.error(@response.body)
-        flash[:errors] = "#{flash[:success]} #{t 'myaccount.hold.cancel.success_html', title: hold_title}"
+        Rails.logger.error(response.body)
+        flash[:errors] = "#{flash[:success]} #{t 'myaccount.hold.cancel.error_html', title: hold_title}"
       end
     end
 
@@ -44,10 +44,6 @@ class HoldsController < ApplicationController
 
     def holds_not_ready
       holds.reject(&:ready_for_pickup?)
-    end
-
-    def cancel_hold_params
-      params.require(%I[resource id])
     end
 
     def item_details
