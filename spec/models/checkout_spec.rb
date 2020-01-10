@@ -6,6 +6,7 @@ RSpec.describe Checkout, type: :model do
   subject(:checkout) do
     described_class.new({
       key: '1',
+      non_renewal_reason: '',
       fields: fields
     }.with_indifferent_access)
   end
@@ -111,6 +112,10 @@ RSpec.describe Checkout, type: :model do
 
     it 'has a renewal count' do
       expect(checkout.renewal_count).to eq 2
+    end
+
+    it 'has an empty non renewal reason' do
+      expect(checkout.non_renewal_reason).to be_nil
     end
   end
 
