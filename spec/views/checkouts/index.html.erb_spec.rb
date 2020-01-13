@@ -28,8 +28,9 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
     end
 
     it 'displays a checkout for renewal' do
+      checkout.record['fields']['item']['key'] = '7777247:1:1'
       render
-      expect(rendered).to include 'renewal_list[]'
+      expect(rendered).to include '<input type="checkbox" name="renewal_list[]" id="renewal_list_" value="7777247:1:1"'
     end
 
     it 'displays checkout\'s item\'s title / author' do
