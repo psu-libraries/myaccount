@@ -6,7 +6,6 @@ RSpec.describe Checkout, type: :model do
   subject(:checkout) do
     described_class.new({
       key: '1',
-      non_renewal_reason: '',
       fields: fields
     }.with_indifferent_access)
   end
