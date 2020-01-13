@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'checkouts/index.html.erb', type: :view do
-  context 'when a single checkout exists' do
+  context 'when user has checkout(s)' do
     let(:checkout) { build(:checkout) }
 
     before do
@@ -25,6 +25,11 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       checkout.record['fields']['overdue'] = true
       render
       expect(rendered).to include 'Overdue: 1'
+    end
+
+    it 'displays a checkout for renewal' do
+      render
+      expect(rendered).to include 'renewal_list[]'
     end
 
     it 'displays checkout\'s item\'s title / author' do
@@ -83,6 +88,11 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       checkout.record['fields']['estimatedOverdueAmount']['amount'] = '10.00'
       render
       expect(rendered).to include '$10.00'
+    end
+
+    it 'displays a renew button' do
+      render
+      expect(rendered).to include 'Renew'
     end
   end
 end
