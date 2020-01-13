@@ -112,10 +112,6 @@ RSpec.describe Checkout, type: :model do
     it 'has a renewal count' do
       expect(checkout.renewal_count).to eq 2
     end
-
-    it 'has an empty non renewal reason' do
-      expect(checkout.non_renewal_reason).to be_nil
-    end
   end
 
   it 'has an overdue state' do

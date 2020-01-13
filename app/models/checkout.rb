@@ -5,7 +5,6 @@ class Checkout
   include BibRecord
 
   attr_reader :record
-  attr_accessor :non_renewal_reason
 
   def initialize(record)
     @record = record
