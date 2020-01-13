@@ -30,6 +30,6 @@ module CheckoutsHelper
   end
 
   def render_renew_button
-    button_tag 'Renew', type: 'submit', class: 'btn btn-primary btn-renewable-submit'
+    submit_tag 'Renew', class: 'btn btn-primary btn-renewable-submit'
   end
 end

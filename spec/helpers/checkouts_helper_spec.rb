@@ -110,7 +110,8 @@ RSpec.describe CheckoutsHelper do
     let(:content) { helper.render_renew_button }
 
     it 'renders the right html' do
-      renew_button = '<button name="button" type="submit" class="btn btn-primary btn-renewable-submit">Renew</button>'
+      renew_button = '<input type="submit" name="commit" value="Renew" class="btn btn-primary btn-renewable-submit" '
+      renew_button += 'data-disable-with="Renew" />'
       expect(content).to include(renew_button)
     end
   end
