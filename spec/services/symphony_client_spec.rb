@@ -71,4 +71,40 @@ RSpec.describe SymphonyClient do
       end
     end
   end
+
+  describe '#renew_items' do
+    before do
+      stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
+        .with(body: { item: { resource: 'item', key: '123' } })
+        .to_return(status: 200)
+      stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
+        .with(body: { item: { resource: 'item', key: 'invalid' } })
+        .to_return(status: 400, body: error_prompt)
+    end
+
+    let(:checkouts) do
+      [
+        instance_double(Checkout, resource: 'item', item_key: '123', title: 'A'),
+        instance_double(Checkout, resource: 'item', item_key: 'invalid', title: 'B')
+      ]
+    end
+
+    let(:error_prompt) do
+      { messageList: [{ message: 'Item has holds' }] }.to_json
+    end
+
+    let(:user) do
+      User.new(username: 'zzz123',
+               name: 'Zeke',
+               patron_key: 'some_patron_key',
+               session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
+    end
+
+    it 'returns successful + errored titles for individual renewal requests in symphony' do
+      renew_response = client.renew_items(user, checkouts)
+
+      expect(renew_response).to include error: [[checkouts.last, 'Item has holds']],
+                                        success: [checkouts.first]
+    end
+  end
 end

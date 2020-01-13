@@ -38,8 +38,7 @@ class SymphonyClient
       when 200
         status[:success] << checkout
       else
-        checkout.non_renewal_reason = response_prompt(response)
-        status[:error] << checkout
+        status[:error] << [checkout, (error_message(response) || '')]
       end
     end
   end
@@ -57,7 +56,7 @@ class SymphonyClient
                             })
     end
 
-    def response_prompt(response)
+    def error_message(response)
       return if response.status.ok?
 
       JSON.parse(response.body).dig('messageList')[0].dig('message')

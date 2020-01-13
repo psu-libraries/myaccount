@@ -55,7 +55,7 @@ class RenewalsController < ApplicationController
           :ul,
           safe_join(response[type].map do |renewal|
             content_tag(:li,
-                        renewal_message(renewal),
+                        renewal_prompt(renewal),
                         {},
                         false)
           end, '')
@@ -63,13 +63,11 @@ class RenewalsController < ApplicationController
       )
     end
 
-    def error_message(renewal)
-      return unless renewal.non_renewal_reason
-
-      content_tag(:div, "Denied: #{renewal.non_renewal_reason}")
+    def renewal_prompt(renewal)
+      renewal.respond_to?(:each) ? renewal[0].title + error_prompt(renewal[1]) : renewal.title
     end
 
-    def renewal_message(renewal)
-      renewal.title + (error_message(renewal) || '')
+    def error_prompt(error_message)
+      content_tag(:div, "Denied: #{error_message}")
     end
 end
