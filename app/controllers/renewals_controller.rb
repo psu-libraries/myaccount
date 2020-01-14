@@ -11,7 +11,7 @@ class RenewalsController < ApplicationController
   #
   # POST /renewals
   def create
-    @renew_items_response = symphony_client.renew_items(current_user, renewal_list)
+    @renew_items_response = symphony_client.renew_items(current_user, checkouts_to_renew)
 
     bulk_renewal_flash(@renew_items_response, :success)
     bulk_renewal_flash(@renew_items_response, :error)
@@ -25,7 +25,7 @@ class RenewalsController < ApplicationController
       { circRecordList: true }
     end
 
-    def renewal_list
+    def checkouts_to_renew
       patron.checkouts.select { |checkout| renew_params.include? checkout.item_key }
     end
 
@@ -34,7 +34,7 @@ class RenewalsController < ApplicationController
     end
 
     def authorize_update!
-      return unless renewal_list.empty?
+      return unless checkouts_to_renew.empty?
 
       raise RenewalException, 'Error'
     end
