@@ -12,9 +12,9 @@ RSpec.describe RenewalsController do
 
   let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
   let(:checkouts) { [
-    instance_double(Checkout, item_key: '123', title: 'Renewal 1', non_renewal_reason: ''),
-    instance_double(Checkout, item_key: '456', title: 'Renewal 2', non_renewal_reason: ''),
-    instance_double(Checkout, item_key: '789', title: 'Renewal 3', non_renewal_reason: 'Item has holds')
+    instance_double(Checkout, item_key: '123', title: 'Renewal 1', call_number: 'ABC'),
+    instance_double(Checkout, item_key: '456', title: 'Renewal 2', call_number: 'DEF'),
+    instance_double(Checkout, item_key: '789', title: 'Renewal 3', call_number: 'GHI')
   ] }
 
   let(:renew_items_response) {}
@@ -51,7 +51,8 @@ RSpec.describe RenewalsController do
     end
 
     context 'when not all items return 200' do
-      let(:renew_items_response) { { success: [checkouts[1]], error: [checkouts[2]] } }
+      let(:non_renewal_reason) { 'Item has holds' }
+      let(:renew_items_response) { { success: [checkouts[1]], error: [[checkouts[2], non_renewal_reason]] } }
 
       it 'renews the eligible items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '789'] }
