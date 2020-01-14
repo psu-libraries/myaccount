@@ -64,7 +64,8 @@ class RenewalsController < ApplicationController
     end
 
     def renewal_prompt(renewal)
-      renewal.respond_to?(:each) ? renewal[0].title + error_prompt(renewal[1]) : renewal.title
+      title_text = "#{renewal[0].title}, #{renewal[0].call_number}"
+      renewal.respond_to?(:each) ? title_text + error_prompt(renewal[1]) : title_text
     end
 
     def error_prompt(error_message)
