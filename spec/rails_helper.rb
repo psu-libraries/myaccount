@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start 'rails'
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -14,9 +17,6 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'webmock/rspec'
 require 'support/factory_bot'
-require 'simplecov'
-
-SimpleCov.start
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(

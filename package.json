@@ -42,6 +42,8 @@
     "moduleDirectories": [
       "node_modules",
       "app/javascript"
-    ]
+    ],
+    "collectCoverage": true,
+    "coverageReporters": ["lcov"]
   }
 }

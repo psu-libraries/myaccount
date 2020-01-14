@@ -6,8 +6,8 @@ RSpec.describe HoldsController, type: :controller do
   let(:mock_patron) { instance_double(Patron) }
   let(:holds) do
     [
-      instance_double(Hold, key: 1, ready_for_pickup?: true, title: 'Some Great Book'),
-      instance_double(Hold, key: 2, ready_for_pickup?: false, title: 'Some Good Book')
+      instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book'),
+      instance_double(Hold, key: '2', ready_for_pickup?: false, title: 'Some Good Book')
     ]
   end
 

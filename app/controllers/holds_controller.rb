@@ -16,7 +16,7 @@ class HoldsController < ApplicationController
   # DELETE /holds
   def destroy
     params['hold_list'].each do |holdkey|
-      hold_obj = holds.find { |hold| hold.key == holdkey.to_i }
+      hold_obj = holds.find { |hold| hold.key == holdkey }
       hold_title = hold_obj.title
       response = symphony_client.cancel_hold(holdkey, current_user.session_token)
 
