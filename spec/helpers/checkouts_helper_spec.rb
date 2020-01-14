@@ -8,6 +8,7 @@ RSpec.describe CheckoutsHelper do
       Checkout,
       title: 'Test Title',
       catkey: 123,
+      call_number: 'Test CallNumber',
       due_date: Time.zone.parse('2019-11-14T23:59:00-05:00'),
       overdue?: false,
       recalled?: false,
@@ -33,9 +34,17 @@ RSpec.describe CheckoutsHelper do
         allow(checkout).to receive_messages(author: 'Test Author')
       end
 
-      it 'returns a linked title' do
+      it 'returns the right html' do
         expect(content).to have_link 'Test Title', href: 'https://catalog.libraries.psu.edu/catalog/123'
       end
+    end
+  end
+
+  describe '#render_call_number' do
+    let(:content) { helper.render_call_number(checkout) }
+
+    it 'returns a linked title' do
+      expect(content).to include 'Test CallNumber'
     end
   end
 
@@ -89,6 +98,30 @@ RSpec.describe CheckoutsHelper do
       it 'renders the right html' do
         expect(content).to include('<span>Recalled<br>November 10, 2019 11:59pm<br>November 14, 2019 11:59pm</span>')
       end
+    end
+  end
+
+  describe '#render_renewal_select' do
+    let(:content) { helper.render_renewal_select(checkout) }
+
+    before do
+      allow(checkout).to receive_messages(item_key: '1111111:1:1')
+    end
+
+    it 'renders the right html' do
+      checkbox = '<input type="checkbox" name="renewal_list[]" id="renewal_list_" '
+      checkbox += "value=\"#{checkout.item_key}\" class=\"checkbox\" multiple=\"multiple\" />"
+      expect(content).to include(checkbox)
+    end
+  end
+
+  describe '#render_renew_button' do
+    let(:content) { helper.render_renew_button }
+
+    it 'renders the right html' do
+      renew_button = '<input type="submit" name="commit" value="Renew" class="btn btn-primary btn-renewable-submit" '
+      renew_button += 'data-disable-with="Renew" />'
+      expect(content).to include(renew_button)
     end
   end
 end

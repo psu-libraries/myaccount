@@ -28,9 +28,41 @@ class SymphonyClient
     JSON.parse(response.body)
   end
 
+  def renew_items(user, checkouts)
+    checkouts.each_with_object(success: [], error: []) do |checkout, status|
+      response = renew_item_request(checkout.resource,
+                                    checkout.item_key,
+                                    headers: { 'x-sirs-sessionToken': user.session_token })
+
+      case response.status
+      when 200
+        status[:success] << checkout
+      else
+        status[:error] << [checkout, (error_message(response) || '')]
+      end
+    end
+  end
+
   ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
 
   private
+
+    def renew_item_request(resource, item_key, headers: {})
+      authenticated_request('/circulation/circRecord/renew', headers: headers, method: :post, json: {
+                              item: {
+                                resource: resource,
+                                key: item_key
+                              }
+                            })
+    end
+
+    def error_message(response)
+      return if response.status.ok?
+
+      JSON.parse(response.body).dig('messageList')[0].dig('message')
+    rescue JSON::ParserError
+      nil
+    end
 
     def patron_linked_resources_fields(item_details = {})
       case item_details
@@ -50,7 +82,6 @@ class SymphonyClient
     end
 
     def authenticated_request(path, headers: {}, **other)
-      # binding.pry
       request(path, headers: headers, **other)
     end
 

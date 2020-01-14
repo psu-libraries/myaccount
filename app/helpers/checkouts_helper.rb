@@ -8,6 +8,10 @@ module CheckoutsHelper
     link_to title, "https://catalog.libraries.psu.edu/catalog/#{checkout.catkey}"
   end
 
+  def render_call_number(checkout)
+    content_tag 'div', checkout.call_number, { class: 'text-secondary' }, false
+  end
+
   def render_checkout_status(checkout)
     return unless checkout.overdue?
 
@@ -23,5 +27,13 @@ module CheckoutsHelper
     contents << l(checkout.due_date, format: :long)
 
     content_tag 'span', contents.join('<br>'), nil, false
+  end
+
+  def render_renewal_select(checkout)
+    check_box_tag 'renewal_list[]', checkout.item_key, false, class: 'checkbox', multiple: true
+  end
+
+  def render_renew_button
+    submit_tag 'Renew', class: 'btn btn-primary btn-renewable-submit'
   end
 end

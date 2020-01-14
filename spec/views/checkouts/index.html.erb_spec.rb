@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'checkouts/index.html.erb', type: :view do
-  context 'when a single checkout exists' do
+  context 'when user has checkout(s)' do
     let(:checkout) { build(:checkout) }
 
     before do
@@ -27,11 +27,23 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       expect(rendered).to include 'Overdue: 1'
     end
 
+    it 'displays a checkout for renewal' do
+      checkout.record['fields']['item']['key'] = '7777247:1:1'
+      render
+      expect(rendered).to include '<input type="checkbox" name="renewal_list[]" id="renewal_list_" value="7777247:1:1"'
+    end
+
     it 'displays checkout\'s item\'s title / author' do
       checkout.record['fields']['item']['fields']['bib']['fields']['title'] = 'A wonderful title'
       checkout.record['fields']['item']['fields']['bib']['fields']['author'] = 'A wonderful author'
       render
       expect(rendered).to include 'A wonderful title / A wonderful author'
+    end
+
+    it 'displays call number correctly' do
+      checkout.record['fields']['item']['fields']['call']['fields']['dispCallNumber'] = 'A very cool call number'
+      render
+      expect(rendered).to include 'A very cool call number'
     end
 
     it 'displays checkout\'s item\'s canonical item link' do
@@ -83,6 +95,11 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       checkout.record['fields']['estimatedOverdueAmount']['amount'] = '10.00'
       render
       expect(rendered).to include '$10.00'
+    end
+
+    it 'displays a renew button' do
+      render
+      expect(rendered).to include 'Renew'
     end
   end
 end
