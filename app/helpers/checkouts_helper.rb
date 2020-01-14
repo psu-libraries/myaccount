@@ -8,6 +8,10 @@ module CheckoutsHelper
     link_to title, "https://catalog.libraries.psu.edu/catalog/#{checkout.catkey}"
   end
 
+  def render_call_number(checkout)
+    content_tag 'div', checkout.call_number, { class: 'text-secondary' }, false
+  end
+
   def render_checkout_status(checkout)
     return unless checkout.overdue?
 

@@ -8,6 +8,7 @@ RSpec.describe CheckoutsHelper do
       Checkout,
       title: 'Test Title',
       catkey: 123,
+      call_number: 'Test CallNumber',
       due_date: Time.zone.parse('2019-11-14T23:59:00-05:00'),
       overdue?: false,
       recalled?: false,
@@ -33,9 +34,17 @@ RSpec.describe CheckoutsHelper do
         allow(checkout).to receive_messages(author: 'Test Author')
       end
 
-      it 'returns a linked title' do
+      it 'returns the right html' do
         expect(content).to have_link 'Test Title', href: 'https://catalog.libraries.psu.edu/catalog/123'
       end
+    end
+  end
+
+  describe '#render_call_number' do
+    let(:content) { helper.render_call_number(checkout) }
+
+    it 'returns a linked title' do
+      expect(content).to include 'Test CallNumber'
     end
   end
 

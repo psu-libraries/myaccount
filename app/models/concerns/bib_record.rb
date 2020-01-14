@@ -69,6 +69,10 @@ module BibRecord
     bib['author']
   end
 
+  def call_number
+    call['dispCallNumber']
+  end
+
   def resource
     fields.dig('item', 'resource')
   end

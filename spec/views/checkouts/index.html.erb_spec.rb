@@ -40,6 +40,12 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       expect(rendered).to include 'A wonderful title / A wonderful author'
     end
 
+    it 'displays call number correctly' do
+      checkout.record['fields']['item']['fields']['call']['fields']['dispCallNumber'] = 'A very cool call number'
+      render
+      expect(rendered).to include 'A very cool call number'
+    end
+
     it 'displays checkout\'s item\'s canonical item link' do
       checkout.record['fields']['item']['fields']['bib']['key'] = '123456'
       render

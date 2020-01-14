@@ -137,4 +137,8 @@ RSpec.describe Checkout, type: :model do
   it 'has a catkey' do
     expect(checkout.catkey).to eq '123456'
   end
+
+  it 'has a callnumber' do
+    expect(checkout.call_number).to eq 'ABC 123'
+  end
 end
