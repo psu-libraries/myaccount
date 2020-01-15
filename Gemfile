@@ -10,6 +10,7 @@ gem 'config', '~> 2.0'
 gem 'http', '~> 4.0'
 gem 'puma', '~> 3.12'
 gem 'rails', '~> 6.0.0'
+gem 'simplecov', require: false, group: :test
 gem 'turbolinks', '~> 5'
 gem 'warden', '~> 1.2'
 gem 'webpacker', '~> 4.0'

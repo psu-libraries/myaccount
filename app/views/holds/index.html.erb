@@ -1,17 +1,26 @@
 <h1>Holds</h1>
-<table class="table">
-  <caption>Holds that are ready for pickup</caption>
-  <thead>
-  <tr>
-    <th scope="col">Title</th>
-    <th scope="col">Pickup at</th>
-    <th scope="col">Expires</th>
-  </tr>
-  </thead>
 
-  <tbody>
+<%= form_with url: '/holds/multiple', method: :delete do %>
+  <table class="table">
+    <caption>Holds that are ready for pickup</caption>
+    <thead>
+    <tr>
+      <th scope="col">
+        Select <br>
+        <%= check_box_tag(:ready_holds, '1', false, data: { select_all: 'ready' }) %>
+        <%= label_tag(:ready_holds, 'All') %>
+      </th>
+      <th scope="col">Title</th>
+      <th scope="col">Pickup at</th>
+      <th scope="col">Expires</th>
+    </tr>
+    </thead>
+    <tbody>
     <% @holds_ready.each do |hold| %>
       <tr>
+        <td>
+          <%= render_hold_select hold %>
+        </td>
         <th scope="row">
           <%= hold.title %><br>
           <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{hold.catkey}" %></em><br>
@@ -21,25 +30,36 @@
         <td><%= render_expiration_date hold %></td>
       </tr>
     <% end %>
-  </tbody>
+    </tbody>
+  </table>
+  <%= submit_tag('Cancel Selected Holds') %>
+<% end %>
 
-</table>
+<%= form_with url: '/holds/multiple', method: :delete do %>
+  <table class="table">
+    <caption>Holds that are not ready for pickup</caption>
+    <thead>
 
-<table class="table">
-  <caption>Holds that are not ready for pickup</caption>
-  <thead>
-  <tr>
-    <th scope="col">Title</th>
-    <th scope="col">Availability</th>
-    <th scope="col">Pickup at</th>
-    <th scope="col">Expires</th>
-    <th scope="col">Status</th>
-  </tr>
-  </thead>
+    <tr>
+      <th scope="col">
+        Select <br>
+        <%= check_box_tag(:pending_holds, '1', false, data: { select_all: 'pending' }) %>
+        <%= label_tag(:pending_holds, 'All') %>
+      </th>
+      <th scope="col">Title</th>
+      <th scope="col">Availability</th>
+      <th scope="col">Pickup at</th>
+      <th scope="col">Expires</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
 
-  <tbody>
+    <tbody>
     <% @holds_not_ready.each do |hold| %>
       <tr>
+        <td>
+          <%= render_hold_select hold %>
+        </td>
         <th scope="row">
           <%= hold.title %><br>
           <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{hold.catkey}" %></em><br>
@@ -51,6 +71,8 @@
         <td><%= render_status hold %></td>
       </tr>
     <% end %>
-  </tbody>
+    </tbody>
 
-</table>
+  </table>
+  <%= submit_tag('Cancel Selected Holds') %>
+<% end %>

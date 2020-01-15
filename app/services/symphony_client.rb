@@ -45,6 +45,17 @@ class SymphonyClient
 
   ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
 
+  def cancel_hold(holdkey, session_token)
+    authenticated_request('/circulation/holdRecord/cancelHold',
+                          headers: { 'x-sirs-sessionToken': session_token },
+                          method: :post, json: {
+                            holdRecord: {
+                              resource: '/circulation/holdRecord',
+                              key: holdkey
+                            }
+                          })
+  end
+
   private
 
     def renew_item_request(resource, item_key, headers: {})
