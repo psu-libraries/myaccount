@@ -9,7 +9,7 @@
         <%= check_box_tag(:pending_holds, '1', false, data: { select_all: 'pending' }) %>
         <%= label_tag(:pending_holds, 'All') %>
       </th>
-      <th scope="col">Title</th>
+      <th scope="col">Item</th>
       <th scope="col">Availability</th>
       <th scope="col">Pickup at</th>
       <th scope="col">Expires</th>
@@ -24,9 +24,7 @@
           <%= render_hold_select hold %>
         </td>
         <th scope="row">
-          <%= hold.title %><br>
-          <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{hold.catkey}" %></em><br>
-          <%= hold.item_type_human %>
+          <%= render BibItemComponent, bibitem: hold %>
         </th>
         <td><%= render_queue_position hold %></td>
         <td><%= hold.pickup_library_human %></td>

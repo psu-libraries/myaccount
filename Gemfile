@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.5'
 
+gem 'actionview-component'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'config', '~> 2.0'
 gem 'http', '~> 4.0'
@@ -30,7 +31,7 @@ group :development, :test do
   gem 'niftany'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
-  gem 'rspec-rails', '~> 4.0.0.beta1'
+  gem 'rspec-rails', '~> 4.0.0.beta2'
   gem 'selenium-webdriver'
   gem 'warden-rspec-rails'
   gem 'webdrivers', '~> 4.0'

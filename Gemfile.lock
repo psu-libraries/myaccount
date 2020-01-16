@@ -37,6 +37,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    actionview-component (1.7.0)
     activejob (6.0.1)
       activesupport (= 6.0.1)
       globalid (>= 0.3.6)
@@ -346,6 +347,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionview-component
   better_errors
   binding_of_caller
   bootsnap (>= 1.4.4)
@@ -360,7 +362,7 @@ DEPENDENCIES
   puma (~> 3.12)
   rails (~> 6.0.0)
   rails-controller-testing
-  rspec-rails (~> 4.0.0.beta1)
+  rspec-rails (~> 4.0.0.beta2)
   selenium-webdriver
   simplecov
   spring
@@ -376,4 +378,4 @@ RUBY VERSION
    ruby 2.6.5p114
 
 BUNDLED WITH
-   2.1.0
+   2.1.4
