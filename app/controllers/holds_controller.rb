@@ -17,15 +17,16 @@ class HoldsController < ApplicationController
   def destroy
     params['hold_list'].each do |holdkey|
       hold_obj = holds.find { |hold| hold.key == holdkey }
-      hold_title = hold_obj.title
       response = symphony_client.cancel_hold(holdkey, current_user.session_token)
 
       case response.status
       when 200
-        flash[:success] = "#{flash[:success]} #{t 'myaccount.hold.cancel.success_html', title: hold_title}<br>"
+        flash[:success] = "#{flash[:success]} #{t 'myaccount.hold.cancel.success_html',
+                                                  hold: hold_obj.title + '<br>' + hold_obj.call_number}<br>"
       else
         Rails.logger.error(response.body)
-        flash[:errors] = "#{flash[:success]} #{t 'myaccount.hold.cancel.error_html', title: hold_title}"
+        flash[:errors] = "#{flash[:success]} #{t 'myaccount.hold.cancel.error_html',
+                                                 hold: hold_obj.title + '<br>' + hold_obj.call_number}"
       end
     end
 
