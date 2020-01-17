@@ -16,38 +16,6 @@ RSpec.describe CheckoutsHelper do
     )
   end
 
-  describe '#render_checkout_title' do
-    let(:content) { helper.render_checkout_title(checkout) }
-
-    context 'when an item has an author' do
-      before do
-        allow(checkout).to receive_messages(author: 'Test Author')
-      end
-
-      it 'returns a linked title / author' do
-        expect(content).to have_link 'Test Title / Test Author', href: 'https://catalog.libraries.psu.edu/catalog/123'
-      end
-    end
-
-    context 'when an item does not have an author' do
-      before do
-        allow(checkout).to receive_messages(author: 'Test Author')
-      end
-
-      it 'returns the right html' do
-        expect(content).to have_link 'Test Title', href: 'https://catalog.libraries.psu.edu/catalog/123'
-      end
-    end
-  end
-
-  describe '#render_call_number' do
-    let(:content) { helper.render_call_number(checkout) }
-
-    it 'returns a linked title' do
-      expect(content).to include 'Test CallNumber'
-    end
-  end
-
   describe '#render_checkout_status' do
     let(:content) { helper.render_checkout_status(checkout) }
 

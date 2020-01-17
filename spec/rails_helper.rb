@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start 'rails' do
+  add_filter 'app/channels'
+  add_filter 'app/jobs'
+
+  add_group 'Components', 'app/components'
+end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
@@ -17,6 +22,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'webmock/rspec'
 require 'support/factory_bot'
+require 'action_view/component/test_helpers'
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(
@@ -82,4 +88,6 @@ RSpec.configure do |config|
   config.after do
     Warden.test_reset!
   end
+
+  config.include ActionView::Component::TestHelpers, type: :component
 end

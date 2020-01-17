@@ -8,7 +8,7 @@
         <%= check_box_tag(:ready_holds, '1', false, data: { select_all: 'ready' }) %>
         <%= label_tag(:ready_holds, 'All') %>
       </th>
-      <th scope="col">Title</th>
+      <th scope="col">Item</th>
       <th scope="col">Pickup at</th>
       <th scope="col">Expires</th>
     </tr>
@@ -20,9 +20,7 @@
           <%= render_hold_select hold %>
         </td>
         <th scope="row">
-          <%= hold.title %><br>
-          <em><%= link_to 'Details', "https://catalog.libraries.psu.edu/catalog/#{hold.catkey}" %></em><br>
-          <%= hold.item_type_human %>
+          <%= render BibItemComponent, bibitem: hold %>
         </th>
         <td><%= hold.pickup_library_human %></td>
         <td><%= render_expiration_date hold %></td>
