@@ -52,7 +52,7 @@ RSpec.describe RenewalsController do
 
     context 'when not all items return 200' do
       let(:non_renewal_reason) { 'Item has holds' }
-      let(:renew_items_response) { { success: [checkouts[1]], error: [[checkouts[2], non_renewal_reason]] } }
+      let(:renew_items_response) { { success: [checkouts[0]], error: [[checkouts[2], non_renewal_reason]] } }
 
       it 'renews the eligible items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '789'] }

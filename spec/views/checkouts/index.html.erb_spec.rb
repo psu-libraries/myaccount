@@ -101,5 +101,10 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       render
       expect(rendered).to include 'Renew'
     end
+
+    it 'displays a renew all select' do
+      render
+      expect(rendered).to include '<label for="renew_all">All</label>'
+    end
   end
 end

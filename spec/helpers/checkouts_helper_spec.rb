@@ -78,7 +78,8 @@ RSpec.describe CheckoutsHelper do
 
     it 'renders the right html' do
       checkbox = '<input type="checkbox" name="renewal_list[]" id="renewal_list_" '
-      checkbox += "value=\"#{checkout.item_key}\" class=\"checkbox\" multiple=\"multiple\" />"
+      checkbox += "value=\"#{checkout.item_key}\" data-checkbox-type=\"renewal\" "
+      checkbox += 'class="checkbox" multiple="multiple" />'
       expect(content).to include(checkbox)
     end
   end
@@ -90,6 +91,15 @@ RSpec.describe CheckoutsHelper do
       renew_button = '<input type="submit" name="commit" value="Renew" class="btn btn-primary btn-renewable-submit" '
       renew_button += 'data-disable-with="Renew" />'
       expect(content).to include(renew_button)
+    end
+  end
+
+  describe '#render_renew_all' do
+    let(:content) { helper.render_renew_all }
+
+    it 'renders the right html' do
+      renew_all = '<input type="checkbox" name="renew_all" id="renew_all" value="1" data-select-all="renewal" />'
+      expect(content).to include(renew_all)
     end
   end
 end
