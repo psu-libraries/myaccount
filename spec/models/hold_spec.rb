@@ -71,4 +71,11 @@ RSpec.describe Hold, type: :model do
     hold.record['fields']['status'] = 'ACTIVE'
     expect(hold.status_code).to eq 'ACTIVE'
   end
+
+  it 'has a bib summary' do
+    hold.record['fields']['bib']['fields']['title'] = 'A wonderful title'
+    hold.record['fields']['item']['fields']['call']['fields']['dispCallNumber'] = 'ABC123'
+
+    expect(hold.bib_summary).to eq 'A wonderful title (ABC123)'
+  end
 end

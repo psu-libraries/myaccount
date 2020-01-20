@@ -4,7 +4,41 @@
 class Hold
   include BibRecord
 
-  PICKUP_LOCATION = {
+  PICKUP_LOCATION_REQUESTED = {
+    "UP-fPAT": 'Pattee Commons Services Desk',
+    "UP-ARCHIT": 'Architecture Landscape Architecture Library, 111 Stuckeman',
+    HERSHEY: 'College of Medicine (Hershey)',
+    "UP-MEDICAL": 'College of Medicine (University Park Program)',
+    "DSL-CARL": 'Dickinson Law (Carlisle)',
+    "DSL-UP": 'Penn State Law (UP)',
+    "UP-EMS": 'Earth &amp; Min Sci Library, 105 Deike',
+    "UP-ENGIN": 'Engineering Library, 325 Hammond Building',
+    "UP-PAMS": 'Physical &amp; Mathematical Sci Lib, 201 Davey Lab',
+    "UP-OFFICE": 'University Park Faculty/Staff Office Delivery',
+    ABINGTON: 'Penn State Abington',
+    ALTOONA: 'Penn State Altoona',
+    BEAVER: 'Penn State Beaver',
+    BEHREND: 'Penn State Erie',
+    BERKS: 'Penn State Berks',
+    BRANDYWINE: 'Penn State Brandywine',
+    DUBOIS: 'Penn State Dubois',
+    FAYETTE: 'Penn State Fayette',
+    GREATVLY: 'Penn State Great Valley',
+    GALLEGHENY: 'Penn State Greater Allegheny',
+    HARRISBURG: 'Penn State Harrisburg',
+    HAZLETON: 'Penn State Hazleton',
+    LEHIGHVLY: 'Penn State Lehigh Valley',
+    MONTALTO: 'Penn State Mont Alto',
+    NEWKEN: 'Penn State New Kensington',
+    SCHUYLKILL: 'Penn State Schuylkill',
+    WSCRANTON: 'Penn State Scranton',
+    SHENANGO: 'Penn State Shenango',
+    WILKESBAR: 'Penn State Wilkes-Barre',
+    YORK: 'Penn State York',
+    WORLD: 'World Campus'
+  }.freeze
+
+  PICKUP_LOCATION_ACTUAL = {
     ABINGTON: 'Abington',
     ACQ_DSL: 'Acquisitions (Law Schools)',
     ACQUISTNS: 'Acquisitions (UP)',
@@ -77,7 +111,7 @@ class Hold
   end
 
   def pickup_library_human
-    PICKUP_LOCATION[pickup_library_code] || pickup_library_code
+    PICKUP_LOCATION_ACTUAL[pickup_library_code] || pickup_library_code
   end
 
   def expiration_date
@@ -102,6 +136,10 @@ class Hold
 
   def status_code
     fields['status']
+  end
+
+  def bib_summary
+    "#{title} (#{call_number})"
   end
 
   private

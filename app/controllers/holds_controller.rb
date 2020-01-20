@@ -11,22 +11,35 @@ class HoldsController < ApplicationController
     @holds_not_ready = holds_not_ready
   end
 
-  # Handles form submission for canceling requests/holds/etc in Symphony
+  # Handles form submission for changing holds in Symphony
+  #
+  # PATCH /holds
+  # PUT /holds
+  def update
+    params['hold_list'].each do |holdkey|
+      @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
+      handle_pickup_change_request if params['pickup_library'].present?
+      handle_not_needed_after_request if params['hold_expiration_date'].present? &&
+        params['hold_expiration_date'] != params['current_fill_by_date']
+    end
+
+    redirect_to holds_path
+  end
+
+  # Handles form submission for canceling holds in Symphony
   #
   # DELETE /holds
   def destroy
     params['hold_list'].each do |holdkey|
-      hold_obj = holds.find { |hold| hold.key == holdkey }
+      @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
       response = symphony_client.cancel_hold(holdkey, current_user.session_token)
 
       case response.status
       when 200
-        flash[:success] = "#{flash[:success]} #{t 'myaccount.hold.cancel.success_html',
-                                                  hold: hold_obj.title + '<br>' + hold_obj.call_number}<br>"
+        process_flash(:success, 'cancel.success_html')
       else
         Rails.logger.error(response.body)
-        flash[:errors] = "#{flash[:success]} #{t 'myaccount.hold.cancel.error_html',
-                                                 hold: hold_obj.title + '<br>' + hold_obj.call_number}"
+        process_flash(:error, 'cancel.error_html')
       end
     end
 
@@ -45,6 +58,41 @@ class HoldsController < ApplicationController
 
     def holds_not_ready
       holds.reject(&:ready_for_pickup?)
+    end
+
+    def handle_pickup_change_request
+      change_pickup_response = symphony_client.change_pickup_library(
+        hold_key: @hold_to_act_on.key,
+        pickup_library: params['pickup_library'],
+        session_token: current_user.session_token
+      )
+      case change_pickup_response.status
+      when 200
+        process_flash(:success, 'update_pickup.success_html')
+      else
+        Rails.logger.error(change_pickup_response.body)
+        process_flash(:error, 'update_pickup.error_html')
+      end
+    end
+
+    def handle_not_needed_after_request
+      not_needed_after_response = symphony_client.not_needed_after(
+        hold_key: @hold_to_act_on.key,
+        fill_by_date: params['hold_expiration_date'],
+        session_token: current_user.session_token
+      )
+      case not_needed_after_response.status
+      when 200
+        process_flash(:success, 'update_not_needed_after.success_html')
+      else
+        Rails.logger.error(change_pickup_response.body)
+        process_flash(:error, 'update_not_needed_after.error_html')
+      end
+    end
+
+    def process_flash(type, translation)
+      # binding.pry
+      flash[type] = "#{flash[type]} #{t "myaccount.hold.#{translation}", bib_summary: @hold_to_act_on.bib_summary}"
     end
 
     def item_details

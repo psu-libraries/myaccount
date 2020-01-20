@@ -31,4 +31,9 @@ module HoldsHelper
     status = hold.ready_for_pickup? ? 'ready' : 'pending'
     check_box_tag 'hold_list[]', hold.key, false, data: { checkbox_type: status }, class: 'checkbox', multiple: true
   end
+
+  def render_pickup_libraries
+    default_choice = t('myaccount.hold.update_pickup.pickup_choose_text')
+    Hash[default_choice, 'Not set'].merge(Hold::PICKUP_LOCATION_REQUESTED.invert)
+  end
 end

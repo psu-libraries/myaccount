@@ -6,8 +6,10 @@ RSpec.describe HoldsController, type: :controller do
   let(:mock_patron) { instance_double(Patron) }
   let(:holds) do
     [
-      instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book', call_number: 'ABC123'),
-      instance_double(Hold, key: '2', ready_for_pickup?: false, title: 'Some Good Book', call_number: 'ABC124')
+      instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book', call_number: 'ABC123',
+                            bib_summary: 'Some Great Book (ABC123)'),
+      instance_double(Hold, key: '2', ready_for_pickup?: false, title: 'Some Good Book', call_number: 'ABC124',
+                            bib_summary: 'Some Good Book (ABC124)')
     ]
   end
 
@@ -34,8 +36,15 @@ RSpec.describe HoldsController, type: :controller do
       allow(mock_patron).to receive(:holds).and_return(holds)
     end
 
+    it 'sends the right item details to the web service' do
+      item_details = controller.send(:item_details)
+
+      expect(item_details).to eq holdRecordList: true
+    end
+
     it 'renders the index template' do
       get :index
+
       expect(response).to render_template 'index'
     end
 
@@ -49,6 +58,55 @@ RSpec.describe HoldsController, type: :controller do
       get :index
 
       expect(assigns(:holds_not_ready).count).to eq 1
+    end
+
+    describe '#update' do
+      before do
+        stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
+          .to_return(status: 200, body: '', headers: {})
+      end
+
+      context 'when pickup_library param is sent and the web services call succeeds' do
+        it 'updates the pickup library and sets the flash message' do
+          patch :update, params: { id: 'multiple', pickup_library: 'Other library', hold_list: [2] }
+
+          expect(flash[:success]).to match(/Success!.*pickup location was updated/)
+        end
+      end
+
+      context 'when pickup_library param is sent and the web services call fails' do
+        before do
+          stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
+            .to_return(status: 404, body: '', headers: {})
+        end
+
+        it 'fails to update the pickup library and sets the flash message' do
+          patch :update, params: { id: 'multiple', pickup_library: 'Other library', hold_list: [2] }
+
+          expect(flash[:error]).to match(/Sorry!.*pickup location was not updated/)
+        end
+      end
+
+      context 'when not_needed_after param is sent' do
+        before do
+          stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
+            .to_return(status: 200, body: '', headers: {})
+        end
+
+        xit 'updates the not needed after and sets the flash message' do
+          patch :update, params: { id: 'multiple', hold_expiration_date: '1999/01/01', hold_list: [2] }
+
+          expect(flash[:success]).to match(/Success!.*not needed after date was updated/)
+        end
+
+        xit 'does not update the not needed after if dates are not changed' do
+          patch :update, params: {
+            id: 'multiple', hold_expiration_date: '1999/01/01', current_fill_by_date: '1999/01/01', hold_list: [2]
+          }
+
+          expect(flash[:success]).to eq []
+        end
+      end
     end
 
     describe '#destroy' do
@@ -74,7 +132,7 @@ RSpec.describe HoldsController, type: :controller do
         it 'deletes holds and fails' do
           delete :destroy, params: { id: 'multiple', hold_list: [2] }
 
-          expect(flash[:errors]).to match(/Sorry!/)
+          expect(flash[:error]).to match(/Sorry!/)
         end
       end
     end
