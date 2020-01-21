@@ -27,7 +27,7 @@ RSpec.describe RenewalsController do
     warden.set_user(user)
     allow(SymphonyClient).to receive(:new).and_return(mock_client)
     allow(controller).to receive(:patron).and_return(mock_patron)
-    stub_const("RenewalsController::RENEWAL_FLASH_LIMIT", 2)
+    stub_const('RenewalsController::RENEWAL_FLASH_LIMIT', 2)
   end
 
   describe '#create' do
@@ -88,7 +88,9 @@ RSpec.describe RenewalsController do
 
     context 'when user renews more than renewal flash limit items' do
       let(:non_renewal_reason) { 'Item has holds' }
-      let(:renew_items_response) { { success: [checkouts[0], [checkouts[1]]], error: [[checkouts[2], non_renewal_reason]] } }
+      let(:renew_items_response) {
+        { success: [checkouts[0], [checkouts[1]]], error: [[checkouts[2], non_renewal_reason]] }
+      }
 
       it 'renews the eligible items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '456', '789'] }
