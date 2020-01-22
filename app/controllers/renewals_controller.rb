@@ -7,14 +7,21 @@ class RenewalsController < ApplicationController
   before_action :authorize_update!, only: :create
   rescue_from RenewalException, with: :deny_access
 
+  RENEWAL_FLASH_LIMIT = 25
+
   # Renew items for a patron
   #
   # POST /renewals
   def create
     @renew_items_response = symphony_client.renew_items(current_user, checkouts_to_renew)
 
-    bulk_renewal_flash(@renew_items_response, :success)
-    bulk_renewal_flash(@renew_items_response, :error)
+    if checkouts_to_renew.length > RENEWAL_FLASH_LIMIT
+      bulk_renewal_summary_flash(@renew_items_response, :success)
+      bulk_renewal_summary_flash(@renew_items_response, :error)
+    else
+      bulk_renewal_flash(@renew_items_response, :success)
+      bulk_renewal_flash(@renew_items_response, :error)
+    end
 
     redirect_to checkouts_path
   end
@@ -61,6 +68,12 @@ class RenewalsController < ApplicationController
           end, '')
         )
       )
+    end
+
+    def bulk_renewal_summary_flash(response, type)
+      return unless response[type].any?
+
+      flash[type] = I18n.t("renew_all_items_summary.#{type}_html", count: response[type].length)
     end
 
     def renewal_prompt(renewal)

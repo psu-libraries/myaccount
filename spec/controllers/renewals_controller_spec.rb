@@ -27,6 +27,7 @@ RSpec.describe RenewalsController do
     warden.set_user(user)
     allow(SymphonyClient).to receive(:new).and_return(mock_client)
     allow(controller).to receive(:patron).and_return(mock_patron)
+    stub_const('RenewalsController::RENEWAL_FLASH_LIMIT', 2)
   end
 
   describe '#create' do
@@ -52,7 +53,7 @@ RSpec.describe RenewalsController do
 
     context 'when not all items return 200' do
       let(:non_renewal_reason) { 'Item has holds' }
-      let(:renew_items_response) { { success: [checkouts[1]], error: [[checkouts[2], non_renewal_reason]] } }
+      let(:renew_items_response) { { success: [checkouts[0]], error: [[checkouts[2], non_renewal_reason]] } }
 
       it 'renews the eligible items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '789'] }
@@ -60,14 +61,63 @@ RSpec.describe RenewalsController do
         expect(flash[:success]).to match(/Success!/)
       end
 
+      it 'success messages include items title' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(flash[:success]).to match(/Renewal 1/)
+      end
+
       it 'does not renew those items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '789'] }
 
-        expect(flash[:error]).to match(/Item has holds/)
+        expect(flash[:error]).to match(/Sorry!/)
       end
 
-      it 'does not renew those item and redirects to checkouts_path' do
+      it 'error messages include items title and non renewal reason' do
         post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(flash[:error]).to match(/Renewal 3.*Item has holds/)
+      end
+
+      it 'does not renew those items and redirects to checkouts_path' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(response).to redirect_to checkouts_path
+      end
+    end
+
+    context 'when user renews more than renewal flash limit items' do
+      let(:non_renewal_reason) { 'Item has holds' }
+      let(:renew_items_response) {
+        { success: [checkouts[0], [checkouts[1]]], error: [[checkouts[2], non_renewal_reason]] }
+      }
+
+      it 'renews the eligible items and sets flash messages' do
+        post :create, params: { renewal_list: ['123', '456', '789'] }
+
+        expect(flash[:success]).to match(/Success!/)
+      end
+
+      it 'success messages does not include items title' do
+        post :create, params: { renewal_list: ['123', '456', '789'] }
+
+        expect(flash[:success]).not_to match(/Renewal 1/)
+      end
+
+      it 'does not renew those items and sets flash messages' do
+        post :create, params: { renewal_list: ['123', '456', '789'] }
+
+        expect(flash[:error]).to match(/Sorry!/)
+      end
+
+      it 'error messages does not include items title and non renewal reason' do
+        post :create, params: { renewal_list: ['123', '456', '789'] }
+
+        expect(flash[:error]).not_to match(/Renewal 3.*Item has holds/)
+      end
+
+      it 'redirects to checkouts_path' do
+        post :create, params: { renewal_list: ['123', '456', '789'] }
 
         expect(response).to redirect_to checkouts_path
       end

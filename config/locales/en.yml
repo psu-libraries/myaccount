@@ -44,8 +44,11 @@ en:
       one: <span class="font-weight-bold">Success!</span> 1 item was renewed. %{items}
       other: <span class="font-weight-bold">Success!</span> %{count} items were renewed. %{items}
     error_html:
-      one: <span class="font-weight-bold">Sorry!</span> 1 item failed to be renewed. Due date remains unchanged. Try again or contact us for help. %{items}
-      other: <span class="font-weight-bold">Sorry!</span> %{count} items failed to be renewed. Due dates remain unchanged. Try again or contact us for help. %{items}
+      one: <span class="font-weight-bold">Sorry!</span> 1 item failed to be renewed. Due date remains unchanged. Review list of checked out items below and contact us if you require assistance. %{items}
+      other: <span class="font-weight-bold">Sorry!</span> %{count} items failed to be renewed. Due dates remain unchanged. Review list of checked out items below and contact us if you require assistance. %{items}
+  renew_all_items_summary:
+      success_html: <span class="font-weight-bold">Success!</span> %{count} items were renewed.
+      error_html: <span class="font-weight-bold">Sorry!</span> %{count} items failed to be renewed. Due dates remain unchanged. Review list of checked out items below and contact us if you require assistance.
   myaccount:
       hold:
         cancel:
