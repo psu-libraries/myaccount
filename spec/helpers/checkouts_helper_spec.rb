@@ -79,7 +79,9 @@ RSpec.describe CheckoutsHelper do
     it 'renders the right html' do
       checkbox = '<input type="checkbox" name="renewal_list[]" id="renewal_list_" '
       checkbox += "value=\"#{checkout.item_key}\" data-checkbox-type=\"renewal\" "
-      checkbox += 'class="checkbox" multiple="multiple" />'
+            checkbox = "<input type=\"checkbox\" name=\"renewal_list[]\" id=\"renewal_list_\" "\
+                 "value=\"#{checkout.item_key}\" data-checkbox-type=\"renewal\" class=\"checkbox\" "\
+                 "multiple=\"multiple\" />"
       expect(content).to include(checkbox)
     end
   end
