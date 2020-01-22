@@ -2,6 +2,7 @@
 
 class HoldsController < ApplicationController
   before_action :authenticate_user!
+  rescue_from HoldException, with: :past_date
 
   # Render patron holds
   #
@@ -18,9 +19,8 @@ class HoldsController < ApplicationController
   def update
     params['hold_list'].each do |holdkey|
       @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
-      handle_pickup_change_request if params['pickup_library'].present?
-      handle_not_needed_after_request if params['hold_expiration_date'].present? &&
-        params['hold_expiration_date'] != params['current_fill_by_date']
+      handle_pickup_change_request if params['pickup_library'].present? && params['pickup_library'] != 'Not set'
+      handle_not_needed_after_request if params['hold_expiration_date'].present?
     end
 
     redirect_to holds_path
@@ -76,6 +76,8 @@ class HoldsController < ApplicationController
     end
 
     def handle_not_needed_after_request
+      raise HoldException, 'Error' if Date.parse(params['hold_expiration_date']) < Date.today
+
       not_needed_after_response = symphony_client.not_needed_after(
         hold_key: @hold_to_act_on.key,
         fill_by_date: params['hold_expiration_date'],
@@ -85,17 +87,22 @@ class HoldsController < ApplicationController
       when 200
         process_flash(:success, 'update_not_needed_after.success_html')
       else
-        Rails.logger.error(change_pickup_response.body)
+        Rails.logger.error(not_needed_after_response.body)
         process_flash(:error, 'update_not_needed_after.error_html')
       end
     end
 
     def process_flash(type, translation)
-      # binding.pry
       flash[type] = "#{flash[type]} #{t "myaccount.hold.#{translation}", bib_summary: @hold_to_act_on.bib_summary}"
     end
 
     def item_details
       { holdRecordList: true }
+    end
+
+    def past_date
+      flash[:error] = t 'myaccount.hold.update_pickup.past_date'
+
+      redirect_to holds_path
     end
 end

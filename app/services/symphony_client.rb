@@ -45,15 +45,6 @@ class SymphonyClient
     response
   end
 
-  # not working!
-  # {
-  #   "messageList":[
-  #     {
-  #       "code": "permissionDeniedEditedFieldNotEditable",
-  #       "message": "PUT Permission denied: Field fillByDate not editable."
-  #     }
-  #   ]
-  # }
   def not_needed_after(hold_key:, fill_by_date:, session_token:)
     response = authenticated_request("/circulation/holdRecord/key/#{hold_key}",
                                      headers: { 'x-sirs-sessionToken': session_token },

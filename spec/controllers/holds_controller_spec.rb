@@ -87,24 +87,36 @@ RSpec.describe HoldsController, type: :controller do
         end
       end
 
-      context 'when not_needed_after param is sent' do
+      context 'when not_needed_after param is sent and the webservice is responding with 200' do
         before do
           stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
             .to_return(status: 200, body: '', headers: {})
         end
 
-        xit 'updates the not needed after and sets the flash message' do
-          patch :update, params: { id: 'multiple', hold_expiration_date: '1999/01/01', hold_list: [2] }
+        it 'and it\'s a date in the future, it updates the not needed after and sets the flash message' do
+          date = Date.tomorrow.to_formatted_s('%Y-%m-%d')
+          patch :update, params: { id: 'multiple', hold_expiration_date: date, hold_list: [2] }
 
           expect(flash[:success]).to match(/Success!.*not needed after date was updated/)
         end
 
-        xit 'does not update the not needed after if dates are not changed' do
-          patch :update, params: {
-            id: 'multiple', hold_expiration_date: '1999/01/01', current_fill_by_date: '1999/01/01', hold_list: [2]
-          }
+        it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
+          patch :update, params: { id: 'multiple', hold_expiration_date: '2020-01-21', hold_list: [2] }
 
-          expect(flash[:success]).to eq []
+          expect(flash[:error]).to match(/date that is in the past/)
+        end
+      end
+
+      context 'when not_needed_after param is sent and the webservice is responding with 200' do
+        before do
+          stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
+            .to_return(status: 500, body: '', headers: {})
+        end
+
+        it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
+          patch :update, params: { id: 'multiple', hold_expiration_date: '2100-01-21', hold_list: [2] }
+
+          expect(flash[:error]).to match(/Sorry!/)
         end
       end
     end
