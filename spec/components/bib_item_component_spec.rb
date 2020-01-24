@@ -25,7 +25,7 @@ RSpec.describe BibItemComponent, type: :component do
       hold.record['fields']['item']['fields']['itemType']['key'] = 'ATLAS'
     end
 
-    it 'renders an linked title' do
+    it 'renders a linked title' do
       result = render_inline(described_class, bibitem: hold)
       expect(result.to_html).to include 'href'
     end
