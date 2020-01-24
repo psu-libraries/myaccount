@@ -4,6 +4,7 @@
 class RenewalsController < ApplicationController
   include ActionView::Helpers::TagHelper
   before_action :authenticate_user!
+  before_action :renew_params, only: :create
   before_action :authorize_update!, only: :create
   rescue_from RenewalException, with: :deny_access
 
@@ -37,7 +38,13 @@ class RenewalsController < ApplicationController
     end
 
     def renew_params
-      params.require(:renewal_list)
+      if params[:renewal_list].blank?
+        flash[:notice] = 'No items were selected for renewal.'
+
+        redirect_to checkouts_path
+      else
+        params[:renewal_list]
+      end
     end
 
     def authorize_update!
@@ -79,6 +86,7 @@ class RenewalsController < ApplicationController
     def renewal_prompt(renewal)
       if renewal.respond_to?(:each)
         renewal_obj, error_message = renewal
+
         title_text = "#{renewal_obj.title}, #{renewal_obj.call_number}"
         non_renewal_reason = error_prompt(error_message) unless error_message.empty?
         title_text + (non_renewal_reason || '')

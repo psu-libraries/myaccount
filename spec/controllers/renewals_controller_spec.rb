@@ -38,7 +38,9 @@ RSpec.describe RenewalsController do
 
   describe '#create' do
     it 'requires list of checkouts to be renewed as params' do
-      expect { post :create, params: {} }.to raise_error(ActionController::ParameterMissing)
+      post :create, params: {}
+
+      expect(flash[:notice]).to match(/No items were selected/)
     end
 
     context 'when all items returns 200' do
