@@ -107,7 +107,7 @@ RSpec.describe HoldsController, type: :controller do
         end
       end
 
-      context 'when not_needed_after param is sent and the webservice is responding with 200' do
+      context 'when not_needed_after param is sent and the webservice is not responding with 200' do
         before do
           stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
             .to_return(status: 500, body: '', headers: {})
