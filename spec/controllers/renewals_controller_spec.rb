@@ -12,9 +12,9 @@ RSpec.describe RenewalsController do
 
   let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
   let(:checkouts) { [
-    instance_double(Checkout, item_key: '123', title: 'Renewal 1', call_number: 'ABC'),
-    instance_double(Checkout, item_key: '456', title: 'Renewal 2', call_number: 'DEF'),
-    instance_double(Checkout, item_key: '789', title: 'Renewal 3', call_number: 'GHI')
+    instance_double(Checkout, item_key: '123', bib_summary: 'Renewal 1 (ABC)'),
+    instance_double(Checkout, item_key: '456', bib_summary: 'Renewal 2 (DEF)'),
+    instance_double(Checkout, item_key: '789', bib_summary: 'Renewal 3 (GHI)')
   ] }
 
   let(:renew_items_response) {}

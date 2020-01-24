@@ -138,10 +138,6 @@ class Hold
     fields['status']
   end
 
-  def bib_summary
-    "#{title} (#{call_number})"
-  end
-
   private
 
     def fields

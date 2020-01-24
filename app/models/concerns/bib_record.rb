@@ -81,6 +81,10 @@ module BibRecord
     fields.dig('item', 'key')
   end
 
+  def bib_summary
+    "#{title} (#{call_number})"
+  end
+
   private
 
     def item

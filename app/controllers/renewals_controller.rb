@@ -87,11 +87,10 @@ class RenewalsController < ApplicationController
       if renewal.respond_to?(:each)
         renewal_obj, error_message = renewal
 
-        title_text = "#{renewal_obj.title}, #{renewal_obj.call_number}"
         non_renewal_reason = error_prompt(error_message) unless error_message.empty?
-        title_text + (non_renewal_reason || '')
+        renewal_obj.bib_summary + (non_renewal_reason || '')
       else
-        "#{renewal.title}, #{renewal.call_number}"
+        renewal.bib_summary
       end
     end
 
