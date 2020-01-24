@@ -12,7 +12,7 @@
       <th scope="col">Item</th>
       <th scope="col">Availability</th>
       <th scope="col">Pickup at</th>
-      <th scope="col">Expires</th>
+      <th scope="col">Pick up by</th>
       <th scope="col">Status</th>
     </tr>
     </thead>
@@ -35,5 +35,32 @@
     </tbody>
 
   </table>
-  <%= submit_tag('Cancel Selected Holds') %>
+  <div class="row">
+    <div class="col-10">
+      <div class="card">
+        <h5 class="card-header">What to do with selected holds</h5>
+        <div class="row">
+          <div class="col-8">
+            <div class="card-body">
+              <h5>Edit Selected Holds</h5>
+              <%= label_tag 'pickup_library', 'Pickup at:' %>
+              <%= select_tag 'pickup_library', options_for_select(render_pickup_libraries,
+                                                                  disabled: 'Not set', selected: 'Not set') %>
+              <%= label_tag 'hold_expiration_date', 'Not needed after:' %>
+              <%= date_field_tag 'hold_expiration_date' %>
+              <p class="card-text"><small class="text-muted">The date you enter is the date that the system will stop trying to obtain the item for you.  It is not a guaranteed delivery date.</small></p>
+              <br>
+              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH') %>
+            </div>
+          </div>
+          <div class="col-4 border-left">
+            <div class="card-body">
+              <h5 class="card-title">Cancel Selected Holds</h5>
+              <%= submit_tag('Cancel Selected Holds', class: 'btn btn-danger') %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 <% end %>

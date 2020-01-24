@@ -28,6 +28,37 @@ class SymphonyClient
     JSON.parse(response.body)
   end
 
+  def change_pickup_library(hold_key:, pickup_library:, session_token:)
+    response = authenticated_request('/circulation/holdRecord/changePickupLibrary',
+                                     headers: { 'x-sirs-sessionToken': session_token },
+                                     method: :post, json: {
+                                       holdRecord: {
+                                         resource: '/circulation/holdRecord',
+                                         key: hold_key
+                                       },
+                                       pickupLibrary: {
+                                         resource: '/policy/library',
+                                         key: pickup_library
+                                       }
+                                     })
+
+    response
+  end
+
+  def not_needed_after(hold_key:, fill_by_date:, session_token:)
+    response = authenticated_request("/circulation/holdRecord/key/#{hold_key}",
+                                     headers: { 'x-sirs-sessionToken': session_token },
+                                     method: :put, json: {
+                                       resource: '/circulation/holdRecord',
+                                       key: hold_key,
+                                       fields: {
+                                         fillByDate: fill_by_date
+                                       }
+                                     })
+
+    response
+  end
+
   def renew_items(user, checkouts)
     checkouts.each_with_object(success: [], error: []) do |checkout, status|
       response = renew_item_request(checkout.resource,
