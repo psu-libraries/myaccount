@@ -87,7 +87,7 @@ class RenewalsController < ApplicationController
       if renewal.respond_to?(:each)
         renewal_obj, error_message = renewal
 
-        non_renewal_reason = error_prompt(error_message) unless error_message.empty?
+        non_renewal_reason = error_prompt error_message
         renewal_obj.bib_summary + (non_renewal_reason || '')
       else
         renewal.bib_summary
@@ -95,6 +95,8 @@ class RenewalsController < ApplicationController
     end
 
     def error_prompt(error_message)
+      return if error_message.empty?
+
       content_tag(:div, "Denied: #{error_message}")
     end
 end
