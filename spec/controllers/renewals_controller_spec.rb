@@ -30,6 +30,12 @@ RSpec.describe RenewalsController do
     stub_const('RenewalsController::RENEWAL_FLASH_LIMIT', 2)
   end
 
+  it 'sends the right item details to the web service' do
+    item_details = controller.send(:item_details)
+
+    expect(item_details).to eq circRecordList: true
+  end
+
   describe '#create' do
     it 'requires list of checkouts to be renewed as params' do
       expect { post :create, params: {} }.to raise_error(ActionController::ParameterMissing)

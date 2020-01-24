@@ -29,6 +29,12 @@ RSpec.describe CheckoutsController do
       allow(mock_patron).to receive(:checkouts).and_return(checkouts)
     end
 
+    it 'sends the right item details to the web service' do
+      item_details = controller.send(:item_details)
+
+      expect(item_details).to eq circRecordList: true
+    end
+
     it 'renders the index template' do
       get(:index)
       expect(response).to render_template 'index'
