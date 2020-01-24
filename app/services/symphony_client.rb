@@ -7,6 +7,15 @@ class SymphonyClient
     content_type: 'application/json'
   }.freeze
 
+  RENEWAL_CUSTOM_MESSAGELIST = {
+    "hatErrorResponse.141": 'Renewal limit reached, cannot be renewed.',
+    "hatErrorResponse.7703": 'Renewal limit reached, cannot be renewed.',
+    "hatErrorResponse.105": 'Item has been recalled, cannot be renewed.',
+    "hatErrorResponse.252": 'Item has holds, cannot be renewed.',
+    "hatErrorResponse.46": 'Item on reserve, cannot be renewed.',
+    "unhandledException": ''
+  }.with_indifferent_access
+
   def login(user_id, password)
     response = request('/user/patron/login', method: :post, json: {
                          login: user_id,
@@ -101,7 +110,8 @@ class SymphonyClient
     def error_message(response)
       return if response.status.ok?
 
-      JSON.parse(response.body).dig('messageList')[0].dig('message')
+      error_code = JSON.parse(response.body).dig('messageList')[0].dig('code')
+      RENEWAL_CUSTOM_MESSAGELIST[error_code] || JSON.parse(response.body).dig('messageList')[0].dig('message')
     rescue JSON::ParserError
       nil
     end
