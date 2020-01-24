@@ -17,6 +17,10 @@ class BibItemComponent < ActionView::Component::Base
     "#{@title} / #{@author}"
   end
 
+  def final_title
+    link_to_unless @type == 'PALCI', processed_title, catalog_url
+  end
+
   def catalog_url
     CATALOG_URL + @catkey
   end
