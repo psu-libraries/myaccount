@@ -80,17 +80,25 @@ RSpec.describe SymphonyClient do
       stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
         .with(body: { item: { resource: 'item', key: 'invalid' } })
         .to_return(status: 400, body: error_prompt)
+      stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
+        .with(body: { item: { resource: 'item', key: 'invalid_custom' } })
+        .to_return(status: 400, body: error_prompt_custom)
     end
 
     let(:checkouts) do
       [
         instance_double(Checkout, resource: 'item', item_key: '123', title: 'A'),
-        instance_double(Checkout, resource: 'item', item_key: 'invalid', title: 'B')
+        instance_double(Checkout, resource: 'item', item_key: 'invalid', title: 'B'),
+        instance_double(Checkout, resource: 'item', item_key: 'invalid_custom', title: 'C')
       ]
     end
 
     let(:error_prompt) do
-      { messageList: [{ message: 'Item has holds' }] }.to_json
+      { messageList: [{ code: 'some_other_code', message: 'Item has holds' }] }.to_json
+    end
+
+    let(:error_prompt_custom) do
+      { messageList: [{ code: 'hatErrorResponse.252', message: 'Item has holds' }] }.to_json
     end
 
     let(:user) do
@@ -100,11 +108,17 @@ RSpec.describe SymphonyClient do
                session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
     end
 
-    it 'returns successful + errored titles for individual renewal requests in symphony' do
-      renew_response = client.renew_items(user, checkouts)
+    it 'returns successful + errored items for individual renewal requests in symphony' do
+      renew_response = client.renew_items(user, [checkouts.first, checkouts.second])
 
-      expect(renew_response).to include error: [[checkouts.last, 'Item has holds']],
+      expect(renew_response).to include error: [[checkouts.second, 'Item has holds']],
                                         success: [checkouts.first]
+    end
+
+    it 'returns customized error messages' do
+      renew_response = client.renew_items(user, [checkouts.last])
+
+      expect(renew_response).to include error: [[checkouts.last, 'Item has holds, cannot be renewed.']]
     end
   end
 end

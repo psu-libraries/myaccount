@@ -86,6 +86,16 @@ RSpec.describe RenewalsController do
       end
     end
 
+    context 'when response include errored items with empty error message' do
+      let(:renew_items_response) { { success: [checkouts[0]], error: [[checkouts[2], '']] } }
+
+      it 'error messages include items title only if non renewal reason empty' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(flash[:error]).not_to match(/Denied/)
+      end
+    end
+
     context 'when user renews more than renewal flash limit items' do
       let(:non_renewal_reason) { 'Item has holds' }
       let(:renew_items_response) {
