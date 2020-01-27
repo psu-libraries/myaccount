@@ -63,7 +63,7 @@ class RenewalsController < ApplicationController
       return unless response[type].any?
 
       items = response[type].map do |renewal|
-        content_tag(:li, renewal_prompt(renewal), {}, false)
+        content_tag(:li, renewal_attempt_report(renewal), {}, false)
       end
 
       items_list = content_tag :ul, safe_join(items, '')
@@ -77,15 +77,15 @@ class RenewalsController < ApplicationController
       flash[type] = t("renew_all_items_summary.#{type}_html", count: response[type].length)
     end
 
-    def renewal_prompt(renewal)
+    def renewal_attempt_report(renewal)
       if renewal.respond_to?(:each)
         renewal_obj, error_message = renewal
 
         non_renewal_reason = error_prompt error_message
-        renewal_obj.bib_summary + (non_renewal_reason || '')
-      else
-        renewal.bib_summary
+        return renewal_obj.bib_summary + (non_renewal_reason || '')
       end
+
+      renewal.bib_summary
     end
 
     def error_prompt(error_message)
