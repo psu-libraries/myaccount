@@ -112,7 +112,7 @@ RSpec.describe SymphonyClient do
       renew_response = client.renew_items(user, [checkouts.first, checkouts.second])
       error_response = { renewal: checkouts.second, error_message: 'Item has holds' }
 
-      expect(renew_response).to include error: [error_response],
+      expect(renew_response).to eq error: [error_response],
                                         success: [checkouts.first]
     end
 
