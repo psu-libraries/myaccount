@@ -78,8 +78,8 @@ class RenewalsController < ApplicationController
     end
 
     def renewal_attempt_report(renewal_response)
-      if renewal_response[:error_message].present?
-        return "#{renewal_response[:renewal].bib_summary} #{tag(:br)} Denied: #{renewal_response[:error_message]}"
+      if renewal_response[:sirsi_response].present?
+        return "#{renewal_response[:renewal].bib_summary} #{tag(:br)} #{renewal_response[:sirsi_response]}"
       end
 
       renewal_response[:renewal].bib_summary
