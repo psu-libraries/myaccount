@@ -62,7 +62,7 @@ class RenewalsController < ApplicationController
     def bulk_renewal_flash(response, type)
       return unless response[type].any?
 
-      flash[type] = I18n.t(
+      flash[type] = t(
         "renew_all_items.#{type}_html",
         count: response[type].length,
         items: content_tag(
@@ -80,7 +80,7 @@ class RenewalsController < ApplicationController
     def bulk_renewal_summary_flash(response, type)
       return unless response[type].any?
 
-      flash[type] = I18n.t("renew_all_items_summary.#{type}_html", count: response[type].length)
+      flash[type] = t("renew_all_items_summary.#{type}_html", count: response[type].length)
     end
 
     def renewal_prompt(renewal)
