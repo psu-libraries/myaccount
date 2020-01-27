@@ -99,7 +99,7 @@ RSpec.describe RenewalsController do
       let(:error_response) { { renewal: checkouts[2], error_message: '' } }
       let(:renew_items_response) { { success: [checkouts[0]], error: [error_response] } }
 
-      it 'error messages include items title only if non renewal reason empty' do
+      it 'error messages include items title only' do
         post :create, params: { renewal_list: ['123', '789'] }
 
         expect(flash[:error]).not_to match(/Denied/)
