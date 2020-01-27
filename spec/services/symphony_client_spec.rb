@@ -110,15 +110,17 @@ RSpec.describe SymphonyClient do
 
     it 'returns all responses for individual renewal requests in symphony regardless of success or error' do
       renew_response = client.renew_items(user, [checkouts.first, checkouts.second])
+      error_response = { renewal: checkouts.second, error_message: 'Item has holds' }
 
-      expect(renew_response).to include error: [[checkouts.second, 'Item has holds']],
+      expect(renew_response).to include error: [error_response],
                                         success: [checkouts.first]
     end
 
     it 'returns customized error messages' do
       renew_response = client.renew_items(user, [checkouts.last])
+      error_response = { renewal: checkouts.last, error_message: 'Item has holds, cannot be renewed.' }
 
-      expect(renew_response).to include error: [[checkouts.last, 'Item has holds, cannot be renewed.']]
+      expect(renew_response).to include error: [error_response]
     end
   end
 end

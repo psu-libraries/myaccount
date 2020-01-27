@@ -77,15 +77,13 @@ class RenewalsController < ApplicationController
       flash[type] = t("renew_all_items_summary.#{type}_html", count: response[type].length)
     end
 
-    def renewal_attempt_report(renewal)
-      if renewal.respond_to?(:each)
-        renewal_obj, error_message = renewal
-
-        non_renewal_reason = error_prompt error_message
-        return renewal_obj.bib_summary + (non_renewal_reason || '')
+    def renewal_attempt_report(renewal_response)
+      if renewal_response.respond_to?(:each)
+        non_renewal_reason = error_prompt renewal_response[:error_message]
+        return renewal_response[:renewal].bib_summary + (non_renewal_reason || '')
       end
 
-      renewal.bib_summary
+      renewal_response.bib_summary
     end
 
     def error_prompt(error_message)

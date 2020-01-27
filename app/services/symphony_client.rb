@@ -79,7 +79,7 @@ class SymphonyClient
         status[:success] << checkout
       else
         Rails.logger.error("Renewal (#{checkout.item_key}): #{response.body}")
-        status[:error] << [checkout, (error_message(response) || '')]
+        status[:error] << { renewal: checkout, error_message: (error_message(response) || '') }
       end
     end
   end
