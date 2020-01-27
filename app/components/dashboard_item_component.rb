@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class DashboardItemComponent < ActionView::Component::Base
-  def initialize(model:, count:, count_term: nil, items: nil)
+  def initialize(model:, count:, count_term: nil, currency: nil, items: nil)
     @model = model
     @count = count
+    @currency = currency
     @count_term = count_term
     @items = items
   end
@@ -16,6 +17,12 @@ class DashboardItemComponent < ActionView::Component::Base
     end.join
 
     content_tag :ul, facts, nil, false
+  end
+
+  def total
+    return @count unless @currency
+
+    number_to_currency(@count)
   end
 
   def item_link

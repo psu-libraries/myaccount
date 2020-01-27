@@ -40,4 +40,10 @@ RSpec.describe DashboardItemComponent, type: :component do
 
     expect(component).not_to include '<ul>'
   end
+
+  it 'renders currency properly' do
+    dashboard_item_args[:currency] = true
+
+    expect(component).to include '$'
+  end
 end
