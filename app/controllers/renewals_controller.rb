@@ -78,17 +78,10 @@ class RenewalsController < ApplicationController
     end
 
     def renewal_attempt_report(renewal_response)
-      if renewal_response.respond_to?(:each)
-        non_renewal_reason = error_prompt renewal_response[:error_message]
-        return renewal_response[:renewal].bib_summary + (non_renewal_reason || '')
+      if renewal_response[:error_message].present?
+        return "#{renewal_response[:renewal].bib_summary} #{tag(:br)} #{renewal_response[:error_message]}"
       end
 
-      renewal_response.bib_summary
-    end
-
-    def error_prompt(error_message)
-      return if error_message.empty?
-
-      content_tag(:span, "<br>Denied: #{error_message}", nil, false)
+      renewal_response[:renewal].bib_summary
     end
 end

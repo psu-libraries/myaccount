@@ -76,7 +76,7 @@ class SymphonyClient
 
       case response.status
       when 200
-        status[:success] << checkout
+        status[:success] << { renewal: checkout, error_message: nil }
       else
         Rails.logger.error("Renewal (#{checkout.item_key}): #{response.body}")
         status[:error] << { renewal: checkout, error_message: (error_message(response) || '') }

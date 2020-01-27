@@ -44,7 +44,8 @@ RSpec.describe RenewalsController do
     end
 
     context 'when all items returns 200' do
-      let(:renew_items_response) { { success: [checkouts[0], checkouts[1]], error: [] } }
+      let(:renew_items_response) { { success: [{ renewal: checkouts[0], error_message: nil },
+                                               { renewal: checkouts[1], error_message: nil }], error: [] } }
 
       it 'renews the items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '456'] }
@@ -60,9 +61,9 @@ RSpec.describe RenewalsController do
     end
 
     context 'when not all items return 200' do
-      let(:non_renewal_reason) { 'Item has holds' }
-      let(:error_response) { { renewal: checkouts[2], error_message: non_renewal_reason } }
-      let(:renew_items_response) { { success: [checkouts[0]], error: [error_response] } }
+      let(:renew_items_response) { { success: [{ renewal: checkouts[0], error_message: nil },
+                                               { renewal: checkouts[1], error_message: nil }],
+                                     error: [{ renewal: checkouts[2], error_message: 'Item has holds' }] } }
 
       it 'renews the eligible items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '789'] }
@@ -97,7 +98,8 @@ RSpec.describe RenewalsController do
 
     context 'when response include errored items with empty error message' do
       let(:error_response) { { renewal: checkouts[2], error_message: '' } }
-      let(:renew_items_response) { { success: [checkouts[0]], error: [error_response] } }
+      let(:renew_items_response) { { success: [{ renewal: checkouts[0], error_message: nil },
+                                               { renewal: checkouts[1], error_message: nil }], error: [] } }
 
       it 'error messages include items title only' do
         post :create, params: { renewal_list: ['123', '789'] }
