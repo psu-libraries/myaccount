@@ -4,6 +4,7 @@
 class RenewalsController < ApplicationController
   include ActionView::Helpers::TagHelper
   before_action :authenticate_user!
+  before_action :renew_params, only: :create
   before_action :authorize_update!, only: :create
   rescue_from RenewalException, with: :deny_access
 
@@ -37,7 +38,13 @@ class RenewalsController < ApplicationController
     end
 
     def renew_params
-      params.require(:renewal_list)
+      if params[:renewal_list].blank?
+        flash[:notice] = 'No items were selected for renewal.'
+
+        redirect_to checkouts_path
+      else
+        params[:renewal_list]
+      end
     end
 
     def authorize_update!
@@ -55,38 +62,26 @@ class RenewalsController < ApplicationController
     def bulk_renewal_flash(response, type)
       return unless response[type].any?
 
-      flash[type] = I18n.t(
-        "renew_all_items.#{type}_html",
-        count: response[type].length,
-        items: content_tag(
-          :ul,
-          safe_join(response[type].map do |renewal|
-            content_tag(:li,
-                        renewal_prompt(renewal),
-                        {},
-                        false)
-          end, '')
-        )
-      )
+      items = response[type].map do |renewal|
+        content_tag(:li, renewal_attempt_report(renewal), {}, false)
+      end
+
+      items_list = content_tag :ul, safe_join(items, '')
+
+      flash[type] = t("renew_all_items.#{type}_html", count: response[type].length, items: items_list)
     end
 
     def bulk_renewal_summary_flash(response, type)
       return unless response[type].any?
 
-      flash[type] = I18n.t("renew_all_items_summary.#{type}_html", count: response[type].length)
+      flash[type] = t("renew_all_items_summary.#{type}_html", count: response[type].length)
     end
 
-    def renewal_prompt(renewal)
-      if renewal.respond_to?(:each)
-        title_text = "#{renewal[0].title}, #{renewal[0].call_number}"
-        non_renewal_reason = error_prompt(renewal[1])
-        title_text + non_renewal_reason
-      else
-        "#{renewal.title}, #{renewal.call_number}"
+    def renewal_attempt_report(renewal_response)
+      if renewal_response[:sirsi_response].present?
+        return "#{renewal_response[:renewal].bib_summary} #{tag(:br)} Denied: #{renewal_response[:sirsi_response]}"
       end
-    end
 
-    def error_prompt(error_message)
-      content_tag(:div, "Denied: #{error_message}")
+      renewal_response[:renewal].bib_summary
     end
 end

@@ -12,9 +12,9 @@ RSpec.describe RenewalsController do
 
   let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
   let(:checkouts) { [
-    instance_double(Checkout, item_key: '123', title: 'Renewal 1', call_number: 'ABC'),
-    instance_double(Checkout, item_key: '456', title: 'Renewal 2', call_number: 'DEF'),
-    instance_double(Checkout, item_key: '789', title: 'Renewal 3', call_number: 'GHI')
+    instance_double(Checkout, item_key: '123', bib_summary: 'Renewal 1 (ABC)'),
+    instance_double(Checkout, item_key: '456', bib_summary: 'Renewal 2 (DEF)'),
+    instance_double(Checkout, item_key: '789', bib_summary: 'Renewal 3 (GHI)')
   ] }
 
   let(:renew_items_response) {}
@@ -30,13 +30,22 @@ RSpec.describe RenewalsController do
     stub_const('RenewalsController::RENEWAL_FLASH_LIMIT', 2)
   end
 
+  it 'sends the right item details to the web service' do
+    item_details = controller.send(:item_details)
+
+    expect(item_details).to eq circRecordList: true
+  end
+
   describe '#create' do
     it 'requires list of checkouts to be renewed as params' do
-      expect { post :create, params: {} }.to raise_error(ActionController::ParameterMissing)
+      post :create, params: {}
+
+      expect(flash[:notice]).to match(/No items were selected/)
     end
 
     context 'when all items returns 200' do
-      let(:renew_items_response) { { success: [checkouts[0], checkouts[1]], error: [] } }
+      let(:renew_items_response) { { success: [{ renewal: checkouts[0], sirsi_response: nil },
+                                               { renewal: checkouts[1], sirsi_response: nil }], error: [] } }
 
       it 'renews the items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '456'] }
@@ -52,8 +61,9 @@ RSpec.describe RenewalsController do
     end
 
     context 'when not all items return 200' do
-      let(:non_renewal_reason) { 'Item has holds' }
-      let(:renew_items_response) { { success: [checkouts[0]], error: [[checkouts[2], non_renewal_reason]] } }
+      let(:renew_items_response) { { success: [{ renewal: checkouts[0], sirsi_response: nil },
+                                               { renewal: checkouts[1], sirsi_response: nil }],
+                                     error: [{ renewal: checkouts[2], sirsi_response: 'Item has holds' }] } }
 
       it 'renews the eligible items and sets flash messages' do
         post :create, params: { renewal_list: ['123', '789'] }
@@ -86,10 +96,23 @@ RSpec.describe RenewalsController do
       end
     end
 
+    context 'when response include errored items with empty error message' do
+      let(:error_response) { { renewal: checkouts[2], sirsi_response: '' } }
+      let(:renew_items_response) { { success: [{ renewal: checkouts[0], sirsi_response: nil },
+                                               { renewal: checkouts[1], sirsi_response: nil }], error: [] } }
+
+      it 'error messages include items title only' do
+        post :create, params: { renewal_list: ['123', '789'] }
+
+        expect(flash[:error]).not_to match(/Denied/)
+      end
+    end
+
     context 'when user renews more than renewal flash limit items' do
       let(:non_renewal_reason) { 'Item has holds' }
+      let(:error_response) { { renewal: checkouts[2], sirsi_response: non_renewal_reason } }
       let(:renew_items_response) {
-        { success: [checkouts[0], [checkouts[1]]], error: [[checkouts[2], non_renewal_reason]] }
+        { success: [checkouts[0], [checkouts[1]]], error: [error_response] }
       }
 
       it 'renews the eligible items and sets flash messages' do
