@@ -97,6 +97,6 @@ class RenewalsController < ApplicationController
     def error_prompt(error_message)
       return if error_message.empty?
 
-      content_tag(:div, "Denied: #{error_message}")
+      content_tag(:p, "Denied: #{error_message}")
     end
 end
