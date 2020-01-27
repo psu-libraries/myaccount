@@ -62,19 +62,13 @@ class RenewalsController < ApplicationController
     def bulk_renewal_flash(response, type)
       return unless response[type].any?
 
-      flash[type] = t(
-        "renew_all_items.#{type}_html",
-        count: response[type].length,
-        items: content_tag(
-          :ul,
-          safe_join(response[type].map do |renewal|
-            content_tag(:li,
-                        renewal_prompt(renewal),
-                        {},
-                        false)
-          end, '')
-        )
-      )
+      items = response[type].map do |renewal|
+        content_tag(:li, renewal_prompt(renewal), {}, false)
+      end
+
+      items_list = content_tag :ul, safe_join(items, '')
+
+      flash[type] = t("renew_all_items.#{type}_html", count: response[type].length, items: items_list)
     end
 
     def bulk_renewal_summary_flash(response, type)
