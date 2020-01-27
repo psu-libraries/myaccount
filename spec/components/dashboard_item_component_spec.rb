@@ -16,15 +16,15 @@ RSpec.describe DashboardItemComponent, type: :component do
 
   it 'makes a list' do
     dashboard_item_args[:items] << {
-        label: 'recalled',
-        count: 2
+      label: 'recalled',
+      count: 2
     }
 
     expect(component).to include '<li>2  recalled</li>'
   end
 
   it 'links to a model path' do
-    dashboard_item_args[:model] = "Holds"
+    dashboard_item_args[:model] = 'Holds'
 
     expect(component).to include 'href="/holds"'
   end

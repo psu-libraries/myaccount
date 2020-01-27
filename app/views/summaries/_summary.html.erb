@@ -9,7 +9,7 @@
   <h1>Summary</h1>
   <div class="row">
     <%= render DashboardItemComponent, model: 'Fines',
-                                       count: patron.fines.sum(&:owed_amount),
+                                       count: number_to_currency patron.fines.sum(&:owed_amount),
                                        count_term: 'You owe' %>
 
     <%= render DashboardItemComponent, model: 'Checkouts',
