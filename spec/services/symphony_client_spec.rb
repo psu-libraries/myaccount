@@ -108,7 +108,7 @@ RSpec.describe SymphonyClient do
                session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
     end
 
-    it 'returns successful + errored items for individual renewal requests in symphony' do
+    it 'returns all responses for individual renewal requests in symphony regardless of success or error' do
       renew_response = client.renew_items(user, [checkouts.first, checkouts.second])
 
       expect(renew_response).to include error: [[checkouts.second, 'Item has holds']],
