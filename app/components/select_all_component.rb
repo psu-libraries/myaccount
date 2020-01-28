@@ -2,7 +2,7 @@
 
 class SelectAllComponent < ActionView::Component::Base
   def initialize(data_select:)
-    @name = "#{data_select}_list[]"
+    @name = "#{data_select}_all"
     @data_select = data_select
   end
 
