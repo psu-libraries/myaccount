@@ -68,14 +68,14 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
       checkout.record['fields']['dueDate'] = '2019-11-14T23:59:00-05:00'
       checkout.record['fields']['recalledDate'] = nil
       render
-      expect(rendered).to include '<span>November 14, 2019 11:59pm</span>'
+      expect(rendered).to include '<span>November 14, 2019</span>'
     end
 
     it 'displays checkout\'s due date correctly when recalled' do
       checkout.record['fields']['dueDate'] = '2019-11-14T23:59:00-05:00'
-      checkout.record['fields']['recallDueDate'] = '2019-12-20T23:59:00-05:00'
+      checkout.record['fields']['recallDueDate'] = '2019-12-20T22:30:00-05:00'
       render
-      expect(rendered).to include '<span>Recalled<br>December 20, 2019 11:59pm<br>November 14, 2019 11:59pm</span>'
+      expect(rendered).to include '<span>Recalled<br>December 20, 2019 10:30pm<br>November 14, 2019</span>'
     end
 
     it 'displays checkout\'s status correctly when overdue' do
