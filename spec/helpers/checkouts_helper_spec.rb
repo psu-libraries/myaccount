@@ -109,11 +109,4 @@ RSpec.describe CheckoutsHelper do
       expect(helper.render_renew_button).to include(renew_button)
     end
   end
-
-  describe '#render_renew_all' do
-    it 'renders the right html' do
-      renew_all = '<input type="checkbox" name="renew_all" id="renew_all" value="1" data-select-all="renewal" />'
-      expect(helper.render_renew_all).to include(renew_all)
-    end
-  end
 end

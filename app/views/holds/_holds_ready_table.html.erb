@@ -5,8 +5,7 @@
     <tr>
       <th scope="col">
         Select <br>
-        <%= check_box_tag(:ready_holds, '1', false, data: { select_all: 'ready' }) %>
-        <%= label_tag(:ready_holds, 'All') %>
+        <%= render SelectAllComponent, data_select: 'ready' %>
       </th>
       <th scope="col">Item</th>
       <th scope="col">Pickup at</th>

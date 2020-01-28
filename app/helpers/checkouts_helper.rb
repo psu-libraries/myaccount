@@ -33,11 +33,4 @@ module CheckoutsHelper
   def render_renew_button
     submit_tag 'Renew', class: 'btn btn-primary btn-renewable-submit'
   end
-
-  def render_renew_all
-    content_tag :div do
-      check_box_tag(:renew_all, '1', false, data: { select_all: 'renewal' }) + ' ' +
-        label_tag(:renew_all, 'All')
-    end
-  end
 end

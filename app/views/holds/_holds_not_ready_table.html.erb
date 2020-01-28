@@ -6,8 +6,7 @@
     <tr>
       <th scope="col">
         Select <br>
-        <%= check_box_tag(:pending_holds, '1', false, data: { select_all: 'pending' }) %>
-        <%= label_tag(:pending_holds, 'All') %>
+        <%= render SelectAllComponent, data_select: 'pending' %>
       </th>
       <th scope="col">Item</th>
       <th scope="col">Availability</th>
