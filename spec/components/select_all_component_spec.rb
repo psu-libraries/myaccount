@@ -8,7 +8,7 @@ RSpec.describe SelectAllComponent, type: :component do
   let(:component) { render_inline(described_class, select_all_args).to_html }
 
   it 'makes a select all checkbox' do
-    expect(component).to  include 'input type="checkbox" name="renewal_list[]"'
+    expect(component).to include 'input type="checkbox" name="renewal_list[]"'
   end
 
   it 'adds the correct data attribute to bind the target checkboxes' do
