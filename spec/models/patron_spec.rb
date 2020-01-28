@@ -95,12 +95,8 @@ RSpec.describe Patron do
     end
   end
 
-  it 'has a patron standing info' do
-    expect(patron.standing).to eq 'OK'
-  end
-
   it 'has no patron standing alerts' do
-    expect(patron).not_to be_standing_alert
+    expect(patron.standing_alert).to be_empty
   end
 
   context 'with a patron standing alert' do
@@ -111,7 +107,7 @@ RSpec.describe Patron do
     end
 
     it 'has a patron standing alert' do
-      expect(patron).to be_standing_alert
+      expect(patron.standing_alert).to include 'DELINQUENT'
     end
   end
 end

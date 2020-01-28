@@ -32,7 +32,7 @@ RSpec.describe 'summaries/index', type: :view do
   end
 
   context 'when the patron standing is OK' do
-    let(:patron_standing) { { standing: 'OK', standing_alert?: false } }
+    let(:patron_standing) { { standing_alert: '' } }
 
     it 'renders without alerts' do
       render
@@ -42,7 +42,7 @@ RSpec.describe 'summaries/index', type: :view do
   end
 
   context 'when the patron standing is not OK' do
-    let(:patron_standing) { { standing: 'BARRED', standing_alert?: true } }
+    let(:patron_standing) { { standing_alert: 'The user is BARRED.' } }
 
     it 'renders with alerts' do
       render
