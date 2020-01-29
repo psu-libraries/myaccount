@@ -102,7 +102,7 @@ RSpec.describe Patron do
   context 'with a patron standing alert' do
     let(:fields) do
       {
-        standing_code: {key: 'DELINQUENT' }
+        standing_code: { key: 'DELINQUENT' }
       }
     end
 
