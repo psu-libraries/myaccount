@@ -84,7 +84,7 @@ RSpec.describe CheckoutsHelper do
       let(:due_date) { Time.zone.parse('2019-11-10T22:30:00-05:00') }
 
       it 'includes the time' do
-        expect(content).to include('November 10, 2019 10:30pm')
+        expect(content).to eq('November 10, 2019 10:30pm')
       end
     end
   end
