@@ -18,7 +18,7 @@ module CheckoutsHelper
 
     content_tag 'span', contents.join('<br>'), nil, false
   end
-  
+
   def format_due_date(date)
     return l(date, format: :long) unless l(date, format: :time_only) == '11:59pm'
 
