@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe 'fines/index.html.erb', type: :view do
+  context 'when there are no fines' do
+    it 'displays the "no fines" text' do
+      render
+
+      expect(rendered).to include 'You have no bills or fines at this time.'
+    end
+  end
+
   context 'when a single fine exists' do
     let(:fine) { build(:fine) }
 

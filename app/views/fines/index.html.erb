@@ -1,31 +1,8 @@
 <h1>Bills</h1>
-<p>NOTE: Fines for items that are still checked out will not appear here until the items have been returned</p>
-<table class="table">
-  <caption>Bills Table</caption>
-  <thead>
-  <tr>
-    <th scope="col">Title</th>
-    <th scope="col">Author</th>
-    <th scope="col">Reason</th>
-    <th scope="col">You owe</th>
-    <th scope="col">Date billed</th>
-  </tr>
-  </thead>
 
-  <tbody>
-    <% @fines.each do |fine| %>
-    <tr>
-      <th scope="row">
-        <%= render BibItemComponent, bibitem: fine %>
-      </th>
-      <td><%= fine.author %></td>
-      <td><%= fine.status_human %></td>
-      <td><%= number_to_currency fine.owed_amount %></td>
-      <td><%= l(fine.bill_date, format: :short) %></td>
-    </tr>
-  <% end %>
-  </tbody>
-
-</table>
-
-<p>Total that you owe: <%= number_to_currency @total_owed %></p>
+<% if @fines.present? %>
+  <%= render 'fines/fines_table' %>
+  <p>Total that you owe: <%= number_to_currency @total_owed %></p>
+<% else %>
+  <p>You have no bills or fines at this time.</p>
+<% end %>
