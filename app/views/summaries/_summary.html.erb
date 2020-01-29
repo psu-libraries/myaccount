@@ -1,7 +1,7 @@
-<% if patron.standing_alert? %>
+<% unless patron.standing_human.blank? %>
   <div class="page-section">
     <h3>Alerts: </h3>
-    <div class="ml-4">User is <%= patron.standing %></div>
+    <div class="ml-4"><%= patron.standing_human %></div>
   </div>
 <% end %>
 
