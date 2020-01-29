@@ -34,4 +34,8 @@ class DashboardItemComponent < ActionView::Component::Base
   def render?
     @count.positive?
   end
+
+  private
+
+    attr_reader :model, :count_term
 end
