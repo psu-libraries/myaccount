@@ -64,7 +64,7 @@ RSpec.describe CheckoutsHelper do
       end
 
       it 'renders the right html' do
-        expect(content).to include('<span>Recalled<br>November 10, 2019 10:30pm<br>November 14, 2019</span>')
+        expect(content).to have_css('span', text: 'RecalledNovember 10, 2019 10:30pmNovember 14, 2019')
       end
     end
   end
