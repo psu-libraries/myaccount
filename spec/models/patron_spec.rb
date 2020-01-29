@@ -17,7 +17,7 @@ RSpec.describe Patron do
       firstName: 'Student',
       lastName: 'Borrower',
       barcode: '1234',
-      standing: {
+      standing_code: {
         key: 'OK'
       }
     }
@@ -96,18 +96,18 @@ RSpec.describe Patron do
   end
 
   it 'has no patron standing alerts' do
-    expect(patron.standing_alert).to be_empty
+    expect(patron.standing_human).to be_empty
   end
 
   context 'with a patron standing alert' do
     let(:fields) do
       {
-        standing: { key: 'DELINQUENT' }
+        standing_code: {key: 'DELINQUENT' }
       }
     end
 
     it 'has a patron standing alert' do
-      expect(patron.standing_alert).to include 'DELINQUENT'
+      expect(patron.standing_human).to include 'DELINQUENT'
     end
   end
 end

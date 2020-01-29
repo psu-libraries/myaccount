@@ -53,8 +53,8 @@ class Patron
     record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
   end
 
-  def standing_alert
-    PATRON_STANDING_ALERTS[standing] || ''
+  def standing_human
+    PATRON_STANDING_ALERTS[standing_code] || ''
   end
 
   private
@@ -63,7 +63,7 @@ class Patron
       record['fields']
     end
 
-    def standing
+    def standing_code
       fields.dig('standing', 'key')
     end
 end
