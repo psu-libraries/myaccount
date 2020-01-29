@@ -40,7 +40,9 @@
       <tbody>
       <% @checkouts.each do |checkout| %>
           <tr>
-            <td scope="row"><%= render_renewal_select checkout %></td>
+            <td scope="row">
+              <%= render SelectAllChildComponent, type: 'renewal', key: checkout.item_key %>
+            </td>
             <td><%= render BibItemComponent, bibitem: checkout %></td>
             <td><%= checkout.item_type_human %></td>
             <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>

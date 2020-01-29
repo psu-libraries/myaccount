@@ -20,7 +20,7 @@
     <% @holds_not_ready.each do |hold| %>
       <tr>
         <td>
-          <%= render_hold_select hold %>
+          <%= render SelectAllChildComponent, type: 'pending', key: hold.key, name: 'hold' %>
         </td>
         <th scope="row">
           <%= render BibItemComponent, bibitem: hold %>

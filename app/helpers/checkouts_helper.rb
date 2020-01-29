@@ -18,16 +18,11 @@ module CheckoutsHelper
 
     content_tag 'span', contents.join('<br>'), nil, false
   end
-
+  
   def format_due_date(date)
     return l(date, format: :long) unless l(date, format: :time_only) == '11:59pm'
 
     l(date, format: :short)
-  end
-
-  def render_renewal_select(checkout)
-    check_box_tag 'renewal_list[]', checkout.item_key, false,
-                  data: { checkbox_type: 'renewal' }, class: 'checkbox', multiple: true
   end
 
   def render_renew_button
