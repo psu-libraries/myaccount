@@ -83,7 +83,7 @@ RSpec.describe CheckoutsHelper do
     context 'when due date time is not 11:59pm' do
       let(:due_date) { Time.zone.parse('2019-11-10T22:30:00-05:00') }
 
-      it 'renders the right html' do
+      it 'includes the time' do
         expect(content).to include('November 10, 2019 10:30pm')
       end
     end
