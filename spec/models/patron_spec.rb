@@ -17,7 +17,7 @@ RSpec.describe Patron do
       firstName: 'Student',
       lastName: 'Borrower',
       barcode: '1234',
-      standing_code: {
+      standing: {
         key: 'OK'
       }
     }
@@ -102,7 +102,7 @@ RSpec.describe Patron do
   context 'with a patron standing alert' do
     let(:fields) do
       {
-        standing_code: { key: 'DELINQUENT' }
+        standing: { key: 'DELINQUENT' }
       }
     end
 
