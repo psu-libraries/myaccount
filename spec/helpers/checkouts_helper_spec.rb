@@ -51,7 +51,7 @@ RSpec.describe CheckoutsHelper do
 
     context 'when an item is not recalled' do
       it 'renders the right html' do
-        expect(content).to have_css('span', text: 'November 14, 2019 11:59pm')
+        expect(content).to have_css('span', text: 'November 14, 2019')
       end
     end
 
@@ -59,12 +59,32 @@ RSpec.describe CheckoutsHelper do
       before do
         allow(checkout).to receive_messages(
           recalled?: true,
-          recall_due_date: Time.zone.parse('2019-11-10T23:59:00-05:00')
+          recall_due_date: Time.zone.parse('2019-11-10T22:30:00-05:00')
         )
       end
 
       it 'renders the right html' do
-        expect(content).to include('<span>Recalled<br>November 10, 2019 11:59pm<br>November 14, 2019 11:59pm</span>')
+        expect(content).to have_css('span', text: 'RecalledNovember 10, 2019 10:30pmNovember 14, 2019')
+      end
+    end
+  end
+
+  describe '#format_due_date' do
+    let(:content) { helper.format_due_date(due_date) }
+
+    context 'when due date time is 11:59pm' do
+      let(:due_date) { Time.zone.parse('2019-11-10T23:59:00-05:00') }
+
+      it 'does not include the time' do
+        expect(content).to eq('November 10, 2019')
+      end
+    end
+
+    context 'when due date time is not 11:59pm' do
+      let(:due_date) { Time.zone.parse('2019-11-10T22:30:00-05:00') }
+
+      it 'includes the time' do
+        expect(content).to eq('November 10, 2019 10:30pm')
       end
     end
   end

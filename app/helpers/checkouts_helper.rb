@@ -12,11 +12,17 @@ module CheckoutsHelper
     contents = []
     if checkout.recalled?
       contents << 'Recalled'
-      contents << l(checkout.recall_due_date, format: :long)
+      contents << format_due_date(checkout.recall_due_date)
     end
-    contents << l(checkout.due_date, format: :long)
+    contents << format_due_date(checkout.due_date)
 
     content_tag 'span', contents.join('<br>'), nil, false
+  end
+
+  def format_due_date(date)
+    return l(date, format: :long) unless l(date, format: :time_only) == '11:59pm'
+
+    l(date, format: :short)
   end
 
   def render_renewal_select(checkout)
