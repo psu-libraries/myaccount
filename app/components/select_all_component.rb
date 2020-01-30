@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class SelectAllComponent < ActionView::Component::Base
-  def initialize(data_select:)
-    @name = "#{data_select}_all"
-    @data_select = data_select
+  def initialize(target_keyword:)
+    @target_keyword = target_keyword
+    @name = "#{target_keyword}_all"
   end
 
   private
 
-    attr_reader :name, :data_select
+    attr_reader :name, :target_keyword
 end
