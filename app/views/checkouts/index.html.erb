@@ -22,7 +22,7 @@
       <tr>
         <th scope="col">
           <%= render_renew_button %>
-          <%= render SelectAllComponent, data_select: 'renewal' %>
+          <%= render SelectAllComponent, target_keyword: 'renewal' %>
         </th>
         <th scope="col">Item</th>
         <th scope="col">Format</th>
@@ -41,7 +41,7 @@
       <% @checkouts.each do |checkout| %>
           <tr>
             <td scope="row">
-              <%= render SelectAllChildComponent, type: 'renewal', key: checkout.item_key %>
+              <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>
             </td>
             <td><%= render BibItemComponent, bibitem: checkout %></td>
             <td><%= checkout.item_type_human %></td>

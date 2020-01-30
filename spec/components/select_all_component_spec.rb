@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SelectAllComponent, type: :component do
-  let(:select_all_args) { { data_select: 'renewal' } }
+  let(:select_all_args) { { target_keyword: 'renewal' } }
 
   let(:component) { render_inline(described_class, select_all_args).to_html }
 

@@ -1,19 +1,13 @@
 # frozen_string_literal: true
 
 class SelectAllChildComponent < ActionView::Component::Base
-  def initialize(type:, key:, name: nil)
-    @name = name
+  def initialize(name: nil, key:, target_keyword:)
+    @name = name || "#{target_keyword}_list[]"
     @key = key
-    @type = type
-  end
-
-  def final_name
-    @name ||= @type
-
-    "#{@name}_list[]"
+    @target_keyword = target_keyword
   end
 
   private
 
-    attr_reader :name, :type, :key
+    attr_reader :name, :target_keyword, :key
 end
