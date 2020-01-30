@@ -19,12 +19,12 @@
     <tbody>
     <% @holds_not_ready.each do |hold| %>
       <tr>
-        <td>
+        <td scope="row">
           <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'pending', name: 'hold_list[]' %>
         </td>
-        <th scope="row">
+        <td>
           <%= render BibItemComponent, bibitem: hold %>
-        </th>
+        </td>
         <td><%= render_queue_position hold %></td>
         <td><%= hold.pickup_library_human %></td>
         <td><%= l(hold.fill_by_date, format: :short) %></td>

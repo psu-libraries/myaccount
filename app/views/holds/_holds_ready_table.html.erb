@@ -15,12 +15,12 @@
     <tbody>
     <% @holds_ready.each do |hold| %>
       <tr>
-        <td>
+        <td scope="row">
           <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'ready', name: 'hold_list[]' %>
         </td>
-        <th scope="row">
+        <td>
           <%= render BibItemComponent, bibitem: hold %>
-        </th>
+        </td>
         <td><%= hold.pickup_library_human %></td>
         <td><%= render_expiration_date hold %></td>
       </tr>
