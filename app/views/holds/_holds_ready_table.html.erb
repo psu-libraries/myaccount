@@ -5,8 +5,7 @@
     <tr>
       <th scope="col">
         Select <br>
-        <%= check_box_tag(:ready_holds, '1', false, data: { select_all: 'ready' }) %>
-        <%= label_tag(:ready_holds, 'All') %>
+        <%= render SelectAllComponent, target_keyword: 'ready' %>
       </th>
       <th scope="col">Item</th>
       <th scope="col">Pickup at</th>
@@ -17,7 +16,7 @@
     <% @holds_ready.each do |hold| %>
       <tr>
         <td>
-          <%= render_hold_select hold %>
+          <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'ready', name: 'hold_list[]' %>
         </td>
         <th scope="row">
           <%= render BibItemComponent, bibitem: hold %>

@@ -19,7 +19,7 @@ const selectAll = {
     },
 
     bindCheckboxes(targetKeyword) {
-        const boxesToSelect = document.querySelectorAll(`input[data-checkbox-type=${targetKeyword}`);
+        const boxesToSelect = document.querySelectorAll(`input[data-select-all-target=${targetKeyword}`);
         const controllerCheckbox = document.querySelector(`input[data-select-all=${targetKeyword}]`);
         controllerCheckbox.onclick = function() {
             let checkedStatus = controllerCheckbox.checked;

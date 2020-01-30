@@ -104,7 +104,7 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
 
     it 'displays a renew all select' do
       render
-      expect(rendered).to include '<label for="renew_all">All</label>'
+      expect(rendered).to have_unchecked_field 'renewal_list_'
     end
   end
 end
