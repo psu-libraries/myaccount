@@ -6,14 +6,14 @@ class Hold
 
   PICKUP_LOCATION_REQUESTED = {
     "UP-fPAT": 'Pattee Commons Services Desk',
-    "UP-ARCHIT": 'Architecture Landscape Architecture Library, 111 Stuckeman',
+    "UP-ARCHIT": 'Architecture & Landscape Architecture Library, 111 Stuckeman',
     HERSHEY: 'College of Medicine (Hershey)',
     "UP-MEDICAL": 'College of Medicine (University Park Program)',
     "DSL-CARL": 'Dickinson Law (Carlisle)',
     "DSL-UP": 'Penn State Law (UP)',
-    "UP-EMS": 'Earth &amp; Min Sci Library, 105 Deike',
+    "UP-EMS": 'Earth & Min Sci Library, 105 Deike',
     "UP-ENGIN": 'Engineering Library, 325 Hammond Building',
-    "UP-PAMS": 'Physical &amp; Mathematical Sci Lib, 201 Davey Lab',
+    "UP-PAMS": 'Physical & Mathematical Sci Lib, 201 Davey Lab',
     "UP-OFFICE": 'University Park Faculty/Staff Office Delivery',
     ABINGTON: 'Penn State Abington',
     ALTOONA: 'Penn State Altoona',
