@@ -23,7 +23,7 @@
       <tbody>
       <% @checkouts.each do |checkout| %>
           <tr>
-            <td scope="row">
+            <td>
               <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>
             </td>
             <td>
