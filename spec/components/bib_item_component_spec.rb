@@ -4,20 +4,21 @@ require 'rails_helper'
 
 RSpec.describe BibItemComponent, type: :component do
   let(:hold) { build(:hold) }
+  let(:component) { render_inline(described_class, bibitem: hold).to_html }
 
   it 'renders a bib item with an author' do
     hold.record['fields']['bib']['fields']['title'] = 'A wonderful title'
     hold.record['fields']['bib']['fields']['author'] = 'A wonderful author'
 
-    result = render_inline(described_class, bibitem: hold)
-    expect(result.to_html).to include 'A wonderful title / A wonderful author'
+    # result = render_inline(described_class, bibitem: hold)
+    expect(component).to include 'A wonderful title / A wonderful author'
   end
 
   it 'renders a bib item without an author' do
     hold.record['fields']['bib']['fields']['title'] = 'A wonderful title'
     hold.record['fields']['bib']['fields']['author'] = ''
-    result = render_inline(described_class, bibitem: hold)
-    expect(result.to_html).to include 'A wonderful title'
+
+    expect(component).to include 'A wonderful title'
   end
 
   context 'when bib item type is anything but PALCI' do
@@ -26,8 +27,7 @@ RSpec.describe BibItemComponent, type: :component do
     end
 
     it 'renders a linked title' do
-      result = render_inline(described_class, bibitem: hold)
-      expect(result.to_html).to include 'href'
+      expect(component).to include 'href'
     end
   end
 
@@ -37,8 +37,16 @@ RSpec.describe BibItemComponent, type: :component do
     end
 
     it 'renders an unlinked title' do
-      result = render_inline(described_class, bibitem: hold)
-      expect(result.to_html).not_to include 'href'
+      expect(component).not_to include 'href'
+    end
+  end
+
+  context 'when record passed doesn\'t contain a bib item, for example a fine without a bib item' do
+    it 'doesn\'t render anything' do
+      hold.record['fields']['item'] = nil
+      hold.record['fields']['bib'] = nil
+
+      expect(component).to be_empty
     end
   end
 end

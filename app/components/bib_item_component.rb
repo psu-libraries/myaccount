@@ -25,6 +25,10 @@ class BibItemComponent < ActionView::Component::Base
     CATALOG_URL + @catkey
   end
 
+  def render?
+    @catkey
+  end
+
   private
 
     attr_reader :title, :catkey, :type, :author, :call_number
