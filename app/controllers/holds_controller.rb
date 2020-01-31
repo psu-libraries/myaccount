@@ -2,6 +2,8 @@
 
 class HoldsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authorize_create!, only: :create
+  rescue_from HoldCreateException, with: :deny_create
   rescue_from HoldException, with: :past_date
 
   # Render patron holds
@@ -19,7 +21,7 @@ class HoldsController < ApplicationController
   def update
     params['hold_list'].each do |holdkey|
       @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
-      handle_pickup_change_request if params['pickup_library'].present? && params['pickup_library'] != 'Not set'
+      handle_pickup_change_request if params['pickup_library'].present? && params['pickup_library'].present?
       handle_not_needed_after_request if params['pickup_by_date'].present?
     end
 
@@ -33,6 +35,60 @@ class HoldsController < ApplicationController
     result = symphony_client.get_bib_info params['catkey'], current_user.session_token
     parsed_body = JSON.parse result.body
     @bib = Bib.new(parsed_body, holdable_locations)
+  end
+
+  # Handles placing holds
+  #
+  # POST /holds
+  def create
+    barcodes = [params['barcodes']].flatten.compact
+
+    raise HoldCreateException, 'Error' if barcodes.blank?
+
+    results = barcodes.each_with_object(success: [], error: []) do |barcode, status|
+      hold_args = { pickup_library: params['pickup_library'], pickup_by_date: params['pickup_by_date'] }
+      response = symphony_client.place_hold(patron,
+                                            current_user.session_token,
+                                            barcode,
+                                            hold_args)
+      case response.status
+      when 200
+        status[:success] << { barcode: barcode,
+                              hold_key: JSON.parse(response.body).dig('holdRecord', 'key') }
+      else
+        Rails.logger.error("Place Hold for #{barcode} by #{patron.barcode}: #{response.body}")
+        status[:error] << { barcode: barcode,
+                            error_message: JSON.parse(response.body).dig('messageList')[0].dig('message') }
+      end
+    end
+
+    session[:place_hold_results] = results
+    session[:place_hold_catkey] = params['catkey']
+
+    redirect_to result_path
+  end
+
+  # Handles place hold response
+  #
+  # GET /holds/result
+  def result
+    (redirect_to holds_path) && return if session[:place_hold_results].blank?
+
+    @place_hold_catkey = session[:place_hold_catkey]
+    session.delete(:place_hold_catkey)
+
+    place_hold_results = session[:place_hold_results]
+    session.delete(:place_hold_results)
+
+    processed_results = place_hold_results.each do |status, results|
+      if status == 'success'
+        results.map { |result| result['placed_hold'] = hold_lookup(result['hold_key']) }
+      else
+        results.map { |result| result['failed_hold'] = item_lookup(result['barcode']) }
+      end
+    end
+
+    @place_hold_results = processed_results
   end
 
   # Handles form submission for canceling holds in Symphony
@@ -121,5 +177,37 @@ class HoldsController < ApplicationController
       flash[:error] = t 'myaccount.hold.update_pickup.past_date'
 
       redirect_to holds_path
+    end
+
+    def hold_lookup(hold_key)
+      hold_record = symphony_client.get_hold_info hold_key, current_user.session_token
+      parsed_hold = JSON.parse hold_record.body
+      Hold.new parsed_hold
+    end
+
+    def item_lookup(barcode)
+      item_record = symphony_client.get_item_info barcode, current_user.session_token
+      parsed_item = JSON.parse item_record.body
+      Item.new parsed_item
+    end
+
+    def authorize_create!
+      return unless missing_args?
+
+      raise HoldCreateException, 'Error'
+    end
+
+    def deny_create
+      flash[:error] = if missing_args?
+                        t 'myaccount.hold.place_hold.missing_params'
+                      else
+                        t 'myaccount.hold.place_hold.select_volumes'
+                      end
+
+      redirect_to new_hold_path(catkey: params[:catkey])
+    end
+
+    def missing_args?
+      params['pickup_library'].blank? || params['pickup_by_date'].blank?
     end
 end

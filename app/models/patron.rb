@@ -57,6 +57,10 @@ class Patron
     PATRON_STANDING_ALERTS[standing_code] || ''
   end
 
+  def library
+    fields.dig('library', 'key')
+  end
+
   private
 
     def fields

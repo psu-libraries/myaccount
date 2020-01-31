@@ -75,7 +75,7 @@ class SymphonyClient
         status[:success] << { renewal: checkout, sirsi_response: nil }
       else
         Rails.logger.error("Renewal (#{checkout.item_key}): #{response.body}")
-        status[:error] << { renewal: checkout, sirsi_response: (error_message(response) || '') }
+        status[:error] << { renewal: checkout, sirsi_response: (renewal_error_message(response) || '') }
       end
     end
   end
@@ -91,6 +91,44 @@ class SymphonyClient
                               key: holdkey
                             }
                           })
+  end
+
+  def place_hold(patron, session_token, item_barcode, hold_args)
+    body = {
+      "itemBarcode": item_barcode,
+      "patronBarcode": patron.barcode,
+      "pickupLibrary": {
+        "resource": '/policy/library',
+        "key": hold_args[:pickup_library]
+      },
+      "holdType": 'TITLE',
+      "holdRange": 'SYSTEM',
+      "fillByDate": hold_args[:pickup_by_date]
+    }.compact
+
+    authenticated_request '/circulation/holdRecord/placeHold',
+                          headers: {
+                            'x-sirs-sessionToken': session_token,
+                            'SD-Working-LibraryID': patron.library
+                          },
+                          method: :post,
+                          json: body
+  end
+
+  def get_hold_info(hold_key, session_token)
+    authenticated_request "/circulation/holdRecord/key/#{hold_key}",
+                          headers: { 'x-sirs-sessionToken': session_token },
+                          params: {
+                            includeFields: '*,item{*,bib{title,author},call{*}}'
+                          }
+  end
+
+  def get_item_info(barcode, session_token)
+    get_item_info_path = "/catalog/item/barcode/#{barcode}"
+    authenticated_request get_item_info_path, headers: { 'x-sirs-sessionToken': session_token },
+                                              params: {
+                                                includeFields: '*,bib{title,author},call{*}'
+                                              }
   end
 
   def get_bib_info(catkey, session_token)
@@ -126,10 +164,14 @@ class SymphonyClient
     end
 
     def error_message(response)
+      JSON.parse(response.body).dig('messageList')[0].dig('message')
+    end
+
+    def renewal_error_message(response)
       return if response.status.ok?
 
       error_code = JSON.parse(response.body).dig('messageList')[0].dig('code')
-      RENEWAL_CUSTOM_MESSAGELIST[error_code] || JSON.parse(response.body).dig('messageList')[0].dig('message')
+      RENEWAL_CUSTOM_MESSAGELIST[error_code] || error_message(response)
     rescue JSON::ParserError
       nil
     end

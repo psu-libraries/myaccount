@@ -5,7 +5,7 @@ class Hold
   include BibRecord
 
   PICKUP_LOCATION_REQUESTED = {
-    "UP-fPAT": 'Pattee Commons Services Desk',
+    "UP-PAT": 'Pattee Commons Services Desk',
     "UP-ARCHIT": 'Architecture & Landscape Architecture Library, 111 Stuckeman',
     HERSHEY: 'College of Medicine (Hershey)',
     "UP-MEDICAL": 'College of Medicine (University Park Program)',

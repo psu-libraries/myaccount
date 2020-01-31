@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe HoldsController, type: :controller do
-  let(:mock_patron) { instance_double(Patron) }
+  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
   let(:holds) do
     [
       instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book', call_number: 'ABC123',
@@ -28,7 +28,8 @@ RSpec.describe HoldsController, type: :controller do
     let(:user) do
       { username: 'zzz123',
         name: 'Zeke',
-        patron_key: '1234567' }
+        patron_key: '1234567',
+        session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
     end
 
     before do
@@ -167,6 +168,193 @@ RSpec.describe HoldsController, type: :controller do
         post :new, params: { catkey: '1' }
 
         expect(assigns(:bib).holdables.count).to eq 8
+      end
+    end
+
+    describe '#create' do
+      let(:place_hold_params) {
+        { catkey: '1',
+          pickup_library: 'UP_PAT',
+          pickup_by_date: '02/02/2020' }
+      }
+
+      let(:place_hold_response) { instance_double(HTTP::Response) }
+      let(:mock_client) do
+        instance_double(SymphonyClient, place_hold: place_hold_response)
+      end
+
+      before do
+        allow(SymphonyClient).to receive(:new).and_return(mock_client)
+      end
+
+      context 'when placing hold to a not holdable item that has no volumes' do
+        let(:error_response) { { "messageList": [{ 'message': 'User already has a hold on this material' }] } }
+
+        before do
+          place_hold_params['barcodes'] = 'not_holdable_barcode'
+          allow(place_hold_response).to receive(:status).and_return 500
+          allow(place_hold_response).to receive(:body).and_return error_response.to_json
+        end
+
+        it 'sets the barcode and an error message in session' do
+          post :create, params: place_hold_params
+
+          expect(session[:place_hold_results][:error].first).to include(
+            barcode: 'not_holdable_barcode',
+            error_message: 'User already has a hold on this material'
+          )
+        end
+
+        it 'sets the catkey in session' do
+          post :create, params: place_hold_params
+
+          expect(session[:place_hold_catkey]).to eq '1'
+        end
+
+        it 'redirects to result page' do
+          post :create, params: place_hold_params
+
+          expect(response).to redirect_to result_path
+        end
+      end
+
+      context 'when placing hold to a holdable item that has no volumes' do
+        let(:success_response) {
+          { "holdRecord": { "key": 'a_hold_key' } }
+        }
+
+        before do
+          place_hold_params['barcodes'] = 'a_holdable_barcode'
+          allow(place_hold_response).to receive(:status).and_return 200
+          allow(place_hold_response).to receive(:body).and_return success_response.to_json
+        end
+
+        it 'sets the barcode and the hold key in session' do
+          post :create, params: place_hold_params
+
+          expect(session[:place_hold_results][:success].first).to include(
+            barcode: 'a_holdable_barcode',
+            hold_key: 'a_hold_key'
+          )
+        end
+
+        it 'sets catkey in session' do
+          post :create, params: place_hold_params
+
+          expect(session[:place_hold_catkey]).to eq '1'
+        end
+
+        it 'redirects to result page' do
+          post :create, params: place_hold_params
+
+          expect(response).to redirect_to result_path
+        end
+      end
+
+      context 'when placing hold to a holdable item with volumes' do
+        let(:mock_client) { instance_double(SymphonyClient) }
+        let(:place_hold_response_1) { instance_double(HTTP::Response, status: 200, body: success_response_1) }
+        let(:place_hold_response_2) { instance_double(HTTP::Response, status: 200, body: success_response_2) }
+        let(:place_hold_response_3) { instance_double(HTTP::Response, status: 400, body: error_response) }
+        let(:success_response_1) { { "holdRecord": { "key": 'hold_key_1' } }.to_json }
+        let(:success_response_2) { { "holdRecord": { "key": 'hold_key_2' } }.to_json }
+        let(:error_response) { { "messageList": [{ 'message': 'User already has a hold on this material' }] }.to_json }
+
+        let(:place_hold_results) { {
+          success: [{ barcode: 'holdable_barcode_1', hold_key: 'hold_key_1' },
+                    { barcode: 'holdable_barcode_2', hold_key: 'hold_key_2' }],
+          error: [{ barcode: 'not_holdable_barcode', error_message: 'User already has a hold on this material' }]
+        } }
+
+        before do
+          allow(mock_client).to receive(:place_hold)
+            .and_return(place_hold_response_1, place_hold_response_2, place_hold_response_3)
+          place_hold_params['barcodes'] = ['holdable_barcode_1', 'holdable_barcode_2', 'not_holdable_barcode']
+        end
+
+        it 'sets the barcodes and the hold keys in session' do
+          post :create, params: place_hold_params
+
+          expect(session[:place_hold_results]).to eq place_hold_results
+        end
+
+        it 'sets catkey in session' do
+          post :create, params: place_hold_params
+
+          expect(session[:place_hold_catkey]).to eq '1'
+        end
+
+        it 'redirects to result page' do
+          post :create, params: place_hold_params
+
+          expect(response).to redirect_to result_path
+        end
+      end
+
+      context 'when placing hold with missing barcode params' do
+        it 'redirects to new page' do
+          post :create, params: place_hold_params
+
+          expect(response).to redirect_to new_hold_path(catkey: '1')
+        end
+      end
+
+      context 'when placing hold with other missing params' do
+        it 'redirects to new page' do
+          post :create, params: { catkey: '1' }
+
+          expect(response).to redirect_to new_hold_path(catkey: '1')
+        end
+      end
+    end
+
+    describe '#result' do
+      let(:hold_info_response) { HOLD_LOOKUP_RAW_JSON.to_json }
+      let(:item_info_response) { ITEM_LOOKUP_RAW_JSON.to_json }
+      let(:hold_info) { instance_double(HTTP::Response, status: 200, body: hold_info_response) }
+      let(:item_info) { instance_double(HTTP::Response, status: 200, body: item_info_response) }
+      let(:mock_client) do
+        instance_double(SymphonyClient, get_hold_info: hold_info, get_item_info: item_info)
+      end
+      let(:results) { {
+        success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }],
+        error: [{ barcode: 'not_holdable_barcode', error_message: 'User already has a hold on this material' }]
+      }.with_indifferent_access }
+
+      before do
+        allow(SymphonyClient).to receive(:new).and_return(mock_client)
+      end
+
+      it 'redirects to holds page if empty results' do
+        get :result
+
+        expect(response).to redirect_to holds_path
+      end
+
+      it 'assigns place hold catkey' do
+        get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
+
+        expect(assigns(:place_hold_catkey)).to eq '1'
+      end
+
+      it 'assigns place hold results for both placed and failed holds' do
+        get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
+
+        expect(assigns(:place_hold_results).count).to eq 2
+      end
+
+      it 'assigns placed holds results correctly' do
+        get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
+
+        placed_hold = assigns(:place_hold_results)[:success].first[:placed_hold]
+        expect(placed_hold.record.first['key']).to eq 'a_hold_key'
+      end
+
+      it 'assigns failed holds results correctly' do
+        get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
+
+        failed_hold = assigns(:place_hold_results)[:error].first[:failed_hold]
+        expect(failed_hold.record.first['fields']['barcode']).to eq 'not_holdable_barcode'
       end
     end
   end

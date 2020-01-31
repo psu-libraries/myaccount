@@ -63,3 +63,8 @@ en:
           pickup_choose_text: --Please choose a pickup location--
           success_html: <span class="font-weight-bold">Success!</span> "%{bib_summary}" pickup location was updated.<br>
           error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" pickup location was not updated. Contact your campus library if you need assistance.<br>
+        place_hold:
+          missing_params: To place a hold "Pickup At library and "Not Needed After" date must be filled in.
+          select_volumes: Please select a volume to place a hold.
+          success_html: <small class="text-secondary">For placed hold(s), you will receive a library notice once items are available for pick up. On-shelf items generally arrive within 2-3 weekdays. Items checked out to other borrowers will be recalled. Recalled items take a minimum of 10 days to arrive at your pickup location.</small>
+          error_html: <small class="text-secondary">We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a></small>
