@@ -19,7 +19,7 @@
     <tbody>
     <% @holds_not_ready.each do |hold| %>
       <tr>
-        <td scope="row">
+        <td>
           <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'pending', name: 'hold_list[]' %>
         </td>
         <td>
