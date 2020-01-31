@@ -10,7 +10,6 @@ RSpec.describe BibItemComponent, type: :component do
     hold.record['fields']['bib']['fields']['title'] = 'A wonderful title'
     hold.record['fields']['bib']['fields']['author'] = 'A wonderful author'
 
-    # result = render_inline(described_class, bibitem: hold)
     expect(component).to include 'A wonderful title / A wonderful author'
   end
 
