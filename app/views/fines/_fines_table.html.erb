@@ -14,9 +14,9 @@
   <tbody>
   <% @fines.each do |fine| %>
     <tr>
-      <th scope="row">
+      <td>
         <%= render BibItemComponent, bibitem: fine %>
-      </th>
+      </td>
       <td><%= fine.author %></td>
       <td><%= fine.status_human %></td>
       <td><%= number_to_currency fine.owed_amount %></td>

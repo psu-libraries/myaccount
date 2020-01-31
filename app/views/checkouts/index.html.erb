@@ -1,58 +1,20 @@
 <h1>Checkouts/Renewals</h1>
 
-<p>
-  <div class="ml-4">Total Checked Out: <%= @checkouts.length %></div>
-
-  <% count = @checkouts.select(&:recalled?).length %>
-  <% if count.positive? %>
-      <div class="ml-4">Recalled: <%= count %></div>
-  <% end %>
-
-  <% count = @checkouts.select(&:overdue?).length %>
-  <% if count.positive? %>
-      <div class="ml-4">Overdue: <%= count %></div>
-  <% end %>
-</p>
-
 <% if @checkouts.length.positive? %>
-  <%= form_tag renewals_path, method: :post do %>
-    <table class="table">
-      <caption>Checkouts</caption>
-      <thead>
-      <tr>
-        <th scope="col">
-          <%= render_renew_button %>
-          <%= render SelectAllComponent, target_keyword: 'renewal' %>
-        </th>
-        <th scope="col">Item</th>
-        <th scope="col">Format</th>
-        <th scope="col">Times Renewed</th>
-        <th scope="col">Due Date</th>
-        <th scope="col">Status</th>
-        <th scope="col">You Owe</th>
-      </tr>
-      </thead>
-      <tfoot>
-      <tr>
-        <th scope="col" colspan="7"><%= render_renew_button %></th>
-      </tr>
-      </tfoot>
-      <tbody>
-      <% @checkouts.each do |checkout| %>
-          <tr>
-            <td scope="row">
-              <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>
-            </td>
-            <td><%= render BibItemComponent, bibitem: checkout %></td>
-            <td><%= checkout.item_type_human %></td>
-            <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
-            <td><%= render_checkout_due_date checkout %></td>
-            <td><%= render_checkout_status checkout %></td>
-            <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
-            </td>
-          </tr>
+    <p>
+      <div class="ml-4">Total Checked Out: <%= @checkouts.length %></div>
+
+      <% count = @checkouts.select(&:recalled?).length %>
+      <% if count.positive? %>
+          <div class="ml-4">Recalled: <%= count %></div>
       <% end %>
-      </tbody>
-    </table>
-    <% end %>
+
+      <% count = @checkouts.select(&:overdue?).length %>
+      <% if count.positive? %>
+          <div class="ml-4">Overdue: <%= count %></div>
+      <% end %>
+    </p>
+    <%= render 'checkouts/checkouts_table' %>
+<% else %>
+    <p>You have no checkouts at this time.</p>
 <% end %>
