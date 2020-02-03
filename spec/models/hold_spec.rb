@@ -37,6 +37,11 @@ RSpec.describe Hold, type: :model do
     expect(hold.catkey).to eq '123456'
   end
 
+  it 'has a barcode' do
+    hold.record['fields']['itemList'] = [{'fields' => {'barcode' => '91919191919'}}]
+    expect(hold.barcode).to eq '91919191919'
+  end
+
   it 'has a pickup library set that can be understood by humans' do
     hold.record['fields']['pickupLibrary']['key'] = 'UP-PAT'
     expect(hold.pickup_library_human).to eq 'Pattee Library and Paterno Library Stacks'

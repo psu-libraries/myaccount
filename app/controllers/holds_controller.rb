@@ -26,6 +26,16 @@ class HoldsController < ApplicationController
     redirect_to holds_path
   end
 
+  # Prepares the form for creating a new hold
+  #
+  # GET /holds/new
+  def new
+    result = symphony_client.get_bib_info params['catkey'], current_user.session_token
+    parsed_body = JSON.parse result.body
+    @bib = Bib.new(parsed_body)
+    @new_holds = Bib::generate_holds(parsed_body)
+  end
+
   # Handles form submission for canceling holds in Symphony
   #
   # DELETE /holds
