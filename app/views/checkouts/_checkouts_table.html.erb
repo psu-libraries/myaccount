@@ -8,7 +8,6 @@
           <%= render SelectAllComponent, target_keyword: 'renewal' %>
         </th>
         <th scope="col">Item</th>
-        <th scope="col">Format</th>
         <th scope="col">Times Renewed</th>
         <th scope="col">Due Date</th>
         <th scope="col">Status</th>
@@ -29,7 +28,6 @@
             <td>
               <%= render BibItemComponent, bibitem: checkout %>
             </td>
-            <td><%= checkout.item_type_human %></td>
             <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
             <td><%= render_checkout_due_date checkout %></td>
             <td><%= render_checkout_status checkout %></td>
