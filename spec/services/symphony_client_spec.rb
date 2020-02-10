@@ -124,4 +124,24 @@ RSpec.describe SymphonyClient do
       expect(renew_response).to include error: [error_response]
     end
   end
+
+  describe '#get_bib_info' do
+    before do
+      stub_request(:get, "#{Settings.symws.url}/catalog/bib/key/12345?includeFields=*,callList%7B*,itemList%7B*%7D%7D")
+          .to_return(status: 200, body: '{"resource"=>"/catalog/bib"}', headers: {})
+    end
+
+    let(:user) do
+      User.new(username: 'zzz123',
+               name: 'Zeke',
+               patron_key: 'some_patron_key',
+               session_token: 'chuckyCheese')
+    end
+
+    it 'returns the Symphony Client "catalog bib" resource type' do
+      bib_response = client.get_bib_info '12345', user.session_token
+
+      expect(bib_response.body.to_str).to include('/catalog/bib')
+    end
+  end
 end
