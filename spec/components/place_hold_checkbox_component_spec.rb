@@ -3,13 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldCheckboxComponent, type: :component do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:barcode) { 12 }
+  let(:call_number) { 'A1' }
+  let(:pickup_library_human) { 'Library' }
 
-  # it "renders something useful" do
-  #   expect(
-  #     render_inline(described_class, attr: "value") { "Hello, components!" }.css("p").to_html
-  #   ).to include(
-  #     "Hello, components!"
-  #   )
-  # end
+  it 'renders when there is a barcode' do
+    component = render_inline(described_class,
+                              barcode: barcode,
+                              call_number: call_number,
+                              pickup_library: pickup_library_human).to_html
+    expect(component).to include 'input'
+  end
+
+  it 'does not render when there is not a barcode' do
+    barcode = nil
+    component = render_inline(described_class,
+                              barcode: barcode, call_number: call_number,
+                              pickup_library: pickup_library_human).to_html
+    expect(component).to be_empty
+  end
 end
