@@ -6,13 +6,13 @@ class Bib
   attr_reader :body
 
   def initialize(body)
-    @body = body.extend Hashie::Extensions::DeepFind
+    @body = body
   end
 
   def self.generate_holds(body)
-    items = body.deep_select 'callList'
+    items = body.dig('fields', 'callList')
 
-    items.first.map { |item_info| Hold.new item_info }
+    items.map { |item_info| Hold.new item_info }
   end
 
   private

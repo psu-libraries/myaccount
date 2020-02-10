@@ -3,15 +3,17 @@
 class PlaceHoldHiddenInputComponent < ActionView::Component::Base
   def initialize(bib:)
     @bib = bib
-    @bib.body.extend Hashie::Extensions::DeepFind
   end
 
   def render?
-    !@bib.body.deep_find 'volumetric'
+    !@bib.body.dig('fields', 'callList').try(:first).dig('fields', 'volumetric')
   end
 
   def barcode
-    @bib.body.deep_find 'barcode'
+    @bib.body.dig('fields', 'callList')
+      .try(:first)
+      .dig('fields', 'itemList')
+      .map { |i| i.dig('fields', 'barcode') }.sample
   end
 
   private

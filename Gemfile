@@ -37,5 +37,3 @@ group :development, :test do
   gem 'webdrivers', '~> 4.0'
   gem 'webmock'
 end
-
-gem 'hashie', '~> 4.1'
