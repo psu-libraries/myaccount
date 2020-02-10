@@ -148,5 +148,21 @@ RSpec.describe HoldsController, type: :controller do
         end
       end
     end
+
+    describe '#new' do
+      let(:bib) { build(:bib_with_volumetrics) }
+
+      before do
+        stub_request(:get, "https://example.com/symwsbc/catalog/bib/key/1?includeFields=*,callList%7B*,itemList%7B*%7D%7D").
+            to_return(status: 200, body: bib.body.to_json, headers: {})
+      end
+
+      it 'sends requests to the web service when the web service supplied data first' do
+        post :new, params: { catkey: '1' }
+
+        expect(assigns(:new_holds).count).to eq 8
+      end
+
+    end
   end
 end

@@ -2,9 +2,251 @@
 
 FactoryBot.define do
   factory :bib do
-    body {{"resource"=>"/catalog/bib", "key"=>"12747187", "fields"=>{"shadowed"=>false, "author"=>"Hill Street blues (Television program)", "titleControlNumber"=>"ocn880677198", "catalogDate"=>nil, "catalogFormat"=>{"resource"=>"/policy/catalogFormat", "key"=>"VM"}, "modifiedDate"=>"2018-08-04", "bib"=>{"standard"=>"MARC21", "type"=>"BIB", "leader"=>"     Ugm a22     Ii 45Q0", "fields"=>[{"tag"=>"001", "subfields"=>[{"code"=>"_", "data"=>"ocn880677198"}]}, {"tag"=>"003", "subfields"=>[{"code"=>"_", "data"=>"OCoLC"}]}, {"tag"=>"005", "subfields"=>[{"code"=>"_", "data"=>"20140731084133.0"}]}, {"tag"=>"007", "subfields"=>[{"code"=>"_", "data"=>"vd cvaizs"}]}, {"tag"=>"008", "subfields"=>[{"code"=>"_", "data"=>"140529t20142001cau000 e          vleng"}]}, {"tag"=>"040", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"GP5"}, {"code"=>"b", "data"=>"eng"}, {"code"=>"e", "data"=>"rda"}, {"code"=>"c", "data"=>"GP5"}, {"code"=>"d", "data"=>"OCLCO"}, {"code"=>"d", "data"=>"NUI"}, {"code"=>"d", "data"=>"EMU"}, {"code"=>"d", "data"=>"STF"}]}, {"tag"=>"024", "inds"=>"10", "subfields"=>[{"code"=>"a", "data"=>"826663148268"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14826"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(set)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14827 (DVD 14827--DVD 14830)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 1)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14831 (DVD 14831--DVD 14834)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 2)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14835 (DVD 14835--DVD 14839)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 3)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14840 (DVD 14840--DVD 14844)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 4)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14845 (DVD 14845--DVD 14849)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 5)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14850 (DVD 14850--DVD 14854)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 6)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14855 (DVD 14855--DVD 14856)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 7, discs 1-3)"}]}, {"tag"=>"028", "inds"=>"42", "subfields"=>[{"code"=>"a", "data"=>"SF 14855 (DVD 14909--DVD 14912)"}, {"code"=>"b", "data"=>"Shout! Factory"}, {"code"=>"q", "data"=>"(season 7, discs 4-5 and bonus features disc)"}]}, {"tag"=>"035", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"(OCoLC)880677198"}]}, {"tag"=>"041", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"eng"}, {"code"=>"j", "data"=>"eng"}]}, {"tag"=>"043", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"n-us---"}]}, {"tag"=>"046", "inds"=>"  ", "subfields"=>[{"code"=>"k", "data"=>"1981"}, {"code"=>"l", "data"=>"1987"}]}, {"tag"=>"130", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Hill Street blues (Television program)"}]}, {"tag"=>"245", "inds"=>"00", "subfields"=>[{"code"=>"a", "data"=>"Hill Street blues."}, {"code"=>"p", "data"=>"The complete series /"}, {"code"=>"c", "data"=>"MTM Enterprises."}]}, {"tag"=>"257", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"United States"}, {"code"=>"2", "data"=>"naf"}]}, {"tag"=>"264", "inds"=>" 1", "subfields"=>[{"code"=>"a", "data"=>"Los Angeles, CA :"}, {"code"=>"b", "data"=>"Shout! Factory,"}, {"code"=>"c", "data"=>"[2014]"}]}, {"tag"=>"264", "inds"=>" 4", "subfields"=>[{"code"=>"c", "data"=>"©2001"}]}, {"tag"=>"300", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"34 videodiscs (approximately 74 hrs.) :"}, {"code"=>"b", "data"=>"sound, color ;"}, {"code"=>"c", "data"=>"4 3/4 in. +"}, {"code"=>"e", "data"=>"1 pamphlet (23 pages : color illustrations ; 19 cm)"}]}, {"tag"=>"336", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"two-dimensional moving image"}, {"code"=>"b", "data"=>"tdi"}, {"code"=>"2", "data"=>"rdacontent"}]}, {"tag"=>"337", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"video"}, {"code"=>"b", "data"=>"v"}, {"code"=>"2", "data"=>"rdamedia"}]}, {"tag"=>"338", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"videodisc"}, {"code"=>"b", "data"=>"vd"}, {"code"=>"2", "data"=>"rdacarrier"}]}, {"tag"=>"538", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"DVD, region 1, NTSC; Dolby Digital 2.0."}]}, {"tag"=>"546", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"In English; optional closed-captions in English."}]}, {"tag"=>"511", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Daniel J. Travanti, Veronica Hamel, Michael Conrad, Barbara Babcock, Taurean Blacque, Michael Clohessy, Jon Cypher, Charles Haid, Mimi Kuzyk, Kiel Martin, Robert Hirschfeld, Barbara Bosson, Michael Warren, Bruce Weitz, James B. Sikking, Joe Spano, Rene Enriquez, Betty Thomas."}]}, {"tag"=>"508", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Theme music, Mike Post."}]}, {"tag"=>"500", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Cataloged from container."}]}, {"tag"=>"500", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Created by Steven Bochco and Michael Kozoll."}]}, {"tag"=>"500", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Originally broadcast on television from 1981-1987."}]}, {"tag"=>"500", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Bonus features: The history of Hill Street; interviews with the officers; writers on the hill; roll call, looking back on Hill Street blues; gag reel; and four episode commentaries."}]}, {"tag"=>"520", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"The ground-breaking, critically acclaimed series Hill Street Blues is set in Hill Street Police Station; the heart of a racially torn, crime-ridden precinct of an unidentified urban metropolis where the peace is kept thanks to a tenuous trust between the police and the people they protect."}]}, {"tag"=>"521", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Not rated : for all audiences."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 1: disc 1. Hill Street station. Presidential fever. Politics as usual. Can WW III be an attitude? -- disc 2. Double jeopardy. Film at eleven. Choice cut. Up in arms -- disc 3. Your kind, my kind, human kind. Gatorbait. Life, death, eternity, etc. I never promised you a rose, Marvin -- disc 4. Fecund hand rose. Rites of spring. Jungle madness."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 2: disc 1. Hearts and minds. Blood money. he last white man on East Ferry Avenue.The second oldest profession -- disc 2. Fruits of the poisonous tree. Cranky streets. Chipped beef. The world according to freedom. Pestolozzi's revenge -- disc 3.The spy who came in from Delgado. Freedom's last stand. Of mouse and man. Zen and the art of law enforcement -- disc 4. The young, the beautiful and the degraded. Some like it hot-wired. Personal foul. The shooter. Invasion of the third world body snatchers."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 3: disc 1. Trial by fury. Domestic beef. Heat rash. Rain of terror -- disc 2. Officer of the year. Stan the man. Little boil blue. Requiem for a hairbag. A hair of the dog -- disc 3. Phantom of the Hill. No body's perfect. Santaclaustrophobia. Gung ho -- disc 4. Moon over Uranus. Moon over Uranus: the sequel. Moon over Uranus: the final legacy. The belles of St. Mary's. Life in the minors -- disc 5. Eugene's comedy empire strikes back. Spotlight on Rico. Buddy, can you spare a heart? Hill of beans."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 4: disc 1. Here's adventure, here's romance. Ba-bing, ba-bing. Long arm of the law. Death by Kiki -- disc 2. Doris in Wonderland. Praise Dilaudid. Goodbye, Mr. Scripps. Midway to what. Honk if you're a goose -- disc 3. The Russians are coming. Ratman and Bobbin. Nichols from heaven. Fuchs me? Fuchs you! -- disc 4. Grace under pressure. The other side of oneness. Parting is such sweep sorrow. The end of Logan's Run. The Count of Monty Tasco -- disc 5. Nutcracker Suite. Hair apparent. Lucky ducks. Eva's brawn."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 5: disc 1. Mayo, hold the pickle. Watt a way to go. Rookie nookie. Fowl play. Bangladesh slowly -- disc 2. Ewe and me, babe. Blues for Mr. Green. Fuched again. Low blow -- disc 3. The rise and fall of Paul the Wall. Last chance salon. Intestinal fortitude. Of human garbage. Dr. Hoof and Mouth -- disc 4. Davenport in a storm. Washington deceased. Passage to Libya. El Capitan -- disc 5. The life and time of Dominic Florio Jr. G.Q. Queen for a day. You're in Alice's. Grin and bear it."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 6: disc 1. Blues in the night. Hacked to pieces. Seoul on ice. In the belly of the bus -- disc 2. Somewhere over the Rambo. Oh, you kid. An oy for an oy. Fathers and Huns. What are friends for? -- disc 3. The virgin and the turkey. Two easy pieces. Say it as it plays. Das blues -- disc 4. Scales of justice. I want my Hill Street blues. Remembrance of hits past. Larry of Arabia. Iced Coffey -- disc 5. Jagga the Hunk. Look homeward, ninja. Slum enchanted evening. Come and get it."}]}, {"tag"=>"505", "inds"=>"0 ", "subfields"=>[{"code"=>"a", "data"=>"Season 7: disc 1.The suitcase. A case of Klapp. The best defense. Bald ambition -- disc 2. I come on my knees. Say uncle. Amazing Grace. Falling from Grace. Fathers and guns -- disc 3. More skinned against that skinning. She's so Fein. A wasted weekend. City of refuse -- disc 4. Der Roachenkavalier. Norman Conquest. Sorry, wrong number. The cookie crumbles. Dogsbreath afternoon -- dissc 5. Days of swine and roses. The runner falls on his kisser. A pound of flesh. It ain't over till it's over."}]}, {"tag"=>"650", "inds"=>" 0", "subfields"=>[{"code"=>"a", "data"=>"Police"}, {"code"=>"z", "data"=>"United States"}, {"code"=>"v", "data"=>"Drama."}]}, {"tag"=>"651", "inds"=>" 0", "subfields"=>[{"code"=>"a", "data"=>"United States"}, {"code"=>"x", "data"=>"Social conditions"}, {"code"=>"y", "data"=>"20th century"}, {"code"=>"v", "data"=>"Drama."}]}, {"tag"=>"650", "inds"=>" 0", "subfields"=>[{"code"=>"a", "data"=>"Crime"}, {"code"=>"z", "data"=>"United States"}, {"code"=>"v", "data"=>"Drama."}]}, {"tag"=>"655", "inds"=>" 7", "subfields"=>[{"code"=>"a", "data"=>"Television cop shows."}, {"code"=>"2", "data"=>"lcgft"}]}, {"tag"=>"655", "inds"=>" 7", "subfields"=>[{"code"=>"a", "data"=>"Fiction television programs."}, {"code"=>"2", "data"=>"lcgft"}]}, {"tag"=>"655", "inds"=>" 7", "subfields"=>[{"code"=>"a", "data"=>"Television series."}, {"code"=>"2", "data"=>"lcgft"}]}, {"tag"=>"655", "inds"=>" 7", "subfields"=>[{"code"=>"a", "data"=>"Video recordings for the hearing impaired."}, {"code"=>"2", "data"=>"lcgft"}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Bochco, Steven,"}, {"code"=>"d", "data"=>"1943-"}, {"code"=>"e", "data"=>"creator."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Kozoll, Michael,"}, {"code"=>"e", "data"=>"creator."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Travanti, Daniel J.,"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Hamel, Veronica,"}, {"code"=>"d", "data"=>"1943-"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Conrad, Michael,"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Babcock, Barbara,"}, {"code"=>"d", "data"=>"1937-"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Weitz, Bruce,"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Blacque, Taurean,"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Thomas, Betty,"}, {"code"=>"d", "data"=>"1948-"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Spano, Joe,"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Sikking, James,"}, {"code"=>"d", "data"=>"1934-"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"700", "inds"=>"1 ", "subfields"=>[{"code"=>"a", "data"=>"Bosson, Barbara,"}, {"code"=>"e", "data"=>"actor."}]}, {"tag"=>"710", "inds"=>"2 ", "subfields"=>[{"code"=>"a", "data"=>"MTM Enterprises."}]}, {"tag"=>"710", "inds"=>"2 ", "subfields"=>[{"code"=>"a", "data"=>"Shout! Factory (Firm)"}]}, {"tag"=>"994", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"Z0"}, {"code"=>"b", "data"=>"UPM"}]}, {"tag"=>"948", "inds"=>"  ", "subfields"=>[{"code"=>"h", "data"=>"NO HOLDINGS IN UPM - 6 OTHER HOLDINGS"}]}, {"tag"=>"596", "inds"=>"  ", "subfields"=>[{"code"=>"a", "data"=>"BEHREND"}]}]}, "systemModifiedDate"=>"2020-02-04T15:46:00-05:00", "title"=>"Hill Street blues. The complete series", "callList"=>[{"resource"=>"/catalog/call", "key"=>"12747187:8", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"bklet.", "dispCallNumber"=>"PN1992.77.H485 2014 DVD bklet.", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:8:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:8"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108494", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:1", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.1", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.1", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:1:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:1"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000075504342", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:2", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.2", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.2", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:2:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:2"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108531", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:3", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.3", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.3", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:3:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:3"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108562", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:4", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.4", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.4", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:4:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:4"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108555", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:5", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.5", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.5", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:5:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:5"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108548", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:6", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.6", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.6", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:6:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:6"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108524", "circulate"=>false, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}, {"resource"=>"/catalog/call", "key"=>"12747187:7", "fields"=>{"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "callNumber"=>"PN1992.77.H485 2014 DVD", "shadowed"=>false, "volumetric"=>"v.7", "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.7", "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "itemList"=>[{"resource"=>"/catalog/item", "key"=>"12747187:7:1", "fields"=>{"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:7"}, "mediaDesk"=>nil, "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"}, "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"}, "shadowed"=>false, "homeLocation"=>{"resource"=>"/policy/location", "key"=>"MEDIA-BD"}, "copyNumber"=>1, "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"}, "barcode"=>"000077108500", "circulate"=>true, "currentLocation"=>{"resource"=>"/policy/location", "key"=>"INTRANSIT"}}}], "classification"=>{"resource"=>"/policy/classification", "key"=>"LC"}}}], "createDate"=>"2014-07-16"}}}
 
-    initialize_with { new(attributes[:body]) }
+    factory :bib_with_volumetrics do
+      body {
+        {"resource"=>"/catalog/bib",
+         "key"=>"12747187",
+         "fields"=>
+             {"shadowed"=>false,
+              "author"=>"Hill Street blues (Television program)",
+              "titleControlNumber"=>"ocn880677198",
+              "catalogDate"=>nil,
+              "catalogFormat"=>{"resource"=>"/policy/catalogFormat", "key"=>"VM"},
+              "modifiedDate"=>"2018-08-04",
+              "systemModifiedDate"=>"2020-02-04T15:46:00-05:00",
+              "title"=>"Hill Street blues. The complete series",
+              "callList"=>
+                  [{"resource"=>"/catalog/call",
+                    "key"=>"12747187:8",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"bklet.",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD bklet.",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:8:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:8"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108494",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:1",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.1",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.1",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:1:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:1"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000075504342",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:2",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.2",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.2",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:2:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:2"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108531",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:3",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.3",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.3",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:3:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:3"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108562",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:4",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.4",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.4",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:4:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:4"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108555",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:5",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.5",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.5",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:5:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:5"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108548",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:6",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.6",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.6",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:6:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:6"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108524",
+                                    "circulate"=>false,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"CHECKEDOUT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}},
+                   {"resource"=>"/catalog/call",
+                    "key"=>"12747187:7",
+                    "fields"=>
+                        {"library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                         "callNumber"=>"PN1992.77.H485 2014 DVD",
+                         "shadowed"=>false,
+                         "volumetric"=>"v.7",
+                         "dispCallNumber"=>"PN1992.77.H485 2014 DVD v.7",
+                         "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                         "itemList"=>
+                             [{"resource"=>"/catalog/item",
+                               "key"=>"12747187:7:1",
+                               "fields"=>
+                                   {"call"=>{"resource"=>"/catalog/call", "key"=>"12747187:7"},
+                                    "mediaDesk"=>nil,
+                                    "itemType"=>{"resource"=>"/policy/itemType", "key"=>"VIDEO"},
+                                    "library"=>{"resource"=>"/policy/library", "key"=>"BEHREND"},
+                                    "shadowed"=>false,
+                                    "homeLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"MEDIA-BD"},
+                                    "copyNumber"=>1,
+                                    "bib"=>{"resource"=>"/catalog/bib", "key"=>"12747187"},
+                                    "barcode"=>"000077108500",
+                                    "circulate"=>true,
+                                    "currentLocation"=>
+                                        {"resource"=>"/policy/location", "key"=>"INTRANSIT"}}}],
+                         "classification"=>
+                             {"resource"=>"/policy/classification", "key"=>"LC"}}}],
+              "createDate"=>"2014-07-16"}}
+      }
+
+
+      initialize_with { new(attributes[:body]) }
+    end
   end
 end
 
