@@ -2,5 +2,5 @@
 <% items.each do |item| %>
   <%= render PlaceHoldCheckboxComponent, barcode: item.barcode,
                                          call_number: item.call_number,
-                                         pickup_library: item.pickup_library_human %>
+                                         pickup_library: item.pickup_library_human %>  <br>
 <% end %>
