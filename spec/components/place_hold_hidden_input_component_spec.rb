@@ -8,7 +8,7 @@ RSpec.describe PlaceHoldHiddenInputComponent, type: :component do
   let(:component) { render_inline(described_class, bib: bib_without_volumetrics).to_html }
 
   it 'renders when volumetrics aren\'t detected' do
-    expect(component).to_not be_empty
+    expect(component).not_to be_empty
   end
 
   it 'does not render when volumetrics are detected' do

@@ -38,7 +38,7 @@ RSpec.describe Hold, type: :model do
   end
 
   it 'has a barcode' do
-    hold.record['fields']['itemList'] = [{'fields' => {'barcode' => '91919191919'}}]
+    hold.record['fields']['itemList'] = [{ 'fields' => { 'barcode' => '91919191919' } }]
     expect(hold.barcode).to eq '91919191919'
   end
 

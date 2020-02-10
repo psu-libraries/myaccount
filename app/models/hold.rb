@@ -99,7 +99,7 @@ class Hold
   end
 
   def barcode
-    fields.dig('itemList').try(:first)&.dig('fields','barcode')
+    fields.dig('itemList').try(:first)&.dig('fields', 'barcode')
   end
 
   def patron_key

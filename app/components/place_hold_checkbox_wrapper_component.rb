@@ -6,7 +6,7 @@ class PlaceHoldCheckboxWrapperComponent < ActionView::Component::Base
   end
 
   def render?
-    !!@items.detect { |i| i.record['fields']['volumetric'].present? }
+    !!@items.find { |i| i.record['fields']['volumetric'].present? }
   end
 
   private

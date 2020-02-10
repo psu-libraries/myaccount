@@ -1,5 +1,6 @@
-class PlaceHoldCheckboxComponent < ActionView::Component::Base
+# frozen_string_literal: true
 
+class PlaceHoldCheckboxComponent < ActionView::Component::Base
   def initialize(barcode:, call_number:, pickup_library:)
     @barcode = barcode
     @call_number = call_number
