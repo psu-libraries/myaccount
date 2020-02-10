@@ -3,13 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldHiddenInputComponent, type: :component do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:bib) { build(:bib_with_volumetrics) }
+  let(:component) { render_inline(described_class, bib: bib).to_html }
 
-  # it "renders something useful" do
-  #   expect(
-  #     render_inline(described_class, attr: "value") { "Hello, components!" }.css("p").to_html
-  #   ).to include(
-  #     "Hello, components!"
-  #   )
-  # end
+  it 'renders when volumetrics aren\'t detected' do
+    expect(component).to_not be_empty
+  end
+
+  it 'does not render when volumetrics are detected' do
+    expect(component).to be_empty
+  end
 end
