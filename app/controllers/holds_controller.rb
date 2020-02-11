@@ -32,8 +32,7 @@ class HoldsController < ApplicationController
   def new
     result = symphony_client.get_bib_info params['catkey'], current_user.session_token
     parsed_body = JSON.parse result.body
-    @bib = Bib.new(parsed_body)
-    @new_holds = Bib::generate_holds(parsed_body)
+    @bib = Bib.new(parsed_body, holdable_locations)
   end
 
   # Handles form submission for canceling holds in Symphony
@@ -68,6 +67,14 @@ class HoldsController < ApplicationController
 
     def holds_not_ready
       holds.reject(&:ready_for_pickup?)
+    end
+
+    def holdable_locations
+      result = symphony_client.retrieve_holdable_locations.body
+
+      parsed_body = JSON.parse result
+      parsed_body.filter { |p| p&.dig 'fields', 'holdable' }
+        .map { |p| p&.dig 'key' }
     end
 
     def handle_pickup_change_request

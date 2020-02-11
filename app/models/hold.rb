@@ -138,6 +138,14 @@ class Hold
     fields['status']
   end
 
+  def volumetric
+    fields['volumetric']
+  end
+
+  def current_location
+    fields.dig('itemList').try(:first)&.dig('fields', 'currentLocation', 'key')
+  end
+
   private
 
     def fields

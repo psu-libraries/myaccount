@@ -6,14 +6,7 @@ class PlaceHoldHiddenInputComponent < ActionView::Component::Base
   end
 
   def render?
-    !@bib.body.dig('fields', 'callList').try(:first).dig('fields', 'volumetric')
-  end
-
-  def barcode
-    @bib.body.dig('fields', 'callList')
-      .try(:first)
-      .dig('fields', 'itemList')
-      .map { |i| i.dig('fields', 'barcode') }.sample
+    bib.holdables.nil?
   end
 
   private

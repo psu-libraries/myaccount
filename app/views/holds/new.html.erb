@@ -8,7 +8,7 @@
 <%= form_with url: '/holds/create', method: :post do %>
   <%= render PlaceHoldHiddenInputComponent, bib: @bib %>
   <%= render 'holds/form_inputs' %>
-  <%= render PlaceHoldCheckboxWrapperComponent, items: @new_holds %>
+  <%= render PlaceHoldCheckboxWrapperComponent, holdables: @bib.holdables %>
   <button type="button" class="btn btn-info">Place Hold</button>
   <button type="button" class="btn btn-danger">Cancel</button>
 <% end %>

@@ -3,28 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldCheckboxWrapperComponent, type: :component do
-  let(:hold1) { instance_double 'Hold', record: { 'fields' => { 'volumetric' => nil } },
-                                        barcode: '12',
-                                        call_number: 'A1',
-                                        pickup_library_human: 'Library' }
-  let(:hold2) { instance_double 'Hold', record: { 'fields' => { 'volumetric' => 'vol2' } },
-                                        barcode: '12',
-                                        call_number: 'A1',
-                                        pickup_library_human: 'Library' }
-  let(:hold3) { instance_double 'Hold', record: { 'fields' => { 'volumetric' => 'ch12' } },
-                                        barcode: '12',
-                                        call_number: 'A1',
-                                        pickup_library_human: 'Library' }
+  let(:bib_with_holdables) { build(:bib_with_holdables) }
 
-  let(:items) { [hold1, hold2, hold3] }
-  let(:component) { render_inline(described_class, items: items).to_html }
+  let(:holdables) { bib_with_holdables.holdables }
+  let(:component) { render_inline(described_class, holdables: holdables).to_html }
 
-  it 'renders if any volumetric is present' do
+  it 'renders if any holdables are present' do
     expect(component).not_to be_empty
   end
 
-  it 'does not render if there are not any volumetrics' do
-    component = render_inline(described_class, items: [hold1]).to_html
+  it 'does not render if there are not any holdables present' do
+    component = render_inline(described_class, holdables: []).to_html
 
     expect(component).to be_empty
   end

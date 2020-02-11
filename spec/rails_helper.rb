@@ -23,6 +23,8 @@ require 'capybara/rspec'
 require 'webmock/rspec'
 require 'support/factory_bot'
 require 'action_view/component/test_helpers'
+require 'support/holdable_locations_raw_json'
+require 'support/holdable_locations'
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(

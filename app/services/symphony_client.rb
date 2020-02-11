@@ -104,6 +104,16 @@ class SymphonyClient
                                              })
   end
 
+  def retrieve_holdable_locations
+    policy_path = '/policy/location/simpleQuery?key=*'
+    request(policy_path, params: {
+              includeFields: [
+                'displayName',
+                'holdable'
+              ].join(',')
+            })
+  end
+
   private
 
     def renew_item_request(resource, item_key, headers: {})

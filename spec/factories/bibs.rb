@@ -2,7 +2,10 @@
 
 FactoryBot.define do
   factory :bib do
-    factory :bib_without_volumetrics do
+    factory :bib_without_holdables do
+      initialize_with { new(body, hold_locations) }
+      hold_locations { HOLDABLE_LOCATIONS }
+
       body {
         { 'resource' => '/catalog/bib',
           'key' => '26141494',
@@ -161,10 +164,14 @@ FactoryBot.define do
                              { 'resource' => '/policy/classification', 'key' => 'LC' } } }],
                'createDate' => '2019-03-11' } }
       }
-      initialize_with { new(attributes[:body]) }
     end
 
-    factory :bib_with_volumetrics do
+    factory :bib_with_holdables do
+      initialize_with { new(body, hold_locations) }
+      hold_locations {
+        HOLDABLE_LOCATIONS
+      }
+
       body {
         { 'resource' => '/catalog/bib',
           'key' => '12747187',
@@ -404,8 +411,6 @@ FactoryBot.define do
                              { 'resource' => '/policy/classification', 'key' => 'LC' } } }],
                'createDate' => '2014-07-16' } }
       }
-
-      initialize_with { new(attributes[:body]) }
     end
   end
 end
