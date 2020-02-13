@@ -28,13 +28,31 @@ class Bib
 
     return nil unless volumetric? && @holds.count > 1
 
-    @holds
+    holds_sorted_naturally
   end
 
   private
 
     def bib
       @body['fields']
+    end
+
+    def holds_sorted_naturally
+      @holds.each { |h| h.record['naturalized_volumetric'] = naturalize(h.volumetric.to_s) }
+        .sort_by { |h| h.record['naturalized_volumetric'] }
+    end
+
+    # Replace periods with spaces and then transform string into an array of "naturalized" values.
+    # E.g., `"v.2 1956"` becomes  `["v ", 2.0, 1956.0]`
+    #
+    # Regex translation:
+    # `scan` looks for either any non-whitespace character or digit OR any digit. This keeps non-digit
+    # characters that aren't whitespace and digits to prep the sort. After that collect the array to
+    # cast strings containing digits to Float (leave non-digits alone).
+    def naturalize(value)
+      value.gsub(/\./, ' ')
+        .scan(/[^\s\d]+|\d+/)
+        .map { |f| /\d+/.match?(f) ? f.to_f : f }
     end
 
     def potential_holdables
