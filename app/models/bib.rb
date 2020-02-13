@@ -28,7 +28,7 @@ class Bib
 
     return nil unless volumetric? && @holds.count > 1
 
-    @holds # .sort_by {|a, b| a.key <=> b.key }
+    @holds
   end
 
   private
