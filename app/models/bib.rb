@@ -53,7 +53,7 @@ class Bib
     end
 
     def random_barcode
-      @body.dig('fields', 'callList')
+      bib.dig('callList')
         .try(:first)
         .dig('fields', 'itemList')
         .map { |i| i.dig('fields', 'barcode') }.sample
