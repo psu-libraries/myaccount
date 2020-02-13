@@ -154,9 +154,12 @@ RSpec.describe HoldsController, type: :controller do
       let(:response_body) { HOLDABLE_LOCATIONS_RAW_JSON }
 
       before do
-        stub_request(:get, 'https://example.com/symwsbc/catalog/bib/key/1?includeFields=*,callList%7B*,itemList%7B*%7D%7D')
+        stub_request(:get, 'https://example.com/symwsbc/catalog/bib/key/1')
+          .with(query: hash_including(includeFields: match(/\*,callList/)))
           .to_return(status: 200, body: bib.body.to_json, headers: {})
-        stub_request(:get, 'https://example.com/symwsbc/policy/location/simpleQuery?includeFields=displayName,holdable&key=*')
+
+        stub_request(:get, 'https://example.com/symwsbc/policy/location/simpleQuery')
+          .with(query: hash_including(includeFields: match(/displayName,holdable/)))
           .to_return(status: 200, body: response_body.to_json, headers: {})
       end
 
