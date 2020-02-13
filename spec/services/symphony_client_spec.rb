@@ -127,7 +127,8 @@ RSpec.describe SymphonyClient do
 
   describe '#get_bib_info' do
     before do
-      stub_request(:get, "#{Settings.symws.url}/catalog/bib/key/12345?includeFields=*,callList%7B*,itemList%7B*%7D%7D")
+      stub_request(:get, "#{Settings.symws.url}/catalog/bib/key/12345")
+        .with(query: hash_including(includeFields: match(/\*,callList/)))
         .to_return(status: 200, body: '{"resource": "/catalog/bib"}', headers: {})
     end
 
