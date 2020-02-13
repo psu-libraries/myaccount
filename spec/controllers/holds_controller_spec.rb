@@ -148,5 +148,26 @@ RSpec.describe HoldsController, type: :controller do
         end
       end
     end
+
+    describe '#new' do
+      let(:bib) { build(:bib_with_holdables) }
+      let(:response_body) { HOLDABLE_LOCATIONS_RAW_JSON }
+
+      before do
+        stub_request(:get, 'https://example.com/symwsbc/catalog/bib/key/1')
+          .with(query: hash_including(includeFields: match(/\*,callList/)))
+          .to_return(status: 200, body: bib.body.to_json, headers: {})
+
+        stub_request(:get, 'https://example.com/symwsbc/policy/location/simpleQuery')
+          .with(query: hash_including(includeFields: match(/displayName,holdable/)))
+          .to_return(status: 200, body: response_body.to_json, headers: {})
+      end
+
+      it 'sends requests to the web service when the web service supplied data first' do
+        post :new, params: { catkey: '1' }
+
+        expect(assigns(:bib).holdables.count).to eq 8
+      end
+    end
   end
 end

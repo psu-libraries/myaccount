@@ -98,12 +98,12 @@ class Hold
     record['key']
   end
 
-  def patron_key
-    fields['patron']['key']
+  def barcode
+    fields.dig('itemList').try(:first)&.dig('fields', 'barcode')
   end
 
-  def resource
-    record['resource']
+  def patron_key
+    fields['patron']['key']
   end
 
   def ready_for_pickup?
@@ -138,6 +138,14 @@ class Hold
     fields['status']
   end
 
+  def volumetric
+    fields['volumetric']
+  end
+
+  def current_location
+    fields.dig('itemList').try(:first)&.dig('fields', 'currentLocation', 'key')
+  end
+
   private
 
     def fields
@@ -145,6 +153,6 @@ class Hold
     end
 
     def pickup_library_code
-      fields['pickupLibrary']['key']
+      fields.dig('pickupLibrary', 'key') || fields.dig('library', 'key')
     end
 end

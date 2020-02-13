@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :summaries, :fines, :checkouts, only: [:index]
   resources :renewals, only: [:create]
-  resources :holds, only: [:index, :update, :destroy]
+  resources :holds, only: [:index, :new, :update, :destroy]
 
   get '/logout', to: 'sessions#destroy', as: :logout
 end

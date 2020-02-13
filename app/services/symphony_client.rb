@@ -93,6 +93,27 @@ class SymphonyClient
                           })
   end
 
+  def get_bib_info(catkey, session_token)
+    get_bib_info_path = "/catalog/bib/key/#{catkey}"
+    authenticated_request(get_bib_info_path, headers: { 'x-sirs-sessionToken': session_token },
+                                             params: {
+                                               includeFields: [
+                                                 '*',
+                                                 'callList{*,itemList{*}}'
+                                               ].join(',')
+                                             })
+  end
+
+  def retrieve_holdable_locations
+    policy_path = '/policy/location/simpleQuery?key=*'
+    request(policy_path, params: {
+              includeFields: [
+                'displayName',
+                'holdable'
+              ].join(',')
+            })
+  end
+
   private
 
     def renew_item_request(resource, item_key, headers: {})
