@@ -10,6 +10,8 @@ RSpec.describe HoldsHelper, type: :helper do
       catkey: 123
     )
   end
+  let(:arbitrary_datetime) { DateTime.new(2001, 2, 3) }
+  let(:arbitrary_datetime_plus) { arbitrary_datetime + 2.months }
 
   describe '#render_queue_position' do
     context 'when there is a queue_position present' do
@@ -94,6 +96,23 @@ RSpec.describe HoldsHelper, type: :helper do
       it 'renders active' do
         expect(helper.render_status(hold)).to eq 'Active'
       end
+    end
+  end
+
+  describe '#default_pickup_by_date' do
+    before do
+      # Instantiate two instances of DateTime before it is doubled.
+      arbitrary_datetime
+      arbitrary_datetime_plus
+      date_time = class_double('DateTime')
+        .as_stubbed_const(transfer_nested_constants: true)
+      allow(date_time).to receive(:now).and_return arbitrary_datetime
+      allow(date_time).to receive(:civil).with(2001, 4, 3, 0, 0, (0 / 1), (0 / 1), 2299161.0)
+        .and_return arbitrary_datetime_plus
+    end
+
+    it 'sets the default pickup time to two months from today' do
+      expect(helper.default_pickup_by_date).to eq '2001-04-03'
     end
   end
 end
