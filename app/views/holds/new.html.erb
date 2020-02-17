@@ -1,8 +1,8 @@
 <h1>A Hold Will Be Placed For You</h1>
 
 <p>
-  <strong>Title:</strong> <%= @bib.title %><br>
-  <strong>Author:</strong>  <%= @bib.author %>
+  <%= render GenericValueWithLabelComponent, label: 'Title', value: @bib.title %> <br>
+  <%= render GenericValueWithLabelComponent, label: 'Author', value: @bib.author %>
 </p>
 
 <%= form_with url: '/holds/create', method: :post do %>
