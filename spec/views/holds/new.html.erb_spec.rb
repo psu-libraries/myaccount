@@ -10,10 +10,10 @@ RSpec.describe 'holds/new.html.erb', type: :view do
       assign(:bib, bib)
     end
 
-    it 'sets the pickup by date to two months from now' do
+    it 'sets the pickup by date to two months from now and adds a minimum value' do
       render
-      expect(rendered).to include '<input value="2020-04-17" type="date" name="hold[pickup_by_date]"'\
-                                  ' id="hold_pickup_by_date" />'
+      expect(rendered).to include '<input value="2020-04-18" required="required" min="2020-02-18"'\
+                                  ' type="date" name="hold[pickup_by_date]" id="hold_pickup_by_date" />'
     end
   end
 end

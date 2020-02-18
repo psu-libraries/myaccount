@@ -35,4 +35,8 @@ module HoldsHelper
   def default_pickup_by_date
     DateTime.now.+(2.months).strftime('%Y-%m-%d')
   end
+
+  def minimum_pickup_by_date
+    DateTime.now.strftime('%Y-%m-%d')
+  end
 end

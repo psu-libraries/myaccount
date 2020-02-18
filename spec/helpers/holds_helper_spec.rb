@@ -99,7 +99,7 @@ RSpec.describe HoldsHelper, type: :helper do
     end
   end
 
-  describe '#default_pickup_by_date' do
+  context 'when dealing with date and time' do
     before do
       # Instantiate two instances of DateTime before it is doubled.
       arbitrary_datetime
@@ -111,8 +111,16 @@ RSpec.describe HoldsHelper, type: :helper do
         .and_return arbitrary_datetime_plus
     end
 
-    it 'sets the default pickup time to two months from today' do
-      expect(helper.default_pickup_by_date).to eq '2001-04-03'
+    describe '#default_pickup_by_date' do
+      it 'sets the default pickup time to two months from today' do
+        expect(helper.default_pickup_by_date).to eq '2001-04-03'
+      end
+    end
+
+    describe '#minimum_pickup_by_date' do
+      it 'sets the minimum pickup time to today' do
+        expect(helper.minimum_pickup_by_date).to eq '2001-02-03'
+      end
     end
   end
 end

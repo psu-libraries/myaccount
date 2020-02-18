@@ -7,7 +7,7 @@
 
 <%= form_with url: '/holds/create', method: :post do %>
   <%= render PlaceHoldHiddenInputComponent, bib: @bib %>
-  <%= render 'holds/form_inputs' %>
+  <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: true } %>
   <%= render PlaceHoldCheckboxWrapperComponent, holdables: @bib.holdables %>
   <button type="button" class="btn btn-info">Place Hold</button>
   <button type="button" class="btn btn-danger">Cancel</button>
