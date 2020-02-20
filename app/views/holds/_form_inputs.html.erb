@@ -3,6 +3,6 @@
                                                     disabled: 'Not set', selected: 'Not set'),
                class: 'custom-select' %>
 <%= label_tag 'hold_expiration_date', 'Not needed after:' %>
-<%= date_field(:hold, :pickup_by_date) %>
+<%= date_field :hold, :pickup_by_date, value: default_pickup_by_date %>
 <p class="card-text"><small class="text-muted">The date you enter is the date that the system will stop
   trying to obtain the item for you.  It is not a guaranteed delivery date.</small></p>

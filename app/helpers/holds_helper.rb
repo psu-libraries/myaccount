@@ -31,4 +31,8 @@ module HoldsHelper
     default_choice = t('myaccount.hold.update_pickup.pickup_choose_text')
     Hash[default_choice, 'Not set'].merge(Hold::PICKUP_LOCATION_REQUESTED.invert)
   end
+
+  def default_pickup_by_date
+    DateTime.now.+(2.months).strftime('%Y-%m-%d')
+  end
 end
