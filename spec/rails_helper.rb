@@ -92,4 +92,5 @@ RSpec.configure do |config|
   end
 
   config.include ActionView::Component::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
 end
