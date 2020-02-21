@@ -41,10 +41,6 @@ class HoldsController < ApplicationController
   #
   # POST /holds
   def create
-    barcodes = [params['barcodes']].flatten.compact
-
-    raise HoldCreateException, 'Error' if barcodes.blank?
-
     results = barcodes.each_with_object(success: [], error: []) do |barcode, status|
       hold_args = { pickup_library: params['pickup_library'], pickup_by_date: params['pickup_by_date'] }
       response = symphony_client.place_hold(patron,
@@ -192,22 +188,22 @@ class HoldsController < ApplicationController
     end
 
     def authorize_create!
-      return unless missing_args?
+      return unless barcodes.blank? || params['pickup_library'].blank? || params['pickup_by_date'].blank?
 
       raise HoldCreateException, 'Error'
     end
 
     def deny_create
-      flash[:error] = if missing_args?
-                        t 'myaccount.hold.place_hold.missing_params'
-                      else
+      flash[:error] = if barcodes.blank?
                         t 'myaccount.hold.place_hold.select_volumes'
+                      else
+                        t 'myaccount.hold.place_hold.missing_params'
                       end
 
       redirect_to new_hold_path(catkey: params[:catkey])
     end
 
-    def missing_args?
-      params['pickup_library'].blank? || params['pickup_by_date'].blank?
+    def barcodes
+      [params['barcodes']].flatten.compact
     end
 end
