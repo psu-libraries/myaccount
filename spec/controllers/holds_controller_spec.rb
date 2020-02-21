@@ -95,13 +95,13 @@ RSpec.describe HoldsController, type: :controller do
 
         it 'and it\'s a date in the future, it updates the not needed after and sets the flash message' do
           date = Date.tomorrow.to_formatted_s('%Y-%m-%d')
-          patch :update, params: { id: 'multiple', hold_expiration_date: date, hold_list: [2] }
+          patch :update, params: { id: 'multiple', pickup_by_date: date, hold_list: [2] }
 
           expect(flash[:success]).to match(/Success!.*not needed after date was updated/)
         end
 
         it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
-          patch :update, params: { id: 'multiple', hold_expiration_date: '2020-01-21', hold_list: [2] }
+          patch :update, params: { id: 'multiple', pickup_by_date: '2020-01-21', hold_list: [2] }
 
           expect(flash[:error]).to match(/date that is in the past/)
         end
@@ -114,7 +114,7 @@ RSpec.describe HoldsController, type: :controller do
         end
 
         it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
-          patch :update, params: { id: 'multiple', hold_expiration_date: '2100-01-21', hold_list: [2] }
+          patch :update, params: { id: 'multiple', pickup_by_date: '2100-01-21', hold_list: [2] }
 
           expect(flash[:error]).to match(/Sorry!/)
         end

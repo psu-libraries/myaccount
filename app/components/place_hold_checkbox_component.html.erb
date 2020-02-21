@@ -1,2 +1,2 @@
-<%= check_box_tag 'barcodes[]', barcode, false %>
-<%= label_tag('barcodes[]', "#{call_number} (#{pickup_library})") %><br>
+<%= check_box_tag 'barcodes[]', barcode, false, id: "barcode_#{barcode}" %>
+<%= label_tag "barcode_#{barcode}", "#{call_number} (#{pickup_library})" %><br>

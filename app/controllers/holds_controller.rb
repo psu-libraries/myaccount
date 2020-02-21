@@ -20,7 +20,7 @@ class HoldsController < ApplicationController
     params['hold_list'].each do |holdkey|
       @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
       handle_pickup_change_request if params['pickup_library'].present? && params['pickup_library'] != 'Not set'
-      handle_not_needed_after_request if params['hold_expiration_date'].present?
+      handle_not_needed_after_request if params['pickup_by_date'].present?
     end
 
     redirect_to holds_path
@@ -93,11 +93,11 @@ class HoldsController < ApplicationController
     end
 
     def handle_not_needed_after_request
-      raise HoldException, 'Error' if Date.parse(params['hold_expiration_date']) < Date.today
+      raise HoldException, 'Error' if Date.parse(params['pickup_by_date']) < Date.today
 
       not_needed_after_response = symphony_client.not_needed_after(
         hold_key: @hold_to_act_on.key,
-        fill_by_date: params['hold_expiration_date'],
+        fill_by_date: params['pickup_by_date'],
         session_token: current_user.session_token
       )
       case not_needed_after_response.status

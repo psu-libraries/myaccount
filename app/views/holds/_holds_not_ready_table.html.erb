@@ -42,7 +42,7 @@
           <div class="col-8">
             <div class="card-body">
               <h5>Edit Selected Holds</h5>
-              <%= render 'holds/form_inputs' %>
+              <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false } %>
               <br>
               <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH') %>
             </div>

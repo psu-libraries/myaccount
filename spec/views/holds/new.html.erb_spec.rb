@@ -10,7 +10,10 @@ RSpec.describe 'holds/new.html.erb', type: :view do
       assign(:bib, bib)
     end
 
-    xit 'sets the pickup by date to two months from now' do
+    it 'renders an input with a unique id attribute by barcode' do
+      render
+
+      expect(rendered).to have_css('input[type="checkbox"]', count: 8)
     end
   end
 end
