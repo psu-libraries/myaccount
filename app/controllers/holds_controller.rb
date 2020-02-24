@@ -2,7 +2,7 @@
 
 class HoldsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authorize_create!, only: :create
+  before_action :check_for_blanks!, only: :create
   rescue_from HoldCreateException, with: :deny_create
   rescue_from HoldException, with: :past_date
 
@@ -187,7 +187,7 @@ class HoldsController < ApplicationController
       Item.new parsed_item
     end
 
-    def authorize_create!
+    def check_for_blanks!
       return unless barcodes.blank? || params['pickup_library'].blank? || params['pickup_by_date'].blank?
 
       raise HoldCreateException, 'Error'
