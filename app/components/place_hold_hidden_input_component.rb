@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class PlaceHoldHiddenInputComponent < ActionView::Component::Base
-  def initialize(bib:)
-    @bib = bib
+  def initialize(barcode:)
+    @barcode = barcode
   end
 
   def render?
-    bib.holdables.nil?
+    barcode.present?
   end
 
   private
 
-    attr_reader :bib
+    attr_reader :barcode
 end

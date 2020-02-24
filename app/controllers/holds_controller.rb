@@ -32,9 +32,9 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
-    result = symphony_client.get_bib_info params['catkey'], current_user.session_token
-    parsed_body = JSON.parse result.body
-    @bib = Bib.new(parsed_body, holdable_locations)
+    @place_hold_form_params = PlaceHoldForm::Builder.call(catkey: params[:catkey],
+                                                          user_token: current_user.session_token,
+                                                          client: symphony_client)
   end
 
   # Handles placing holds

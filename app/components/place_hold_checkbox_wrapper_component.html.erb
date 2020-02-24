@@ -1,6 +1,6 @@
 <p>Volume(s) Selected -- if you need specific volume(s) (e.g., vol.1 and/or vol.2) check each desired volume </p>
 <% holdables.each do |holdable| %>
-  <%= render PlaceHoldCheckboxComponent, barcode: holdable.barcode,
-                                         call_number: holdable.call_number,
-                                         pickup_library: holdable.pickup_library_human %>
+  <%= check_box_tag 'barcodes[]', holdable.items.first.barcode, false %>
+
+  <%= label_tag('barcodes[]', "#{holdable.call_number} (#{holdable.items.first.item_type_human})") %><br>
 <% end %>

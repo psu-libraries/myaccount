@@ -6,6 +6,7 @@ RSpec.describe PlaceHoldCheckboxComponent, type: :component do
   let(:barcode) { 12 }
   let(:call_number) { 'A1' }
   let(:pickup_library_human) { 'Library' }
+  let(:item_type) { 'Book' }
 
   context 'when a barcode is present' do
     let(:component) { render_inline(described_class,
