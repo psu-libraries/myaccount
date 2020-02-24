@@ -292,18 +292,44 @@ RSpec.describe HoldsController, type: :controller do
       end
 
       context 'when placing hold with missing barcode params' do
-        it 'redirects to new page' do
+        before do
           post :create, params: place_hold_params
+        end
 
+        it 'redirects to the new hold page' do
           expect(response).to redirect_to new_hold_path(catkey: '1')
+        end
+
+        it 'sets a flash error message' do
+          expect(flash[:error]).to match(/select a volume/)
         end
       end
 
-      context 'when placing hold with other missing params' do
-        it 'redirects to new page' do
-          post :create, params: { catkey: '1' }
+      context 'when placing hold with missing pickup location' do
+        before do
+          post :create, params: { catkey: '1', barcodes: '1', pickup_by_date: '02/02/2020' }
+        end
 
+        it 'redirects to the new hold page' do
           expect(response).to redirect_to new_hold_path(catkey: '1')
+        end
+
+        it 'sets a flash error message' do
+          expect(flash[:error]).to match(/choose a pickup location/)
+        end
+      end
+
+      context 'when placing hold with missing not needed after date' do
+        before do
+          post :create, params: { catkey: '1', barcodes: '1', pickup_library: 'UP_PAT' }
+        end
+
+        it 'redirects to the new hold page' do
+          expect(response).to redirect_to new_hold_path(catkey: '1')
+        end
+
+        it 'sets a flash error message' do
+          expect(flash[:error]).to match(/choose a not needed after date/)
         end
       end
     end
