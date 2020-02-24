@@ -196,8 +196,10 @@ class HoldsController < ApplicationController
     def deny_create
       flash[:error] = if barcodes.blank?
                         t 'myaccount.hold.place_hold.select_volumes'
+                      elsif params['pickup_library'].blank?
+                        t 'myaccount.hold.place_hold.select_library'
                       else
-                        t 'myaccount.hold.place_hold.missing_params'
+                        t 'myaccount.hold.place_hold.select_date'
                       end
 
       redirect_to new_hold_path(catkey: params[:catkey])
