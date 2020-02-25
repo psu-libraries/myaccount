@@ -68,23 +68,21 @@ class HoldsController < ApplicationController
   #
   # GET /holds/result
   def result
-    (redirect_to holds_path) && return if session[:place_hold_results].blank?
+    return redirect_to holds_path if session[:place_hold_results].blank?
 
     @place_hold_catkey = session[:place_hold_catkey]
     session.delete(:place_hold_catkey)
 
-    place_hold_results = session[:place_hold_results]
+    raw_place_hold_results = session[:place_hold_results]
     session.delete(:place_hold_results)
 
-    processed_results = place_hold_results.each do |status, results|
+    @place_hold_results = raw_place_hold_results.each do |status, results|
       if status == 'success'
         results.map { |result| result['placed_hold'] = hold_lookup(result['hold_key']) }
       else
         results.map { |result| result['failed_hold'] = item_lookup(result['barcode']) }
       end
     end
-
-    @place_hold_results = processed_results
   end
 
   # Handles form submission for canceling holds in Symphony
