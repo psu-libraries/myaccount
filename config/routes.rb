@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :renewals, only: [:create]
   resources :holds, only: [:index, :new, :create, :update, :destroy]
 
-  match 'holds/result' => 'holds#result', via: :get, as: :result
+  get 'holds/result', to: 'holds#result', as: :result
 
   get '/logout', to: 'sessions#destroy', as: :logout
 end
