@@ -95,15 +95,15 @@ class SymphonyClient
 
   def place_hold(patron, session_token, item_barcode, hold_args)
     body = {
-      "itemBarcode": item_barcode,
-      "patronBarcode": patron.barcode,
-      "pickupLibrary": {
-        "resource": '/policy/library',
-        "key": hold_args[:pickup_library]
+      'itemBarcode': item_barcode,
+      'patronBarcode': patron.barcode,
+      'pickupLibrary': {
+        'resource': '/policy/library',
+        'key': hold_args[:pickup_library]
       },
-      "holdType": 'TITLE',
-      "holdRange": 'SYSTEM',
-      "fillByDate": hold_args[:pickup_by_date]
+      'holdType': 'TITLE',
+      'holdRange': 'SYSTEM',
+      'fillByDate': hold_args[:pickup_by_date]
     }.compact
 
     authenticated_request '/circulation/holdRecord/placeHold',
