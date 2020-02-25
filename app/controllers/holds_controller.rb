@@ -68,7 +68,7 @@ class HoldsController < ApplicationController
   #
   # GET /holds/result
   def result
-    (redirect_to holds_path) && return if session[:place_hold_results].blank?
+    return redirect_to holds_path if session[:place_hold_results].blank?
 
     @place_hold_catkey = session[:place_hold_catkey]
     session.delete(:place_hold_catkey)
