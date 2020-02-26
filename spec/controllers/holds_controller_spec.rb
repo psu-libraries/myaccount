@@ -335,6 +335,7 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#result' do
+      # HOLD_LOOKUP_RAW_JSON and ITEM_LOOKUP_RAW_JSON are mocked SymphonyClient responses
       let(:hold_info_response) { HOLD_LOOKUP_RAW_JSON.to_json }
       let(:item_info_response) { ITEM_LOOKUP_RAW_JSON.to_json }
       let(:hold_info) { instance_double(HTTP::Response, status: 200, body: hold_info_response) }
