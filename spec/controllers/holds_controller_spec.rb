@@ -251,7 +251,7 @@ RSpec.describe HoldsController, type: :controller do
         end
       end
 
-      context 'when placing hold to a holdable item with volumes' do
+      context 'when placing multiple hold requests at once' do
         let(:mock_client) { instance_double(SymphonyClient) }
         let(:place_hold_response_1) { instance_double(HTTP::Response, status: 200, body: success_response_1) }
         let(:place_hold_response_2) { instance_double(HTTP::Response, status: 200, body: success_response_2) }
