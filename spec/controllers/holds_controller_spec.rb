@@ -175,7 +175,7 @@ RSpec.describe HoldsController, type: :controller do
       let(:place_hold_params) {
         { catkey: '1',
           pickup_library: 'UP_PAT',
-          pickup_by_date: '02/02/2020' }
+          pickup_by_date: '2020-02-02' }
       }
 
       let(:place_hold_response) { instance_double(HTTP::Response) }
