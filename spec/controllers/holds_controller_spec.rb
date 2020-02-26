@@ -187,7 +187,7 @@ RSpec.describe HoldsController, type: :controller do
         allow(SymphonyClient).to receive(:new).and_return(mock_client)
       end
 
-      context 'when placing hold to a not holdable item that has no volumes' do
+      context 'when placing hold to an item that has no volumes and user already has a hold placed on' do
         let(:error_response) { { "messageList": [{ 'message': 'User already has a hold on this material' }] } }
 
         before do
@@ -237,18 +237,6 @@ RSpec.describe HoldsController, type: :controller do
             hold_key: 'a_hold_key'
           )
         end
-
-        it 'sets catkey in session' do
-          post :create, params: place_hold_params
-
-          expect(session[:place_hold_catkey]).to eq '1'
-        end
-
-        it 'redirects to result page' do
-          post :create, params: place_hold_params
-
-          expect(response).to redirect_to result_path
-        end
       end
 
       context 'when placing multiple hold requests at once' do
@@ -276,18 +264,6 @@ RSpec.describe HoldsController, type: :controller do
           post :create, params: place_hold_params
 
           expect(session[:place_hold_results]).to eq place_hold_results
-        end
-
-        it 'sets catkey in session' do
-          post :create, params: place_hold_params
-
-          expect(session[:place_hold_catkey]).to eq '1'
-        end
-
-        it 'redirects to result page' do
-          post :create, params: place_hold_params
-
-          expect(response).to redirect_to result_path
         end
       end
 

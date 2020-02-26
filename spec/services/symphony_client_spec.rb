@@ -4,6 +4,12 @@ require 'rails_helper'
 
 RSpec.describe SymphonyClient do
   let(:client) { subject }
+  let(:user) do
+    User.new(username: 'zzz123',
+             name: 'Zeke',
+             patron_key: 'some_patron_key',
+             session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
+  end
 
   describe '#login' do
     before do
@@ -19,13 +25,6 @@ RSpec.describe SymphonyClient do
   end
 
   describe '#patron_info' do
-    let(:user) do
-      User.new(username: 'zzz123',
-               name: 'Zeke',
-               patron_key: 'some_patron_key',
-               session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
-    end
-
     before do
       stub_request(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
         .with(query: hash_including(includeFields: match(/\*/)))
@@ -101,13 +100,6 @@ RSpec.describe SymphonyClient do
       { messageList: [{ code: 'hatErrorResponse.252', message: 'Item has holds' }] }.to_json
     end
 
-    let(:user) do
-      User.new(username: 'zzz123',
-               name: 'Zeke',
-               patron_key: 'some_patron_key',
-               session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
-    end
-
     it 'returns all responses for individual renewal requests in symphony regardless of success or error' do
       renew_response = client.renew_items(user, [checkouts.first, checkouts.second])
       fail_response = { renewal: checkouts.second, sirsi_response: 'Item has holds' }
@@ -130,13 +122,6 @@ RSpec.describe SymphonyClient do
       stub_request(:get, "#{Settings.symws.url}/catalog/bib/key/12345")
         .with(query: hash_including(includeFields: match(/\*,callList/)))
         .to_return(status: 200, body: '{"resource": "/catalog/bib"}', headers: {})
-    end
-
-    let(:user) do
-      User.new(username: 'zzz123',
-               name: 'Zeke',
-               patron_key: 'some_patron_key',
-               session_token: 'chuckyCheese')
     end
 
     it 'returns the Symphony Client "catalog bib" resource type' do
@@ -185,13 +170,6 @@ RSpec.describe SymphonyClient do
     end
 
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/placeHold" }
-    let(:user) do
-      User.new(username: 'zzz123',
-               name: 'Zeke',
-               patron_key: 'some_patron_key',
-               session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
-    end
-
     let(:patron) { instance_double(Patron, barcode: '1234', library: 'UP-PAT') }
     let(:hold_args) { { pickup_library: 'UP-PAT', pickup_by_date: '2021-03-17' } }
 
@@ -238,13 +216,6 @@ RSpec.describe SymphonyClient do
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
     let(:include_fields) { '*,item{*,bib{title,author},call{*}}' }
 
-    let(:user) do
-      User.new(username: 'zzz123',
-               name: 'Zeke',
-               patron_key: 'some_patron_key',
-               session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
-    end
-
     it 'returns the resource hold record' do
       hold_response = client.get_hold_info(hold_key, user.session_token)
 
@@ -262,13 +233,6 @@ RSpec.describe SymphonyClient do
     let(:barcode) { 'a_barcode' }
     let(:uri) { "#{Settings.symws.url}/catalog/item/barcode/#{barcode}" }
     let(:include_fields) { '*,bib{title,author},call{*}' }
-
-    let(:user) do
-      User.new(username: 'zzz123',
-               name: 'Zeke',
-               patron_key: 'some_patron_key',
-               session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
-    end
 
     it 'returns the resource item record' do
       item_response = client.get_item_info(barcode, user.session_token)
