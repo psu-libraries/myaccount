@@ -32,9 +32,10 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
-    @place_hold_form_params = PlaceHoldForm::Builder.call(catkey: params[:catkey],
-                                                          user_token: current_user.session_token,
-                                                          client: symphony_client)
+    form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
+                                               user_token: current_user.session_token,
+                                               client: symphony_client)
+    @place_hold_form_params = form_builder.generate
   end
 
   # Handles placing holds

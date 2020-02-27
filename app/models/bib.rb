@@ -5,7 +5,7 @@ class Bib
   include BibRecord
   attr_reader :record
 
-  def initialize(record: record)
+  def initialize(record)
     @record = record
   end
 

@@ -10,10 +10,16 @@ RSpec.describe 'holds/new.html.erb', type: :view do
       assign(:bib, bib)
     end
 
-    it 'renders an input with a unique id attribute by barcode' do
+    it 'renders an checkbox inputs for each item' do
       render
 
       expect(rendered).to have_css('input[type="checkbox"]', count: 8)
+    end
+
+    it 'provides a way to Cancel and go back to the catalog' do
+      render
+
+      expect(rednered).to include 'f'
     end
   end
 end

@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class BibItemComponent < ActionView::Component::Base
-  CATALOG_URL = 'https://catalog.libraries.psu.edu/catalog/'
-
+  CATALOG_URL = Rails.application.config.catalog_url
   TYPES_NOT_LINKED = %w[PALCI CARRELKEY EBOOKREADR EQUIP14DAY EQUIP24FEE EQUIP24HR
                         EQUIP3DAY EQUIP4HR EQUIP5DAY EQUIP7DAY ILL LAPTOP].freeze
 
