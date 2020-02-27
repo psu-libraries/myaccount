@@ -3,53 +3,25 @@
 require 'rails_helper'
 
 RSpec.describe Checkout, type: :model do
-  subject(:checkout) do
-    described_class.new({
-      key: '1',
-      fields: fields
-    }.with_indifferent_access)
-  end
-
-  let(:fields) do
-    {
-      status: 'ACTIVE',
-      overdue: true,
-      dueDate: '2019-12-19T23:59:00-05:00',
-      estimatedOverdueAmount: {
-        amount: '10.00',
-        currencyCode: 'USD'
-      },
-      item: {
-        fields: {
-          barcode: 'xyz',
-          currentLocation: { key: 'CHECKEDOUT' },
-          bib: {
-            key: '123456',
-            fields: {
-              title: 'Some Title',
-              author: 'Somebody'
-            }
-          },
-          call: {
-            fields: {
-              dispCallNumber: 'ABC 123',
-              sortCallNumber: 'ABC 00123'
-            }
-          }
-        }
-      }
-    }
-  end
+  subject(:checkout) { build(:checkout) }
 
   it 'has a key' do
+    checkout.record['key'] = '1'
     expect(checkout.key).to eq '1'
   end
 
   it 'has a status' do
+    checkout.record['fields']['status'] = 'ACTIVE'
     expect(checkout.status).to eq 'ACTIVE'
   end
 
   context 'with a record that has not been recalled' do
+    before do
+      checkout.record['fields']['dueDate'] = '2019-12-19T23:59:00-05:00'
+      checkout.record['fields']['recalledDate'] = ''
+      checkout.record['fields']['recallDueDate'] = ''
+    end
+
     it 'has a due date' do
       expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
@@ -69,8 +41,9 @@ RSpec.describe Checkout, type: :model do
 
   context 'with a record that has been recalled' do
     before do
-      fields[:recalledDate] = '2019-11-10'
-      fields[:recallDueDate] = '2019-11-20T23:59:00-05:00'
+      checkout.record['fields']['dueDate'] = '2019-12-19T23:59:00-05:00'
+      checkout.record['fields']['recalledDate'] = '2019-11-10'
+      checkout.record['fields']['recallDueDate'] = '2019-11-20T23:59:00-05:00'
     end
 
     it 'has a due date' do
@@ -91,54 +64,61 @@ RSpec.describe Checkout, type: :model do
   end
 
   it 'is not claimed returned' do
+    checkout.record['fields']['claimsReturnedDate'] = nil
     expect(checkout).not_to be_claims_returned
   end
 
   context 'with an item claimed returned' do
-    before do
-      fields[:claimsReturnedDate] = '2019-12-01'
-    end
-
     it 'is claimed returned' do
+      checkout.record['fields']['claimsReturnedDate'] = '2019-12-01'
       expect(checkout).to be_claims_returned
     end
   end
 
   context 'with a record that has been renewed' do
-    before do
-      fields[:renewalCount] = 2
-    end
-
     it 'has a renewal count' do
+      checkout.record['fields']['renewalCount'] = 2
       expect(checkout.renewal_count).to eq 2
     end
   end
 
   it 'has an overdue state' do
+    checkout.record['fields']['overdue'] = true
     expect(checkout.overdue?).to be true
   end
 
   it 'has an accrued' do
+    checkout.record['fields']['estimatedOverdueAmount']['amount'] = 10.00
     expect(checkout.accrued).to eq 10.00
   end
 
   it 'has zero renewal count' do
-    expect(checkout.renewal_count).to be 0
+    checkout.record['fields']['renewalCount'] = 0
+    expect(checkout.renewal_count).to eq 0
   end
 
   it 'has a title' do
+    checkout.record['fields']['item']['fields']['bib']['fields']['title'] = 'Some Title'
     expect(checkout.title).to eq 'Some Title'
   end
 
   it 'has an author' do
+    checkout.record['fields']['item']['fields']['bib']['fields']['author'] = 'Somebody'
     expect(checkout.author).to eq 'Somebody'
   end
 
   it 'has a catkey' do
+    checkout.record['fields']['item']['fields']['bib']['key'] = '123456'
     expect(checkout.catkey).to eq '123456'
   end
 
   it 'has a callnumber' do
+    checkout.record['fields']['item']['fields']['call']['fields']['dispCallNumber'] = 'ABC 123'
     expect(checkout.call_number).to eq 'ABC 123'
+  end
+
+  it 'has a resource' do
+    checkout.record['fields']['item']['resource'] = '/catalog/item'
+    expect(checkout.resource).to eq '/catalog/item'
   end
 end
