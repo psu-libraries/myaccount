@@ -19,6 +19,9 @@ RSpec.describe Patron do
       barcode: '1234',
       standing: {
         key: 'OK'
+      },
+      library: {
+        key: 'UP-PAT'
       }
     }
   end
@@ -41,6 +44,10 @@ RSpec.describe Patron do
 
   it 'has a barcode' do
     expect(patron.barcode).to eq '1234'
+  end
+
+  it 'has a library' do
+    expect(patron.library).to eq 'UP-PAT'
   end
 
   it 'has a valid session' do

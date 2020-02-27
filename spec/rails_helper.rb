@@ -24,6 +24,8 @@ require 'webmock/rspec'
 require 'support/factory_bot'
 require 'action_view/component/test_helpers'
 require 'support/holdable_locations_raw_json'
+require 'support/hold_lookup_raw_json'
+require 'support/item_lookup_raw_json'
 require 'support/holdable_locations'
 
 # allow connections to localhost, webdrivers

@@ -5,10 +5,11 @@
   <%= render GenericValueWithLabelComponent, label: 'Author', value: @bib.author %>
 </p>
 
-<%= form_with url: '/holds/create', method: :post do %>
+<%= form_with url: '/holds', method: :post do %>
   <%= render PlaceHoldHiddenInputComponent, bib: @bib %>
+  <%= hidden_field_tag :catkey, params[:catkey] %>
   <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: true } %>
   <%= render PlaceHoldCheckboxWrapperComponent, holdables: @bib.holdables %>
-  <button type="button" class="btn btn-info">Place Hold</button>
+  <%= submit_tag('Place Hold', class: 'btn btn-info') %>
   <button type="button" class="btn btn-danger">Cancel</button>
 <% end %>
