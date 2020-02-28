@@ -10,11 +10,10 @@ class PlaceHoldForm::Builder
   end
 
   def generate
-    bib_info = Bib.new(parsed_symphony_response(symphony_call: :get_bib_info))
+    bib_info = Bib.new(parsed_symphony_response(:get_bib_info, @catkey, @user_token))
     @call_list = bib_info.call_list.map { |c| Call.new record: c }
-    @holdable_locations = parse_holdable_locations
+    @holdable_locations = find_holdable_locations
     process_volumetric_calls
-
     {
         catkey: @catkey,
         title: bib_info.title,
@@ -26,8 +25,8 @@ class PlaceHoldForm::Builder
 
   private
 
-  def parsed_symphony_response(symphony_call:)
-    client_response = @client.send(symphony_call, @catkey, @user_token)
+  def parsed_symphony_response(symphony_call, *params)
+    client_response = @client.send(symphony_call, *params)
     JSON.parse client_response.body
   end
 
@@ -51,10 +50,9 @@ class PlaceHoldForm::Builder
     volumetric_natural_sort
   end
 
-  def parse_holdable_locations
-    result = @client.get_all_locations.body
-    parsed_body = JSON.parse result
-    parsed_body.filter { |p| p&.dig 'fields', 'holdable' }
+  def find_holdable_locations
+    all_locations = parsed_symphony_response(:get_all_locations)
+    all_locations.filter { |p| p&.dig 'fields', 'holdable' }
         .map { |p| p&.dig 'key' }
   end
 
