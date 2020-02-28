@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class PlaceHoldCheckboxWrapperComponent < ActionView::Component::Base
-  def initialize(call_list: nil)
-    @call_list = call_list
+  def initialize(volumetric_calls: nil)
+    @volumetric_calls = volumetric_calls
   end
 
   def render?
-    call_list.present?
+    volumetric_calls.present?
   end
 
   private
 
-    attr_reader :call_list
+    attr_reader :volumetric_calls
 end

@@ -9,7 +9,7 @@
   <%= render PlaceHoldHiddenInputComponent, barcode: @place_hold_form_params[:barcode] %>
   <%= hidden_field_tag :catkey, params[:catkey] %>
   <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: true } %>
-  <%= render PlaceHoldCheckboxWrapperComponent, call_list: @place_hold_form_params[:call_list] %>
+  <%= render PlaceHoldCheckboxWrapperComponent, volumetric_calls: @place_hold_form_params[:volumetric_calls] %>
   <%= submit_tag('Place Hold', class: 'btn btn-info') %>
   <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_hold_form_params[:catkey], class: 'btn btn-danger' %>
 <% end %>

@@ -6,20 +6,21 @@ class PlaceHoldForm::Builder
     @catkey = catkey
     @user_token = user_token
     @client = client #SymphonyClient
+    @volumetric_calls = []
   end
 
   def generate
     bib_info = Bib.new(parsed_symphony_response(symphony_call: :get_bib_info))
     @call_list = bib_info.call_list.map { |c| Call.new record: c }
     @holdable_locations = parse_holdable_locations
-    process_catalog_items
+    process_volumetric_calls
 
     {
         catkey: @catkey,
         title: bib_info.title,
         author: bib_info.author,
-        call_list: @call_list,
-        barcode: @call_list.present? ? nil : @call_list.sample.barcode
+        volumetric_calls: @volumetric_calls,
+        barcode: @volumetric_calls.present? ? nil : @call_list.sample.items.sample.barcode
     }
   end
 
@@ -30,27 +31,23 @@ class PlaceHoldForm::Builder
     JSON.parse client_response.body
   end
 
-  # Take the array of Items and process based on local logic.
+  # Take the @call_list (Array of Calls) and check for volumetrics and process if present.
   #
-  # First: find out what Items are holdable. Order is important.
+  # First: find out what Items are holdable inside Calls. Order is important.
   #
-  #  * Must be more than 1 overall potential holdables (potential holdables are items in the call list).
+  #  * Must be more than 1 overall potential holdable Call.
   #  * Each potential holdable must have a current location that is holdable.
   #  * To be a holdable set:
-  #    * Must be at least one volumetric holdable.
-  #    * Must be more than one holdables.
+  #    * Must be at least one volumetric Call.
+  #    * Must be more than one Call with items that are holdable.
   #
-  # In the case where a holdable set is not discovered, nil is returned and the barcode instance attribute
-  # is available to process the hold request.
+  # In the case where a holdable set is not discovered, the @volumetric_calls instance variable remains empty and a
+  # barcode from a random item in a random call in the @call_list is used (local logic in Symphony dictates).
   #
-  # Second: sort naturally by volumetric attribute on Item.
-  def process_catalog_items
-    return nil unless @call_list.count > 1
-
-    filter_holdables
-
-    return nil unless volumetric? && @call_list.count > 1
-
+  # Second: sort naturally by Call#volumetric.
+  def process_volumetric_calls
+    filter_holdables if @call_list.count > 1
+    @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
     volumetric_natural_sort
   end
 
@@ -69,7 +66,7 @@ class PlaceHoldForm::Builder
   end
 
   def volumetric_natural_sort
-    @call_list.each { |i| i.record['naturalized_volumetric'] = naturalize(i.volumetric.to_s) }
+    @volumetric_calls.each { |i| i.record['naturalized_volumetric'] = naturalize(i.volumetric.to_s) }
         .sort_by! { |i| i.record['naturalized_volumetric'] }
   end
 
@@ -87,7 +84,6 @@ class PlaceHoldForm::Builder
   end
 
   def volumetric?
-    @call_list&.find { |i| i.volumetric.present? }
+    @call_list&.any? { |i| i.volumetric.present? }
   end
-
 end
