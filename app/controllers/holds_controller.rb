@@ -169,6 +169,13 @@ class HoldsController < ApplicationController
     def hold_lookup(hold_key)
       hold_record = symphony_client.get_hold_info hold_key, current_user.session_token
       parsed_hold = JSON.parse hold_record.body
+
+      start = DateTime.now
+      while parsed_hold.dig('fields', 'item', 'fields').nil? && start + 5.seconds > DateTime.now
+        hold_record = symphony_client.get_hold_info hold_key, current_user.session_token
+        parsed_hold = JSON.parse hold_record.body
+      end
+
       Hold.new parsed_hold
     end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ITEM_LOOKUP_RAW_JSON = [{
+ITEM_LOOKUP_RAW_JSON = {
   "resource": '/catalog/item',
   "key": '476022:229:1',
   "fields": {
@@ -76,4 +76,4 @@ ITEM_LOOKUP_RAW_JSON = [{
     },
     "barcode": 'not_holdable_barcode'
   }
-}].freeze
+}.freeze

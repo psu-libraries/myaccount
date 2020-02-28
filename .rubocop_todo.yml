@@ -9,7 +9,7 @@
 # Offense count: 3
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 184
+  Max: 197
 
 # Offense count: 1
 Naming/AccessorMethodName:
