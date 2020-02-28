@@ -142,7 +142,7 @@ class SymphonyClient
                                              })
   end
 
-  def retrieve_holdable_locations
+  def get_all_locations
     policy_path = '/policy/location/simpleQuery?key=*'
     request(policy_path, params: {
               includeFields: [

@@ -52,7 +52,7 @@ class PlaceHoldForm::Builder
   end
 
   def parse_holdable_locations
-    result = @client.retrieve_holdable_locations.body
+    result = @client.get_all_locations.body
     parsed_body = JSON.parse result
     parsed_body.filter { |p| p&.dig 'fields', 'holdable' }
         .map { |p| p&.dig 'key' }

@@ -120,14 +120,6 @@ class HoldsController < ApplicationController
       holds.reject(&:ready_for_pickup?)
     end
 
-    def holdable_locations
-      result = symphony_client.retrieve_holdable_locations.body
-
-      parsed_body = JSON.parse result
-      parsed_body.filter { |p| p&.dig 'fields', 'holdable' }
-        .map { |p| p&.dig 'key' }
-    end
-
     def handle_pickup_change_request
       change_pickup_response = symphony_client.change_pickup_library(
         hold_key: @hold_to_act_on.key,
