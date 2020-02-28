@@ -29,4 +29,14 @@ RSpec.describe Item, type: :model do
     item.record['fields']['call']['fields']['dispCallNumber'] = 'AP2.N3545 v.17 no.28-52 1965'
     expect(item.call_number).to eq 'AP2.N3545 v.17 no.28-52 1965'
   end
+
+  it 'has a barcode' do
+    item.record['fields']['barcode'] = '000068740887'
+    expect(item.barcode).to eq '000068740887'
+  end
+
+  it 'has a current location' do
+    item.record['fields']['currentLocation']['key'] = 'CATO-2'
+    expect(item.current_location).to eq 'CATO-2'
+  end
 end
