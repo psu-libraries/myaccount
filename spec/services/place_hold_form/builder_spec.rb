@@ -49,7 +49,8 @@ RSpec.describe PlaceHoldForm::Builder do
 
       context 'when one item is not holdable' do
         before do
-          bib_info.record['fields']['callList'].first['fields']['itemList'].first['fields']['currentLocation']['key'] = 'ARCHIVE-MP'
+          bib_info.record['fields']['callList'].first['fields']['itemList']
+            .first['fields']['currentLocation']['key'] = 'ARCHIVE-MP'
         end
 
         it 'will not pass along that item\'s parent call to the user' do

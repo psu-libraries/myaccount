@@ -20,11 +20,11 @@ class Item
 
   private
 
-  def fields
-    record['fields']
-  end
+    def fields
+      record['fields']
+    end
 
-  def item
-    record['fields']
-  end
+    def item
+      record['fields']
+    end
 end

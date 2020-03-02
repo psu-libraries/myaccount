@@ -7,7 +7,7 @@ class Call
 
   def initialize(record:)
     @record = record
-    @items = item_list.map {|i| Item.new i }
+    @items = item_list.map { |i| Item.new i }
   end
 
   def item_list
@@ -20,8 +20,7 @@ class Call
 
   private
 
-  def fields
-    record.dig('fields')
-  end
-
+    def fields
+      record.dig('fields')
+    end
 end

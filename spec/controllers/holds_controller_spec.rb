@@ -152,13 +152,14 @@ RSpec.describe HoldsController, type: :controller do
 
     describe '#new' do
       let(:form_builder) { instance_double(PlaceHoldForm::Builder) }
-      let(:form_params) {     {
-          catkey: '1',
-          title: 'How to Eat More Pizza',
-          author: 'Samantha Smith',
-          volumetric_calls: [],
-          barcode: '2'
+      let(:form_params) { {
+        catkey: '1',
+        title: 'How to Eat More Pizza',
+        author: 'Samantha Smith',
+        volumetric_calls: [],
+        barcode: '2'
       } }
+
       before do
         allow(PlaceHoldForm::Builder).to receive(:new).and_return(form_builder)
         allow(form_builder).to receive(:generate).and_return(form_params)

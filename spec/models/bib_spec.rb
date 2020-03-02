@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe Bib, type: :model do
   let(:bib_with_holdables) { build(:bib_with_holdables) }
 
-
   it 'has an author' do
     expect(bib_with_holdables.author).to be 'Hill Street blues (Television program)'
   end

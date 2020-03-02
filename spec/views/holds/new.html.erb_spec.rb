@@ -3,14 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'holds/new.html.erb', type: :view do
-  let(:form_params) {     {
-      catkey: '1',
-      title: 'How to Eat More Pizza',
-      author: 'Samantha Smith',
-      volumetric_calls: [],
-      barcode: '2'
+  let(:form_params) { {
+    catkey: '1',
+    title: 'How to Eat More Pizza',
+    author: 'Samantha Smith',
+    volumetric_calls: [],
+    barcode: '2'
   } }
-
 
   context 'without volumetric holdables to choose' do
     before do
@@ -32,7 +31,7 @@ RSpec.describe 'holds/new.html.erb', type: :view do
 
   context 'with volumetric holdables to choose' do
     before do
-      form_params[:volumetric_calls] = [ build(:call), build(:call) ]
+      form_params[:volumetric_calls] = [build(:call), build(:call)]
       form_params[:volumetric_calls].first.record['fields']['volumetric'] = 'no. 1'
       assign(:place_hold_form_params, form_params)
     end

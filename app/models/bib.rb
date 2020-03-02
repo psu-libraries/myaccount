@@ -18,5 +18,4 @@ class Bib
     def bib
       @record['fields']
     end
-
 end

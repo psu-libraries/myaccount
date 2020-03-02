@@ -243,9 +243,9 @@ RSpec.describe SymphonyClient do
 
   describe '#get_all_locations' do
     before do
-      stub_request(:get, "https://example.com/symwsbc/policy/location/simpleQuery").
-          with(query: hash_including(includeFields: 'displayName,holdable')).
-          to_return(status: 200, body: ALL_LOCATIONS.to_json, headers: {})
+      stub_request(:get, 'https://example.com/symwsbc/policy/location/simpleQuery')
+        .with(query: hash_including(includeFields: 'displayName,holdable'))
+        .to_return(status: 200, body: ALL_LOCATIONS.to_json, headers: {})
     end
 
     it 'retrieves a list of all locations' do
