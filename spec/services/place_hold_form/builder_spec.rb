@@ -4,70 +4,72 @@ require 'rails_helper'
 
 RSpec.describe PlaceHoldForm::Builder do
   subject(:builder) { described_class.new(catkey: catkey, user_token: user_token, client: client) }
+
   let(:catkey) { '1' }
   let(:user_token) { '2asf' }
   let(:client) { instance_double(SymphonyClient) }
   let(:bib_info) { build(:bib_with_holdables) }
-  let(:call_list) { [build(:call), build(:call), build(:call), build(:call), build(:call)] }
-  let(:holdable_locations) { HOLDABLE_LOCATIONS }
+  let(:holdable_locations) { HOLDABLE_LOCATIONS_RAW_JSON }
+  let(:form_params) { builder.generate }
+  let(:get_bib_info_response) { instance_double(HTTP::Response) }
+  let(:get_all_locations_response) { instance_double(HTTP::Response) }
 
   before do
     allow(Bib).to receive(:new).and_return(bib_info)
-    allow(builder).to receive(:parsed_symphony_response).with(:get_bib_info, catkey, user_token)
-    allow(builder).to receive(:parsed_symphony_response).with(:get_all_locations)
-    allow(builder).to receive(:find_holdable_locations).and_return(holdable_locations)
+    allow(client).to receive(:get_bib_info).with(catkey, user_token).and_return(get_bib_info_response)
+    allow(get_bib_info_response).to receive(:body).and_return ''.to_json
+
+    allow(client).to receive(:get_all_locations).and_return(get_all_locations_response)
+    allow(get_all_locations_response).to receive(:body).and_return holdable_locations.to_json
   end
 
   describe '#generate' do
-    context 'when there are volumetric calls to present to the user' do
-      it 'will return a list of holdable items naturally sorted on volumetric' do
-        form_params = builder.generate
+    it 'will pass along catkey' do
+      expect(form_params[:catkey]).to eq '1'
+    end
 
+    it 'will pass along title' do
+      expect(form_params[:title]).to eq 'Hill Street blues. The complete series'
+    end
+
+    it 'will pass along author' do
+      expect(form_params[:author]).to eq 'Hill Street blues (Television program)'
+    end
+
+    context 'when there are volumetric calls to present to the user' do
+      it 'will generate holdables when supplied with a body that has a callList' do
+        expect(form_params[:volumetric_calls].count).to be 8
+      end
+
+      it 'will return a list of holdable items naturally sorted on volumetric' do
         expected_order = [['bklet'], ['v', 1.0], ['v', 2.0], ['v', 3.0], ['v', 4.0], ['v', 5.0], ['v', 6.0], ['v', 7.0]]
         volumetrics_in_order = form_params[:volumetric_calls].map { |h| h.record['naturalized_volumetric'] }
         expect(volumetrics_in_order).to eq expected_order
       end
+
+      context 'when one item is not holdable' do
+        before do
+          bib_info.record['fields']['callList'].first['fields']['itemList'].first['fields']['currentLocation']['key'] = 'ARCHIVE-MP'
+        end
+
+        it 'will not pass along that item\'s parent call to the user' do
+          expect(form_params[:volumetric_calls].count).to be 7
+        end
+      end
     end
 
+    context 'when there aren\'t enough volumetric calls to present to require user select' do
+      let(:bib_info) { build(:bib_without_holdables) }
 
+      it 'will not generate any volumetric holdables' do
+        expect(form_params[:volumetric_calls]).to be_empty
+      end
 
+      it 'will pass along a random barcode' do
+        # @call_list.collect {|c| c.items.collect { |i| i.barcode }}.flatten
+        possible_barcodes = ['000080793182', '000081297085', '000081321605', '000081287932', '000081402335']
+        expect(possible_barcodes).to include form_params[:barcode]
+      end
+    end
   end
-
-# it 'will generate holdables when supplied with a body that has a callList' do
-#   expect(bib_with_holdables.holdables.count).to be 8
-# end
-#
-#
-#   describe '#holdables' do
-#
-#     context 'with an item list that does not contain any volumetrics' do
-#       it 'will not generate any new holds' do
-#         allow(bib_without_holdables).to receive(:volumetric?).and_return(false)
-#
-#         expect(bib_without_holdables.holdables).to be nil
-#       end
-#     end
-#
-#     context 'with an item list without any holdable items' do
-#       it 'will not generate any new holds' do
-#         expect(bib_without_holdables.holdables).to be nil
-#       end
-#     end
-#
-#     context 'with an item list with only one potential holdable item' do
-#       it 'will not generate any new holds' do
-#         allow(bib_without_holdables).to receive(:potential_holdables).and_return([instance_double('Hold')])
-#
-#         expect(bib_without_holdables.holdables).to be nil
-#       end
-#     end
-#
-#     context 'with an item list where there is only one holdable item' do
-#       it 'will not generate any new holds' do
-#         allow(bib_without_holdables).to receive(:filter_holdables).and_return([instance_double('Hold')])
-#
-#         expect(bib_without_holdables.holdables).to be nil
-#       end
-#     end
-#   end
 end
