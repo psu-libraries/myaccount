@@ -12,8 +12,8 @@ class PlaceHoldForm::Builder
   def generate
     bib_info = Bib.new(parsed_symphony_response(:get_bib_info, @catkey, @user_token))
     @call_list = bib_info.call_list.map { |c| Call.new record: c }
-    @holdable_locations = find_holdable_locations
     process_volumetric_calls
+
     {
       catkey: @catkey,
       title: bib_info.title,
@@ -50,17 +50,19 @@ class PlaceHoldForm::Builder
       volumetric_natural_sort
     end
 
+    def filter_holdables
+      holdable_locations = find_holdable_locations
+
+      @call_list.filter! do |c|
+        current_locations = c.items.map(&:current_location)
+        current_locations.filter { |loc| holdable_locations.include? loc }.present?
+      end
+    end
+
     def find_holdable_locations
       all_locations = parsed_symphony_response(:get_all_locations)
       all_locations.filter { |p| p&.dig 'fields', 'holdable' }
         .map { |p| p&.dig 'key' }
-    end
-
-    def filter_holdables
-      @call_list.filter! do |c|
-        current_locations = c.items.map(&:current_location)
-        current_locations.filter { |loc| @holdable_locations.include? loc }.present?
-      end
     end
 
     def volumetric_natural_sort
