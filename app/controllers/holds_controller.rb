@@ -32,9 +32,10 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
-    result = symphony_client.get_bib_info params['catkey'], current_user.session_token
-    parsed_body = JSON.parse result.body
-    @bib = Bib.new(parsed_body, holdable_locations)
+    form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
+                                              user_token: current_user.session_token,
+                                              client: symphony_client)
+    @place_hold_form_params = form_builder.generate
   end
 
   # Handles placing holds
@@ -117,14 +118,6 @@ class HoldsController < ApplicationController
 
     def holds_not_ready
       holds.reject(&:ready_for_pickup?)
-    end
-
-    def holdable_locations
-      result = symphony_client.retrieve_holdable_locations.body
-
-      parsed_body = JSON.parse result
-      parsed_body.filter { |p| p&.dig 'fields', 'holdable' }
-        .map { |p| p&.dig 'key' }
     end
 
     def handle_pickup_change_request

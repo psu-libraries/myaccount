@@ -3,18 +3,35 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldCheckboxWrapperComponent, type: :component do
-  let(:bib_with_holdables) { build(:bib_with_holdables) }
+  let(:component) { render_inline(described_class, volumetric_calls: volumetric_calls).to_html }
 
-  let(:holdables) { bib_with_holdables.holdables }
-  let(:component) { render_inline(described_class, holdables: holdables).to_html }
+  context 'when volumetric calls are not present' do
+    let(:volumetric_calls) { [] }
 
-  it 'renders if any holdables are present' do
-    expect(component).not_to be_empty
+    it 'does not render if there are not any volumetric_calls present' do
+      expect(component).to be_empty
+    end
   end
 
-  it 'does not render if there are not any holdables present' do
-    component = render_inline(described_class, holdables: []).to_html
+  context 'when volumetric calls are present' do
+    let(:volumetric_calls) { [build(:call), build(:call), build(:call)] }
 
-    expect(component).to be_empty
+    before do
+      volumetric_calls.first.record['fields']['volumetric'] = 'no. 1'
+      volumetric_calls.second.record['fields']['volumetric'] = 'no. 2'
+      volumetric_calls.third.record['fields']['volumetric'] = 'no. 3'
+    end
+
+    it 'renders if any volumetric_calls are present' do
+      expect(component).not_to be_empty
+    end
+
+    it 'renders an input with a unique id attribute by barcode' do
+      expect(component).to have_css('input#barcodes_000080793182')
+    end
+
+    it 'renders a label with a matching unique for attribute based on barcode' do
+      expect(component).to have_css('label[for="barcodes_000080793182"]')
+    end
   end
 end

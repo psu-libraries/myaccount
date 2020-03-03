@@ -28,6 +28,7 @@ module Myaccount
     config.load_defaults 6.0
 
     config.time_zone = 'Eastern Time (US & Canada)'
+    config.catalog_url = 'https://catalog.libraries.psu.edu/catalog/'
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

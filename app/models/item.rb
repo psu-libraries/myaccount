@@ -10,6 +10,14 @@ class Item
     @record = record
   end
 
+  def barcode
+    fields['barcode']
+  end
+
+  def current_location
+    fields.dig('currentLocation', 'key')
+  end
+
   private
 
     def fields

@@ -98,10 +98,6 @@ class Hold
     record['key']
   end
 
-  def barcode
-    fields.dig('itemList').try(:first)&.dig('fields', 'barcode')
-  end
-
   def patron_key
     fields['patron']['key']
   end
@@ -136,14 +132,6 @@ class Hold
 
   def status_code
     fields['status']
-  end
-
-  def volumetric
-    fields['volumetric']
-  end
-
-  def current_location
-    fields.dig('itemList').try(:first)&.dig('fields', 'currentLocation', 'key')
   end
 
   private

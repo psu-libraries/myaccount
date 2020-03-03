@@ -3,17 +3,43 @@
 require 'rails_helper'
 
 RSpec.describe 'holds/new.html.erb', type: :view do
-  let(:bib) { build(:bib_with_holdables) }
+  let(:form_params) { {
+    catkey: '1',
+    title: 'How to Eat More Pizza',
+    author: 'Samantha Smith',
+    volumetric_calls: [],
+    barcode: '2'
+  } }
 
-  context 'with a new hold with holdables to choose' do
+  context 'without volumetric holdables to choose' do
     before do
-      assign(:bib, bib)
+      assign(:place_hold_form_params, form_params)
     end
 
-    it 'renders an input with a unique id attribute by barcode' do
+    it 'does not render checkbox inputs' do
       render
 
-      expect(rendered).to have_css('input[type="checkbox"]', count: 8)
+      expect(rendered).to have_css('input[type="checkbox"]', count: 0)
+    end
+
+    it 'provides a way to Cancel and go back to the catalog' do
+      render
+
+      expect(rendered).to include 'href="https://catalog.libraries.psu.edu/catalog/1">Cancel'
+    end
+  end
+
+  context 'with volumetric holdables to choose' do
+    before do
+      form_params[:volumetric_calls] = [build(:call), build(:call)]
+      form_params[:volumetric_calls].first.record['fields']['volumetric'] = 'no. 1'
+      assign(:place_hold_form_params, form_params)
+    end
+
+    it 'renders checkboxes for every call' do
+      render
+
+      expect(rendered).to have_css('input[type="checkbox"]', count: 2)
     end
   end
 end

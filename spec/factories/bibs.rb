@@ -3,8 +3,7 @@
 FactoryBot.define do
   factory :bib do
     factory :bib_without_holdables do
-      initialize_with { new(body, hold_locations) }
-      hold_locations { HOLDABLE_LOCATIONS }
+      initialize_with { new(body) }
 
       body {
         { 'resource' => '/catalog/bib',
@@ -167,10 +166,7 @@ FactoryBot.define do
     end
 
     factory :bib_with_holdables do
-      initialize_with { new(body, hold_locations) }
-      hold_locations {
-        HOLDABLE_LOCATIONS
-      }
+      initialize_with { new(body) }
 
       body {
         { 'resource' => '/catalog/bib',

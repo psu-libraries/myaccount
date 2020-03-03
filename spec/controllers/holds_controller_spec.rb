@@ -151,23 +151,23 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#new' do
-      let(:bib) { build(:bib_with_holdables) }
-      let(:response_body) { HOLDABLE_LOCATIONS_RAW_JSON }
+      let(:form_builder) { instance_double(PlaceHoldForm::Builder) }
+      let(:form_params) { {
+        catkey: '1',
+        title: 'How to Eat More Pizza',
+        author: 'Samantha Smith',
+        volumetric_calls: [],
+        barcode: '2'
+      } }
 
       before do
-        stub_request(:get, 'https://example.com/symwsbc/catalog/bib/key/1')
-          .with(query: hash_including(includeFields: match(/\*,callList/)))
-          .to_return(status: 200, body: bib.body.to_json, headers: {})
-
-        stub_request(:get, 'https://example.com/symwsbc/policy/location/simpleQuery')
-          .with(query: hash_including(includeFields: match(/displayName,holdable/)))
-          .to_return(status: 200, body: response_body.to_json, headers: {})
+        allow(PlaceHoldForm::Builder).to receive(:new).and_return(form_builder)
+        allow(form_builder).to receive(:generate).and_return(form_params)
       end
 
-      it 'sends requests to the web service when the web service supplied data first' do
-        post :new, params: { catkey: '1' }
-
-        expect(assigns(:bib).holdables.count).to eq 8
+      it 'sends the form parameters to the view' do
+        get :new
+        expect(assigns(:place_hold_form_params)).to eq(form_params)
       end
     end
 

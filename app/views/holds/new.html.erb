@@ -1,15 +1,15 @@
 <h1>A Hold Will Be Placed For You</h1>
 
 <p>
-  <%= render GenericValueWithLabelComponent, label: 'Title', value: @bib.title %> <br>
-  <%= render GenericValueWithLabelComponent, label: 'Author', value: @bib.author %>
+  <%= render GenericValueWithLabelComponent, label: 'Title', value: @place_hold_form_params[:title] %> <br>
+  <%= render GenericValueWithLabelComponent, label: 'Author', value: @place_hold_form_params[:author] %>
 </p>
 
 <%= form_with url: '/holds', method: :post do %>
-  <%= render PlaceHoldHiddenInputComponent, bib: @bib %>
+  <%= render PlaceHoldHiddenInputComponent, barcode: @place_hold_form_params[:barcode] %>
   <%= hidden_field_tag :catkey, params[:catkey] %>
   <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: true } %>
-  <%= render PlaceHoldCheckboxWrapperComponent, holdables: @bib.holdables %>
+  <%= render PlaceHoldCheckboxWrapperComponent, volumetric_calls: @place_hold_form_params[:volumetric_calls] %>
   <%= submit_tag('Place Hold', class: 'btn btn-info') %>
-  <button type="button" class="btn btn-danger">Cancel</button>
+  <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_hold_form_params[:catkey], class: 'btn btn-danger' %>
 <% end %>
