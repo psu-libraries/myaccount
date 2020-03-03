@@ -67,6 +67,8 @@ RSpec.describe PlaceHoldForm::Builder do
       end
 
       it 'will pass along a random barcode' do
+        # The list of possible_barcodes was generated from the following block processing. Because @call_list isn't a
+        # public instance variable it is not something that client code can find.
         # @call_list.collect {|c| c.items.collect { |i| i.barcode }}.flatten
         possible_barcodes = ['000080793182', '000081297085', '000081321605', '000081287932', '000081402335']
         expect(possible_barcodes).to include form_params[:barcode]
