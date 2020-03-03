@@ -16,7 +16,7 @@ RSpec.describe 'holds/new.html.erb', type: :view do
       assign(:place_hold_form_params, form_params)
     end
 
-    it 'does not render checkbox inputs when there' do
+    it 'does not render checkbox inputs' do
       render
 
       expect(rendered).to have_css('input[type="checkbox"]', count: 0)
