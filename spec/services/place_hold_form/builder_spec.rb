@@ -57,6 +57,24 @@ RSpec.describe PlaceHoldForm::Builder do
           expect(form_params[:volumetric_calls].count).to be 7
         end
       end
+
+      context 'when multiple calls that not volumetric are mixed in' do
+        let(:bib_info) { build(:bib_with_multiple_non_volumetrics) }
+
+        it 'will keep only one non-volumetric call' do
+          non_volumetrics = form_params[:volumetric_calls].select { |c| c.volumetric.nil? }
+
+          expect(non_volumetrics.count).to be 1
+        end
+      end
+
+      context 'when multiple volumetric calls of the same call number are mixed in' do
+        let(:bib_info) { build(:bib_with_dupe_call_number_volumetrics) }
+
+        it 'will remove calls that are not unique' do
+          expect(form_params[:volumetric_calls].count).to be 8
+        end
+      end
     end
 
     context 'when there aren\'t enough volumetric calls to present to require user select' do

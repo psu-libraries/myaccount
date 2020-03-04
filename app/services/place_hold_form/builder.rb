@@ -18,7 +18,7 @@ class PlaceHoldForm::Builder
       catkey: @catkey,
       title: bib_info.title,
       author: bib_info.author,
-      volumetric_calls: @volumetric_calls,
+      volumetric_calls: @volumetric_calls.uniq(&:call_number),
       barcode: @volumetric_calls.present? ? nil : @call_list.sample.items.sample.barcode
     }
   end
@@ -48,6 +48,15 @@ class PlaceHoldForm::Builder
       filter_holdables if @call_list.count > 1
       @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
       volumetric_natural_sort
+      compact_non_volumetric_calls if @volumetric_calls.select { |c| c.volumetric.nil? }.count > 1
+    end
+
+    def compact_non_volumetric_calls
+      process_these = @volumetric_calls.dup
+      @volumetric_calls = []
+      process_these.each_with_index do |c, i|
+        @volumetric_calls << c unless i != 0 && c.volumetric.nil?
+      end
     end
 
     def filter_holdables
