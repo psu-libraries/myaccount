@@ -162,10 +162,6 @@ class SymphonyClient
                             })
     end
 
-    def error_message(response)
-      JSON.parse(response.body).dig('messageList')[0].dig('message')
-    end
-
     def error_code(response)
       return if response.status.ok?
 
@@ -179,7 +175,7 @@ class SymphonyClient
     def renewal_error_message(response)
       return if response.status.ok?
 
-      RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] || error_message(response)
+      RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] || JSON.parse(response.body).dig('messageList')[0].dig('message')
     rescue JSON::ParserError
       nil
     end
