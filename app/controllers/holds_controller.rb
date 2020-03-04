@@ -167,21 +167,21 @@ class HoldsController < ApplicationController
     end
 
     def hold_lookup(hold_key)
-      hold_record = symphony_client.get_hold_info hold_key, current_user.session_token
-      parsed_hold = JSON.parse hold_record.body
+      parsed_hold = SymphonyClientParser::parsed_response(symphony_client,
+                                                          :get_hold_info, hold_key, current_user.session_token)
 
       start = DateTime.now
       while parsed_hold.dig('fields', 'item', 'fields').nil? && start + 5.seconds > DateTime.now
-        hold_record = symphony_client.get_hold_info hold_key, current_user.session_token
-        parsed_hold = JSON.parse hold_record.body
+        parsed_hold = SymphonyClientParser::parsed_response(symphony_client,
+                                                            :get_hold_info, hold_key, current_user.session_token)
       end
 
       Hold.new parsed_hold
     end
 
     def item_lookup(barcode)
-      item_record = symphony_client.get_item_info barcode, current_user.session_token
-      parsed_item = JSON.parse item_record.body
+      parsed_item = SymphonyClientParser::parsed_response(symphony_client,
+                                                          :get_item_info, barcode, current_user.session_token)
       Item.new parsed_item
     end
 
