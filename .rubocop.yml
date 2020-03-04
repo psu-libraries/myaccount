@@ -20,7 +20,6 @@ Metrics/BlockLength:
 
 Metrics/LineLength:
   Exclude:
-  - 'spec/support/holdable_locations.rb'
   - 'spec/factories/bibs.rb'
 
 RSpec/ExampleLength:
