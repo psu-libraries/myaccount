@@ -18,7 +18,7 @@ class PlaceHoldForm::Builder
       catkey: @catkey,
       title: bib_info.title,
       author: bib_info.author,
-      volumetric_calls: @volumetric_calls.uniq(&:call_number),
+      volumetric_calls: @volumetric_calls,
       barcode: @volumetric_calls.present? ? nil : @call_list.sample.items.sample.barcode
     }
   end
@@ -44,11 +44,16 @@ class PlaceHoldForm::Builder
     # barcode from a random item in a random call in the @call_list is used (local logic in Symphony dictates).
     #
     # Second: sort naturally by Call#volumetric.
+    #
+    # Third: If there happen to be non-voluemtrics along-side the volumetrics, reduce them to just 1.
+    #
+    # Fourth: Only pass along the volumetric calls that have unique Call#call_number
     def process_volumetric_calls
       filter_holdables if @call_list.count > 1
       @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
       volumetric_natural_sort
       compact_non_volumetric_calls if @volumetric_calls.select { |c| c.volumetric.nil? }.count > 1
+      @volumetric_calls.uniq!(&:call_number)
     end
 
     def compact_non_volumetric_calls
