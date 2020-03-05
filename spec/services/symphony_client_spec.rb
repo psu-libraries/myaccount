@@ -167,6 +167,18 @@ RSpec.describe SymphonyClient do
                       "holdType": 'TITLE',
                       "holdRange": 'SYSTEM' })
         .to_return(status: 200, body: { key: 'other_hold_key' }.to_json)
+
+      stub_request(:post, uri)
+        .with(body: { "itemBarcode": 'records_in_use_barcode',
+                      "patronBarcode": '1234',
+                      "pickupLibrary": {
+                        "resource": '/policy/library',
+                        "key": 'UP-PAT'
+                      },
+                      "holdType": 'TITLE',
+                      "holdRange": 'SYSTEM',
+                      "fillByDate": '2021-03-17' })
+        .to_return({ status: 500, body: error_prompt }, status: 200, body: { key: 'some_hold_key' }.to_json)
     end
 
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/placeHold" }
@@ -202,6 +214,17 @@ RSpec.describe SymphonyClient do
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
         expect(JSON.parse(place_hold_response)).to include 'key' => 'other_hold_key'
+      end
+    end
+
+    context 'when place hold return records in use error' do
+      let(:item_barcode) { 'records_in_use_barcode' }
+      let(:error_prompt) { { messageList: [{ code: 'hatErrorResponse.116', message: 'Records in use' }] }.to_json }
+
+      it 'keeps trying for 5 seconds max until the record is not in use' do
+        place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
+
+        expect(JSON.parse(place_hold_response)).to include 'key' => 'some_hold_key'
       end
     end
   end
