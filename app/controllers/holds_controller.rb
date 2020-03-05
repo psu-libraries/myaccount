@@ -171,7 +171,7 @@ class HoldsController < ApplicationController
                                                           :get_hold_info, hold_key, current_user.session_token)
 
       start = DateTime.now
-      while parsed_hold.dig('fields', 'item', 'fields').nil? && start + 5.seconds > DateTime.now
+      while parsed_hold.dig('fields', 'item').nil? && start + 5.seconds > DateTime.now
         parsed_hold = SymphonyClientParser::parsed_response(symphony_client,
                                                             :get_hold_info, hold_key, current_user.session_token)
       end
