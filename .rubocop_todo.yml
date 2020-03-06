@@ -9,7 +9,7 @@
 # Offense count: 3
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 191
+  Max: 193
 
 # Offense count: 17
 RSpec/NestedGroups:

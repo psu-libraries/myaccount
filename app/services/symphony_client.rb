@@ -166,6 +166,8 @@ class SymphonyClient
       return if response.status.ok?
 
       JSON.parse(response.body).dig('messageList')[0].dig('code')
+    rescue JSON::ParserError
+      nil
     end
 
     def records_in_use?(response)

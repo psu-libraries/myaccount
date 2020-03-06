@@ -115,6 +115,17 @@ RSpec.describe SymphonyClient do
 
       expect(renew_response).to include error: [error_response]
     end
+
+    context 'when error message in the response does not include expected fields' do
+      let(:error_prompt_custom) { 'Item has holds' }.to_json
+
+      it 'returns empty error message' do
+        renew_response = client.renew_items(user, [checkouts.last])
+        error_response = { renewal: checkouts.last, sirsi_response: '' }
+
+        expect(renew_response).to include error: [error_response]
+      end
+    end
   end
 
   describe '#get_bib_info' do
