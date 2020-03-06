@@ -45,9 +45,8 @@ module Myaccount
       manager.default_strategies :library_id
     end
 
-    config.cache_store = :redis_cache_store, { url: 'redis://127.0.0.1:6379/1' }#ENV['REDIS_URL'] }
+    config.cache_store = :redis_cache_store, { url: Settings.redis.url }
     config.action_controller.perform_caching = true
     config.session_store :cache_store, key: ENV['APP_SESSION_KEY']
-
   end
 end

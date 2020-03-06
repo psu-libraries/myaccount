@@ -8,18 +8,15 @@ ruby '2.6.5'
 gem 'actionview-component'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'config', '~> 2.0'
+gem 'hiredis'
 gem 'http', '~> 4.0'
 gem 'puma', '~> 3.12'
 gem 'rails', '~> 6.0.0'
+gem 'redis'
 gem 'simplecov', require: false, group: :test
 gem 'turbolinks', '~> 5'
 gem 'warden', '~> 1.2'
 gem 'webpacker', '~> 4.0'
-
-group :production do
-  gem 'hiredis'
-  gem 'redis'
-end
 
 group :development do
   gem 'better_errors'

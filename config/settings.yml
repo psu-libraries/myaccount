@@ -3,3 +3,5 @@ symws:
   url:
   headers: {}
 home_page_flash_message_html:
+redis:
+  url: 'redis://127.0.0.1:6379/1'

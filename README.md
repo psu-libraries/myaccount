@@ -42,16 +42,34 @@ Use the [redis docker image](https://hub.docker.com/_/redis/).
 
 Should be able to just run it with a command listed int he docker hub page:
 
-`docker run --name some-redis -d redis`
+`docker run --name redis-the-new-black -d redis`
 
-Then boot up the rails server and you'll be all set. Monitor the behavior by tailing the logs:
+Then boot up the rails server with caching turned on and you'll be all set.
+ 
+ `bundle exec rails s --dev-caching`
+ 
+Monitor the behavior by tailing the logs:
 
-`docker exec -it redis1 redis-cli monitor`
+ `docker exec -it redis-the-new-black redis-cli monitor`
 
-# Terminology/"Ubiquitous Language"
+
+# Putting it all together
+
+Locally you'll need to run:
+
+```
+bundle exec rails s --dev-caching
+docker run --name redis-the-new-black -d redis
+bin/webpack-dev-server
+```
+
+Drop `--dev-caching` if it is getting in the way of dev work.
+
+# Terminology/"[Ubiquitous Language](https://martinfowler.com/bliki/UbiquitousLanguage.html)"
 
 There is a lot of domain terminology that can be confusing. Here are some of the bigger things to keep in mind:
 
 * _Bib_ - a bibliographic container that holds calls and items, contains global information about the bibliographic record described like author and title which is the same throughout the entire record (p.s., bibs can be *large*).
 * _Call_ - a call number based container that contains items and is contained within a bib. There can be multiple calls in a bib. There can be multiple items in a call. 
 * _Item_ - info that describes the thing thing that is actually held or checked out. Has a barcode and check out status.
+
