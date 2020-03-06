@@ -11,7 +11,7 @@ class PlaceHoldForm::Builder
 
   def generate
     bib_info = Bib.new(parsed_symphony_response(:get_bib_info, @catkey, @user_token))
-    @call_list = bib_info.call_list.map { |c| Call.new record: c }
+    @call_list = bib_info.call_list.map { |call| Call.new record: call }
     process_volumetric_calls
 
     {
@@ -52,36 +52,36 @@ class PlaceHoldForm::Builder
       filter_holdables if @call_list.count > 1
       @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
       volumetric_natural_sort
-      compact_non_volumetric_calls if @volumetric_calls.select { |c| c.volumetric.nil? }.count > 1
+      compact_non_volumetric_calls if @volumetric_calls.select { |call| call.volumetric.nil? }.count > 1
       @volumetric_calls.uniq!(&:call_number)
     end
 
     def compact_non_volumetric_calls
       process_these = @volumetric_calls.dup
       @volumetric_calls = []
-      process_these.each_with_index do |c, i|
-        @volumetric_calls << c unless i != 0 && c.volumetric.nil?
+      process_these.each_with_index do |call, i|
+        @volumetric_calls << call unless i != 0 && call.volumetric.nil?
       end
     end
 
     def filter_holdables
       holdable_locations = find_holdable_locations
 
-      @call_list.filter! do |c|
-        current_locations = c.items.map(&:current_location)
+      @call_list.filter! do |call|
+        current_locations = call.items.map(&:current_location)
         current_locations.filter { |loc| holdable_locations.include? loc }.present?
       end
     end
 
     def find_holdable_locations
       all_locations = parsed_symphony_response(:get_all_locations)
-      all_locations.filter { |p| p&.dig 'fields', 'holdable' }
-        .map { |p| p&.dig 'key' }
+      all_locations.filter { |location| location&.dig 'fields', 'holdable' }
+        .map { |location| location&.dig 'key' }
     end
 
     def volumetric_natural_sort
-      @volumetric_calls.each { |i| i.record['naturalized_volumetric'] = naturalize(i.volumetric.to_s) }
-        .sort_by! { |i| i.record['naturalized_volumetric'] }
+      @volumetric_calls.each { |call| call.record['naturalized_volumetric'] = naturalize(call.volumetric.to_s) }
+        .sort_by! { |call| call.record['naturalized_volumetric'] }
     end
 
     # Replace periods with spaces and then transform string into an array of "naturalized" values.
@@ -94,10 +94,10 @@ class PlaceHoldForm::Builder
     def naturalize(value)
       value.gsub(/\./, ' ')
         .scan(/[^\s\d]+|\d+/)
-        .map { |f| /\d+/.match?(f) ? f.to_f : f }
+        .map { |term| /\d+/.match?(term) ? term.to_f : term }
     end
 
     def volumetric?
-      @call_list&.any? { |i| i.volumetric.present? }
+      @call_list&.any? { |call| call.volumetric.present? }
     end
 end
