@@ -16,6 +16,11 @@ gem 'turbolinks', '~> 5'
 gem 'warden', '~> 1.2'
 gem 'webpacker', '~> 4.0'
 
+group :production do
+  gem 'hiredis'
+  gem 'redis'
+end
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

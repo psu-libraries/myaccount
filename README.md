@@ -13,8 +13,10 @@
 |----------|------|
 | `ruby`    |  2.6.5 <br> (_ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin18]_) |
 | `rails`   |  6.0.1 |
+| `redis`   | 5.0.7 |
 
 # Development Setup
+
 1.  [Make sure you have ssh keys established on your machine](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key)
 1.  Clone the application and install:
     ``` 
@@ -34,3 +36,22 @@
       headers: {}
     ```
     
+## Redis locally
+
+Use the [redis docker image](https://hub.docker.com/_/redis/).
+
+Should be able to just run it with a command listed int he docker hub page:
+
+`docker run --name some-redis -d redis`
+
+Then boot up the rails server and you'll be all set. Monitor the behavior by tailing the logs:
+
+`docker exec -it redis1 redis-cli monitor`
+
+# Terminology/"Ubiquitous Language"
+
+There is a lot of domain terminology that can be confusing. Here are some of the bigger things to keep in mind:
+
+* _Bib_ - a bibliographic container that holds calls and items, contains global information about the bibliographic record described like author and title which is the same throughout the entire record (p.s., bibs can be *large*).
+* _Call_ - a call number based container that contains items and is contained within a bib. There can be multiple calls in a bib. There can be multiple items in a call. 
+* _Item_ - info that describes the thing thing that is actually held or checked out. Has a barcode and check out status.
