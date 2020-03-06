@@ -326,7 +326,7 @@ RSpec.describe HoldsController, type: :controller do
       let(:results) { {
         success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }],
         error: [{ barcode: 'not_holdable_barcode', error_message: 'User already has a hold on this material' }]
-      }.with_indifferent_access }
+      } }
 
       before do
         allow(SymphonyClient).to receive(:new).and_return(mock_client)

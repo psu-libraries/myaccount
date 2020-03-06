@@ -2,7 +2,7 @@
 
 class PlaceHoldSuccessComponent < ActionView::Component::Base
   def initialize(result:)
-    @placed_hold = result['placed_hold']
+    @placed_hold = result[:placed_hold]
   end
 
   def pickup_library
