@@ -65,7 +65,7 @@ bin/webpack-dev-server
 
 Drop `--dev-caching` if it is getting in the way of dev work.
 
-# Terminology/"[Ubiquitous Language](https://martinfowler.com/bliki/UbiquitousLanguage.html)"
+# Terminology
 
 There is a lot of domain terminology that can be confusing. Here are some of the bigger things to keep in mind:
 
@@ -73,3 +73,4 @@ There is a lot of domain terminology that can be confusing. Here are some of the
 * _Call_ - a call number based container that contains items and is contained within a bib. There can be multiple calls in a bib. There can be multiple items in a call. 
 * _Item_ - info that describes the thing thing that is actually held or checked out. Has a barcode and check out status.
 
+This is an attempt at a quick and rough "[ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html)"
