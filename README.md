@@ -53,7 +53,7 @@ Monitor the behavior by tailing the logs:
  `docker exec -it redis-the-new-black redis-cli monitor`
 
 
-# Putting it all together
+## Putting it all together
 
 Locally you'll need to run:
 
