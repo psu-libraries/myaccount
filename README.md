@@ -71,6 +71,6 @@ There is a lot of domain terminology that can be confusing. Here are some of the
 
 * _Bib_ - a bibliographic container that holds calls and items, contains global information about the bibliographic record described like author and title which is the same throughout the entire record (p.s., bibs can be *large*).
 * _Call_ - a call number based container that contains items and is contained within a bib. There can be multiple calls in a bib. There can be multiple items in a call. 
-* _Item_ - info that describes the thing thing that is actually held or checked out. Has a barcode and check out status.
+* _Item_ - info that describes the thing that is actually held or checked out. Has a barcode and checkout status.
 
 This is an attempt at a quick and rough "[ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html)"
