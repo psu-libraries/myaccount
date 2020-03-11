@@ -40,7 +40,7 @@
 
 Use the [redis docker image](https://hub.docker.com/_/redis/).
 
-Should be able to just run it with a command listed int he docker hub page:
+Should be able to just run it with a command listed in the docker hub page:
 
 `docker run --name redis-the-new-black -d redis`
 
