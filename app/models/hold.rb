@@ -14,7 +14,7 @@ class Hold
     "UP-EMS": 'Earth & Min Sci Library, 105 Deike',
     "UP-ENGIN": 'Engineering Library, 325 Hammond Building',
     "UP-PAMS": 'Physical & Mathematical Sci Lib, 201 Davey Lab',
-    "UP-OFFICE": 'University Park Faculty/Staff Office Delivery',
+    "UP-OFFICE": 'University Park Faculty/Staff/Graduate Student Office Delivery',
     ABINGTON: 'Penn State Abington',
     ALTOONA: 'Penn State Altoona',
     BEAVER: 'Penn State Beaver',
