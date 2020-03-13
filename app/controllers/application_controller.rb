@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :current_user?, :patron, :renew_session_token, :symphony_client
+  helper_method :current_user, :current_user?, :patron, :symphony_client
 
   def current_user
     session_data = request.env['warden'].user
@@ -20,12 +20,6 @@ class ApplicationController < ActionController::Base
     @patron ||= Patron.new(patron_info_response)
   end
 
-  def renew_session_token
-    request.env['warden'].logout
-
-    authenticate_webaccess
-  end
-
   private
 
     def authenticate_webaccess
@@ -41,7 +35,17 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user!
-      redirect_to root_url unless current_user?
+      if current_user?
+        return renew_session_token if patron.stale?
+      else
+        redirect_to root_url
+      end
+    end
+
+    def renew_session_token
+      request.env['warden'].logout
+
+      authenticate_webaccess
     end
 
     def item_details
