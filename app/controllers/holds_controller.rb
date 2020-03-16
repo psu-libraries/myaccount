@@ -165,7 +165,8 @@ class HoldsController < ApplicationController
 
       redirect_to holds_path
     end
-    # Fetch a hold lookup as many times as necessary up to 5 seconds to avoid `nil` item in response. 
+
+    # Fetch a hold lookup as many times as necessary up to 5 seconds to avoid `nil` item in response.
     def hold_lookup(hold_key)
       parsed_hold = SymphonyClientParser::parsed_response(symphony_client,
                                                           :get_hold_info, hold_key, current_user.session_token)
