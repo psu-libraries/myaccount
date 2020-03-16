@@ -365,6 +365,7 @@ RSpec.describe HoldsController, type: :controller do
       end
 
       context 'when hold lookup does not return item level info' do
+        # HOLD_LOOKUP_NIL_ITEM_RAW_JSON is a mocked SymphonyClient response
         let(:hold_info_empty_item_response) { HOLD_LOOKUP_NIL_ITEM_RAW_JSON.to_json }
         let(:parsed_hold_info) { JSON.parse hold_info_response }
         let(:parsed_hold_info_empty_item) { JSON.parse hold_info_empty_item_response }
