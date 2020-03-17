@@ -3,5 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'sessions/index', type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'renders a login link' do
+    render
+
+    expect(rendered).to have_link('Log in', href: Settings.symws.webaccess_url + @request.base_url)
+  end
 end
