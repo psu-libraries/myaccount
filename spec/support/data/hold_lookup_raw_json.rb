@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-HOLD_LOOKUP_RAW_JSON = [{
+HOLD_LOOKUP_RAW_JSON = {
   "resource": '/circulation/holdRecord',
   "key": 'a_hold_key',
   "fields": {
@@ -85,4 +85,4 @@ HOLD_LOOKUP_RAW_JSON = [{
     "expirationDate": nil,
     "status": 'PLACED'
   }
-}].freeze
+}.freeze
