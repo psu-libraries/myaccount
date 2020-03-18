@@ -165,7 +165,7 @@ class SymphonyClient
     def error_code(response)
       return if response.status.ok?
 
-      JSON.parse(response.body).dig('messageList')[0].dig('code')
+      JSON.parse(response.body).dig('messageList').first.dig('code')
     rescue JSON::ParserError
       nil
     end
