@@ -22,6 +22,10 @@ Metrics/LineLength:
   Exclude:
   - 'spec/factories/bibs.rb'
 
+Naming/AccessorMethodName:
+  Exclude:
+    - 'app/services/symphony_client.rb'
+
 RSpec/ExampleLength:
   Exclude:
     - 'spec/services/symphony_client_spec.rb'
