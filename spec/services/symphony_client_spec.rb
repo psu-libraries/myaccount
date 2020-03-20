@@ -127,7 +127,7 @@ RSpec.describe SymphonyClient do
     it 'returns the Symphony Client "catalog bib" resource type' do
       bib_response = client.get_bib_info '12345', user.session_token
 
-      expect(bib_response.body.to_str).to include('/catalog/bib')
+      expect(bib_response.body.to_str).to include '/catalog/bib'
     end
   end
 
@@ -155,7 +155,7 @@ RSpec.describe SymphonyClient do
                       "holdType": 'TITLE',
                       "holdRange": 'SYSTEM',
                       "fillByDate": '2021-03-17' })
-        .to_return(status: 500, body: { message: 'User already has a hold on this material' }.to_json)
+        .to_return(status: 500, body: error_prompt)
 
       stub_request(:post, uri)
         .with(body: { "itemBarcode": 'no_date_item_barcode',
@@ -167,11 +167,24 @@ RSpec.describe SymphonyClient do
                       "holdType": 'TITLE',
                       "holdRange": 'SYSTEM' })
         .to_return(status: 200, body: { key: 'other_hold_key' }.to_json)
+
+      stub_request(:post, uri)
+        .with(body: { "itemBarcode": 'records_in_use_barcode',
+                      "patronBarcode": '1234',
+                      "pickupLibrary": {
+                        "resource": '/policy/library',
+                        "key": 'UP-PAT'
+                      },
+                      "holdType": 'TITLE',
+                      "holdRange": 'SYSTEM',
+                      "fillByDate": '2021-03-17' })
+        .to_return({ status: 500, body: error_prompt }, status: 200, body: { key: 'some_hold_key' }.to_json)
     end
 
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/placeHold" }
     let(:patron) { instance_double(Patron, barcode: '1234', library: 'UP-PAT') }
     let(:hold_args) { { pickup_library: 'UP-PAT', pickup_by_date: '2021-03-17' } }
+    let(:error_prompt) { { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json }
 
     context 'when place hold is successful' do
       let(:item_barcode) { 'success_item_barcode' }
@@ -189,7 +202,7 @@ RSpec.describe SymphonyClient do
       it 'returns the reason as the error message' do
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
-        expect(JSON.parse(place_hold_response)).to include 'message' => 'User already has a hold on this material'
+        expect(JSON.parse(place_hold_response)['messageList'].first).to include 'message' => 'Some error message'
       end
     end
 
@@ -201,6 +214,17 @@ RSpec.describe SymphonyClient do
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
         expect(JSON.parse(place_hold_response)).to include 'key' => 'other_hold_key'
+      end
+    end
+
+    context 'when place hold return records in use error' do
+      let(:item_barcode) { 'records_in_use_barcode' }
+      let(:error_prompt) { { messageList: [{ code: 'hatErrorResponse.116', message: 'Records in use' }] }.to_json }
+
+      it 'keeps trying for 5 seconds max until the record is not in use' do
+        place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
+
+        expect(JSON.parse(place_hold_response)).to include 'key' => 'some_hold_key'
       end
     end
   end

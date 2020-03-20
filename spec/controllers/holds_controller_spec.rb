@@ -13,6 +13,10 @@ RSpec.describe HoldsController, type: :controller do
     ]
   end
 
+  let(:error_prompt) do
+    { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json
+  end
+
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
   end
@@ -78,7 +82,7 @@ RSpec.describe HoldsController, type: :controller do
       context 'when pickup_library param is sent and the web services call fails' do
         before do
           stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
-            .to_return(status: 404, body: '', headers: {})
+            .to_return(status: 404, body: error_prompt, headers: {})
         end
 
         it 'fails to update the pickup library and sets the flash message' do
@@ -111,7 +115,7 @@ RSpec.describe HoldsController, type: :controller do
       context 'when not_needed_after param is sent and the webservice is not responding with 200' do
         before do
           stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
-            .to_return(status: 500, body: '', headers: {})
+            .to_return(status: 500, body: error_prompt, headers: {})
         end
 
         it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
@@ -139,7 +143,7 @@ RSpec.describe HoldsController, type: :controller do
       context 'when the web service does not respond with a 200' do
         before do
           stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
-            .to_return(status: 400, body: 'A bad thing', headers: {})
+            .to_return(status: 400, body: error_prompt, headers: {})
         end
 
         it 'deletes holds and fails' do
@@ -350,14 +354,37 @@ RSpec.describe HoldsController, type: :controller do
         get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
 
         placed_hold = assigns(:place_hold_results)[:success].first[:placed_hold]
-        expect(placed_hold.record.first['key']).to eq 'a_hold_key'
+        expect(placed_hold.record['key']).to eq 'a_hold_key'
       end
 
       it 'assigns failed holds results correctly' do
         get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
 
         failed_hold = assigns(:place_hold_results)[:error].first[:failed_hold]
-        expect(failed_hold.record.first['fields']['barcode']).to eq 'not_holdable_barcode'
+        expect(failed_hold.record['fields']['barcode']).to eq 'not_holdable_barcode'
+      end
+
+      context 'when hold lookup does not return item level info' do
+        let(:parsed_hold_info) { JSON.parse hold_info_response }
+        let(:hold_info_params) { ['a_hold_key', user[:session_token]] }
+        let(:mock_client) { instance_double(SymphonyClient) }
+
+        let(:results) { {
+          success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }]
+        }.with_indifferent_access }
+
+        before do
+          # HOLD_LOOKUP_NIL_ITEM_RAW_JSON is a mocked SymphonyClient response
+          allow(SymphonyClientParser).to receive(:parsed_response).with(mock_client, :get_hold_info, *hold_info_params)
+            .and_return(HOLD_LOOKUP_NIL_ITEM_RAW_JSON, parsed_hold_info)
+        end
+
+        it 'tries hold lookup again until item info returns not empty' do
+          get :result, params: {}, session: { place_hold_catkey: '1', place_hold_results: results }
+
+          placed_hold = assigns(:place_hold_results)[:success].first[:placed_hold]
+          expect(placed_hold.title).to eq 'National review'
+        end
       end
     end
   end

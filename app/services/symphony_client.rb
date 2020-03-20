@@ -16,6 +16,8 @@ class SymphonyClient
     "unhandledException": ''
   }.with_indifferent_access
 
+  DELAY = 0.05
+
   def login(user_id, password)
     response = request('/user/patron/login', method: :post, json: {
                          login: user_id,
@@ -80,8 +82,6 @@ class SymphonyClient
     end
   end
 
-  ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
-
   def cancel_hold(holdkey, session_token)
     authenticated_request('/circulation/holdRecord/cancelHold',
                           headers: { 'x-sirs-sessionToken': session_token },
@@ -124,22 +124,19 @@ class SymphonyClient
   end
 
   def get_item_info(barcode, session_token)
-    get_item_info_path = "/catalog/item/barcode/#{barcode}"
-    authenticated_request get_item_info_path, headers: { 'x-sirs-sessionToken': session_token },
-                                              params: {
-                                                includeFields: '*,bib{title,author},call{*}'
-                                              }
+    authenticated_request "/catalog/item/barcode/#{barcode}",
+                          headers: { 'x-sirs-sessionToken': session_token },
+                          params: {
+                            includeFields: '*,bib{title,author},call{*}'
+                          }
   end
 
   def get_bib_info(catkey, session_token)
-    get_bib_info_path = "/catalog/bib/key/#{catkey}"
-    authenticated_request(get_bib_info_path, headers: { 'x-sirs-sessionToken': session_token },
-                                             params: {
-                                               includeFields: [
-                                                 '*',
-                                                 'callList{*,itemList{*}}'
-                                               ].join(',')
-                                             })
+    authenticated_request "/catalog/bib/key/#{catkey}",
+                          headers: { 'x-sirs-sessionToken': session_token },
+                          params: {
+                            includeFields: '*,callList{*,itemList{*}}'
+                          }
   end
 
   def get_all_locations
@@ -152,6 +149,8 @@ class SymphonyClient
             })
   end
 
+  ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
+
   private
 
     def renew_item_request(resource, item_key, headers: {})
@@ -163,15 +162,20 @@ class SymphonyClient
                             })
     end
 
-    def error_message(response)
-      JSON.parse(response.body).dig('messageList')[0].dig('message')
+    def error_code(response)
+      return if response.status.ok?
+
+      JSON.parse(response.body).dig('messageList')[0].dig('code')
+    end
+
+    def records_in_use?(response)
+      error_code(response) == 'hatErrorResponse.116'
     end
 
     def renewal_error_message(response)
       return if response.status.ok?
 
-      error_code = JSON.parse(response.body).dig('messageList')[0].dig('code')
-      RENEWAL_CUSTOM_MESSAGELIST[error_code] || error_message(response)
+      RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] || JSON.parse(response.body).dig('messageList')[0].dig('message')
     rescue JSON::ParserError
       nil
     end
@@ -194,7 +198,15 @@ class SymphonyClient
     end
 
     def authenticated_request(path, headers: {}, **other)
-      request(path, headers: headers, **other)
+      start = DateTime.now
+      response = request(path, headers: headers, **other)
+
+      while records_in_use?(response) && start + 5.seconds > DateTime.now
+        sleep DELAY
+        response = request(path, headers: headers, **other)
+      end
+
+      response
     end
 
     def request(path, headers: {}, method: :get, **other)

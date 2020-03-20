@@ -10,7 +10,7 @@ class PlaceHoldForm::Builder
   end
 
   def generate
-    bib_info = Bib.new(parsed_symphony_response(:get_bib_info, @catkey, @user_token))
+    bib_info = Bib.new(SymphonyClientParser::parsed_response(@client, :get_bib_info, @catkey, @user_token))
     @call_list = bib_info.call_list.map { |call| Call.new record: call }
     process_volumetric_calls
 
@@ -24,11 +24,6 @@ class PlaceHoldForm::Builder
   end
 
   private
-
-    def parsed_symphony_response(symphony_call, *params)
-      client_response = @client.send(symphony_call, *params)
-      JSON.parse client_response.body
-    end
 
     # Take the @call_list (Array of Calls) and check for volumetrics and process if present.
     #
@@ -74,7 +69,7 @@ class PlaceHoldForm::Builder
     end
 
     def find_holdable_locations
-      all_locations = parsed_symphony_response(:get_all_locations)
+      all_locations = SymphonyClientParser::parsed_response @client, :get_all_locations
       all_locations.filter { |location| location&.dig 'fields', 'holdable' }
         .map { |location| location&.dig 'key' }
     end
