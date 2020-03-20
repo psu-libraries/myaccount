@@ -3,13 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldErrorComponent, type: :component do
-  let(:bib) { instance_double(Item,
+  let(:bib) { instance_double Item,
                               title: 'Some Title',
                               author: 'Somebody',
                               catkey: 'a_catkey',
                               call_number: 'a_call_number',
                               item_type_code: 'Book',
-                              item_type_human: 'Book') }
+                              item_type_human: 'Book',
+                              shadowed?: false }
   let(:error_message) { 'User already has a hold on this material' }
 
   it 'renders when there is a failed hold' do

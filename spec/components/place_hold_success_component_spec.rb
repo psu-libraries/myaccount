@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe PlaceHoldSuccessComponent, type: :component do
   let(:hold) do
-    instance_double(Hold,
+    instance_double Hold,
                     title: 'Some Title',
                     author: 'Somebody',
                     catkey: 'a_catkey',
@@ -12,7 +12,8 @@ RSpec.describe PlaceHoldSuccessComponent, type: :component do
                     item_type_code: 'Book',
                     item_type_human: 'Book',
                     pickup_library_human: 'UP-PAT',
-                    fill_by_date: Time.zone.parse('2020-02-20T00:00:00-05:00'))
+                    fill_by_date: Time.zone.parse('2020-02-20T00:00:00-05:00'),
+                    shadowed?: false
   end
 
   it 'renders when there is a hold placed' do

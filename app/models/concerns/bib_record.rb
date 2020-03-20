@@ -86,6 +86,10 @@ module BibRecord
     "#{title} (#{call_number})"
   end
 
+  def shadowed?
+    bib['shadowed']
+  end
+
   private
 
     def item

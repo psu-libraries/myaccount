@@ -121,4 +121,16 @@ RSpec.describe Checkout, type: :model do
     checkout.record['fields']['item']['resource'] = '/catalog/item'
     expect(checkout.resource).to eq '/catalog/item'
   end
+
+  it 'has no shadowed item' do
+    checkout.record['fields']['item']['fields']['bib']['fields']['shadowed'] = false
+    expect(checkout).not_to be_shadowed
+  end
+
+  context 'with a shadowed item' do
+    it 'is shadowed' do
+      checkout.record['fields']['item']['fields']['bib']['fields']['shadowed'] = true
+      expect(checkout).to be_shadowed
+    end
+  end
 end
