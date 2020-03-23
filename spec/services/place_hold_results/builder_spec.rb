@@ -11,6 +11,7 @@ RSpec.describe PlaceHoldResults::Builder do
   let(:symphony_client) { instance_double(SymphonyClient) }
   let(:hold_info_params) { ['a_hold_key', user_token] }
   let(:item_info_params) { ['not_holdable_barcode', user_token] }
+  # HOLD_LOOKUP_RAW_JSON and ITEM_LOOKUP_RAW_JSON are mocked SymphonyClient responses
   let(:parsed_hold_info) { JSON.parse HOLD_LOOKUP_RAW_JSON.to_json }
   let(:parsed_item_info) { JSON.parse ITEM_LOOKUP_RAW_JSON.to_json }
   let(:place_hold_results) { {
@@ -49,6 +50,23 @@ RSpec.describe PlaceHoldResults::Builder do
 
     it 'returns correct Item for each error' do
       expect(processed_results[:error].first[:failed_hold].barcode).to eq 'not_holdable_barcode'
+    end
+
+    context 'when hold lookup does not return item level info' do
+      let(:place_hold_results) { {
+        success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }]
+      }.with_indifferent_access }
+
+      before do
+        # HOLD_LOOKUP_NIL_ITEM_RAW_JSON is a mocked SymphonyClient response
+        allow(SymphonyClientParser).to receive(:parsed_response)
+          .with(symphony_client, :get_hold_info, *hold_info_params)
+          .and_return(HOLD_LOOKUP_NIL_ITEM_RAW_JSON, parsed_hold_info)
+      end
+
+      it 'tries hold lookup again until item info returns not empty' do
+        expect(processed_results[:success].first[:placed_hold].title).to eq 'National review'
+      end
     end
   end
 end
