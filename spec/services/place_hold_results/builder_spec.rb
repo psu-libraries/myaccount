@@ -33,7 +33,8 @@ RSpec.describe PlaceHoldResults::Builder do
     end
 
     it 'returns Hold objects for placed holds' do
-      expect(processed_results[:success].first[:placed_hold]).to be_a Hold
+      expect(processed_results[:success].first[:placed_hold].pickup_library_human)
+        .to eq 'Pattee Library and Paterno Library Stacks'
     end
 
     it 'returns correct Hold for each success' do
@@ -44,10 +45,6 @@ RSpec.describe PlaceHoldResults::Builder do
       expect(processed_results[:error].first).to include(barcode: 'not_holdable_barcode')
         .and include(error_message: 'User already has a hold on this material')
         .and include(:failed_hold)
-    end
-
-    it 'returns Item objects for failed holds' do
-      expect(processed_results[:error].first[:failed_hold]).to be_a Item
     end
 
     it 'returns correct Item for each error' do
