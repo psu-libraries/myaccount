@@ -72,18 +72,14 @@ class HoldsController < ApplicationController
     return redirect_to holds_path if session[:place_hold_results].blank?
 
     @place_hold_catkey = session[:place_hold_catkey]
+
+    results_builder = PlaceHoldResults::Builder.new(user_token: current_user.session_token,
+                                                    client: symphony_client,
+                                                    place_hold_results: session[:place_hold_results])
+    @place_hold_results = results_builder.generate
+
     session.delete(:place_hold_catkey)
-
-    raw_place_hold_results = session[:place_hold_results]
     session.delete(:place_hold_results)
-
-    @place_hold_results = raw_place_hold_results.each do |status, results|
-      if status == 'success'
-        results.map { |result| result['placed_hold'] = hold_lookup(result['hold_key']) }
-      else
-        results.map { |result| result['failed_hold'] = item_lookup(result['barcode']) }
-      end
-    end
   end
 
   # Handles form submission for canceling holds in Symphony
@@ -164,26 +160,6 @@ class HoldsController < ApplicationController
       flash[:error] = t 'myaccount.hold.update_pickup.past_date'
 
       redirect_to holds_path
-    end
-
-    # Fetch a hold lookup as many times as necessary up to 5 seconds to avoid `nil` item in response.
-    def hold_lookup(hold_key)
-      parsed_hold = SymphonyClientParser::parsed_response(symphony_client,
-                                                          :get_hold_info, hold_key, current_user.session_token)
-
-      start = DateTime.now
-      while parsed_hold.dig('fields', 'item').nil? && start + 5.seconds > DateTime.now
-        parsed_hold = SymphonyClientParser::parsed_response(symphony_client,
-                                                            :get_hold_info, hold_key, current_user.session_token)
-      end
-
-      Hold.new parsed_hold
-    end
-
-    def item_lookup(barcode)
-      parsed_item = SymphonyClientParser::parsed_response(symphony_client,
-                                                          :get_item_info, barcode, current_user.session_token)
-      Item.new parsed_item
     end
 
     def check_for_blanks!
