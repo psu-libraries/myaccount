@@ -10,7 +10,7 @@ class PlaceHoldResults::Builder
 
   def generate
     @place_hold_results.each do |status, results|
-      if status == 'success'.to_sym
+      if status == :success
         results.map { |result| result[:placed_hold] = hold_lookup(result[:hold_key]) }
       else
         results.map { |result| result[:failed_hold] = item_lookup(result[:barcode]) }
