@@ -17,7 +17,7 @@ RSpec.describe PlaceHoldResults::Builder do
   let(:place_hold_results) { {
     success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }],
     error: [{ barcode: 'not_holdable_barcode', error_message: 'User already has a hold on this material' }]
-  }.with_indifferent_access }
+  } }
 
   before do
     allow(SymphonyClientParser).to receive(:parsed_response).with(symphony_client, :get_hold_info, *hold_info_params)
@@ -55,7 +55,7 @@ RSpec.describe PlaceHoldResults::Builder do
     context 'when hold lookup does not return item level info' do
       let(:place_hold_results) { {
         success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }]
-      }.with_indifferent_access }
+      } }
 
       before do
         # HOLD_LOOKUP_NIL_ITEM_RAW_JSON is a mocked SymphonyClient response

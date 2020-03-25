@@ -2,8 +2,8 @@
 
 class PlaceHoldErrorComponent < ActionView::Component::Base
   def initialize(result:)
-    @bib = result['failed_hold']
-    @error_message = result['error_message']
+    @bib = result[:failed_hold]
+    @error_message = result[:error_message]
   end
 
   def render?
