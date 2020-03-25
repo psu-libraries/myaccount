@@ -35,8 +35,9 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user!
-      redirect_to root_url unless current_user?
-      renew_session_token if current_user? && patron.stale?
+      return redirect_to root_url unless current_user?
+
+      renew_session_token if patron.stale?
     end
 
     def renew_session_token
