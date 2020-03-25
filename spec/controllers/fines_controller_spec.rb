@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe FinesController do
-  let(:mock_patron) { instance_double(Patron) }
+  let(:mock_patron) { instance_double(Patron, stale?: false) }
   let(:fines) {     [instance_double(Fine, owed_amount: 0.50), instance_double(Fine, owed_amount: 0.50)] }
 
   before do
