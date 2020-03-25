@@ -40,6 +40,28 @@ RSpec.describe BibItemComponent, type: :component do
     end
   end
 
+  context 'when bib item is shadowed' do
+    before do
+      hold.record['fields']['item']['fields']['itemType']['key'] = 'ATLAS'
+      hold.record['fields']['bib']['fields']['shadowed'] = true
+    end
+
+    it 'renders an unlinked title' do
+      expect(component).not_to include 'href'
+    end
+  end
+
+  context 'when bib item is not shadowed' do
+    before do
+      hold.record['fields']['item']['fields']['itemType']['key'] = 'ATLAS'
+      hold.record['fields']['bib']['fields']['shadowed'] = false
+    end
+
+    it 'renders a linked title' do
+      expect(component).to include 'href'
+    end
+  end
+
   context 'when record passed doesn\'t contain a bib item, for example a fine without a bib item' do
     it 'doesn\'t render anything' do
       hold.record['fields']['item'] = nil

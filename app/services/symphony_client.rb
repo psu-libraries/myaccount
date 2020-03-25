@@ -7,6 +7,11 @@ class SymphonyClient
     content_type: 'application/json'
   }.freeze
 
+  ITEM_RESOURCES = [
+    'bib{title,author,callList{*}}',
+    'item{*,bib{shadowed,title,author},call{sortCallNumber,dispCallNumber}}'
+  ].join(',')
+
   RENEWAL_CUSTOM_MESSAGELIST = {
     "hatErrorResponse.141": 'Renewal limit reached, cannot be renewed.',
     "hatErrorResponse.7703": 'Renewal limit reached, cannot be renewed.',
@@ -119,7 +124,7 @@ class SymphonyClient
     authenticated_request "/circulation/holdRecord/key/#{hold_key}",
                           headers: { 'x-sirs-sessionToken': session_token },
                           params: {
-                            includeFields: '*,item{*,bib{title,author},call{*}}'
+                            includeFields: '*,item{*,bib{shadowed,title,author},call{*}}'
                           }
   end
 
@@ -127,7 +132,7 @@ class SymphonyClient
     authenticated_request "/catalog/item/barcode/#{barcode}",
                           headers: { 'x-sirs-sessionToken': session_token },
                           params: {
-                            includeFields: '*,bib{title,author},call{*}'
+                            includeFields: '*,bib{shadowed,title,author},call{*}'
                           }
   end
 
@@ -148,8 +153,6 @@ class SymphonyClient
               ].join(',')
             })
   end
-
-  ITEM_RESOURCES = 'bib{title,author,callList{*}},item{*,bib{title,author},call{sortCallNumber,dispCallNumber}}'
 
   private
 

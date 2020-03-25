@@ -249,7 +249,7 @@ RSpec.describe SymphonyClient do
 
     let(:hold_key) { 'a_hold_key' }
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
-    let(:include_fields) { '*,item{*,bib{title,author},call{*}}' }
+    let(:include_fields) { '*,item{*,bib{shadowed,title,author},call{*}}' }
 
     it 'returns the resource hold record' do
       hold_response = client.get_hold_info(hold_key, user.session_token)
@@ -267,7 +267,7 @@ RSpec.describe SymphonyClient do
 
     let(:barcode) { 'a_barcode' }
     let(:uri) { "#{Settings.symws.url}/catalog/item/barcode/#{barcode}" }
-    let(:include_fields) { '*,bib{title,author},call{*}' }
+    let(:include_fields) { '*,bib{shadowed,title,author},call{*}' }
 
     it 'returns the resource item record' do
       item_response = client.get_item_info(barcode, user.session_token)

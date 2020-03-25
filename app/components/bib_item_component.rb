@@ -12,6 +12,7 @@ class BibItemComponent < ActionView::Component::Base
     @type_code = bibitem.item_type_code
     @author = bibitem.author
     @call_number = bibitem.call_number
+    @shadowed = bibitem.shadowed?
   end
 
   def processed_title
@@ -21,7 +22,7 @@ class BibItemComponent < ActionView::Component::Base
   end
 
   def final_title
-    link_to_unless TYPES_NOT_LINKED.include?(@type_code), processed_title, catalog_url
+    link_to_unless unlinked?, processed_title, catalog_url
   end
 
   def catalog_url
@@ -35,4 +36,8 @@ class BibItemComponent < ActionView::Component::Base
   private
 
     attr_reader :title, :catkey, :type_human, :type_code, :author, :call_number
+
+    def unlinked?
+      TYPES_NOT_LINKED.include?(@type_code) || @shadowed
+    end
 end
