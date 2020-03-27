@@ -14,6 +14,7 @@ gem 'puma', '~> 3.12'
 gem 'rails', '~> 6.0.2'
 gem 'redis'
 gem 'simplecov', require: false, group: :test
+gem 'sidekiq'
 gem 'turbolinks', '~> 5'
 gem 'warden', '~> 1.2'
 gem 'webpacker', '~> 4.0'

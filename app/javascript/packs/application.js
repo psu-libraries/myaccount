@@ -9,21 +9,23 @@ import 'typeface-roboto-slab'
 
 // Vendor
 import 'bootstrap/dist/js/bootstrap'
+import _ from 'lodash'
 
 // Application styles
 import './styles'
 
 // Application javascript
 import selectAll from "../select_all";
+import submissionHandling from "../submission_handling/index.js.erb"
 
 // Rails stuff
 require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
-require("channels")
 
 document.addEventListener("turbolinks:load", function() {
     selectAll.start();
+    submissionHandling();
 });
 
 

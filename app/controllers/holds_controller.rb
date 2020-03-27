@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HoldsController < ApplicationController
-  before_action :authenticate_user!
+  # before_action :authenticate_user!, only: :index
   before_action :check_for_blanks!, only: :create
   rescue_from HoldCreateException, with: :deny_create
   rescue_from HoldException, with: :past_date
@@ -18,14 +18,14 @@ class HoldsController < ApplicationController
   #
   # PATCH /holds
   # PUT /holds
-  def update
-    params['hold_list'].each do |holdkey|
-      @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
-      handle_pickup_change_request if params['pickup_library'].present? && params['pickup_library'].present?
-      handle_not_needed_after_request if params['pickup_by_date'].present?
+  def batch_update
+    params['hold_list'].each do |hold_key|
+      pass_these = { hold_key: hold_key,
+                     pickup_library: params['pickup_library'],
+                     session_token: current_user.session_token }
+      handle_pickup_change_request(pass_these) if params['pickup_library'].present?
+      # handle_not_needed_after_request if params['pickup_by_date'].present?
     end
-
-    redirect_to holds_path
   end
 
   # Prepares the form for creating a new hold
@@ -116,19 +116,11 @@ class HoldsController < ApplicationController
       holds.reject(&:ready_for_pickup?)
     end
 
-    def handle_pickup_change_request
-      change_pickup_response = symphony_client.change_pickup_library(
-        hold_key: @hold_to_act_on.key,
-        pickup_library: params['pickup_library'],
-        session_token: current_user.session_token
-      )
-      case change_pickup_response.status
-      when 200
-        process_flash(:success, 'update_pickup.success_html')
-      else
-        Rails.logger.error(change_pickup_response.body)
-        process_flash(:error, 'update_pickup.error_html')
-      end
+    def handle_pickup_change_request(pass_these)
+      # symphony_client = SymphonyClient.new
+      # symphony_client.change_pickup_library(hold_key: pass_these[:hold_key], pickup_library: pass_these[:pickup_library], session_token: pass_these[:session_token])
+
+      ChangePickupLibraryJob.perform_later(pass_these)
     end
 
     def handle_not_needed_after_request
