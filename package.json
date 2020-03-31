@@ -44,6 +44,8 @@
       "app/javascript"
     ],
     "collectCoverage": true,
-    "coverageReporters": ["lcov"]
+    "coverageReporters": [
+      "lcov"
+    ]
   }
 }
