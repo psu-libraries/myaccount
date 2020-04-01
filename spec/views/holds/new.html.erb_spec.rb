@@ -34,6 +34,9 @@ RSpec.describe 'holds/new.html.erb', type: :view do
       form_params[:volumetric_calls] = [build(:call), build(:call)]
       form_params[:volumetric_calls].first.record['fields']['volumetric'] = 'no. 1'
       assign(:place_hold_form_params, form_params)
+      form_params[:volumetric_calls].each do |call|
+        call.items.each { |item| allow(item).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING) }
+      end
     end
 
     it 'renders checkboxes for every call' do

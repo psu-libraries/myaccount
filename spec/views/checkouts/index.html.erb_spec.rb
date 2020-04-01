@@ -8,6 +8,7 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
 
     before do
       assign(:checkouts, [checkout])
+      allow(checkout).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)
     end
 
     it 'displays total checked out correctly' do

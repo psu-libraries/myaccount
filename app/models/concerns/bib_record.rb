@@ -2,13 +2,9 @@
 
 # Common accessors into bib item data
 #
-# Note: SymphonyClient::get_item_type_mapping used in private method to dynamically retrieve item type code
+# Note: Redis and SymphonyClient used in private method to dynamically retrieve and store item type code
 # translations.
 module BibRecord
-  class << self
-    attr_accessor :item_type_map
-  end
-
   def catkey
     fields.dig('bib', 'key') || item.dig('bib', 'key')
   end
@@ -18,7 +14,7 @@ module BibRecord
   end
 
   def item_type_human
-    item_type_mapping.find { |type| type['key'] == item_type_code }['fields']['description'] || item_type_code
+    item_type_mapping.find { |type| type.dig('key') == item_type_code }&.dig('fields', 'description') || item_type_code
   end
 
   def title
@@ -64,12 +60,13 @@ module BibRecord
       item.dig('call', 'fields') || {}
     end
 
+    # Use Redis to store this globally once an hour
     def item_type_mapping
-      BibRecord.item_type_map || ask_symphony_client_for_mapping
-    end
+      redis = Redis.new
+      return JSON.parse(redis.get('item_type_map')) unless redis.get('item_type_map').nil?
 
-    def ask_symphony_client_for_mapping
       client = SymphonyClient.new
-      BibRecord.item_type_map = client.get_item_type_map
+      redis.setex('item_type_map', 3600, client.get_item_type_map.to_json)
+      JSON.parse(redis.get('item_type_map'))
     end
 end

@@ -17,6 +17,9 @@ RSpec.describe PlaceHoldCheckboxWrapperComponent, type: :component do
     let(:volumetric_calls) { [build(:call), build(:call), build(:call)] }
 
     before do
+      volumetric_calls.each do |call|
+        call.items.each { |item| allow(item).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING) }
+      end
       volumetric_calls.first.record['fields']['volumetric'] = 'no. 1'
       volumetric_calls.second.record['fields']['volumetric'] = 'no. 2'
       volumetric_calls.third.record['fields']['volumetric'] = 'no. 3'

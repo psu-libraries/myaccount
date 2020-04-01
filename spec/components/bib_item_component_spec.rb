@@ -6,6 +6,10 @@ RSpec.describe BibItemComponent, type: :component do
   let(:hold) { build(:hold) }
   let(:component) { render_inline(described_class, bibitem: hold).to_html }
 
+  before do
+    allow(hold).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)
+  end
+
   it 'renders a bib item with an author' do
     hold.record['fields']['bib']['fields']['title'] = 'A wonderful title'
     hold.record['fields']['bib']['fields']['author'] = 'A wonderful author'

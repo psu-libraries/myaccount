@@ -16,6 +16,7 @@ RSpec.describe 'fines/index.html.erb', type: :view do
 
     before do
       assign(:fines, [fine])
+      allow(fine).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)
     end
 
     it 'displays fine dollar amount correctly' do

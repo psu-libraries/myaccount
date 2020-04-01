@@ -28,6 +28,8 @@ RSpec.describe 'holds/result.html.erb', type: :view do
 
     assign(:place_hold_results, results)
     assign(:place_hold_catkey, '1')
+    allow(placed_hold).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)
+    allow(failed_hold).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)
   end
 
   context 'with placed hold(s)' do
