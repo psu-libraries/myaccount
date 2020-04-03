@@ -2,8 +2,7 @@
 
 class BibItemComponent < ActionView::Component::Base
   CATALOG_URL = Rails.application.config.catalog_url
-  TYPES_NOT_LINKED = %w[PALCI CARRELKEY EBOOKREADR EQUIP14DAY EQUIP24FEE EQUIP24HR
-                        EQUIP3DAY EQUIP4HR EQUIP5DAY EQUIP7DAY ILL LAPTOP].freeze
+  TYPES_NOT_LINKED = Rails.application.config.unlinked_types
 
   def initialize(bibitem:)
     @title = bibitem.title

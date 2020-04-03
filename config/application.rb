@@ -29,6 +29,8 @@ module Myaccount
 
     config.time_zone = 'Eastern Time (US & Canada)'
     config.catalog_url = 'https://catalog.libraries.psu.edu/catalog/'
+    config.unlinked_types = %w[PALCI CARRELKEY EBOOKREADR EQUIP14DAY EQUIP24FEE EQUIP24HR
+                               EQUIP3DAY EQUIP4HR EQUIP5DAY EQUIP7DAY ILL LAPTOP EQUIP7DAY5].freeze
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
