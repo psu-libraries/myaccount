@@ -10,17 +10,20 @@ RSpec.describe RenewalsController do
       session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
   end
 
-  let(:mock_patron) { instance_double(Patron, stale?: false, checkouts: checkouts) }
+  let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
+
   let(:checkouts) { [
     instance_double(Checkout, item_key: '123', bib_summary: 'Renewal 1 (ABC)'),
     instance_double(Checkout, item_key: '456', bib_summary: 'Renewal 2 (DEF)'),
     instance_double(Checkout, item_key: '789', bib_summary: 'Renewal 3 (GHI)')
   ] }
 
+  let(:auth_response) { instance_double(HTTP::Response, status: 200) }
+
   let(:renew_items_response) {}
 
   let(:mock_client) do
-    instance_double(SymphonyClient, renew_items: renew_items_response)
+    instance_double(SymphonyClient, authenticate: auth_response, renew_items: renew_items_response)
   end
 
   before do

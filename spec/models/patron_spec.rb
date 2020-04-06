@@ -50,10 +50,6 @@ RSpec.describe Patron do
     expect(patron.library).to eq 'UP-PAT'
   end
 
-  it 'has a valid session' do
-    expect(patron).not_to be_stale
-  end
-
   context 'with checkouts' do
     before do
       fields[:circRecordList] = [{ key: 1, fields: { status: 'ACTIVE' } }]
@@ -87,18 +83,6 @@ RSpec.describe Patron do
       it 'makes a new Fine' do
         expect(patron.fines).to include a_kind_of(Fine)
       end
-    end
-  end
-
-  context 'with a stale session' do
-    let(:record) do
-      {
-        'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }]
-      }
-    end
-
-    it 'has a stale patron session token' do
-      expect(patron).to be_stale
     end
   end
 

@@ -49,10 +49,6 @@ class Patron
     @fines ||= fields['blockList'].map { |fine| Fine.new(fine) }
   end
 
-  def stale?
-    record == { 'messageList' => [{ 'code' => 'sessionTimedOut', 'message' => 'The session has timed out.' }] }
-  end
-
   def standing_human
     PATRON_STANDING_ALERTS[standing_code] || ''
   end
