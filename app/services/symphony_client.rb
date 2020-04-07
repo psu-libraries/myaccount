@@ -37,7 +37,6 @@ class SymphonyClient
                                      params: {
                                        includeFields: [
                                          '*',
-                                         'address1',
                                          *patron_linked_resources_fields(item_details)
                                        ].join(',')
                                      })
