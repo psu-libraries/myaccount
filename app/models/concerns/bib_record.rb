@@ -66,7 +66,8 @@ module BibRecord
       return JSON.parse(redis.get('item_type_map')) unless redis.get('item_type_map').nil?
 
       client = SymphonyClient.new
-      redis.setex('item_type_map', 3600, client.get_item_type_map.to_json)
-      JSON.parse(redis.get('item_type_map'))
+      item_type_map = client.get_item_type_map.to_json
+      redis.setex('item_type_map', 3600, item_type_map)
+      JSON.parse(item_type_map)
     end
 end
