@@ -67,6 +67,10 @@ class FakeSymphony < FakeWebservice
     end
   end
 
+  put '/symwsbc/user/patron/key/:key' do
+    json_response 200, "patrons/#{params[:key]}.json"
+  end
+
   private
 
     def json_body(request)

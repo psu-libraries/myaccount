@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe HoldsController, type: :controller do
   let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
-
   let(:holds) do
     [
       instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book', call_number: 'ABC123',
@@ -13,10 +12,7 @@ RSpec.describe HoldsController, type: :controller do
                             bib_summary: 'Some Good Book (ABC124)')
     ]
   end
-
-  let(:error_prompt) do
-    { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json
-  end
+  let(:error_prompt) { { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -37,10 +33,7 @@ RSpec.describe HoldsController, type: :controller do
         patron_key: '1234567',
         session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
     end
-
-    let(:mock_client) do
-      instance_double(SymphonyClient)
-    end
+    let(:mock_client) { instance_double(SymphonyClient) }
 
     before do
       warden.set_user(user)

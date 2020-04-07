@@ -448,4 +448,62 @@ RSpec.describe SymphonyClient do
       expect(JSON.parse(response)).to eq ALL_LOCATIONS
     end
   end
+
+  describe '#update_patron_info' do
+    let(:uri) { "#{Settings.symws.url}/user/patron/key/1234567" }
+    let(:mock_patron) { instance_double(Patron, barcode: '1234', library: 'UP-PAT', key: user.patron_key) }
+    let(:real_params) { ActionController::Parameters.new('first_name' => 'John', 'middle_name' => 'Adam',
+                                                         'last_name' => 'Doe', 'suffix' => 'Jr',
+                                                         'library' => 'LEHIGHVLY', 'email' => 'zzz@example.com',
+                                                         'street1' => '123 Fake Street', 'street2' => '',
+                                                         'city' => 'Jersey Shore', 'state' => 'PA', 'zip' => '00000') }
+
+    before do
+      stub_request(:put, uri)
+        .with(body: { resource: '/user/patron',
+                      key: user.patron_key,
+                      fields: { lastName: 'Doe',
+                                middleName: 'Adam',
+                                firstName: 'John',
+                                suffix: 'Jr',
+                                address1: [{ resource: '/user/patron/address1',
+                                             fields: { code: {
+                                               resource: '/policy/patronAddress1',
+                                               key: 'EMAIL'
+                                             }, data: 'zzz@example.com' } },
+                                           { resource: '/user/patron/address1',
+                                             fields: { code: {
+                                               resource: '/policy/patronAddress1',
+                                               key: 'STREET1'
+                                             }, data: '123 Fake Street' } },
+                                           { resource: '/user/patron/address1',
+                                             fields: { code: {
+                                               resource: '/policy/patronAddress1',
+                                               key: 'STREET2'
+                                             }, data: '' } },
+                                           { resource: '/user/patron/address1',
+                                             fields: { code: {
+                                               resource: '/policy/patronAddress1',
+                                               key: 'ZIP'
+                                             }, data: '00000' } },
+                                           { resource: '/user/patron/address1',
+                                             fields: { code: {
+                                               resource: '/policy/patronAddress1',
+                                               key: 'CITY/STATE'
+                                             }, data: 'Jersey Shore, PA' } }] } })
+        .to_return(status: 200, body: '{"resource":"/user/patron","key":"1234567","fields":{"lastName":"Doe",'\
+                   '"privilegeExpiresDate":null,"displayName":"Doe Jr, John Adam","profile":{"resource":'\
+                   '"/policy/userProfile","key":"STAFF"},"groupId":"","suffix":"Jr","title":"","claimsReturnedCount":'\
+                   '0,"alternateID":"zzz123","firstName":"John","standing":{"resource":"/policy/patronStanding","key":'\
+                   '"OK"},"library":{"resource":"/policy/library","key":"LEHIGHVLY"},"usePreferredName":false,'\
+                   '"keepCircHistory":"CIRCRULE","middleName":"Adam","preferredName":"","department":"","barcode":'\
+                   '"0000000000"}}', headers: {})
+    end
+
+    it 'posts the data and returns the updated patron record' do
+      response = client.update_patron_info(patron: mock_patron, params: real_params, session_token: user.session_token)
+
+      expect(JSON.parse(response)['fields']).to include('displayName' => 'Doe Jr, John Adam')
+    end
+  end
 end

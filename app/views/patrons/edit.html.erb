@@ -1,0 +1,84 @@
+<h1>Change of Address Form</h1>
+
+<p>Use this form to update your local street or email address in the library's database so your Overdue, Recall and other library notices will be delivered correctly. Changes made here do not update your address information university-wide; make sure you also notify other university offices (Address Correction Form) of your address updates.</p>
+<p>Required fields marked with a "*"</p>
+<%= form_with url: patron_path(@patron), method: :put, id: 'patron-info-update', local: true do %>
+  <h2>Personal Information</h2>
+
+  <div class="form-group row">
+    <%= label_tag :first_name, '*First Name:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= text_field_tag 'first_name', @patron.first_name, required: true, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :middle_name, 'Middle Name:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= text_field_tag 'middle_name', @patron.middle_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :last_name, '*Last Name:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= text_field_tag 'last_name', @patron.last_name, required: true, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :suffix, 'Suffix:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-2">
+      <%= text_field_tag 'suffix', @patron.suffix, maxlength: 15, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :email, '*Email Address:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= email_field_tag 'email', @patron.email, class: 'form-control' %>
+      <small class="form-text text-muted">
+        How can I receive library notices as text messages? <a href="https://libraries.psu.edu/services/lending-services/about-lending-services/text-messaging-library-notices">More information here</a>.
+      </small>
+    </div>
+  </div>
+
+  <h2>Mailing Address</h2>
+
+  <div class="form-group row">
+    <%= label_tag :street, '*Street:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-5">
+      <%= text_field_tag 'street1', @patron.address[:street1], class: 'form-control', required: true %>
+      <%= text_field_tag 'street2', @patron.address[:street2], class: 'form-control' %>
+      <small class="form-text text-muted">
+        If on-campus, supply your room number and building name in the "Street" field.
+      </small>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :city, '*City:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= text_field_tag 'city', @patron.city, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :state, '*State:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= select_tag 'state', options_for_select(us_states, disabled: '', selected: @patron.state), class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= label_tag :zip, '*Zip:', class: 'col-sm-2 col-form-label' %>
+    <div class="col-sm-10 col-lg-5">
+      <%= text_field_tag 'zip', @patron.address[:zip], class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <p>Have a question? Please contact the <a href="mailto:ul-lending@lists.psu.edu">Circulation Staff</a></p>
+
+  <%= submit_tag('Update Information', class: 'btn btn-info deflatten') %>
+  <%= link_to 'Cancel', patron_path(@patron), class: 'btn btn-danger deflatten' %>
+<% end %>

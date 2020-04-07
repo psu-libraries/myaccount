@@ -4,6 +4,31 @@
 class Patron
   attr_reader :record
 
+  CAMPUSES = { 'UP-PAT' => 'UNIVERSITY PARK or WORLD CAMPUS',
+               'DSL-CARL' => 'DICKINSON SCHOOL OF LAW - CARLISLE',
+               'DSL-UP' => 'PENN STATE LAW - UNIVERSITY PARK',
+               'ABINGTON' => 'ABINGTON',
+               'ALTOONA' => 'ALTOONA',
+               'BEAVER' => 'BEAVER',
+               'BEHREND' => 'BEHREND COLLEGE',
+               'BERKS' => 'BERKS',
+               'BRANDYWINE' => 'BRANDYWINE',
+               'DUBOIS' => 'DUBOIS',
+               'FAYETTE' => 'FAYETTE',
+               'GREATVLY' => 'GREAT VALLEY',
+               'GALLEGHENY' => 'GREATER ALLEGHENY',
+               'HARRISBURG' => 'HARRISBURG',
+               'HAZLETON' => 'HAZLETON',
+               'HERSHEY' => 'HERSHEY',
+               'LEHIGHVLY' => 'LEHIGH VALLEY',
+               'MONTALTO' => 'MONT ALTO',
+               'NEWKEN' => 'NEW KENSINGTON',
+               'SCHUYLKILL' => 'SCHUYLKILL',
+               'SHENANGO' => 'SHENANGO',
+               'YORK' => 'YORK',
+               'WILKESBAR' => 'WILKES-BARRE',
+               'WSCRANTON' => 'WORTHINGTON SCRANTON' }.freeze
+
   PATRON_STANDING_ALERTS = {
     BARRED: 'The user is BARRED.',
     BLOCKED: 'The user is BLOCKED.',
@@ -15,8 +40,16 @@ class Patron
     @record = record
   end
 
+  def to_param
+    id
+  end
+
   def key
     record['key']
+  end
+
+  def id
+    fields['alternateID'].downcase
   end
 
   def barcode
@@ -27,12 +60,20 @@ class Patron
     fields['firstName']
   end
 
+  def middle_name
+    fields['middleName']
+  end
+
   def last_name
     fields['lastName']
   end
 
+  def suffix
+    fields['suffix']
+  end
+
   def display_name
-    "#{first_name} #{last_name}"
+    fields['displayName']
   end
 
   def checkouts
@@ -57,10 +98,39 @@ class Patron
     fields.dig('library', 'key')
   end
 
+  def email
+    extract_address_data('EMAIL')
+  end
+
+  def state
+    address[:city_state]&.chomp&.last 2
+  end
+
+  def city
+    address[:city_state]&.split(',')&.first
+  end
+
+  def address
+    {
+      street1: extract_address_data('STREET1'),
+      street2: extract_address_data('STREET2'),
+      city_state: extract_address_data('CITY/STATE'),
+      zip: extract_address_data('ZIP')
+    }
+  end
+
   private
 
     def fields
       record['fields']
+    end
+
+    def address_fields
+      fields['address1']
+    end
+
+    def extract_address_data(address_field)
+      address_fields.find { |a| a&.dig('fields', 'code', 'key') == address_field }&.dig('fields', 'data') || nil
     end
 
     def standing_code

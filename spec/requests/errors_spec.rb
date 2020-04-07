@@ -3,9 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Errors', type: :request do
+  let(:mock_user) { 'patron2' }
+
+  before do
+    login_permanently_as username: 'PATRON2', patron_key: mock_user
+  end
+
   context 'when GET to errors route' do
     describe 'not found' do
-      before (:all) { get '/404' }
+      before { get '/404' }
 
       it 'has http status 404' do
         expect(response).to have_http_status(:not_found)
@@ -17,7 +23,7 @@ RSpec.describe 'Errors', type: :request do
     end
 
     describe 'internal server error' do
-      before (:all) { get '/500' }
+      before { get '/500' }
 
       it 'has http status 500' do
         expect(response).to have_http_status(:internal_server_error)
@@ -31,7 +37,7 @@ RSpec.describe 'Errors', type: :request do
 
   context 'when POST to errors route' do
     describe 'not found' do
-      before (:all) { post '/404' }
+      before { post '/404' }
 
       it 'has http status 404' do
         expect(response).to have_http_status(:not_found)
@@ -43,7 +49,7 @@ RSpec.describe 'Errors', type: :request do
     end
 
     describe 'internal server error' do
-      before (:all) { post '/500' }
+      before { post '/500' }
 
       it 'has http status 500' do
         expect(response).to have_http_status(:internal_server_error)

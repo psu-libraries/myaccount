@@ -14,6 +14,7 @@ class SymphonyClient
 
   DELAY = 0.75
   MAX_WAIT_TIME = 30
+  SAFE_PATRON_ADDRESS_FIELDS = [:email, :street1, :street2, :zip].freeze
 
   def login(user_id, password)
     response = request('/user/patron/login', method: :post, json: {
@@ -117,6 +118,27 @@ class SymphonyClient
                           json: body
   end
 
+  def update_patron_info(patron:, params:, session_token:)
+    body = {
+      "resource": '/user/patron',
+      "key": patron.key,
+      "fields": {
+        "lastName": params[:last_name],
+        "middleName": params[:middle_name],
+        "firstName": params[:first_name],
+        "suffix": params[:suffix],
+        "address1": patron_address(params)
+      }
+    }
+
+    authenticated_request "/user/patron/key/#{patron.key}",
+                          headers: {
+                            'x-sirs-sessionToken': session_token
+                          },
+                          method: :put,
+                          json: body
+  end
+
   def get_hold_info(hold_key, session_token)
     response_raw = hold_request hold_key, session_token
 
@@ -172,6 +194,29 @@ class SymphonyClient
 
   private
 
+    def patron_address(params)
+      params.permit(SAFE_PATRON_ADDRESS_FIELDS)
+        .to_h
+        .transform_keys(&:camelize)
+        .transform_keys(&:upcase)
+        .map { |field, value| patron_address_1_template field: field, value: value }
+        .push patron_address_1_template field: 'CITY/STATE', value: "#{params[:city]}, #{params[:state]}"
+    end
+
+    def patron_address_1_template(field:, value:)
+      {
+        "resource": '/user/patron/address1',
+        "fields":
+              {
+                "code": {
+                  "resource": '/policy/patronAddress1',
+                  "key": field
+                },
+                "data": value
+              }
+      }
+    end
+
     def time_left_to_request_again?(start)
       return true if DateTime.now < (start + MAX_WAIT_TIME.seconds)
 
@@ -224,6 +269,8 @@ class SymphonyClient
         ["circRecordList{*,#{ITEM_RESOURCES}}"]
       when ->(h) { h[:holdRecordList] }
         ["holdRecordList{*,#{ITEM_RESOURCES}}"]
+      when ->(h) { h[:address1] }
+        ['address1']
       else
         [
           'blockList{*}',

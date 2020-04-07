@@ -1,0 +1,24 @@
+<h2>Your Information</h2>
+
+<h3 class="pt-5 pb-3">Personal</h3>
+
+<%= render PatronFieldComponent.new(label: 'First name', value: @patron.first_name) %>
+<%= render PatronFieldComponent.new(label: 'Middle name', value: @patron.middle_name) %>
+<%= render PatronFieldComponent.new(label: 'Last name', value: @patron.last_name) %>
+<%= render PatronFieldComponent.new(label: 'Suffix', value: @patron.suffix) %>
+<%= render PatronFieldComponent.new(label: 'Library', value: Patron::CAMPUSES[@patron.library]) %>
+<%= render PatronFieldComponent.new(label: 'Email address', value: @patron.email) %>
+
+<h3 class="pt-5 pb-3">Mailing Address</h3>
+
+<%= render PatronFieldComponent.new(label: 'Address line 1', value: @patron.address[:street1]) %>
+<%= render PatronFieldComponent.new(label: 'Address line 2', value: @patron.address[:street2]) %>
+<%= render PatronFieldComponent.new(label: 'City/State', value: @patron.address[:city_state]) %>
+<%= render PatronFieldComponent.new(label: 'zip', value: @patron.address[:zip]) %>
+
+<div class="row py-4">
+  <div class="col">
+    <p>Have a question? Please contact the Circulation Staff</p>
+    <%= link_to 'Update Personal Information', edit_patron_path(@patron), class: 'btn btn-info deflatten' %>
+  </div>
+</div>
