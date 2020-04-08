@@ -6,7 +6,6 @@ RSpec.describe Item, type: :model do
   subject(:item) { build(:item) }
 
   let(:redis_instance) { instance_double(Redis) }
-  # let(:symphony_client_instance) { instance_double(SymphonyClient) }
 
   before do
     allow(Redis).to receive(:new).and_return(redis_instance)
