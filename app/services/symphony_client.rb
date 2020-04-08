@@ -135,6 +135,14 @@ class SymphonyClient
                           }
   end
 
+  def get_item_type_map
+    response = request('/policy/itemType/simpleQuery', params: {
+                         key: '*', includeFields: 'displayName,description'
+                       })
+
+    JSON.parse(response.body)
+  end
+
   def get_bib_info(catkey, session_token)
     authenticated_request "/catalog/bib/key/#{catkey}",
                           headers: { 'x-sirs-sessionToken': session_token },

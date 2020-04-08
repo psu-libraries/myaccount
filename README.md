@@ -59,7 +59,7 @@ Locally you'll need to run:
 
 ```
 bundle exec rails s --dev-caching
-docker run --name redis-the-new-black -d redis
+docker start redis-the-new-black
 bin/webpack-dev-server
 ```
 

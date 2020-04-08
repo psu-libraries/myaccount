@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe 'holds/index.html.erb', type: :view do
   let(:hold) { build(:hold) }
 
+  before do
+    allow(hold).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)
+  end
+
   context 'when there are holds ready to pickup' do
     before do
       assign(:holds_ready, [hold])

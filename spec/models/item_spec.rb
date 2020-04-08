@@ -5,6 +5,17 @@ require 'rails_helper'
 RSpec.describe Item, type: :model do
   subject(:item) { build(:item) }
 
+  let(:redis_instance) { instance_double(Redis) }
+
+  before do
+    allow(Redis).to receive(:new).and_return(redis_instance)
+    allow(redis_instance).to receive(:get).and_return(nil, ITEM_TYPE_MAPPING.to_json)
+    allow(redis_instance).to receive(:setex)
+
+    stub_request(:get, 'https://example.com/symwsbc/policy/itemType/simpleQuery?includeFields=displayName,description&key=*')
+      .to_return(status: 200, body: ITEM_TYPE_MAPPING.to_json, headers: {})
+  end
+
   it 'has a catkey' do
     item.record['fields']['bib']['key'] = '476022'
     expect(item.catkey).to eq '476022'
