@@ -19,8 +19,30 @@ RSpec.describe SymphonyClient do
         .to_return(body: { patronKey: Settings.symws.patron_key }.to_json)
     end
 
-    it 'authenticates the user against symphony' do
+    it 'logs the user in to symphony' do
       expect(client.login('fake_user', 'some_password')).to include 'patronKey' => 'some_patron_key'
+    end
+  end
+
+  describe '#ping?' do
+    let(:auth_response) { { status: 200 } }
+
+    before do
+      stub_request(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        .with(query: hash_including(includeFields: 'key'))
+        .to_return(auth_response)
+    end
+
+    it 'validates the user\'s session against symphony' do
+      expect(client).to be_ping(user)
+    end
+
+    context 'with a stale session' do
+      let(:auth_response) { { status: 401 } }
+
+      it 'cannot validate the user\'s session against symphony' do
+        expect(client).not_to be_ping(user)
+      end
     end
   end
 
@@ -67,6 +89,84 @@ RSpec.describe SymphonyClient do
           .with(query: hash_excluding(includeFields: match(/circRecordList/)))
         expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
           .with(query: hash_excluding(includeFields: match(/holdRecordList/)))
+      end
+    end
+  end
+
+  describe '#change_pickup_library' do
+    let(:symphony_response) { { status: 200 } }
+    let(:change_pickup_library_response) { client.change_pickup_library(hold_key: 'a_hold_key',
+                                                                        pickup_library: 'UP-PAT',
+                                                                        session_token: user.session_token) }
+
+    before do
+      stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
+        .with(body: { "holdRecord": {
+                "resource": '/circulation/holdRecord',
+                "key": 'a_hold_key'
+              },
+                      "pickupLibrary": {
+                        "resource": '/policy/library',
+                        "key": 'UP-PAT'
+                      } })
+        .to_return(symphony_response)
+    end
+
+    it 'successfully changes the pickup library' do
+      expect(change_pickup_library_response.status).to eq 200
+    end
+
+    context 'when the web service does not respond with a 200' do
+      let(:symphony_response) { { status: 400, body: error_prompt } }
+
+      let(:error_prompt) do
+        { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json
+      end
+
+      it 'fails to change the pickup library' do
+        expect(change_pickup_library_response.status).to eq 400
+      end
+
+      it 'returns an error message' do
+        parsed_response = JSON.parse(change_pickup_library_response)
+        expect(parsed_response['messageList'].first).to include 'message' => 'Some error message'
+      end
+    end
+  end
+
+  describe '#not_needed_after' do
+    let(:symphony_response) { { status: 200 } }
+    let(:not_needed_after_response) { client.not_needed_after(hold_key: 'a_hold_key',
+                                                              fill_by_date: '2021-03-17',
+                                                              session_token: user.session_token) }
+
+    before do
+      stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/a_hold_key')
+        .with(body: { "resource": '/circulation/holdRecord',
+                      "key": 'a_hold_key',
+                      "fields": {
+                        "fillByDate": '2021-03-17'
+                      } })
+        .to_return(symphony_response)
+    end
+
+    it 'successfully updates the not needed after date' do
+      expect(not_needed_after_response.status).to eq 200
+    end
+
+    context 'when the web service does not respond with a 200' do
+      let(:symphony_response) { { status: 400, body: error_prompt } }
+
+      let(:error_prompt) do
+        { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json
+      end
+
+      it 'fails to update the not needed after date' do
+        expect(not_needed_after_response.status).to eq 400
+      end
+
+      it 'returns an error message' do
+        expect(JSON.parse(not_needed_after_response)['messageList'].first).to include 'message' => 'Some error message'
       end
     end
   end
@@ -124,6 +224,35 @@ RSpec.describe SymphonyClient do
         error_response = { renewal: checkouts.last, sirsi_response: '' }
 
         expect(renew_response).to include error: [error_response]
+      end
+    end
+  end
+
+  describe '#cancel_hold' do
+    let(:symphony_response) { { status: 200 } }
+    let(:cancel_hold_response) { client.cancel_hold('a_hold_key', user.session_token) }
+
+    before do
+      stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
+        .with(body: { holdRecord: {
+                resource: '/circulation/holdRecord',
+                key: 'a_hold_key'
+              } })
+        .to_return(symphony_response)
+    end
+
+    it 'successfully cancels the hold' do
+      expect(cancel_hold_response.status).to eq 200
+    end
+
+    context 'when the web service does not respond with a 200' do
+      let(:symphony_response) { { status: 400, body: error_prompt } }
+      let(:error_prompt) do
+        { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json
+      end
+
+      it 'fails to cancel hold and returns an error message' do
+        expect(JSON.parse(cancel_hold_response)['messageList'].first).to include 'message' => 'Some error message'
       end
     end
   end

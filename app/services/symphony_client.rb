@@ -31,6 +31,15 @@ class SymphonyClient
     JSON.parse(response.body)
   end
 
+  # This method is for validating user session_token
+  def ping?(user)
+    response = authenticated_request("/user/patron/key/#{user.patron_key}",
+                                     headers: { 'x-sirs-sessionToken': user.session_token },
+                                     params: { includeFields: 'key' })
+
+    response.status == 200
+  end
+
   def patron_info(user, item_details: {})
     response = authenticated_request("/user/patron/key/#{user.patron_key}",
                                      headers: { 'x-sirs-sessionToken': user.session_token },

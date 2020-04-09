@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutsController do
-  let(:mock_patron) { instance_double(Patron, stale?: false) }
+  let(:mock_patron) { instance_double(Patron) }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -22,10 +22,15 @@ RSpec.describe CheckoutsController do
         patron_key: '1234567' }
     end
 
+    let(:mock_client) do
+      instance_double(SymphonyClient, ping?: true)
+    end
+
     let(:checkouts) { [instance_double(Checkout, key: '1', due_date: nil)] }
 
     before do
       warden.set_user(user)
+      allow(SymphonyClient).to receive(:new).and_return(mock_client)
       allow(mock_patron).to receive(:checkouts).and_return(checkouts)
     end
 
@@ -37,6 +42,7 @@ RSpec.describe CheckoutsController do
 
     it 'renders the index template' do
       get(:index)
+
       expect(response).to render_template 'index'
     end
 

@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
     def authenticate_user!
       return redirect_to root_url unless current_user?
 
-      renew_session_token if patron.stale?
+      renew_session_token unless symphony_client.ping?(current_user)
     end
 
     def renew_session_token

@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe HoldsController, type: :controller do
-  let(:mock_patron) { instance_double(Patron, stale?: false, barcode: '123456789', library: 'UP_PAT') }
+  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
+
   let(:holds) do
     [
       instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book', call_number: 'ABC123',
@@ -24,6 +25,7 @@ RSpec.describe HoldsController, type: :controller do
   context 'with unauthenticated user' do
     it 'goes to the application root' do
       get(:index)
+
       expect(response).to redirect_to root_url
     end
   end
@@ -36,8 +38,14 @@ RSpec.describe HoldsController, type: :controller do
         session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
     end
 
+    let(:mock_client) do
+      instance_double(SymphonyClient)
+    end
+
     before do
       warden.set_user(user)
+      allow(SymphonyClient).to receive(:new).and_return(mock_client)
+      allow(mock_client).to receive(:ping?).and_return(true)
       allow(mock_patron).to receive(:holds).and_return(holds)
     end
 
@@ -66,9 +74,11 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#update' do
+      let(:update_response) { instance_double(HTTP::Response, status: 200) }
+
       before do
-        stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
-          .to_return(status: 200, body: '', headers: {})
+        allow(mock_client).to receive(:change_pickup_library).and_return(update_response)
+        allow(mock_client).to receive(:not_needed_after).and_return(update_response)
       end
 
       context 'when pickup_library param is sent and the web services call succeeds' do
@@ -81,8 +91,8 @@ RSpec.describe HoldsController, type: :controller do
 
       context 'when pickup_library param is sent and the web services call fails' do
         before do
-          stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
-            .to_return(status: 404, body: error_prompt, headers: {})
+          allow(update_response).to receive(:status).and_return 404
+          allow(update_response).to receive(:body).and_return(error_prompt)
         end
 
         it 'fails to update the pickup library and sets the flash message' do
@@ -93,11 +103,6 @@ RSpec.describe HoldsController, type: :controller do
       end
 
       context 'when not_needed_after param is sent and the webservice is responding with 200' do
-        before do
-          stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
-            .to_return(status: 200, body: '', headers: {})
-        end
-
         it 'and it\'s a date in the future, it updates the not needed after and sets the flash message' do
           date = Date.tomorrow.to_formatted_s('%Y-%m-%d')
           patch :update, params: { id: 'multiple', pickup_by_date: date, hold_list: [2] }
@@ -114,8 +119,8 @@ RSpec.describe HoldsController, type: :controller do
 
       context 'when not_needed_after param is sent and the webservice is not responding with 200' do
         before do
-          stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/2')
-            .to_return(status: 500, body: error_prompt, headers: {})
+          allow(update_response).to receive(:status).and_return 404
+          allow(update_response).to receive(:body).and_return(error_prompt)
         end
 
         it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
@@ -127,9 +132,10 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#destroy' do
+      let(:cancel_response) { instance_double(HTTP::Response, status: 200) }
+
       before do
-        stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
-          .to_return(status: 200, body: '', headers: {})
+        allow(mock_client).to receive(:cancel_hold).and_return(cancel_response)
       end
 
       context 'when everything is good' do
@@ -142,8 +148,8 @@ RSpec.describe HoldsController, type: :controller do
 
       context 'when the web service does not respond with a 200' do
         before do
-          stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
-            .to_return(status: 400, body: error_prompt, headers: {})
+          allow(cancel_response).to receive(:status).and_return 400
+          allow(cancel_response).to receive(:body).and_return(error_prompt)
         end
 
         it 'deletes holds and fails' do
@@ -171,6 +177,7 @@ RSpec.describe HoldsController, type: :controller do
 
       it 'sends the form parameters to the view' do
         get :new
+
         expect(assigns(:place_hold_form_params)).to eq(form_params)
       end
     end
@@ -183,12 +190,9 @@ RSpec.describe HoldsController, type: :controller do
       }
 
       let(:place_hold_response) { instance_double(HTTP::Response) }
-      let(:mock_client) do
-        instance_double(SymphonyClient, place_hold: place_hold_response)
-      end
 
       before do
-        allow(SymphonyClient).to receive(:new).and_return(mock_client)
+        allow(mock_client).to receive(:place_hold).and_return(place_hold_response)
       end
 
       context 'when placing hold to an item that has no volumes and user already has a hold placed on' do
@@ -244,7 +248,6 @@ RSpec.describe HoldsController, type: :controller do
       end
 
       context 'when placing multiple hold requests at once' do
-        let(:mock_client) { instance_double(SymphonyClient) }
         let(:place_hold_response_1) { instance_double(HTTP::Response, status: 200, body: success_response_1) }
         let(:place_hold_response_2) { instance_double(HTTP::Response, status: 200, body: success_response_2) }
         let(:place_hold_response_3) { instance_double(HTTP::Response, status: 400, body: error_response) }
@@ -327,10 +330,6 @@ RSpec.describe HoldsController, type: :controller do
         success: [{ barcode: 'holdable_barcode', hold_key: 'a_hold_key' }],
         error: [{ barcode: 'not_holdable_barcode', error_message: 'User already has a hold on this material' }]
       } }
-
-      before do
-        allow(SymphonyClient).to receive(:new).and_return(mock_client)
-      end
 
       it 'redirects to holds page if empty results' do
         get :result

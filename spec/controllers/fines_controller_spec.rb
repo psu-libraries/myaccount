@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe FinesController do
-  let(:mock_patron) { instance_double(Patron, stale?: false) }
-  let(:fines) {     [instance_double(Fine, owed_amount: 0.50), instance_double(Fine, owed_amount: 0.50)] }
+  let(:mock_patron) { instance_double(Patron) }
+  let(:fines) { [instance_double(Fine, owed_amount: 0.50), instance_double(Fine, owed_amount: 0.50)] }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -24,8 +24,13 @@ RSpec.describe FinesController do
         patron_key: '1234567' }
     end
 
+    let(:mock_client) do
+      instance_double(SymphonyClient, ping?: true)
+    end
+
     before do
       warden.set_user(user)
+      allow(SymphonyClient).to receive(:new).and_return(mock_client)
       allow(mock_patron).to receive(:fines).and_return(fines)
     end
 
@@ -37,6 +42,7 @@ RSpec.describe FinesController do
 
     it 'renders the index template' do
       get(:index)
+
       expect(response).to render_template 'index'
     end
 
