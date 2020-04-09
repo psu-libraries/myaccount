@@ -19,7 +19,7 @@ RSpec.describe SymphonyClient do
         .to_return(body: { patronKey: Settings.symws.patron_key }.to_json)
     end
 
-    it 'logins the user to symphony' do
+    it 'logs the user in to symphony' do
       expect(client.login('fake_user', 'some_password')).to include 'patronKey' => 'some_patron_key'
     end
   end
