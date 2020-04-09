@@ -24,7 +24,7 @@ RSpec.describe SymphonyClient do
     end
   end
 
-  describe '#authenticate' do
+  describe '#ping?' do
     let(:auth_response) { { status: 200 } }
 
     before do
@@ -33,15 +33,15 @@ RSpec.describe SymphonyClient do
         .to_return(auth_response)
     end
 
-    it 'authenticates the user against symphony' do
-      expect(client.authenticate(user).status).to eq 200
+    it 'validates the user\'s session against symphony' do
+      expect(client).to be_ping(user)
     end
 
     context 'with a stale session' do
       let(:auth_response) { { status: 401 } }
 
-      it 'does not authenticates the user against symphony' do
-        expect(client.authenticate(user).status).to eq 401
+      it 'cannot validate the user\'s session against symphony' do
+        expect(client).not_to be_ping(user)
       end
     end
   end

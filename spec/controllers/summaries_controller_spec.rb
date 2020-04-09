@@ -32,13 +32,13 @@ RSpec.describe SummariesController do
       }.with_indifferent_access
     end
 
-    let(:auth_response) { instance_double(HTTP::Response, status: 200) }
+    let(:ping_response) { true }
 
     before do
       warden.set_user(user)
       allow(controller).to receive(:current_user).and_return(user)
       allow(mock_client).to receive(:patron_info).with(user, item_details: {}).and_return(mock_response)
-      allow(mock_client).to receive(:authenticate).and_return(auth_response)
+      allow(mock_client).to receive(:ping?).and_return(ping_response)
     end
 
     it 'redirects to the home page' do
@@ -46,9 +46,7 @@ RSpec.describe SummariesController do
     end
 
     context 'with a stale session' do
-      before do
-        allow(auth_response).to receive(:status).and_return 400
-      end
+      let(:ping_response) { false }
 
       it 'redirects to the application authentication mechanism' do
         get(:index)

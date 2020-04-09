@@ -42,13 +42,10 @@ RSpec.describe HoldsController, type: :controller do
       instance_double(SymphonyClient)
     end
 
-    let(:auth_response) { instance_double(HTTP::Response) }
-
     before do
       warden.set_user(user)
       allow(SymphonyClient).to receive(:new).and_return(mock_client)
-      allow(auth_response).to receive(:status).and_return 200
-      allow(mock_client).to receive(:authenticate).and_return(auth_response)
+      allow(mock_client).to receive(:ping?).and_return(true)
       allow(mock_patron).to receive(:holds).and_return(holds)
     end
 

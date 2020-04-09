@@ -18,12 +18,10 @@ RSpec.describe RenewalsController do
     instance_double(Checkout, item_key: '789', bib_summary: 'Renewal 3 (GHI)')
   ] }
 
-  let(:auth_response) { instance_double(HTTP::Response, status: 200) }
-
   let(:renew_items_response) {}
 
   let(:mock_client) do
-    instance_double(SymphonyClient, authenticate: auth_response, renew_items: renew_items_response)
+    instance_double(SymphonyClient, ping?: true, renew_items: renew_items_response)
   end
 
   before do

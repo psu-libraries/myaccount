@@ -24,10 +24,8 @@ RSpec.describe FinesController do
         patron_key: '1234567' }
     end
 
-    let(:auth_response) { instance_double(HTTP::Response, status: 200) }
-
     let(:mock_client) do
-      instance_double(SymphonyClient, authenticate: auth_response)
+      instance_double(SymphonyClient, ping?: true)
     end
 
     before do
