@@ -32,12 +32,9 @@ class SymphonyClient
   end
 
   def authenticate(user)
-    request('/user/patron/authenticate',
-            headers: { 'x-sirs-sessionToken': user.session_token }, method: :post,
-            json: {
-              barcode: user.username,
-              password: user.patron_key
-            })
+    authenticated_request("/user/patron/key/#{user.patron_key}",
+                          headers: { 'x-sirs-sessionToken': user.session_token },
+                          params: { includeFields: 'key' })
   end
 
   def patron_info(user, item_details: {})

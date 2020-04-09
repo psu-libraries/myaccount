@@ -28,9 +28,8 @@ RSpec.describe SymphonyClient do
     let(:auth_response) { { status: 200 } }
 
     before do
-      stub_request(:post, "#{Settings.symws.url}/user/patron/authenticate")
-        .with(body: { barcode: 'zzz123', password: 'some_patron_key' },
-              headers: { 'x-sirs-sessionToken': 'e0b5e1a3e86a399112b9eb893daeacfd' })
+      stub_request(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        .with(query: hash_including(includeFields: 'key'))
         .to_return(auth_response)
     end
 
