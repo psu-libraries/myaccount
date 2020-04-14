@@ -1,3 +1,16 @@
 <h1>Holds</h1>
 
-<%= render 'holds/index' %>
+<% if @holds_ready.blank? && @holds_not_ready.blank? %>
+  <p>You have no holds at this time.</p>
+<% else %>
+
+  <% if @holds_ready.present? %>
+    <%= render 'holds/holds_ready_table' %>
+  <% else %>
+    <p>You have no holds ready to be picked up at this time.</p>
+  <% end %>
+  <% if @holds_not_ready.present? %>
+    <%= render 'holds/holds_not_ready_table' %>
+  <% end %>
+
+<% end %>

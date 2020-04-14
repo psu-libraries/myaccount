@@ -9,7 +9,6 @@ import 'typeface-roboto-slab'
 
 // Vendor
 import 'bootstrap/dist/js/bootstrap'
-import _ from 'lodash'
 
 // Application styles
 import './styles'

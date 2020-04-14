@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HoldsController < ApplicationController
-  # before_action :authenticate_user!, only: :index
+  before_action :authenticate_user!
   before_action :check_for_blanks!, only: :create
   rescue_from HoldCreateException, with: :deny_create
   rescue_from HoldException, with: :past_date
