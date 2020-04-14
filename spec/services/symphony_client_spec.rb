@@ -405,6 +405,20 @@ RSpec.describe SymphonyClient do
     end
   end
 
+  describe '#get_item_type_map' do
+    before do
+      stub_request(:get, 'https://example.com/symwsbc/policy/itemType/simpleQuery')
+        .with(query: hash_including(includeFields: 'displayName,description'))
+        .to_return(status: 200, body: ITEM_TYPE_MAPPING.to_json, headers: {})
+    end
+
+    it 'returns displayName and descriptions of itemType' do
+      response = client.get_item_type_map
+
+      expect(response).to eq ITEM_TYPE_MAPPING
+    end
+  end
+
   describe '#get_all_locations' do
     before do
       stub_request(:get, 'https://example.com/symwsbc/policy/location/simpleQuery')
