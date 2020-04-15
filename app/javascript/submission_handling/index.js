@@ -7,6 +7,7 @@ const forms = document.querySelectorAll('form');
 const spinner = `<div class="spinner-border" role="status">
                    <span class="sr-only">Loading...</span>
                  </div>`;
+const pickup_change_select = document.querySelector('[data="pickup-location"]');
 
 // This is the public method
 function submissionHandling() {
@@ -43,7 +44,7 @@ async function pollFetch(fn, maxTime = 5000, arg) {
         return result;
     } catch {
         // This will be caught as an error by ruby's http gem and reported in logs as well.
-        console.alert("There was a problem contacting the Libraries' lending services. Please call 555-555-5555 for help or try again..");
+        Window.alert("There was a problem contacting the Libraries' lending services. Please call 555-555-5555 for help or try again..");
     }
 }
 
@@ -60,7 +61,18 @@ const getJobInfo = async function(holdId) {
 };
 
 function checkResults(data) {
-  return !(data && data.result === "success" || data.result === "failure")
+  const chosen_location = pickup_change_select.value;
+  if (data) {
+      if ( data.result === "failure"){
+          return false;
+      } else if (data.result === "success") {
+          if (data.new_value_id === chosen_location) {
+              return false;
+          }
+      }
+  }
+
+  return true;
 }
 
 function updateDOM(data) {
