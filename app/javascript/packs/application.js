@@ -19,10 +19,9 @@ import submissionHandling from "../submission_handling"
 
 // Rails stuff
 require("@rails/ujs").start()
-require("turbolinks").start()
 require("@rails/activestorage").start()
 
-document.addEventListener("turbolinks:load", function() {
+document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
     submissionHandling();
 });
