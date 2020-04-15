@@ -15,7 +15,7 @@ import './styles'
 
 // Application javascript
 import selectAll from "../select_all";
-import submissionHandling from "../submission_handling/index.js.erb"
+import submissionHandling from "../submission_handling"
 
 // Rails stuff
 require("@rails/ujs").start()
