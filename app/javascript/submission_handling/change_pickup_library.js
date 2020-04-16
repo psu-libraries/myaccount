@@ -1,11 +1,11 @@
 // This file is basically a class
 
-import _ from 'lodash'
+import each from 'lodash/map'
 import {pollFetch, reportError} from './polling'
 
 // Attributes
 const pendingHoldsForm = document.querySelector('form#pending-holds');
-const pendingHoldsFormCheckboxes = document.querySelectorAll('form#pending-holds input[type=checkbox]');
+const pendingHoldsFormCheckboxes = document.querySelectorAll('form#pending-holds .checkbox');
 const spinner = `<div class="spinner-border" role="status">
                    <span class="sr-only">Loading...</span>
                  </div>`;
@@ -13,9 +13,13 @@ const pickup_change_select = document.querySelector('[data="pickup-location"]');
 
 // This is the public method
 function submissionHandling() {
+    // Guard statement
+    if (!(pendingHoldsForm)) {
+        return;
+    }
     pendingHoldsForm.addEventListener("ajax:success", function() {
 
-        _.each(pendingHoldsFormCheckboxes, function(c) {
+        each(pendingHoldsFormCheckboxes, function(c) {
             if (c.checked) {
                 document.querySelector(`#hold${c.value} .pickup_at`).innerHTML = spinner;
                 renderData(c.value);

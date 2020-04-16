@@ -44,7 +44,7 @@
               <h5>Edit Selected Holds</h5>
               <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false } %>
               <br>
-              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: {hold: :update}) %>
+              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: {hold: :update, disable_with: 'Please wait...'}) %>
             </div>
           </div>
           <div class="col-4 border-left">

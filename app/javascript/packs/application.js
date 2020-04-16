@@ -15,7 +15,7 @@ import './styles'
 
 // Application javascript
 import selectAll from "../select_all";
-import submissionHandling from "../submission_handling"
+import changePickupLibrary from "../submission_handling/change_pickup_library"
 
 // Rails stuff
 require("@rails/ujs").start()
@@ -23,7 +23,7 @@ require("@rails/activestorage").start()
 
 document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
-    submissionHandling();
+    changePickupLibrary();
 });
 
 
