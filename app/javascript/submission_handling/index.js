@@ -1,6 +1,7 @@
 // This file is basically a class
 
 import _ from 'lodash'
+import {pollFetch, reportError} from './polling'
 
 // Attributes
 const forms = document.querySelectorAll('form');
@@ -26,33 +27,9 @@ function submissionHandling() {
 }
 
 async function renderData(holdID) {
-  const result = await pollFetch(getJobInfo, 20000, holdID);
+  const result = await pollFetch(getJobInfo, 20000, holdID, checkResults);
   await updateDOM(result);
   await deleteData(holdID);
-}
-
-// Poll for up to 20 seconds a given function
-async function pollFetch(fn, maxTime = 5000, arg) {
-  let endTime = Number(new Date()) + maxTime;
-
-    try {
-        let result = await fn(arg);
-        while (checkResults(result) && Number(new Date()) < endTime) {
-            await wait(1000);
-            result = await fn(arg);
-        }
-        return result;
-    } catch {
-        // This will be caught as an error by ruby's http gem and reported in logs as well.
-        Window.alert("There was a problem contacting the Libraries' lending services. Please call 555-555-5555 for help or try again..");
-    }
-}
-
-function wait(ms = 1000) {
-    return new Promise((resolve) => {
-        console.log(`waiting ${ms} ms...`);
-        setTimeout(resolve, ms);
-    });
 }
 
 const getJobInfo = async function(holdId) {
@@ -63,12 +40,11 @@ const getJobInfo = async function(holdId) {
 function checkResults(data) {
   const chosen_location = pickup_change_select.value;
   if (data) {
-      if ( data.result === "failure"){
+      if (data.result === "failure") {
+          reportError();
           return false;
-      } else if (data.result === "success") {
-          if (data.new_value_id === chosen_location) {
-              return false;
-          }
+      } else if (data.result === "success" && data.new_value_id === chosen_location) {
+          return false;
       }
   }
 
