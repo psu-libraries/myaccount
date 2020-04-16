@@ -20,11 +20,11 @@ class HoldsController < ApplicationController
   # PUT /holds
   def batch_update
     params['hold_list'].each do |hold_key|
-      pass_these = { hold_key: hold_key,
-                     pickup_library: params['pickup_library'],
-                     session_token: current_user.session_token }
-      handle_pickup_change_request(pass_these) if params['pickup_library'].present?
-      # handle_not_needed_after_request if params['pickup_by_date'].present?
+      ws_args = { hold_key: hold_key,
+                  pickup_library: params['pickup_library'],
+                  session_token: current_user.session_token }
+      ChangePickupLibraryJob.perform_later(ws_args) if params['pickup_library'].present?
+      handle_not_needed_after_request if params['pickup_by_date'].present?
     end
   end
 
@@ -114,13 +114,6 @@ class HoldsController < ApplicationController
 
     def holds_not_ready
       holds.reject(&:ready_for_pickup?)
-    end
-
-    def handle_pickup_change_request(pass_these)
-      # symphony_client = SymphonyClient.new
-      # symphony_client.change_pickup_library(hold_key: pass_these[:hold_key], pickup_library: pass_these[:pickup_library], session_token: pass_these[:session_token])
-
-      ChangePickupLibraryJob.perform_later(pass_these)
     end
 
     def handle_not_needed_after_request

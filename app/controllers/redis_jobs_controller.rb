@@ -12,5 +12,4 @@ class RedisJobsController < ApplicationController
     status = Redis.new.del(params[:id]) || {}
     render json: status
   end
-
 end
