@@ -4,7 +4,8 @@ import _ from 'lodash'
 import {pollFetch, reportError} from './polling'
 
 // Attributes
-const forms = document.querySelectorAll('form');
+const pendingHoldsForm = document.querySelector('form#pending-holds');
+const pendingHoldsFormCheckboxes = document.querySelectorAll('form#pending-holds input[type=checkbox]');
 const spinner = `<div class="spinner-border" role="status">
                    <span class="sr-only">Loading...</span>
                  </div>`;
@@ -12,18 +13,15 @@ const pickup_change_select = document.querySelector('[data="pickup-location"]');
 
 // This is the public method
 function submissionHandling() {
-  _.each(forms, function (f) {
-      f.addEventListener("ajax:success", function() {
-        const checkboxes = document.querySelectorAll("input#hold_list_.checkbox");
+    pendingHoldsForm.addEventListener("ajax:success", function() {
 
-        _.each(checkboxes, function (c) {
-          if (c.checked) {
-            document.querySelector(`#hold${c.value} .pickup_at`).innerHTML = spinner;
-            renderData(c.value);
-          }
+        _.each(pendingHoldsFormCheckboxes, function(c) {
+            if (c.checked) {
+                document.querySelector(`#hold${c.value} .pickup_at`).innerHTML = spinner;
+                renderData(c.value);
+            }
         });
-      });
-  });
+    });
 }
 
 async function renderData(holdID) {
