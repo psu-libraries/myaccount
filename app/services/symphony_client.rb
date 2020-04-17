@@ -236,14 +236,7 @@ class SymphonyClient
         .headers(default_headers.merge(headers))
         .request(method, base_url + path, **other)
     end
-  # def request(path, headers: {}, method: :get, **other)
-  # logger = Logger.new(STDOUT)
-  # HTTP
-  #     .use(logging: { logger: logger },
-  #          instrumentation: { instrumenter: ActiveSupport::Notifications.instrumenter, namespace: 'symphony' })
-  #     .headers(default_headers.merge(headers))
-  #     .request(method, base_url + path, **other)
-  # end
+
     def base_url
       Settings.symws.url
     end

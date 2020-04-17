@@ -3,7 +3,6 @@
 require 'simplecov'
 SimpleCov.start 'rails' do
   add_filter 'app/channels'
-  add_filter 'app/jobs'
 
   add_group 'Components', 'app/components'
 end
