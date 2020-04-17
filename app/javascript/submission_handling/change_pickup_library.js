@@ -48,7 +48,7 @@ let renderData = async function (holdID) {
 
 
 // This is the public method
-let submissionHandling = function () {
+let changePickupLibrary = function () {
     // Guard statement
     if (!pendingHoldsForm) {
         return;
@@ -72,4 +72,4 @@ let submissionHandling = function () {
 }
 
 
-export default submissionHandling;
+export default changePickupLibrary;
