@@ -26,7 +26,8 @@ Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(
-  allow_localhost: true
+  allow_localhost: true,
+  allow: 'chromedriver.storage.googleapis.com'
 )
 
 # Add additional requires below this line. Rails is not loaded until this point!
@@ -91,4 +92,9 @@ RSpec.configure do |config|
 
   config.include ActionView::Component::TestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
+end
+
+# Capybara
+Capybara.configure do |config|
+  config.javascript_driver = :selenium_chrome_headless # This is slower
 end

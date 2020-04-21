@@ -1,6 +1,6 @@
 // This file is basically a class
 
-import { pollFetch, reportError } from './polling'
+import { renderData, reportError } from './polling'
 import each from 'lodash/map'
 
 // Attributes
@@ -11,13 +11,7 @@ const spinner = `<div class="spinner-border" role="status">
                  </div>`;
 const pickupChangeSelect = document.querySelector('[data="pickup-location"]');
 
-const getJobInfo = async function (holdId) {
-    let response = await fetch(`/redis_jobs/${holdId}`);
-
-    return response.json();
-};
-
-let checkResults = function (data) {
+let validatePickupChange = function (data) {
     const chosenLocation = pickupChangeSelect.value;
     if (data) {
         if (data.result === "failure") {
@@ -32,20 +26,9 @@ let checkResults = function (data) {
     return true;
 }
 
-let updateDOM = function (data) {
+const updatePickupChange = function (data) {
     document.querySelector(`#hold${data.hold_id} .pickup_at`).innerHTML = data.new_value;
 }
-
-let deleteData = function (item) {
-    fetch(`/redis_jobs/${item}`, { "method": "delete" });
-}
-
-let renderData = async function (holdID) {
-    const result = await pollFetch(getJobInfo, holdID, checkResults);
-    await updateDOM(result);
-    await deleteData(holdID);
-}
-
 
 // This is the public method
 let changePickupLibrary = function () {
@@ -65,7 +48,7 @@ let changePickupLibrary = function () {
     pendingHoldsForm.addEventListener("ajax:success", function () {
         each(pendingHoldsFormCheckboxes, function (checkbox) {
             if (checkbox.checked) {
-                renderData(checkbox.value);
+                renderData(checkbox.value, validatePickupChange, updatePickupChange);
             }
         });
     });

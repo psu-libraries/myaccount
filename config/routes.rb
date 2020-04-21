@@ -11,11 +11,8 @@ Rails.application.routes.draw do
   resources :renewals, only: [:create]
   resources :holds, only: [:index, :new, :create, :destroy]
   resources :redis_jobs, only: [:show, :destroy]
-
-  patch 'batch_update', to: 'holds#batch_update', as: :batch_update
-
+  patch '/holds/batch_update', to: 'holds#batch_update', as: :holds_batch_update
   get 'holds/result', to: 'holds#result', as: :result
-
   get '/logout', to: 'sessions#destroy', as: :logout
 
   # error pages

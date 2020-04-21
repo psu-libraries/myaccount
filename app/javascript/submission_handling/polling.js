@@ -6,7 +6,9 @@ export const reportError = function (error) {
     // Thinking it'd be good to replace this with real content. Probably not an alert.
     // alert("There was a problem contacting the Libraries' lending services. " +
     //       "Please call 555-555-5555 for help or try again..");
-}
+};
+
+const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 /* eslint-disable max-statements */
 export const pollFetch = async function(fn, arg, checkFn) {
@@ -19,9 +21,7 @@ export const pollFetch = async function(fn, arg, checkFn) {
         result = await fn(arg);
         /* eslint-disable no-await-in-loop */
         while (checkFn(result) && Number(new Date()) < endTime) {
-            await setTimeout(function () {
-                // do nothing
-            }, pollInterval);
+            await sleep(pollInterval);
             result = await fn(arg);
         }
         /* eslint-enable no-await-in-loop */
@@ -30,5 +30,21 @@ export const pollFetch = async function(fn, arg, checkFn) {
     }
 
     return result;
-}
+};
 /* eslint-enable max-statements */
+
+const getJobInfo = async function (holdId) {
+    let response = await fetch(`/redis_jobs/${holdId}`);
+
+    return response.json();
+};
+
+const deleteData = function (item) {
+    fetch(`/redis_jobs/${item}`, { "method": "delete" });
+};
+
+export const renderData = async function (target, checkResults, resultCallback) {
+    const result = await pollFetch(getJobInfo, target, checkResults);
+    await resultCallback(result);
+    await deleteData(target);
+};

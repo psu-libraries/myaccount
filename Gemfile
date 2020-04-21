@@ -35,6 +35,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 4.0.0.beta2'
   gem 'selenium-webdriver'
+  gem 'sinatra', require: false # used for faking the symphony api for integration tests
   gem 'warden-rspec-rails'
   gem 'webdrivers', '~> 4.0'
   gem 'webmock'

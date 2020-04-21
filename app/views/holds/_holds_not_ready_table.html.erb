@@ -1,4 +1,4 @@
-<%= form_with url: '/batch_update', method: :delete, id: 'pending-holds' do %>
+<%= form_with url: holds_batch_update_path, method: :delete, id: 'pending-holds' do %>
   <table class="table">
     <caption>Holds that are not ready for pickup</caption>
     <thead>
@@ -44,7 +44,7 @@
               <h5>Edit Selected Holds</h5>
               <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false } %>
               <br>
-              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: { hold: :update, disable_with: 'Please wait...' }) %>
+              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: { disable_with: 'Please wait...' }) %>
             </div>
           </div>
           <div class="col-4 border-left">
