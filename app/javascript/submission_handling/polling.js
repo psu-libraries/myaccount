@@ -1,11 +1,24 @@
+import 'jquery' // Only needed for reportError
+import 'bootstrap' // Only needed for reportError
 
-export const reportError = function (error) {
-    // This is stubbed for now.
-    return error;
-    // This will be caught as an error by ruby's http gem and reported in logs as well.
-    // Thinking it'd be good to replace this with real content. Probably not an alert.
-    // alert("There was a problem contacting the Libraries' lending services. " +
-    //       "Please call 555-555-5555 for help or try again..");
+export const reportError = async function (error, arg) {
+    document.querySelector(`#hold${arg} .pickup_at`).innerHTML = '<p class="text-danger"><strong>ERROR</strong></p>';
+    const item = document.querySelector(`#hold${arg} a`).text;
+    const toast =
+        `<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+          <div class="toast-header bg-danger text-white">
+            <strong class="mr-auto">Error</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">
+            <p>Something went wrong and "${item}", pickup location was not updated. Contact your campus library if you need assistance.</p>
+          </div>
+        </div>`;
+    await document.querySelector('.toast-insertion-point').insertAdjacentHTML("beforeend", toast);
+
+    $('.toast').toast('show');
 };
 
 export const getJobInfo = async (jobId) => {
@@ -22,7 +35,7 @@ const validateResult = (data, otherRule) => {
                 return otherRule(data);
             }
 
-        return true;
+            return true;
         }
     }
 
