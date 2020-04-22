@@ -33,8 +33,8 @@ export const pollFetch = async function(fn, arg, checkFn) {
 };
 /* eslint-enable max-statements */
 
-const getJobInfo = async function (holdId) {
-    let response = await fetch(`/redis_jobs/${holdId}`);
+const getJobInfo = async function (jobId) {
+    let response = await fetch(`/redis_jobs/${jobId}`);
 
     return response.json();
 };
