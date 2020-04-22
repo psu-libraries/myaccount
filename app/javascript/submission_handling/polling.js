@@ -39,8 +39,8 @@ const getJobInfo = async function (jobId) {
     return response.json();
 };
 
-const deleteData = function (item) {
-    fetch(`/redis_jobs/${item}`, { "method": "delete" });
+const deleteData = function (jobId) {
+    fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
 export const renderData = async function (target, checkResults, resultCallback) {
