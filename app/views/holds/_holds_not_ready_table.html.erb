@@ -27,7 +27,7 @@
         </td>
         <td><%= render_queue_position hold %></td>
         <td class="pickup_at"><%= hold.pickup_library_human %></td>
-        <td><%= l(hold.fill_by_date, format: :short) %></td>
+        <td class="pickup_by"><%= l(hold.fill_by_date, format: :short) %></td>
         <td><%= render_status hold %></td>
       </tr>
     <% end %>

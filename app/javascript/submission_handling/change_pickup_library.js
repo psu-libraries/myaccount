@@ -1,14 +1,10 @@
 // This file is basically a class
 
 import { renderData, reportError } from './polling'
-import each from 'lodash/map'
+import each from 'lodash/each'
+import { spinner, pendingHoldsForm, pendingHoldsFormCheckboxes } from './shared'
 
 // Attributes
-const pendingHoldsForm = document.querySelector('form#pending-holds');
-const pendingHoldsFormCheckboxes = document.querySelectorAll('form#pending-holds .checkbox');
-const spinner = `<div class="spinner-border" role="status">
-                   <span class="sr-only">Loading...</span>
-                 </div>`;
 const pickupChangeSelect = document.querySelector('[data="pickup-location"]');
 const defaultSelectIndex = 0;
 
@@ -25,7 +21,7 @@ let validatePickupChange = function (data) {
     }
 
     return true;
-}
+};
 
 const updatePickupChange = function (data) {
     document.querySelector(`#hold${data.hold_id} .pickup_at`).innerHTML = data.new_value;
@@ -49,11 +45,10 @@ let changePickupLibrary = function () {
     pendingHoldsForm.addEventListener("ajax:success", function () {
         each(pendingHoldsFormCheckboxes, function (checkbox) {
             if (pickupChangeSelect.selectedIndex !== defaultSelectIndex && checkbox.checked) {
-                renderData(checkbox.value, validatePickupChange, updatePickupChange);
+                renderData(`pickup_library_${checkbox.value}`, validatePickupChange, updatePickupChange);
             }
         });
     });
-}
-
+};
 
 export default changePickupLibrary;
