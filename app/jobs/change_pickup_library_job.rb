@@ -22,7 +22,7 @@ class ChangePickupLibraryJob < ApplicationJob
         new_value_id: ws_args[:pickup_library]
       }.to_json)
     else
-      Rails.logger.error(response.body)
+      Sidekiq.logger.error("#{ws_args[:hold_key]}: #{response.body}")
       redis_client.set(ws_args[:hold_key], hold_id: ws_args[:hold_key], result: :failure, response: response.body)
     end
   end

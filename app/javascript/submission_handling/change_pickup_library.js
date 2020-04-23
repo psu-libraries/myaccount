@@ -39,7 +39,7 @@ let changePickupLibrary = function () {
 
     pendingHoldsForm.addEventListener("submit", function () {
         each(pendingHoldsFormCheckboxes, function (checkbox) {
-            if (checkbox.checked) {
+            if (pickupChangeSelect.selectedIndex !== 0 && checkbox.checked) {
                 document.querySelector(`#hold${checkbox.value} .pickup_at`).innerHTML = spinner;
             }
         });
