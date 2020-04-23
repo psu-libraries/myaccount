@@ -24,7 +24,7 @@ jobs:
         keys:
           - yarn-{{ checksum "yarn.lock" }}
     - run:
-        name: "yarn"
+        name: "Yarn"
         command: |
           yarn install --cache-folder ~/.cache/yarn
     - save_cache:
