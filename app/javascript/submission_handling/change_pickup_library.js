@@ -10,6 +10,7 @@ const spinner = `<div class="spinner-border" role="status">
                    <span class="sr-only">Loading...</span>
                  </div>`;
 const pickupChangeSelect = document.querySelector('[data="pickup-location"]');
+const defaultSelectIndex = 0;
 
 let validatePickupChange = function (data) {
     const chosenLocation = pickupChangeSelect.value;
@@ -28,7 +29,7 @@ let validatePickupChange = function (data) {
 
 const updatePickupChange = function (data) {
     document.querySelector(`#hold${data.hold_id} .pickup_at`).innerHTML = data.new_value;
-}
+};
 
 // This is the public method
 let changePickupLibrary = function () {
@@ -39,7 +40,7 @@ let changePickupLibrary = function () {
 
     pendingHoldsForm.addEventListener("submit", function () {
         each(pendingHoldsFormCheckboxes, function (checkbox) {
-            if (pickupChangeSelect.selectedIndex !== 0 && checkbox.checked) {
+            if (pickupChangeSelect.selectedIndex !== defaultSelectIndex && checkbox.checked) {
                 document.querySelector(`#hold${checkbox.value} .pickup_at`).innerHTML = spinner;
             }
         });
@@ -47,7 +48,7 @@ let changePickupLibrary = function () {
 
     pendingHoldsForm.addEventListener("ajax:success", function () {
         each(pendingHoldsFormCheckboxes, function (checkbox) {
-            if (checkbox.checked) {
+            if (pickupChangeSelect.selectedIndex !== defaultSelectIndex && checkbox.checked) {
                 renderData(checkbox.value, validatePickupChange, updatePickupChange);
             }
         });
