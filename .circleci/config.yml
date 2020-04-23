@@ -26,7 +26,7 @@ jobs:
     - run:
         name: "Yarn"
         command: |
-          yarn install --cache-folder ~/.cache/yarn
+          yarn install --cache-folder ~/.cache/yarn --frozen-lockfile
     - save_cache:
         key: yarn-{{ checksum "yarn.lock" }}
         paths:
