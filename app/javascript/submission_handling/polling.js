@@ -11,32 +11,40 @@ export const reportError = function (error) {
 const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 /* eslint-disable max-statements */
-export const pollFetch = async function(fn, arg, checkFn) {
-    const maxWaitTime = 20000;
-    const pollInterval = 1000;
-    const endTime = Number(new Date()) + maxWaitTime;
-    let result = '';
+let pollFetch = async function(fn, arg, checkFn) {
+    return new Promise( async function(resolve, reject) {
+        const maxWaitTime = 20000;
+        const pollInterval = 1000;
+        const endTime = Number(new Date()) + maxWaitTime;
+        let result = '';
 
-    try {
-        result = await fn(arg);
-        /* eslint-disable no-await-in-loop */
-        while (checkFn(result) && Number(new Date()) < endTime) {
-            await sleep(pollInterval);
+        try {
             result = await fn(arg);
+            /* eslint-disable no-await-in-loop */
+            while (checkFn(result) && Number(new Date()) < endTime) {
+                await sleep(pollInterval);
+                result = await fn(arg);
+            }
+            /* eslint-enable no-await-in-loop */
+        } catch (error) {
+            reportError(error);
+            reject(error);
         }
-        /* eslint-enable no-await-in-loop */
-    } catch (error) {
-        reportError(error);
-    }
 
-    return result;
+        resolve(result);
+    });
 };
 /* eslint-enable max-statements */
 
-const getJobInfo = async function (jobId) {
-    let response = await fetch(`/redis_jobs/${jobId}`);
-
-    return response.json();
+const getJobInfo = function (jobId) {
+    return new Promise( async function(resolve, reject) {
+        try {
+            let response = await fetch(`/redis_jobs/${jobId}`);
+            resolve(await response.json());
+        } catch(err) {
+            reject(err)
+        }
+    });
 };
 
 const deleteData = function (jobId) {
@@ -45,6 +53,6 @@ const deleteData = function (jobId) {
 
 export const renderData = async function (target, checkResults, resultCallback) {
     const result = await pollFetch(getJobInfo, target, checkResults);
-    await resultCallback(result);
-    await deleteData(target);
+    resultCallback(result);
+    deleteData(target);
 };

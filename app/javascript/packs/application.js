@@ -15,6 +15,7 @@ import './styles'
 
 // Application javascript
 import changePickupLibrary from "../submission_handling/change_pickup_library"
+import changePickupByDate from "../submission_handling/change_pickup_by_date"
 import selectAll from "../select_all";
 
 // Rails stuff
@@ -24,6 +25,7 @@ require("@rails/activestorage").start()
 document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
     changePickupLibrary();
+    changePickupByDate();
 });
 
 
