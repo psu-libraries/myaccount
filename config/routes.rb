@@ -3,12 +3,16 @@
 Rails.application.routes.draw do
   root to: 'sessions#index'
 
+  require 'sidekiq/web'
+  Sidekiq::Web.set :sessions, false
+  mount Sidekiq::Web => '/sidekiq'
+
   resources :summaries, :fines, :checkouts, only: [:index]
   resources :renewals, only: [:create]
-  resources :holds, only: [:index, :new, :create, :update, :destroy]
-
+  resources :holds, only: [:index, :new, :create, :destroy]
+  resources :redis_jobs, only: [:show, :destroy]
+  patch '/holds/batch_update', to: 'holds#batch_update', as: :holds_batch_update
   get 'holds/result', to: 'holds#result', as: :result
-
   get '/logout', to: 'sessions#destroy', as: :logout
 
   # error pages

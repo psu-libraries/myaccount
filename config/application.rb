@@ -50,5 +50,7 @@ module Myaccount
     config.cache_store = :redis_cache_store, { url: Settings.redis.url }
     config.action_controller.perform_caching = true
     config.session_store :cache_store, key: ENV['APP_SESSION_KEY']
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

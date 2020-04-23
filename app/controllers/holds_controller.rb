@@ -18,14 +18,15 @@ class HoldsController < ApplicationController
   #
   # PATCH /holds
   # PUT /holds
-  def update
-    params['hold_list'].each do |holdkey|
-      @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
-      handle_pickup_change_request if params['pickup_library'].present? && params['pickup_library'].present?
-      handle_not_needed_after_request if params['pickup_by_date'].present?
+  def batch_update
+    params['hold_list'].each do |hold_key|
+      ws_args = { hold_key: hold_key,
+                  pickup_library: params[:pickup_library],
+                  pickup_by_date: params[:pickup_by_date],
+                  session_token: current_user.session_token }
+      ChangePickupLibraryJob.perform_later(ws_args) if params[:pickup_library].present?
+      handle_not_needed_after_request(ws_args) if params[:pickup_by_date].present?
     end
-
-    redirect_to holds_path
   end
 
   # Prepares the form for creating a new hold
@@ -116,27 +117,12 @@ class HoldsController < ApplicationController
       holds.reject(&:ready_for_pickup?)
     end
 
-    def handle_pickup_change_request
-      change_pickup_response = symphony_client.change_pickup_library(
-        hold_key: @hold_to_act_on.key,
-        pickup_library: params['pickup_library'],
-        session_token: current_user.session_token
-      )
-      case change_pickup_response.status
-      when 200
-        process_flash(:success, 'update_pickup.success_html')
-      else
-        Rails.logger.error(change_pickup_response.body)
-        process_flash(:error, 'update_pickup.error_html')
-      end
-    end
-
-    def handle_not_needed_after_request
-      raise HoldException, 'Error' if Date.parse(params['pickup_by_date']) < Date.today
+    def handle_not_needed_after_request(ws_args)
+      raise HoldException, 'Error' if Date.parse(ws_args[:pickup_by_date]) < Date.today
 
       not_needed_after_response = symphony_client.not_needed_after(
-        hold_key: @hold_to_act_on.key,
-        fill_by_date: params['pickup_by_date'],
+        hold_key: ws_args[:hold_key],
+        fill_by_date: params[:pickup_by_date],
         session_token: current_user.session_token
       )
       case not_needed_after_response.status
@@ -149,7 +135,7 @@ class HoldsController < ApplicationController
     end
 
     def process_flash(type, translation)
-      flash[type] = "#{flash[type]} #{t "myaccount.hold.#{translation}", bib_summary: @hold_to_act_on.bib_summary}"
+      flash[type] = "#{flash[type]} #{t "myaccount.hold.#{translation}"}"
     end
 
     def item_details

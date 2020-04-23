@@ -1,4 +1,4 @@
-<%= form_with url: '/holds/multiple', method: :delete do %>
+<%= form_with url: holds_batch_update_path, method: :delete, id: 'pending-holds' do %>
   <table class="table">
     <caption>Holds that are not ready for pickup</caption>
     <thead>
@@ -18,7 +18,7 @@
 
     <tbody>
     <% @holds_not_ready.each do |hold| %>
-      <tr>
+      <tr id="hold<%= hold.key %>">
         <td>
           <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'pending', name: 'hold_list[]' %>
         </td>
@@ -26,7 +26,7 @@
           <%= render BibItemComponent, bibitem: hold %>
         </td>
         <td><%= render_queue_position hold %></td>
-        <td><%= hold.pickup_library_human %></td>
+        <td class="pickup_at"><%= hold.pickup_library_human %></td>
         <td><%= l(hold.fill_by_date, format: :short) %></td>
         <td><%= render_status hold %></td>
       </tr>
@@ -44,7 +44,7 @@
               <h5>Edit Selected Holds</h5>
               <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false } %>
               <br>
-              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH') %>
+              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: { disable_with: 'Please wait...' }) %>
             </div>
           </div>
           <div class="col-4 border-left">

@@ -81,28 +81,7 @@ RSpec.describe HoldsController, type: :controller do
         allow(mock_client).to receive(:not_needed_after).and_return(update_response)
       end
 
-      context 'when pickup_library param is sent and the web services call succeeds' do
-        it 'updates the pickup library and sets the flash message' do
-          patch :update, params: { id: 'multiple', pickup_library: 'Other library', hold_list: [2] }
-
-          expect(flash[:success]).to match(/Success!.*pickup location was updated/)
-        end
-      end
-
-      context 'when pickup_library param is sent and the web services call fails' do
-        before do
-          allow(update_response).to receive(:status).and_return 404
-          allow(update_response).to receive(:body).and_return(error_prompt)
-        end
-
-        it 'fails to update the pickup library and sets the flash message' do
-          patch :update, params: { id: 'multiple', pickup_library: 'Other library', hold_list: [2] }
-
-          expect(flash[:error]).to match(/Sorry!.*pickup location was not updated/)
-        end
-      end
-
-      context 'when not_needed_after param is sent and the webservice is responding with 200' do
+      xcontext 'when not_needed_after param is sent and the webservice is responding with 200' do
         it 'and it\'s a date in the future, it updates the not needed after and sets the flash message' do
           date = Date.tomorrow.to_formatted_s('%Y-%m-%d')
           patch :update, params: { id: 'multiple', pickup_by_date: date, hold_list: [2] }
@@ -117,7 +96,7 @@ RSpec.describe HoldsController, type: :controller do
         end
       end
 
-      context 'when not_needed_after param is sent and the webservice is not responding with 200' do
+      xcontext 'when not_needed_after param is sent and the webservice is not responding with 200' do
         before do
           allow(update_response).to receive(:status).and_return 404
           allow(update_response).to receive(:body).and_return(error_prompt)
@@ -138,7 +117,7 @@ RSpec.describe HoldsController, type: :controller do
         allow(mock_client).to receive(:cancel_hold).and_return(cancel_response)
       end
 
-      context 'when everything is good' do
+      xcontext 'when everything is good' do
         it 'a delete is attempted and succeeds' do
           delete :destroy, params: { id: 'multiple', hold_list: [2] }
 
@@ -313,6 +292,20 @@ RSpec.describe HoldsController, type: :controller do
 
         it 'sets a flash error message' do
           expect(flash[:error]).to match(/choose a not needed after date/)
+        end
+      end
+    end
+
+    describe '#batch_update' do
+      context 'when pickup library is specified' do
+        before do
+          allow(ChangePickupLibraryJob).to receive(:perform_later)
+        end
+
+        it 'sends a job to ChangePickupLibraryJob' do
+          patch :batch_update, params: { hold_list: ['3911148'], pickup_library: 'ALTOONA' }
+
+          expect(ChangePickupLibraryJob).to have_received(:perform_later)
         end
       end
     end
