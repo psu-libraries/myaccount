@@ -32,12 +32,14 @@ jobs:
         paths:
           - ~/.cache/yarn
     - run:
-        name: "Test"
+        name: "Lint"
         command: |
           bundle exec niftany
-          node --version
           yarn lint
-          bundle exec rspec
+    - run:
+        name: "Test"
+        command: |
+          bundle exec rspec --format doc
 
 workflows:
   version: 2
