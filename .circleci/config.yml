@@ -2,7 +2,6 @@ version: 2.1
 
 jobs:
   test:
-    parallelism: 2
     docker:
       - image: circleci/ruby:2.6.5-buster-node-browsers
     environment:
