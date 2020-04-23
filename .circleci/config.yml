@@ -6,13 +6,8 @@ jobs:
       - image: circleci/ruby:2.6.5-buster-node-browsers
     environment:
       RAILS_ENV: test
-      NVM_DIR: .nvm
     steps:
     - checkout
-    - run:
-        name: "NVM"
-        command: |
-          git clone https://github.com/nvm-sh/nvm.git .nvm
     - restore_cache:
         keys:
           - bundle-{{ checksum "Gemfile.lock" }}
@@ -31,9 +26,6 @@ jobs:
     - run:
         name: "yarn"
         command: |
-          source .nvm/nvm.sh
-          nvm use
-          node --version
           yarn install --cache-folder ~/.cache/yarn
     - save_cache:
         key: rails-demo-yarn-{{ checksum "yarn.lock" }}
