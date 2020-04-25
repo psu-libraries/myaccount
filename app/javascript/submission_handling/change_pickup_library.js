@@ -1,10 +1,14 @@
 // This file is basically a class
 
 import { renderData, reportError } from './polling'
-import each from 'lodash/each'
-import { spinner, pendingHoldsForm, pendingHoldsFormCheckboxes } from './shared'
+import each from 'lodash/map'
 
 // Attributes
+const pendingHoldsForm = document.querySelector('form#pending-holds');
+const pendingHoldsFormCheckboxes = document.querySelectorAll('form#pending-holds .checkbox');
+const spinner = `<div class="spinner-border" role="status">
+                   <span class="sr-only">Loading...</span>
+                 </div>`;
 const pickupChangeSelect = document.querySelector('[data="pickup-location"]');
 const defaultSelectIndex = 0;
 

@@ -3,9 +3,13 @@
 import { renderData, reportError } from './polling'
 import each from 'lodash/each'
 import moment from 'moment'
-import { spinner, pendingHoldsForm, pendingHoldsFormCheckboxes } from './shared'
 
 // Attributes
+const pendingHoldsForm = document.querySelector('form#pending-holds');
+const pendingHoldsFormCheckboxes = document.querySelectorAll('form#pending-holds .checkbox');
+const spinner = `<div class="spinner-border" role="status">
+                   <span class="sr-only">Loading...</span>
+                 </div>`;
 const pickupByDateInput = document.querySelector('#pickup_by_date');
 
 let validatePickupByDateChange = function (data) {
