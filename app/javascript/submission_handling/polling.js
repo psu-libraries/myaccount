@@ -8,51 +8,49 @@ export const reportError = function (error) {
     //       "Please call 555-555-5555 for help or try again..");
 };
 
-const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+export const getJobInfo = async (jobId) => {
+    let response = await fetch(`/redis_jobs/${jobId}`);
+    let data = await response.json();
 
-/* eslint-disable max-statements */
-let pollFetch = async function(fn, arg, checkFn) {
-    return new Promise( async function(resolve, reject) {
-        const maxWaitTime = 20000;
-        const pollInterval = 1000;
-        const endTime = Number(new Date()) + maxWaitTime;
-        let result = '';
-
-        try {
-            result = await fn(arg);
-            /* eslint-disable no-await-in-loop */
-            while (checkFn(result) && Number(new Date()) < endTime) {
-                await sleep(pollInterval);
-                result = await fn(arg);
-            }
-            /* eslint-enable no-await-in-loop */
-        } catch (error) {
-            reportError(error);
-            reject(error);
-        }
-
-        resolve(result);
-    });
+    return data;
 };
-/* eslint-enable max-statements */
 
-const getJobInfo = function (jobId) {
-    return new Promise( async function(resolve, reject) {
-        try {
-            let response = await fetch(`/redis_jobs/${jobId}`);
-            resolve(await response.json());
-        } catch(err) {
-            reject(err)
-        }
-    });
+const pollFetch = function(arg, checkFn) {
+    const maxWaitTime = 6000;
+    const pollInterval = 1000;
+    const endTime = Number(new Date()) + maxWaitTime;
+
+    let checkCondition = function(resolve, reject) {
+        // If the condition is met, we're done!
+        getJobInfo(arg).then((result) => {
+            if (checkFn(result)) {
+                resolve(result);
+            } else if (Number(new Date()) < endTime) {
+                setTimeout(checkCondition, pollInterval, resolve, reject);
+            } else {
+                reject(new Error(`timed out for ${getJobInfo}`));
+            }
+        }).
+        catch((error) => {
+            // This would be a network error
+            reportError(error);
+        });
+    };
+
+    return new Promise(checkCondition);
 };
 
 const deleteData = function (jobId) {
     fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
-export const renderData = async function (target, checkResults, resultCallback) {
-    const result = await pollFetch(getJobInfo, target, checkResults);
-    resultCallback(result);
-    deleteData(target);
+export const renderData = (target, checkResults, resultCallback) => {
+    pollFetch(target, checkResults).then((result) => {
+        resultCallback(result);
+        deleteData(target);
+    }).
+    catch((error) => {
+        // This would be a network error
+        reportError(error);
+    });
 };

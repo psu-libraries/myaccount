@@ -14,8 +14,8 @@ import 'bootstrap/dist/js/bootstrap'
 import './styles'
 
 // Application javascript
-import changePickupLibrary from "../submission_handling/change_pickup_library"
 import changePickupByDate from "../submission_handling/change_pickup_by_date"
+import changePickupLibrary from "../submission_handling/change_pickup_library"
 import selectAll from "../select_all";
 
 // Rails stuff
