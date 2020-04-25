@@ -17,7 +17,7 @@ class FakeSymphony < Sinatra::Base
     {}.to_json
   end
 
-  post '/symwsbc/circulation/holdRecord/key' do
+  put '/symwsbc/circulation/holdRecord/key/:key' do
     content_type :json
     status 200
     {}.to_json

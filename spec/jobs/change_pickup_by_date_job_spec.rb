@@ -54,7 +54,8 @@ RSpec.describe ChangePickupByDateJob, type: :job do
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
 
-        expect(redis_client).to have_received(:set).with('pickup_by_date_1', hash_including(result: :failure))
+        expect(redis_client).to have_received(:set).with('pickup_by_date_1', '{"hold_id":1,"result":'\
+                                                                    '"failure","response":"Some error message"}')
       end
     end
   end
