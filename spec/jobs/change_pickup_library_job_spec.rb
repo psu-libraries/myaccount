@@ -20,7 +20,7 @@ RSpec.describe ChangePickupLibraryJob, type: :job do
 
     context 'with valid input' do
       it 'makes a call to the SymphonyClient' do
-        described_class.perform_now(ws_args)
+        described_class.perform_now(**ws_args)
 
         expect(mock_sc_client).to have_received(:change_pickup_library)
       end
@@ -28,15 +28,15 @@ RSpec.describe ChangePickupLibraryJob, type: :job do
 
     context 'with valid input that is returned OK from SymphonyClient' do
       it 'sets a Redis value that marks success' do
-        described_class.perform_now(ws_args)
+        described_class.perform_now(**ws_args)
 
-        expect(redis_client).to have_received(:set).with(1, /success/)
+        expect(redis_client).to have_received(:set).with('pickup_library_1', /success/)
       end
 
       it 'sets a Redis value that contains a translated pickup library code' do
-        described_class.perform_now(ws_args)
+        described_class.perform_now(**ws_args)
 
-        expect(redis_client).to have_received(:set).with(1, /Hershey \(College of Medicine\)/)
+        expect(redis_client).to have_received(:set).with('pickup_library_1', /Hershey \(College of Medicine\)/)
       end
     end
 
@@ -52,9 +52,9 @@ RSpec.describe ChangePickupLibraryJob, type: :job do
       end
 
       it 'makes a record of the failure' do
-        described_class.perform_now(ws_args)
+        described_class.perform_now(**ws_args)
 
-        expect(redis_client).to have_received(:set).with(1, hash_including(result: :failure))
+        expect(redis_client).to have_received(:set).with('pickup_library_1', hash_including(result: :failure))
       end
     end
   end

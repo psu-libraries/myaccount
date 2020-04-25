@@ -22,8 +22,8 @@ class ChangePickupLibraryJob < ApplicationJob
         new_value_id: pickup_library
       }.to_json)
     else
-      Sidekiq.logger.error("#{hold_key}: #{response.body}")
-      redis_client.set(hold_key, hold_id: hold_key, result: :failure, response: response.body)
+      Sidekiq.logger.error("pickup_library_#{hold_key}: #{response.body}")
+      redis_client.set("pickup_library_#{hold_key}", hold_id: hold_key, result: :failure, response: response.body)
     end
   end
 end

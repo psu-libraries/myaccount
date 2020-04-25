@@ -48,7 +48,7 @@ let changePickupLibrary = function () {
 
     pendingHoldsForm.addEventListener("ajax:success", function () {
         each(pendingHoldsFormCheckboxes, function (checkbox) {
-            if (pickupChangeSelect.selectedIndex !== defaultSelectIndex && checkbox.checked) {
+            if (pickupChangeSelect.selectedIndex !== defaultSelectIndex) {
                 renderData(`pickup_library_${checkbox.value}`, validatePickupChange, updatePickupChange);
             }
         });
