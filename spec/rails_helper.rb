@@ -96,5 +96,5 @@ end
 
 # Capybara
 Capybara.configure do |config|
-  config.javascript_driver = :selenium_headless # This is slower
+  config.javascript_driver = :selenium_chrome_headless # This is slower
 end

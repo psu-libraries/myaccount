@@ -27,7 +27,7 @@ RSpec.describe 'Holds', type: :feature do
       visit holds_path
       login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3911148'
-      page.fill_in 'pickup_by_date', with: '9999-01-01'
+      page.fill_in 'pickup_by_date', with: '01-01-9999'
       page.click_button('Update Selected Holds')
       expect(page).to have_css '#hold3911148 .pickup_by', text: 'January 1, 9999'
     end
