@@ -4,6 +4,7 @@ jobs:
   test:
     docker:
       - image: circleci/ruby:2.6.5-buster-node-browsers
+      - image: redis:5.0.7
     environment:
       RAILS_ENV: test
     steps:
@@ -11,6 +12,9 @@ jobs:
     - restore_cache:
         keys:
           - bundle-{{ checksum "Gemfile.lock" }}
+    - run:
+        name: "Wait for Redis"
+        command: dockerize -wait tcp://localhost:6379 -timeout 1m
     - run:
         name: "Bundle"
         command: |
