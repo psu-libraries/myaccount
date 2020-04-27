@@ -18,6 +18,9 @@ branches:
   only:
     - master
 
+services:
+  - redis-server
+
 before_install:
   - nvm install
   - gem update --system --force

@@ -31,7 +31,9 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
     it 'displays a checkout for renewal' do
       checkout.record['fields']['item']['key'] = '7777247:1:1'
       render
-      expect(rendered).to include '<input type="checkbox" name="renewal_list[]" id="renewal_list_" value="7777247:1:1"'
+      expect(rendered).to include '<input type="checkbox" name="renewal_list[]" id="renewal_list__7777247:1:1" '\
+                                  'value="7777247:1:1" data-select-all-target="renewal" class="checkbox" '\
+                                  'multiple="multiple" />'
     end
 
     it 'displays checkout\'s item\'s title / author' do
@@ -105,7 +107,7 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
 
     it 'displays a renew all select' do
       render
-      expect(rendered).to have_unchecked_field 'renewal_list_'
+      expect(rendered).to have_unchecked_field 'renewal_list__24053411:3:1'
     end
   end
 end

@@ -51,7 +51,14 @@ Then boot up the rails server with caching turned on and you'll be all set.
 Monitor the behavior by tailing the logs:
 
  `docker exec -it redis-the-new-black redis-cli monitor`
-
+ 
+ ### Sidekiq
+ 
+ Sidekiq is also a part of this application, so start it:
+ 
+ ```
+ bundle exec sidekiq
+ ```
 
 ## Putting it all together
 
@@ -61,6 +68,7 @@ Locally you'll need to run:
 bundle exec rails s --dev-caching
 docker start redis-the-new-black
 bin/webpack-dev-server
+bundle exec sidekiq
 ```
 
 Drop `--dev-caching` if it is getting in the way of dev work.

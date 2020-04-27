@@ -1,7 +1,7 @@
 <%= label_tag :pickup_library, 'Pickup at:' %>
 <%= select_tag 'pickup_library', options_for_select(render_pickup_libraries,
                                                     disabled: '', selected: ''),
-               class: 'custom-select', required: validate_pickup_info %>
+               class: 'custom-select', data: 'pickup-location', required: validate_pickup_info %>
 <%= label_tag :pickup_by_date, 'Not needed after:' %>
 <%= date_field_tag :pickup_by_date, default_pickup_by_date, required: validate_pickup_info, min: minimum_pickup_by_date %>
 <p class="card-text"><small class="text-muted">The date you enter is the date that the system will stop

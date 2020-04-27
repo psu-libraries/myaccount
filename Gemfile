@@ -13,8 +13,8 @@ gem 'http', '~> 4.0'
 gem 'puma', '~> 3.12'
 gem 'rails', '~> 6.0.2'
 gem 'redis'
+gem 'sidekiq'
 gem 'simplecov', require: false, group: :test
-gem 'turbolinks', '~> 5'
 gem 'warden', '~> 1.2'
 gem 'webpacker', '~> 4.0'
 
@@ -35,6 +35,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 4.0.0.beta2'
   gem 'selenium-webdriver'
+  gem 'sinatra', require: false # used for faking the symphony api for integration tests
   gem 'warden-rspec-rails'
   gem 'webdrivers', '~> 4.0'
   gem 'webmock'
