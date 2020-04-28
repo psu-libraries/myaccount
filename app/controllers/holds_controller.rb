@@ -30,6 +30,8 @@ class HoldsController < ApplicationController
         ChangePickupByDateJob.perform_later(**ws_args, pickup_by_date: params[:pickup_by_date])
       end
     end
+
+    render plain: 'Update scheduled', status: :ok
   end
 
   # Prepares the form for creating a new hold
@@ -89,21 +91,14 @@ class HoldsController < ApplicationController
   # Handles form submission for canceling holds in Symphony
   #
   # DELETE /holds
-  def destroy
-    params['hold_list'].each do |holdkey|
-      @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
-      response = symphony_client.cancel_hold(holdkey, current_user.session_token)
+  def batch_destroy
+    params['hold_list'].each do |hold_key|
+      ws_args = { hold_key: hold_key, session_token: current_user.session_token }
 
-      case response.status
-      when 200
-        process_flash(:success, 'cancel.success_html')
-      else
-        Rails.logger.error(response.body)
-        process_flash(:error, 'cancel.error_html')
-      end
+      CancelHoldJob.perform_later(**ws_args)
     end
 
-    redirect_to holds_path
+    render plain: 'Deletion scheduled', status: :ok
   end
 
   private

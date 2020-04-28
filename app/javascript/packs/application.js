@@ -14,6 +14,7 @@ import 'bootstrap/dist/js/bootstrap'
 import './styles'
 
 // Application javascript
+import cancelHold from "../submission_handling/cancel_hold"
 import changePickupByDate from "../submission_handling/change_pickup_by_date"
 import changePickupLibrary from "../submission_handling/change_pickup_library"
 import selectAll from "../select_all";
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
     changePickupLibrary();
     changePickupByDate();
+    cancelHold();
 });
 
 

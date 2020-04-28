@@ -230,7 +230,7 @@ RSpec.describe SymphonyClient do
 
   describe '#cancel_hold' do
     let(:symphony_response) { { status: 200 } }
-    let(:cancel_hold_response) { client.cancel_hold('a_hold_key', user.session_token) }
+    let(:cancel_hold_response) { client.cancel_hold(hold_key: 'a_hold_key', session_token: user.session_token) }
 
     before do
       stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')

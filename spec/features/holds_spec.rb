@@ -28,8 +28,25 @@ RSpec.describe 'Holds', type: :feature do
       login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3911148'
       page.fill_in 'pickup_by_date', with: '01-01-9999'
-      page.click_button('Update Selected Holds')
+      page.click_button 'Update Selected Holds'
       expect(page).to have_css '#hold3911148 .pickup_by', text: 'January 1, 9999'
+    end
+
+    it 'lets the user cancel a pending hold', js: true do
+      visit holds_path
+      login_as username: 'PATRON1', patron_key: mock_user
+      page.check 'hold_list__3911148'
+      page.click_button 'Cancel'
+      expect(page).to have_css '#hold3911148 .hold_status', text: 'Cancelled'
+    end
+
+    it 'lets the user cancel a ready for pickup hold', js: true do
+      visit holds_path
+      login_as username: 'PATRON1', patron_key: mock_user
+      page.check 'hold_list__3906718'
+      page.click_button 'Cancel Selected Holds'
+      # sleep 10
+      expect(page).to have_css '#hold3906718 .hold_status', text: 'Cancelled'
     end
   end
 end

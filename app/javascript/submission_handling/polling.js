@@ -15,20 +15,34 @@ export const getJobInfo = async (jobId) => {
     return data;
 };
 
-const pollFetch = function(arg, checkFn) {
+// This would be one million times more elegant in ruby
+const validateResult = (data, otherRule) => {
+    if (data) {
+        if (data.result !== 'not_found') {
+            if (typeof otherRule != "undefined") {
+                return otherRule(data)
+            } else {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+const pollFetch = function(arg, otherRule = null) {
     const maxWaitTime = 6000;
     const pollInterval = 1000;
     const endTime = Number(new Date()) + maxWaitTime;
 
     let checkCondition = function(resolve, reject) {
-        // If the condition is met, we're done!
-        getJobInfo(arg).then((result) => {
-            if (checkFn(result)) {
-                resolve(result);
+        getJobInfo(arg, otherRule).then((data) => {
+            if (validateResult(data)) {
+                resolve(data);
             } else if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, pollInterval, resolve, reject);
             } else {
-                reject(new Error(`timed out for ${getJobInfo}`));
+                reject(new Error(`timed out for ${getJobInfo} `));
             }
         }).
         catch((error) => {
@@ -44,8 +58,8 @@ const deleteData = function (jobId) {
     fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
-export const renderData = (target, checkResults, resultCallback) => {
-    pollFetch(target, checkResults).then((result) => {
+export const renderData = (target, resultCallback, otherRule = null) => {
+    pollFetch(target, otherRule).then((result) => {
         resultCallback(result);
         deleteData(target);
     }).

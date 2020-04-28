@@ -1,4 +1,4 @@
-<%= form_with url: holds_batch_update_path, method: :delete, id: 'pending-holds' do %>
+<%= form_with url: holds_batch_destroy_path, method: :delete, id: 'pending-holds' do %>
   <table class="table">
     <caption>Holds that are not ready for pickup</caption>
     <thead>
@@ -28,7 +28,7 @@
         <td><%= render_queue_position hold %></td>
         <td class="pickup_at"><%= hold.pickup_library_human %></td>
         <td class="pickup_by"><%= l(hold.fill_by_date, format: :short) %></td>
-        <td><%= render_status hold %></td>
+        <td class="hold_status"><%= render_status hold %></td>
       </tr>
     <% end %>
     </tbody>
