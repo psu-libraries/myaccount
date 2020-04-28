@@ -1,5 +1,5 @@
-import { allChecked, pendingHoldsForm, submitterValue, responseFromRails, spinner } from './shared'
-import { renderData, reportError } from './polling'
+import { allChecked, pendingHoldsForm, responseFromRails, spinner, submitterValue } from './shared'
+import { renderData } from './polling'
 
 const activeHoldsForm = document.querySelector('form#active-holds');
 

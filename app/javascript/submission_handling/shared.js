@@ -14,8 +14,10 @@ export const spinner = `<div class="spinner-border" role="status">
                  </div>`;
 
 export let responseFromRails = (event) => {
+    // See https://guides.rubyonrails.org/working_with_javascript_in_rails.html#rails-ujs-event-handlers
+    const railsResponseIndexNumber = 0;
     if (event.detail) {
-        return event.detail[0];
+        return event.detail[railsResponseIndexNumber];
     }
 
     return 'Not defined';
