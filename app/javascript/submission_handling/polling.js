@@ -10,9 +10,8 @@ export const reportError = function (error) {
 
 export const getJobInfo = async (jobId) => {
     let response = await fetch(`/redis_jobs/${jobId}`);
-    let data = await response.json();
 
-    return data;
+    return response.json();
 };
 
 // This would be one million times more elegant in ruby

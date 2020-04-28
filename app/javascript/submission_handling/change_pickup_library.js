@@ -5,11 +5,7 @@ const defaultSelectIndex = 0;
 let pickupChangeSelect = () => document.querySelector('[data="pickup-location"]');
 
 let validatePickupChange = function (data) {
-    if (data.new_value_id === pickupChangeSelect().value) {
-        return true;
-    }
-
-    return false;
+    return data.new_value_id === pickupChangeSelect().value;
 };
 
 const updatePickupChange = function (data) {

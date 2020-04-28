@@ -3,15 +3,11 @@ import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
 
+// Checking for value here is basically a sanity check for edge cases where a stale value
+// is already present in Redis. In this edge case what will happen is that the Redis value
+// will eventually get updated to the "correct" new value.
 let validatePickupByDateChange = function (data) {
-    if (data.new_value === pickupByDateInput().value) {
-        // Checking for value here is basically a sanity check for edge cases where a stale value
-        // is already present in Redis. In this edge case what will happen is that the Redis value
-        // will eventually get updated to the "correct" new value.
-        return true;
-    }
-
-    return false;
+    return data.new_value === pickupByDateInput().value
 };
 
 const updatePickupByDate = function (data) {
