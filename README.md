@@ -1,5 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/39523975626d856a4997/maintainability)](https://codeclimate.com/github/psu-libraries/myaccount/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/39523975626d856a4997/test_coverage)](https://codeclimate.com/github/psu-libraries/myaccount/test_coverage)
-
+[![<psu-libraries>](https://circleci.com/gh/psu-libraries/myaccount.svg?style=svg)](<https://circleci.com/gh/psu-libraries/myaccount>)
 # Setup Your Environment 
 
 ## Mac
@@ -82,3 +82,6 @@ There is a lot of domain terminology that can be confusing. Here are some of the
 * _Item_ - info that describes the thing that is actually held or checked out. Has a barcode and checkout status.
 
 This is an attempt at a quick and rough "[ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html)"
+
+# CI 
+We use Circle CI to test myaccount. In the event of a test failure you can visit <https://circleci.com/gh/psu-libraries/myaccount> to see the jobs output. You can gain shell access to the build by choosing "Rerun with SSH" once logged in, your code will be checked out at the `/project` path.
