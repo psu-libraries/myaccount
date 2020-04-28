@@ -18,7 +18,7 @@ const updatePickupByDate = function (data) {
     document.querySelector(`#hold${data.hold_id} .pickup_by`).innerHTML = data.new_value_formatted;
 };
 
-// This is the public method
+// This is the public function
 let changePickupByDate = function () {
     // Guard statement
     if (!pendingHoldsForm) {

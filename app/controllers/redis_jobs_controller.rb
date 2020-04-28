@@ -5,7 +5,6 @@ class RedisJobsController < ApplicationController
 
   def show
     job_status = Redis.new.get(params[:id]) || { result: :not_found }
-    puts job_status
     render json: job_status
   end
 
