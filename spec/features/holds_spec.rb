@@ -45,7 +45,6 @@ RSpec.describe 'Holds', type: :feature do
       login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3906718'
       page.click_button 'Cancel Selected Holds'
-      # sleep 10
       expect(page).to have_css '#hold3906718 .hold_status', text: 'Cancelled'
     end
   end
