@@ -1,4 +1,4 @@
-import { allChecked, pendingHoldsForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
 import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
@@ -17,21 +17,21 @@ const updatePickupByDate = function (data) {
 // This is the public function
 let changePickupByDate = function () {
     // Guard statement
-    if (!pendingHoldsForm) {
+    if (!findForm('pending-holds')) {
         return;
     }
 
-    pendingHoldsForm.addEventListener("submit", function () {
+    findForm('pending-holds').addEventListener("submit", function () {
         if (submitterValue(event) === "Update Selected Holds" && pickupByDateInput().value !== '') {
-            allChecked(pendingHoldsForm).forEach((checkbox) => {
+            allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 document.querySelector(`#hold${checkbox.value} .pickup_by`).innerHTML = spinner;
             });
         }
     });
 
-    pendingHoldsForm.addEventListener("ajax:success", function () {
+    findForm('pending-holds').addEventListener("ajax:success", function () {
         if (responseFromRails(event) === 'Update scheduled' && pickupByDateInput().value !== '') {
-            allChecked(pendingHoldsForm).forEach((checkbox) => {
+            allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_by_date_${checkbox.value}`, updatePickupByDate, validatePickupByDateChange);
             });
         }

@@ -1,4 +1,4 @@
-import { allChecked, pendingHoldsForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -15,23 +15,23 @@ const updatePickupChange = function (data) {
 // This is the public function
 let changePickupLibrary = function () {
     // Guard statement
-    if (!pendingHoldsForm) {
+    if (!findForm('pending-holds')) {
         return;
     }
 
-    pendingHoldsForm.addEventListener("submit", function () {
+    findForm('pending-holds').addEventListener("submit", function () {
         if (submitterValue(event) === "Update Selected Holds" &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
-            allChecked(pendingHoldsForm).forEach((checkbox) => {
+            allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 document.querySelector(`#hold${checkbox.value} .pickup_at`).innerHTML = spinner;
             });
         }
     });
 
-    pendingHoldsForm.addEventListener("ajax:success", function () {
+    findForm('pending-holds').addEventListener("ajax:success", function () {
         if (responseFromRails(event) === 'Update scheduled' &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
-            allChecked(pendingHoldsForm).forEach((checkbox) => {
+            allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_library_${checkbox.value}`, updatePickupChange, validatePickupChange);
             });
         }

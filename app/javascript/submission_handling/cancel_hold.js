@@ -1,7 +1,5 @@
-import { allChecked, pendingHoldsForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
 import { renderData } from './polling'
-
-const activeHoldsForm = document.querySelector('form#active-holds');
 
 const updateCancelledHold = function (data) {
     document.querySelector(`#hold${data.hold_id} .hold_status`).innerHTML = "<p class='text-danger'>Cancelled</p>";
@@ -30,13 +28,13 @@ let listenAjaxSuccess = (form) => {
 // This is the public function
 let cancelHold = function () {
     // Guard statement
-    if (pendingHoldsForm) {
-        listenSubmit(pendingHoldsForm);
-        listenAjaxSuccess(pendingHoldsForm);
+    if (findForm('pending-holds')) {
+        listenSubmit(findForm('pending-holds'));
+        listenAjaxSuccess(findForm('pending-holds'));
     }
-    if (activeHoldsForm) {
-        listenSubmit(activeHoldsForm);
-        listenAjaxSuccess(activeHoldsForm);
+    if (findForm('active-holds')) {
+        listenSubmit(findForm('active-holds'));
+        listenAjaxSuccess(findForm('active-holds'));
     }
 };
 
