@@ -20,13 +20,18 @@ class HoldsController < ApplicationController
   # PUT /holds
   def batch_update
     params['hold_list'].each do |hold_key|
-      ws_args = { hold_key: hold_key,
-                  pickup_library: params[:pickup_library],
-                  pickup_by_date: params[:pickup_by_date],
-                  session_token: current_user.session_token }
-      ChangePickupLibraryJob.perform_later(ws_args) if params[:pickup_library].present?
-      handle_not_needed_after_request(ws_args) if params[:pickup_by_date].present?
+      ws_args = { hold_key: hold_key, session_token: current_user.session_token }
+
+      if params[:pickup_library].present?
+        ChangePickupLibraryJob.perform_later(**ws_args, pickup_library: params[:pickup_library])
+      end
+
+      if params[:pickup_by_date].present?
+        ChangePickupByDateJob.perform_later(**ws_args, pickup_by_date: params[:pickup_by_date])
+      end
     end
+
+    render plain: 'Update scheduled', status: :ok
   end
 
   # Prepares the form for creating a new hold
@@ -86,21 +91,14 @@ class HoldsController < ApplicationController
   # Handles form submission for canceling holds in Symphony
   #
   # DELETE /holds
-  def destroy
-    params['hold_list'].each do |holdkey|
-      @hold_to_act_on = holds.find { |hold| hold.key == holdkey }
-      response = symphony_client.cancel_hold(holdkey, current_user.session_token)
+  def batch_destroy
+    params['hold_list'].each do |hold_key|
+      ws_args = { hold_key: hold_key, session_token: current_user.session_token }
 
-      case response.status
-      when 200
-        process_flash(:success, 'cancel.success_html')
-      else
-        Rails.logger.error(response.body)
-        process_flash(:error, 'cancel.error_html')
-      end
+      CancelHoldJob.perform_later(**ws_args)
     end
 
-    redirect_to holds_path
+    render plain: 'Deletion scheduled', status: :ok
   end
 
   private
@@ -117,35 +115,12 @@ class HoldsController < ApplicationController
       holds.reject(&:ready_for_pickup?)
     end
 
-    def handle_not_needed_after_request(ws_args)
-      raise HoldException, 'Error' if Date.parse(ws_args[:pickup_by_date]) < Date.today
-
-      not_needed_after_response = symphony_client.not_needed_after(
-        hold_key: ws_args[:hold_key],
-        fill_by_date: params[:pickup_by_date],
-        session_token: current_user.session_token
-      )
-      case not_needed_after_response.status
-      when 200
-        process_flash(:success, 'update_not_needed_after.success_html')
-      else
-        Rails.logger.error(not_needed_after_response.body)
-        process_flash(:error, 'update_not_needed_after.error_html')
-      end
-    end
-
     def process_flash(type, translation)
       flash[type] = "#{flash[type]} #{t "myaccount.hold.#{translation}"}"
     end
 
     def item_details
       { holdRecordList: true }
-    end
-
-    def past_date
-      flash[:error] = t 'myaccount.hold.update_pickup.past_date'
-
-      redirect_to holds_path
     end
 
     def check_for_blanks!

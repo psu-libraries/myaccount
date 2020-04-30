@@ -95,13 +95,13 @@ class SymphonyClient
     end
   end
 
-  def cancel_hold(holdkey, session_token)
+  def cancel_hold(hold_key:, session_token:)
     authenticated_request('/circulation/holdRecord/cancelHold',
                           headers: { 'x-sirs-sessionToken': session_token },
                           method: :post, json: {
                             holdRecord: {
                               resource: '/circulation/holdRecord',
-                              key: holdkey
+                              key: hold_key
                             }
                           })
   end

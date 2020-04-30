@@ -73,72 +73,6 @@ RSpec.describe HoldsController, type: :controller do
       expect(assigns(:holds_not_ready).count).to eq 1
     end
 
-    describe '#update' do
-      let(:update_response) { instance_double(HTTP::Response, status: 200) }
-
-      before do
-        allow(mock_client).to receive(:change_pickup_library).and_return(update_response)
-        allow(mock_client).to receive(:not_needed_after).and_return(update_response)
-      end
-
-      xcontext 'when not_needed_after param is sent and the webservice is responding with 200' do
-        it 'and it\'s a date in the future, it updates the not needed after and sets the flash message' do
-          date = Date.tomorrow.to_formatted_s('%Y-%m-%d')
-          patch :update, params: { id: 'multiple', pickup_by_date: date, hold_list: [2] }
-
-          expect(flash[:success]).to match(/Success!.*not needed after date was updated/)
-        end
-
-        it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
-          patch :update, params: { id: 'multiple', pickup_by_date: '2020-01-21', hold_list: [2] }
-
-          expect(flash[:error]).to match(/date that is in the past/)
-        end
-      end
-
-      xcontext 'when not_needed_after param is sent and the webservice is not responding with 200' do
-        before do
-          allow(update_response).to receive(:status).and_return 404
-          allow(update_response).to receive(:body).and_return(error_prompt)
-        end
-
-        it 'and it\'s a date in the past, it does not update the not needed after and sets the flash message' do
-          patch :update, params: { id: 'multiple', pickup_by_date: '2100-01-21', hold_list: [2] }
-
-          expect(flash[:error]).to match(/Sorry!/)
-        end
-      end
-    end
-
-    describe '#destroy' do
-      let(:cancel_response) { instance_double(HTTP::Response, status: 200) }
-
-      before do
-        allow(mock_client).to receive(:cancel_hold).and_return(cancel_response)
-      end
-
-      xcontext 'when everything is good' do
-        it 'a delete is attempted and succeeds' do
-          delete :destroy, params: { id: 'multiple', hold_list: [2] }
-
-          expect(flash[:success]).to match(/Some Good Book/)
-        end
-      end
-
-      context 'when the web service does not respond with a 200' do
-        before do
-          allow(cancel_response).to receive(:status).and_return 400
-          allow(cancel_response).to receive(:body).and_return(error_prompt)
-        end
-
-        it 'deletes holds and fails' do
-          delete :destroy, params: { id: 'multiple', hold_list: [2] }
-
-          expect(flash[:error]).to match(/Sorry!/)
-        end
-      end
-    end
-
     describe '#new' do
       let(:form_builder) { instance_double(PlaceHoldForm::Builder) }
       let(:form_params) { {
@@ -300,6 +234,7 @@ RSpec.describe HoldsController, type: :controller do
       context 'when pickup library is specified' do
         before do
           allow(ChangePickupLibraryJob).to receive(:perform_later)
+          allow(ChangePickupByDateJob).to receive(:perform_later)
         end
 
         it 'sends a job to ChangePickupLibraryJob' do
@@ -307,6 +242,24 @@ RSpec.describe HoldsController, type: :controller do
 
           expect(ChangePickupLibraryJob).to have_received(:perform_later)
         end
+
+        it 'send a job to ChangePickupByDateJob' do
+          patch :batch_update, params: { hold_list: ['3911148'], pickup_by_date: '2001-01-10' }
+
+          expect(ChangePickupByDateJob).to have_received(:perform_later)
+        end
+      end
+    end
+
+    describe '#batch_destroy' do
+      before do
+        allow(CancelHoldJob).to receive(:perform_later)
+      end
+
+      it 'sends a job to CancelHoldJob' do
+        delete :batch_destroy, params: { hold_list: ['3911148'] }
+
+        expect(CancelHoldJob).to have_received(:perform_later)
       end
     end
 

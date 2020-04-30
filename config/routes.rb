@@ -9,9 +9,11 @@ Rails.application.routes.draw do
 
   resources :summaries, :fines, :checkouts, only: [:index]
   resources :renewals, only: [:create]
-  resources :holds, only: [:index, :new, :create, :destroy]
+  resources :holds, only: [:index, :new, :create]
   resources :redis_jobs, only: [:show, :destroy]
-  patch '/holds/batch_update', to: 'holds#batch_update', as: :holds_batch_update
+  patch '/holds/batch', to: 'holds#batch_update', as: :holds_batch_update
+  delete '/holds/batch', to: 'holds#batch_destroy', as: :holds_batch_destroy
+
   get 'holds/result', to: 'holds#result', as: :result
   get '/logout', to: 'sessions#destroy', as: :logout
 
