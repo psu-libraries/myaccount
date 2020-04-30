@@ -18,8 +18,8 @@ export const getJobInfo = async (jobId) => {
 const validateResult = (data, otherRule) => {
     if (data) {
         if (data.result !== 'not_found') {
-            if (typeof otherRule !== "undefined") {
-                return otherRule(data)
+            if (otherRule !== null) {
+                return otherRule(data);
             }
 
         return true;
@@ -35,8 +35,8 @@ const pollFetch = function(arg, otherRule = null) {
     const endTime = Number(new Date()) + maxWaitTime;
 
     let checkCondition = function(resolve, reject) {
-        getJobInfo(arg, otherRule).then((data) => {
-            if (validateResult(data)) {
+        getJobInfo(arg).then((data) => {
+            if (validateResult(data, otherRule)) {
                 resolve(data);
             } else if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, pollInterval, resolve, reject);
