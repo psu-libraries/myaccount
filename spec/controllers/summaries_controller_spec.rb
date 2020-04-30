@@ -17,12 +17,13 @@ RSpec.describe SummariesController do
   end
 
   context 'with an authenticated request' do
-    let(:user) do
-      { username: 'zzz123',
-        name: 'Zeke',
-        patron_key: '1234567',
-        session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
-    end
+    let(:user) {
+      instance_double(User,
+                      username: 'zzz123',
+                      name: 'Zeke',
+                      patron_key: '1234567',
+                      session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
+    }
 
     let(:mock_response) do
       {
@@ -37,7 +38,9 @@ RSpec.describe SummariesController do
     before do
       warden.set_user(user)
       allow(controller).to receive(:current_user).and_return(user)
-      allow(mock_client).to receive(:patron_info).with(user, item_details: {}).and_return(mock_response)
+      allow(mock_client).to receive(:patron_info).with(patron_key: user.patron_key,
+                                                       session_token: user.session_token, item_details: {})
+        .and_return(mock_response)
       allow(mock_client).to receive(:ping?).and_return(ping_response)
     end
 

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   patch '/holds/batch', to: 'holds#batch_update', as: :holds_batch_update
   delete '/holds/batch', to: 'holds#batch_destroy', as: :holds_batch_destroy
 
+  get 'holds/all', to: 'holds#all', as: :holds_all
   get 'holds/result', to: 'holds#result', as: :result
   get '/logout', to: 'sessions#destroy', as: :logout
 

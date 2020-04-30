@@ -30,7 +30,7 @@ const validateResult = (data, otherRule) => {
 };
 
 const pollFetch = function(arg, otherRule = null) {
-    const maxWaitTime = 6000;
+    const maxWaitTime = 60000;
     const pollInterval = 1000;
     const endTime = Number(new Date()) + maxWaitTime;
 

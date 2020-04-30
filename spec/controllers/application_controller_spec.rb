@@ -5,15 +5,17 @@ require 'rails_helper'
 RSpec.describe ApplicationController do
   let(:mock_client) { instance_double(SymphonyClient) }
 
-  let(:user) do
-    { username: 'zzz123',
-      name: 'Zeke',
-      patron_key: '1234567',
-      session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
-  end
+  let(:user) {
+    instance_double(User,
+                    username: 'zzz123',
+                    name: 'Zeke',
+                    patron_key: '1234567',
+                    session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
+  }
 
   before do
     allow(SymphonyClient).to receive(:new).and_return(mock_client)
+    allow(User).to receive(:new).and_return(user)
   end
 
   describe '#current_user' do
@@ -65,13 +67,15 @@ RSpec.describe ApplicationController do
       before do
         allow(mock_client).to receive(:patron_info)
         warden.set_user(user)
+        allow(controller).to receive(:item_details).and_return(some: :value)
+        allow(controller).to receive(:current_user).and_return(user)
       end
 
       it 'passes through the details' do
-        allow(controller).to receive(:item_details).and_return(some: :value)
-        allow(controller).to receive(:current_user).and_return(user)
         controller.patron
-        expect(mock_client).to have_received(:patron_info).with(user, item_details: { some: :value })
+        expect(mock_client).to have_received(:patron_info).with(patron_key: user.patron_key,
+                                                                session_token: user.session_token,
+                                                                item_details: { some: :value })
       end
     end
 

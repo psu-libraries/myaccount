@@ -49,28 +49,22 @@ RSpec.describe HoldsController, type: :controller do
       allow(mock_patron).to receive(:holds).and_return(holds)
     end
 
-    it 'sends the right item details to the web service' do
-      item_details = controller.send(:item_details)
+    describe '#index' do
+      before do
+        allow(ViewHoldsJob).to receive(:perform_later)
+      end
 
-      expect(item_details).to eq holdRecordList: true
-    end
+      it 'sends a job to CancelHoldJob' do
+        get :index
 
-    it 'renders the index template' do
-      get :index
+        expect(ViewHoldsJob).to have_received(:perform_later)
+      end
 
-      expect(response).to render_template 'index'
-    end
+      it 'renders the index template' do
+        get :index
 
-    it 'assigns holds ready for pickup' do
-      get :index
-
-      expect(assigns(:holds_ready).count).to eq 1
-    end
-
-    it 'assigns holds not ready for pickup' do
-      get :index
-
-      expect(assigns(:holds_not_ready).count).to eq 1
+        expect(response).to render_template 'index'
+      end
     end
 
     describe '#new' do
