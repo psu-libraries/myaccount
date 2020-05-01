@@ -40,9 +40,9 @@ class SymphonyClient
     response.status == 200
   end
 
-  def patron_info(user, item_details: {})
-    response = authenticated_request("/user/patron/key/#{user.patron_key}",
-                                     headers: { 'x-sirs-sessionToken': user.session_token },
+  def patron_info(patron_key:, session_token:, item_details: {})
+    response = authenticated_request("/user/patron/key/#{patron_key}",
+                                     headers: { 'x-sirs-sessionToken': session_token },
                                      params: {
                                        includeFields: [
                                          '*',

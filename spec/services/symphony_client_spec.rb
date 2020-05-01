@@ -4,11 +4,16 @@ require 'rails_helper'
 
 RSpec.describe SymphonyClient do
   let(:client) { subject }
-  let(:user) do
-    User.new(username: 'zzz123',
-             name: 'Zeke',
-             patron_key: 'some_patron_key',
-             session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
+  let(:user) {
+    instance_double(User,
+                    username: 'zzz123',
+                    name: 'Zeke',
+                    patron_key: '1234567',
+                    session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
+  }
+
+  before do
+    allow(User).to receive(:new).and_return(user)
   end
 
   describe '#login' do
@@ -28,7 +33,7 @@ RSpec.describe SymphonyClient do
     let(:auth_response) { { status: 200 } }
 
     before do
-      stub_request(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+      stub_request(:get, "#{Settings.symws.url}/user/patron/key/1234567")
         .with(query: hash_including(includeFields: 'key'))
         .to_return(auth_response)
     end
@@ -48,46 +53,53 @@ RSpec.describe SymphonyClient do
 
   describe '#patron_info' do
     before do
-      stub_request(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+      stub_request(:get, "#{Settings.symws.url}/user/patron/key/1234567")
         .with(query: hash_including(includeFields: match(/\*/)))
-        .to_return(body: { key: 'some_patron_key' }.to_json)
+        .to_return(body: { key: '1234567' }.to_json)
     end
 
     it 'authenticates the user against symphony' do
-      expect(client.patron_info(user)).to include 'key' => 'some_patron_key'
+      expect(client.patron_info(patron_key: user.patron_key,
+                                session_token: user.session_token)).to include 'key' => '1234567'
     end
 
     context 'when requesting item details' do
       it 'requests the item details for checkouts' do
-        client.patron_info(user, item_details: { circRecordList: true })
+        client.patron_info(patron_key: user.patron_key,
+                           session_token: user.session_token,
+                           item_details: { circRecordList: true })
 
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_including(includeFields: match(/circRecordList{.*,item{.*}}/)))
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/blockList/)))
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/holdRecordList/)))
       end
 
       it 'requests the item details for holds' do
-        client.patron_info(user, item_details: { holdRecordList: true })
+        client.patron_info(patron_key: user.patron_key,
+                           session_token: user.session_token,
+                           item_details: { holdRecordList: true })
 
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_including(includeFields: match(/holdRecordList{.*,item{.*}}/)))
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/circRecordList/)))
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/holdRecordList/)))
       end
 
       it 'requests the item details for fines' do
-        client.patron_info(user, item_details: { blockList: true })
+        client.patron_info(patron_key: user.patron_key,
+                           session_token: user.session_token,
+                           item_details: { blockList: true })
 
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_including(includeFields: match(/blockList{.*,item{.*}}/)))
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/circRecordList/)))
-        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/some_patron_key")
+        expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/holdRecordList/)))
       end
     end

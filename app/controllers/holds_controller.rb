@@ -10,8 +10,11 @@ class HoldsController < ApplicationController
   #
   # GET /holds
   def index
-    @holds_ready = holds_ready
-    @holds_not_ready = holds_not_ready
+    ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
+    ViewHoldsJob.perform_later **ws_args
+
+    @patron_key = current_user.patron_key
+    render
   end
 
   # Handles form submission for changing holds in Symphony
@@ -23,11 +26,11 @@ class HoldsController < ApplicationController
       ws_args = { hold_key: hold_key, session_token: current_user.session_token }
 
       if params[:pickup_library].present?
-        ChangePickupLibraryJob.perform_later(**ws_args, pickup_library: params[:pickup_library])
+        ChangePickupLibraryJob.perform_later **ws_args, pickup_library: params[:pickup_library]
       end
 
       if params[:pickup_by_date].present?
-        ChangePickupByDateJob.perform_later(**ws_args, pickup_by_date: params[:pickup_by_date])
+        ChangePickupByDateJob.perform_later **ws_args, pickup_by_date: params[:pickup_by_date]
       end
     end
 
@@ -102,26 +105,6 @@ class HoldsController < ApplicationController
   end
 
   private
-
-    def holds
-      patron.holds
-    end
-
-    def holds_ready
-      holds.select(&:ready_for_pickup?)
-    end
-
-    def holds_not_ready
-      holds.reject(&:ready_for_pickup?)
-    end
-
-    def process_flash(type, translation)
-      flash[type] = "#{flash[type]} #{t "myaccount.hold.#{translation}"}"
-    end
-
-    def item_details
-      { holdRecordList: true }
-    end
 
     def check_for_blanks!
       return unless barcodes.blank? || params['pickup_library'].blank? || params['pickup_by_date'].blank?

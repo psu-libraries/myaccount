@@ -13,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @holds_ready.each do |hold| %>
+    <% holds_ready.each do |hold| %>
       <tr id="hold<%= hold.key %>">
         <td>
           <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'ready', name: 'hold_list[]' %>

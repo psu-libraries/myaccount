@@ -14,20 +14,16 @@ import 'bootstrap/dist/js/bootstrap'
 import './styles'
 
 // Application javascript
-import cancelHold from "../submission_handling/cancel_hold"
-import changePickupByDate from "../submission_handling/change_pickup_by_date"
-import changePickupLibrary from "../submission_handling/change_pickup_library"
+import holds from "../view_holds"
 import selectAll from "../select_all";
 
 // Rails stuff
 require("@rails/ujs").start()
-require("@rails/activestorage").start()
+require("@rails/activestorage").start();
 
 document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
-    changePickupLibrary();
-    changePickupByDate();
-    cancelHold();
+    holds();
 });
 
 
