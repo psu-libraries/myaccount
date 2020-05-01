@@ -54,7 +54,7 @@ RSpec.describe HoldsController, type: :controller do
         allow(ViewHoldsJob).to receive(:perform_later)
       end
 
-      it 'sends a job to CancelHoldJob' do
+      it 'sends a job to ViewHoldsJob' do
         get :index
 
         expect(ViewHoldsJob).to have_received(:perform_later)
