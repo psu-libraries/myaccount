@@ -5,7 +5,7 @@ class ChangePickupLibraryJob < ApplicationJob
 
   def perform(hold_key:, session_token:, pickup_library:)
     symphony_client = SymphonyClient.new
-    redis_client = Redis.new
+
     response = symphony_client.change_pickup_library(
       hold_key: hold_key,
       pickup_library: pickup_library,
@@ -15,7 +15,7 @@ class ChangePickupLibraryJob < ApplicationJob
     case response.status
     when 200
       human_readable_location = Hold::PICKUP_LOCATION_ACTUAL[pickup_library.to_sym]
-      redis_client.set("pickup_library_#{hold_key}", {
+      $REDIS_CLIENT.set("pickup_library_#{hold_key}", {
         hold_id: hold_key,
         result: :success,
         new_value: human_readable_location,
@@ -25,7 +25,7 @@ class ChangePickupLibraryJob < ApplicationJob
       error_message_raw = JSON.parse response.body
       error_message = error_message_raw&.dig('messageList')&.first&.dig('message') || 'Something went wrong'
       Sidekiq.logger.error("pickup_library_#{hold_key}: #{error_message}")
-      redis_client.set("pickup_library_#{hold_key}", {
+      $REDIS_CLIENT.set("pickup_library_#{hold_key}", {
         hold_id: hold_key,
         result: :failure,
         response: error_message

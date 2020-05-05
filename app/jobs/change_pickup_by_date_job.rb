@@ -5,7 +5,6 @@ class ChangePickupByDateJob < ApplicationJob
 
   def perform(hold_key:, session_token:, pickup_by_date:)
     symphony_client = SymphonyClient.new
-    redis_client = Redis.new
 
     response = symphony_client.not_needed_after(
       hold_key: hold_key,
@@ -15,7 +14,7 @@ class ChangePickupByDateJob < ApplicationJob
 
     case response.status
     when 200
-      redis_client.set("pickup_by_date_#{hold_key}", {
+      $REDIS_CLIENT.set("pickup_by_date_#{hold_key}", {
         hold_id: hold_key,
         result: :success,
         new_value: pickup_by_date,
@@ -25,7 +24,7 @@ class ChangePickupByDateJob < ApplicationJob
       error_message_raw = JSON.parse response.body
       error_message = error_message_raw&.dig('messageList')&.first&.dig('message') || 'Something went wrong'
       Sidekiq.logger.error("pickup_by_date_#{hold_key}: #{error_message}")
-      redis_client.set("pickup_by_date_#{hold_key}", {
+      $REDIS_CLIENT.set("pickup_by_date_#{hold_key}", {
         hold_id: hold_key,
         result: :failure,
         response: error_message

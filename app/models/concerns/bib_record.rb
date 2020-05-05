@@ -62,12 +62,10 @@ module BibRecord
 
     # Use Redis to store this globally once an hour
     def item_type_mapping
-      redis = Redis.new
-      return JSON.parse(redis.get('item_type_map')) unless redis.get('item_type_map').nil?
-
-      client = SymphonyClient.new
-      item_type_map = client.get_item_type_map.to_json
-      redis.setex('item_type_map', 3600, item_type_map)
-      JSON.parse(item_type_map)
+      Rails.cache.fetch(['item_type_map', __method__], expires_in: 60.minutes) do
+        client = SymphonyClient.new
+        item_type_map = client.get_item_type_map.to_json
+        JSON.parse(item_type_map)
+      end
     end
 end
