@@ -19,7 +19,7 @@ let changePickupLibrary = function () {
         return;
     }
 
-    findForm('pending-holds').addEventListener("submit", function () {
+    findForm('pending-holds').addEventListener("submit", function (event) {
         if (submitterValue(event) === "Update Selected Holds" &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
@@ -28,7 +28,7 @@ let changePickupLibrary = function () {
         }
     });
 
-    findForm('pending-holds').addEventListener("ajax:success", function () {
+    findForm('pending-holds').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Update scheduled' &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
