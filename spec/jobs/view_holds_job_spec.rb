@@ -5,10 +5,9 @@ require 'rails_helper'
 RSpec.describe ViewHoldsJob, type: :job do
   let(:ws_args) { { patron_key: 'patron1',
                     session_token: '1s2fa21465' } }
-  let(:redis_client) { Redis.new }
 
   after do
-    Redis.new.del 'item_type_map'
+    $REDIS_CLIENT.flushall
   end
 
   context 'with valid input' do
@@ -18,9 +17,16 @@ RSpec.describe ViewHoldsJob, type: :job do
 
     it 'sets a Redis record containing success denoted by patron\'s key' do
       described_class.perform_now(**ws_args)
-      result = JSON.parse(redis_client.get('view_holds_patron1'))
+      results = $REDIS_CLIENT.get 'view_holds_patron1'
 
-      expect(result).to include('result' => 'success')
+      expect(results).to be_present
+    end
+
+    it 'renders HTML containing the holds and saves to redis' do
+      described_class.perform_now(**ws_args)
+      results = $REDIS_CLIENT.get 'view_holds_patron1'
+
+      expect(results).to include 'Campfires of freedom : the camp life of Black soldiers during the Civil War'
     end
   end
 
@@ -32,9 +38,9 @@ RSpec.describe ViewHoldsJob, type: :job do
 
     it 'sets a Redis record containing failure denoted by patron\'s key' do
       described_class.perform_now(**ws_args)
-      result = JSON.parse(redis_client.get('view_holds_patron1'))
+      results = $REDIS_CLIENT.get 'view_holds_patron1'
 
-      expect(result).to include('result' => 'failure')
+      expect(results).to eq '{"result":"failure","response":{"messageList":[{"message":"A bad thing happened"}]}}'
     end
   end
 end

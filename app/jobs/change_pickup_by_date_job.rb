@@ -18,7 +18,7 @@ class ChangePickupByDateJob < ApplicationJob
         hold_id: hold_key,
         result: :success,
         new_value: pickup_by_date,
-        new_value_formatted: Date.parse(pickup_by_date).strftime('%B %e, %Y')
+        new_value_formatted: Date.parse(pickup_by_date).strftime('%B %-d, %Y')
       }.to_json)
     else
       error_message_raw = JSON.parse response.body

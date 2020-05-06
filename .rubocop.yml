@@ -34,3 +34,7 @@ RSpec/ExampleLength:
 RSpec/MultipleExpectations:
   Exclude:
     - 'spec/services/symphony_client_spec.rb'
+
+GlobalVars:
+  AllowedVariables:
+    - $REDIS_CLIENT
