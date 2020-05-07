@@ -4,14 +4,14 @@ require 'rails_helper'
 
 RSpec.describe RedisJobsController, type: :controller do
   before do
-    $REDIS_CLIENT.set 3911148, "hold_id": '3911148',
+    Redis.current.set 3911148, "hold_id": '3911148',
                                "result": 'success',
                                "new_value": 'Brandywine',
                                "new_value_id": 'BRANDYWINE'
   end
 
   after do
-    $REDIS_CLIENT.del 3911148
+    Redis.current.del 3911148
   end
 
   describe '#show' do

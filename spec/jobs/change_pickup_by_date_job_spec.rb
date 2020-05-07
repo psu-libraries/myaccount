@@ -16,7 +16,7 @@ RSpec.describe ChangePickupByDateJob, type: :job do
     end
 
     after do
-      $REDIS_CLIENT.flushall
+      Redis.current.flushall
     end
 
     context 'with valid input' do
@@ -30,14 +30,14 @@ RSpec.describe ChangePickupByDateJob, type: :job do
     context 'with valid input that is returned OK from SymphonyClient' do
       it 'sets a Redis value that marks success' do
         described_class.perform_now(**ws_args)
-        results = $REDIS_CLIENT.get 'pickup_by_date_1'
+        results = Redis.current.get 'pickup_by_date_1'
 
         expect(results).to be_present
       end
 
       it 'sets a Redis value that contains a human-friendly formatted date string' do
         described_class.perform_now(**ws_args)
-        results = $REDIS_CLIENT.get 'pickup_by_date_1'
+        results = Redis.current.get 'pickup_by_date_1'
 
         expect(results).to include 'January 1, 2010'
       end
@@ -56,7 +56,7 @@ RSpec.describe ChangePickupByDateJob, type: :job do
 
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
-        results = $REDIS_CLIENT.get 'pickup_by_date_1'
+        results = Redis.current.get 'pickup_by_date_1'
 
         expect(results).to eq '{"hold_id":1,"result":"failure","response":"Some error message"}'
       end

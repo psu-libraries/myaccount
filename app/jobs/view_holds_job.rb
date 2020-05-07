@@ -19,7 +19,7 @@ class ViewHoldsJob < ApplicationJob
     html = HoldsController.render template: 'holds/all', layout: false, locals: { holds_ready: holds_ready,
                                                                                   holds_not_ready: holds_not_ready }
     if response.present?
-      $REDIS_CLIENT.set("view_holds_#{patron_key}", {
+      Redis.current.set("view_holds_#{patron_key}", {
         result: :success,
         html: html
       }.to_json)
@@ -31,7 +31,7 @@ class ViewHoldsJob < ApplicationJob
 
     def process_failure(error_message:, patron_key:)
       Sidekiq.logger.error("view_holds_#{patron_key}: #{error_message}")
-      $REDIS_CLIENT.set("view_holds_#{patron_key}", {
+      Redis.current.set("view_holds_#{patron_key}", {
         result: :failure,
         response: error_message
       }.to_json)
