@@ -26,9 +26,9 @@ RSpec.describe CheckoutsController do
     let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
 
     let(:checkouts) { [
-      instance_double(Checkout, item_key: '123', bib_summary: 'Renewal 1 (ABC)', due_date: nil),
-      instance_double(Checkout, item_key: '456', bib_summary: 'Renewal 2 (DEF)', due_date: nil),
-      instance_double(Checkout, item_key: '789', bib_summary: 'Renewal 3 (GHI)', due_date: nil)
+      instance_double(Checkout, item_key: '123', resource: 'item', bib_summary: 'Renewal 1 (ABC)', due_date: nil),
+      instance_double(Checkout, item_key: '456', resource: 'item', bib_summary: 'Renewal 2 (DEF)', due_date: nil),
+      instance_double(Checkout, item_key: '789', resource: 'item', bib_summary: 'Renewal 3 (GHI)', due_date: nil)
     ] }
 
     let(:mock_client) do
@@ -58,17 +58,17 @@ RSpec.describe CheckoutsController do
 
       expect(assigns(:checkouts)).to eq checkouts
     end
-  end
 
-  describe '#batch_update' do
-    before do
-      allow(RenewalJob).to receive(:perform_later)
-    end
+    describe '#batch_update' do
+      before do
+        allow(RenewalJob).to receive(:perform_later)
+      end
 
-    it 'sends a job to RenewalJob' do
-      patch :batch_update, params: { renewal_list: ['3019901:3:1'] }
+      it 'sends a job to RenewalJob' do
+        patch :batch_update, params: { renewal_list: ['123', '456'] }
 
-      expect(RenewalJob).to have_received(:perform_later)
+        expect(RenewalJob).to have_received(:perform_later).at_least(2)
+      end
     end
   end
 end

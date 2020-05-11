@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, spinner } from './shared'
 import { renderData } from './polling'
 
 const updateCheckout = function (data) {
