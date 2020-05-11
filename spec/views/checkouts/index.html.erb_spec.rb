@@ -64,7 +64,7 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
     it 'displays checkout\'s renewal count' do
       checkout.record['fields']['renewalCount'] = 2
       render
-      expect(rendered).to include '<td>2</td>'
+      expect(rendered).to include '<td class="renewal_count">2</td>'
     end
 
     it 'displays checkout\'s due date correctly when not recalled' do

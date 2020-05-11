@@ -12,15 +12,6 @@ class SymphonyClient
     'item{*,bib{shadowed,title,author},call{sortCallNumber,dispCallNumber}}'
   ].join(',')
 
-  RENEWAL_CUSTOM_MESSAGELIST = {
-    "hatErrorResponse.141": 'Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.7703": 'Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.105": 'Item has been recalled, cannot be renewed.',
-    "hatErrorResponse.252": 'Item has holds, cannot be renewed.',
-    "hatErrorResponse.46": 'Item on reserve, cannot be renewed.',
-    "unhandledException": ''
-  }.with_indifferent_access
-
   DELAY = 0.05
 
   def login(user_id, password)
@@ -79,20 +70,17 @@ class SymphonyClient
                           })
   end
 
-  def renew_items(user, checkouts)
-    checkouts.each_with_object(success: [], error: []) do |checkout, status|
-      response = renew_item_request(checkout.resource,
-                                    checkout.item_key,
-                                    headers: { 'x-sirs-sessionToken': user.session_token })
-
-      case response.status
-      when 200
-        status[:success] << { renewal: checkout, sirsi_response: nil }
-      else
-        Rails.logger.error("Renewal (#{checkout.item_key}): #{response.body}")
-        status[:error] << { renewal: checkout, sirsi_response: (renewal_error_message(response) || '') }
-      end
-    end
+  def renew(resource:, item_key:, session_token:)
+    authenticated_request('/circulation/circRecord/renew',
+                          headers: { 'x-sirs-sessionToken': session_token },
+                          method: :post, json: {
+                            item: {
+                              resource: resource,
+                              key: item_key
+                            }
+                          }, params: {
+                            includeFields: 'circRecord{*}'
+                          })
   end
 
   def cancel_hold(hold_key:, session_token:)
@@ -172,15 +160,6 @@ class SymphonyClient
 
   private
 
-    def renew_item_request(resource, item_key, headers: {})
-      authenticated_request('/circulation/circRecord/renew', headers: headers, method: :post, json: {
-                              item: {
-                                resource: resource,
-                                key: item_key
-                              }
-                            })
-    end
-
     def error_code(response)
       return if response.status.ok?
 
@@ -191,14 +170,6 @@ class SymphonyClient
 
     def records_in_use?(response)
       error_code(response) == 'hatErrorResponse.116'
-    end
-
-    def renewal_error_message(response)
-      return if response.status.ok?
-
-      RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] || JSON.parse(response.body).dig('messageList')[0].dig('message')
-    rescue JSON::ParserError
-      nil
     end
 
     def patron_linked_resources_fields(item_details = {})

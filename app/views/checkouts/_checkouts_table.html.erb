@@ -1,4 +1,4 @@
-<%= form_tag renewals_path, method: :post do %>
+<%= form_with url: renewals_batch_update_path, method: :patch, id: 'checkouts' do %>
     <table class="table">
       <caption>Checkouts</caption>
       <thead>
@@ -16,23 +16,22 @@
       </thead>
       <tfoot>
       <tr>
-        <th scope="col" colspan="7"><%= render_renew_button %></th>
+        <th scope="col" colspan="6"><%= render_renew_button %></th>
       </tr>
       </tfoot>
       <tbody>
       <% @checkouts.each do |checkout| %>
-          <tr>
+          <tr id="checkout<%= checkout.item_key %>">
             <td>
               <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>
             </td>
             <td>
               <%= render BibItemComponent, bibitem: checkout %>
             </td>
-            <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
-            <td><%= render_checkout_due_date checkout %></td>
-            <td><%= render_checkout_status checkout %></td>
-            <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
-            </td>
+            <td class="renewal_count"><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
+            <td class="due_date"><%= render_checkout_due_date checkout.due_date_human %></td>
+            <td class="status"><%= checkout.status_human %></td>
+            <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %></td>
           </tr>
       <% end %>
       </tbody>

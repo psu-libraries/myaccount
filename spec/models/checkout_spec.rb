@@ -133,4 +133,63 @@ RSpec.describe Checkout, type: :model do
       expect(checkout).to be_shadowed
     end
   end
+
+  describe '#status_human' do
+    context 'when an item is claims returned' do
+      it 'returns the right status_human' do
+        checkout.record['fields']['overdue'] = true
+        checkout.record['fields']['claimsReturnedDate'] = '2019-12-01'
+        expect(checkout.status_human).to eq 'Claims Returned'
+      end
+    end
+
+    context 'when an item is overdue' do
+      it 'returns the right status_human' do
+        checkout.record['fields']['overdue'] = true
+        expect(checkout.status_human).to eq 'Overdue'
+      end
+    end
+
+    context 'when an item is not overdue' do
+      it 'returns an empty status_human' do
+        checkout.record['fields']['overdue'] = false
+        expect(checkout.status_human).to be_nil
+      end
+    end
+  end
+
+  describe '#due_date_human' do
+    before do
+      checkout.record['fields']['dueDate'] = '2019-11-10T23:59:00-05:00'
+      checkout.record['fields']['recalledDate'] = ''
+      checkout.record['fields']['recallDueDate'] = ''
+    end
+
+    context 'when due date time is 11:59pm' do
+      it 'does not include the time' do
+        expect(checkout.due_date_human).to eq(['November 10, 2019'])
+      end
+    end
+
+    context 'when due date time is not 11:59pm' do
+      it 'includes the time' do
+        checkout.record['fields']['dueDate'] = '2019-11-10T22:30:00-05:00'
+        expect(checkout.due_date_human).to eq(['November 10, 2019 10:30pm'])
+      end
+    end
+
+    context 'when an item is not recalled' do
+      it 'returns the right due dates' do
+        expect(checkout.due_date_human).to eq(['November 10, 2019'])
+      end
+    end
+
+    context 'when an item is recalled' do
+      it 'returns the right due dates' do
+        checkout.record['fields']['recalledDate'] = '2019-11-09'
+        checkout.record['fields']['recallDueDate'] = '2019-11-09T22:30:00-05:00'
+        expect(checkout.due_date_human).to eq(['Recalled', 'November  9, 2019 10:30pm', 'November 10, 2019'])
+      end
+    end
+  end
 end
