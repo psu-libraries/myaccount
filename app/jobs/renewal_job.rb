@@ -23,8 +23,7 @@ class RenewalJob < ApplicationJob
 
     case response.status
     when 200
-      parsed_response = JSON.parse response.body
-      checkout = Checkout.new(parsed_response&.dig('circRecord'))
+      checkout = Checkout.new(JSON.parse(response.body)&.dig('circRecord'))
 
       redis_client.set("renewal_#{item_key}", {
         item_key: item_key,
