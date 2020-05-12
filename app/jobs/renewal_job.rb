@@ -30,11 +30,11 @@ class RenewalJob < ApplicationJob
         item_key: item_key,
         result: :success,
         renewal_count: checkout.renewal_count,
-        due_date: ApplicationController.helpers.render_checkout_due_date(checkout.due_date_human),
+        due_date: checkout.due_date_human,
         status: checkout.status_human
       }.to_json)
     else
-      Sidekiq.logger.error("renewal_#{item_key}: #{error_message}")
+      Sidekiq.logger.error("renewal_#{item_key}: #{renewal_error_message(response)}")
       redis_client.set("renewal_#{item_key}", {
         item_key: item_key,
         result: :failure,
@@ -46,13 +46,13 @@ class RenewalJob < ApplicationJob
   private
 
     def error_code(response)
-      return if response.status.ok?
+      return if response.status == 200
 
       JSON.parse(response.body)&.dig('messageList')&.first&.dig('code')
     end
 
     def renewal_error_message(response)
-      return if response.status.ok?
+      return if response.status == 200
 
       RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] ||
         JSON.parse(response.body)&.dig('messageList')&.first&.dig('message')

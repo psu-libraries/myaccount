@@ -3,8 +3,8 @@
 class CheckoutsController < ApplicationController
   include ActionView::Helpers::TagHelper
   before_action :authenticate_user!
-  before_action :authorize_update!, only: :batch_update
   before_action :renew_params, only: :batch_update
+  before_action :authorize_update!, only: :batch_update
   rescue_from RenewalException, with: :deny_access
 
   # Render a list of checkouts and renewals for patron

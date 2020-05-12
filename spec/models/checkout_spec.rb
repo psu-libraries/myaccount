@@ -167,20 +167,20 @@ RSpec.describe Checkout, type: :model do
 
     context 'when due date time is 11:59pm' do
       it 'does not include the time' do
-        expect(checkout.due_date_human).to eq(['November 10, 2019'])
+        expect(checkout.due_date_human).to eq('November 10, 2019')
       end
     end
 
     context 'when due date time is not 11:59pm' do
       it 'includes the time' do
         checkout.record['fields']['dueDate'] = '2019-11-10T22:30:00-05:00'
-        expect(checkout.due_date_human).to eq(['November 10, 2019 10:30pm'])
+        expect(checkout.due_date_human).to eq('November 10, 2019 10:30pm')
       end
     end
 
     context 'when an item is not recalled' do
       it 'returns the right due dates' do
-        expect(checkout.due_date_human).to eq(['November 10, 2019'])
+        expect(checkout.due_date_human).to eq('November 10, 2019')
       end
     end
 
@@ -188,7 +188,7 @@ RSpec.describe Checkout, type: :model do
       it 'returns the right due dates' do
         checkout.record['fields']['recalledDate'] = '2019-11-09'
         checkout.record['fields']['recallDueDate'] = '2019-11-09T22:30:00-05:00'
-        expect(checkout.due_date_human).to eq(['Recalled', 'November  9, 2019 10:30pm', 'November 10, 2019'])
+        expect(checkout.due_date_human).to eq('Recalled<br>November  9, 2019 10:30pm<br>November 10, 2019')
       end
     end
   end

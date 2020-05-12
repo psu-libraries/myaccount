@@ -33,6 +33,8 @@ class Checkout
     end
 
     due_dates << format_due_date(due_date)
+
+    due_dates.join('<br>')
   end
 
   def due_date

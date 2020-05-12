@@ -64,10 +64,24 @@ RSpec.describe CheckoutsController do
         allow(RenewalJob).to receive(:perform_later)
       end
 
+      it 'requires list of checkouts to be renewed as params' do
+        patch :batch_update, params: {}
+
+        expect(flash[:notice]).to match(/No items were selected/)
+      end
+
       it 'sends a job to RenewalJob' do
         patch :batch_update, params: { renewal_list: ['123', '456'] }
 
         expect(RenewalJob).to have_received(:perform_later).at_least(2)
+      end
+
+      context 'when the requested item is not checked out to the patron' do
+        it 'does not renew the item and sets flash messages' do
+          post :batch_update, params: { renewal_list: ['some_made_up_checkout'] }
+
+          expect(flash[:error]).to match('An unexpected error has occurred')
+        end
       end
     end
   end
