@@ -4,7 +4,7 @@
       <thead>
       <tr>
         <th scope="col">
-          <%= render_renew_button %><br>
+          <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %><br>
           <%= render SelectAllComponent, target_keyword: 'renewal' %>
         </th>
         <th scope="col">Item</th>
@@ -16,7 +16,8 @@
       </thead>
       <tfoot>
       <tr>
-        <th scope="col" colspan="6"><%= render_renew_button %></th>
+        <th scope="col" colspan="6">
+          <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %></th>
       </tr>
       </tfoot>
       <tbody>

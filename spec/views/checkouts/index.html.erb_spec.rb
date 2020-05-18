@@ -102,7 +102,9 @@ RSpec.describe 'checkouts/index.html.erb', type: :view do
 
     it 'displays a renew button' do
       render
-      expect(rendered).to include 'Renew'
+      renew_button = '<input type="submit" name="commit" value="Renew" class="btn btn-primary" '\
+                     'data-disable-with="Please wait..." />'
+      expect(rendered).to include renew_button
     end
 
     it 'displays a renew all select' do
