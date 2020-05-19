@@ -21,7 +21,7 @@
       </tr>
       </tfoot>
       <tbody>
-      <% @checkouts.each do |checkout| %>
+      <% checkouts.each do |checkout| %>
           <tr id="checkout<%= checkout.item_key %>">
             <td>
               <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>

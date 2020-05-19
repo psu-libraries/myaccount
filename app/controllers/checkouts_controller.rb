@@ -11,7 +11,11 @@ class CheckoutsController < ApplicationController
   #
   # GET /checkouts
   def index
-    @checkouts = checkouts
+    ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
+    ViewCheckoutsJob.perform_later **ws_args
+
+    @patron_key = current_user.patron_key
+    render
   end
 
   # Handles form submission for renewals in Symphony
