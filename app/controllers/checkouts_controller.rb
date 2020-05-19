@@ -17,7 +17,6 @@ class CheckoutsController < ApplicationController
   # Handles form submission for renewals in Symphony
   #
   # PATCH /renewals
-  # PUT /renewals
   def batch_update
     checkouts_to_renew.each do |checkout|
       ws_args = { resource: checkout.resource,
