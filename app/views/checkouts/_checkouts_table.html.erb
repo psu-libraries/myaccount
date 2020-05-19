@@ -30,7 +30,9 @@
               <%= render BibItemComponent, bibitem: checkout %>
             </td>
             <td class="renewal_count"><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
-            <td class="due_date"><%= checkout.due_date_human %></td>
+            <td class="due_date">
+              <%= render CheckoutDueDateComponent, checkout: checkout %>
+            </td>
             <td class="status"><%= checkout.status_human %></td>
             <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %></td>
           </tr>
