@@ -15,7 +15,7 @@ import './styles'
 
 // Application javascript
 import holds from "../view_holds"
-import renewals from "../view_renewals"
+import checkouts from "../view_checkouts"
 import selectAll from "../select_all";
 
 // Rails stuff
@@ -25,7 +25,7 @@ require("@rails/activestorage").start();
 document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
     holds();
-    renewals();
+    checkouts();
 });
 
 

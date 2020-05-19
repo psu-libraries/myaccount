@@ -8,7 +8,7 @@ const updateCheckout = function (data) {
 };
 
 // This is the public method
-let renewal = function () {
+let renewCheckout = function () {
     // Guard statement
     if (!findForm('checkouts')) {
         return;
@@ -32,4 +32,4 @@ let renewal = function () {
 };
 
 
-export default renewal;
+export default renewCheckout;
