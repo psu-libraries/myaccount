@@ -4,12 +4,12 @@ class RenewalJob < ApplicationJob
   queue_as :default
 
   RENEWAL_CUSTOM_MESSAGELIST = {
-    "hatErrorResponse.141": 'Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.7703": 'Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.105": 'Item has been recalled, cannot be renewed.',
-    "hatErrorResponse.252": 'Item has holds, cannot be renewed.',
-    "hatErrorResponse.46": 'Item on reserve, cannot be renewed.',
-    "unhandledException": ''
+    "hatErrorResponse.141": 'Denied: Renewal limit reached, cannot be renewed.',
+    "hatErrorResponse.7703": 'Denied: Renewal limit reached, cannot be renewed.',
+    "hatErrorResponse.105": 'Denied: Item has been recalled, cannot be renewed.',
+    "hatErrorResponse.252": 'Denied: Item has holds, cannot be renewed.',
+    "hatErrorResponse.46": 'Denied: Item on reserve, cannot be renewed.',
+    "unhandledException": 'Denied: Item cannot be renewed.'
   }.with_indifferent_access
 
   def perform(resource:, item_key:, session_token:)
@@ -44,12 +44,10 @@ class RenewalJob < ApplicationJob
 
   private
 
-    def error_code(response)
-      JSON.parse(response.body)&.dig('messageList')&.first&.dig('code')
-    end
-
     def renewal_error_message(response)
-      RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] ||
-        JSON.parse(response.body)&.dig('messageList')&.first&.dig('message')
+      parsed_messagelist = JSON.parse(response.body)&.dig('messageList')
+
+      RENEWAL_CUSTOM_MESSAGELIST[parsed_messagelist&.first&.dig('code')] ||
+        parsed_messagelist&.first&.dig('message')
     end
 end
