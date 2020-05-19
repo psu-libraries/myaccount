@@ -45,7 +45,6 @@ class RenewalJob < ApplicationJob
   private
 
     def error_code(response)
-      return if response.status == 200
 
       JSON.parse(response.body)&.dig('messageList')&.first&.dig('code')
     end
