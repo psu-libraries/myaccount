@@ -22,7 +22,7 @@ class CheckoutsController < ApplicationController
       ws_args = { resource: checkout.resource,
                   item_key: checkout.item_key,
                   session_token: current_user.session_token }
-      RenewalJob.perform_later(**ws_args)
+      RenewCheckoutJob.perform_later(**ws_args)
     end
 
     render plain: 'Renew', status: :ok

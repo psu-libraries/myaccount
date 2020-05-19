@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RenewalJob < ApplicationJob
+class RenewCheckoutJob < ApplicationJob
   queue_as :default
 
   RENEWAL_CUSTOM_MESSAGELIST = {

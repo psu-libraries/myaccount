@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RenewalJob, type: :job do
+RSpec.describe RenewCheckoutJob, type: :job do
   describe '#perform_later' do
     let(:mock_sc_client) { instance_double(SymphonyClient) }
     let(:ws_args) { { item_key: 1,

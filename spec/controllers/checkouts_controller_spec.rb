@@ -61,7 +61,7 @@ RSpec.describe CheckoutsController do
 
     describe '#batch_update' do
       before do
-        allow(RenewalJob).to receive(:perform_later)
+        allow(RenewCheckoutJob).to receive(:perform_later)
       end
 
       it 'requires list of checkouts to be renewed as params' do
@@ -73,7 +73,7 @@ RSpec.describe CheckoutsController do
       it 'sends a job to RenewalJob' do
         patch :batch_update, params: { renewal_list: ['123', '456'] }
 
-        expect(RenewalJob).to have_received(:perform_later).at_least(2)
+        expect(RenewCheckoutJob).to have_received(:perform_later).at_least(2)
       end
 
       context 'when the requested item is not checked out to the patron' do
