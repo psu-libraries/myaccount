@@ -10,13 +10,14 @@ RSpec.describe RenewCheckoutJob, type: :job do
                       session_token: '1s2fa21465' } }
     let(:renewal_response) { RENEWAL_RAW_JSON.to_json }
     let(:sc_response) { instance_double(HTTP::Response, status: 200, body: renewal_response) }
-    let(:redis_client) { instance_double(Redis) }
 
     before do
       allow(SymphonyClient).to receive(:new).and_return(mock_sc_client)
       allow(mock_sc_client).to receive(:renew).and_return(sc_response)
-      allow(Redis).to receive(:new).and_return(redis_client)
-      allow(redis_client).to receive(:set)
+    end
+
+    after do
+      Redis.current.flushall
     end
 
     context 'with valid input' do
@@ -30,15 +31,17 @@ RSpec.describe RenewCheckoutJob, type: :job do
     context 'with valid input that is returned OK from SymphonyClient' do
       it 'sets a Redis value that marks success' do
         described_class.perform_now(**ws_args)
+        results = Redis.current.get 'renewal_1'
 
-        expect(redis_client).to have_received(:set).with('renewal_1', /success/)
+        expect(results).to include 'success'
       end
 
       it 'sets a Redis value that contains a translated item key' do
         described_class.perform_now(**ws_args)
-        expect(redis_client).to have_received(:set).with('renewal_1', '{"item_key":1,'\
-                                                                   '"result":"success","renewal_count":35,'\
-                                                                   '"due_date":"May 15, 2020","status":null}')
+        results = Redis.current.get 'renewal_1'
+
+        expect(results).to eq '{"item_key":1,"result":"success","renewal_count":35,'\
+                                      '"due_date":"May 15, 2020","status":null}'
       end
     end
 
@@ -55,9 +58,9 @@ RSpec.describe RenewCheckoutJob, type: :job do
 
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
+        results = Redis.current.get 'renewal_1'
 
-        expect(redis_client).to have_received(:set).with('renewal_1', '{"item_key":1,"result":'\
-                                                                    '"failure","error_message":"Some error message"}')
+        expect(results).to eq '{"item_key":1,"result":"failure","error_message":"Some error message"}'
       end
     end
   end

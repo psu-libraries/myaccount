@@ -14,7 +14,7 @@ class RenewCheckoutJob < ApplicationJob
 
   def perform(resource:, item_key:, session_token:)
     symphony_client = SymphonyClient.new
-    redis_client = Redis.new
+
     response = symphony_client.renew(
       resource: resource,
       item_key: item_key,
@@ -25,7 +25,7 @@ class RenewCheckoutJob < ApplicationJob
     when 200
       checkout = Checkout.new(JSON.parse(response.body)&.dig('circRecord'))
 
-      redis_client.set("renewal_#{item_key}", {
+      Redis.current.set("renewal_#{item_key}", {
         item_key: item_key,
         result: :success,
         renewal_count: checkout.renewal_count,
@@ -34,7 +34,8 @@ class RenewCheckoutJob < ApplicationJob
       }.to_json)
     else
       Sidekiq.logger.error("renewal_#{item_key}: #{renewal_error_message(response)}")
-      redis_client.set("renewal_#{item_key}", {
+
+      Redis.current.set("renewal_#{item_key}", {
         item_key: item_key,
         result: :failure,
         error_message: renewal_error_message(response)

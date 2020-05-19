@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class CheckoutDueDateComponent < ActionView::Component::Base
-
   def initialize(checkout:)
     @due_date = checkout.due_date_human
     @recalled = checkout.recalled?
