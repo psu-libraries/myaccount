@@ -45,13 +45,10 @@ class RenewalJob < ApplicationJob
   private
 
     def error_code(response)
-
       JSON.parse(response.body)&.dig('messageList')&.first&.dig('code')
     end
 
     def renewal_error_message(response)
-      return if response.status == 200
-
       RENEWAL_CUSTOM_MESSAGELIST[error_code(response)] ||
         JSON.parse(response.body)&.dig('messageList')&.first&.dig('message')
     end
