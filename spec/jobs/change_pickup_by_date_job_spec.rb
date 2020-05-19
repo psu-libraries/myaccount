@@ -9,13 +9,14 @@ RSpec.describe ChangePickupByDateJob, type: :job do
                       pickup_by_date: '2010-01-01',
                       session_token: '1s2fa21465' } }
     let(:sc_response) { instance_double(HTTP::Response, status: 200) }
-    let(:redis_client) { instance_double(Redis) }
 
     before do
       allow(SymphonyClient).to receive(:new).and_return(mock_sc_client)
       allow(mock_sc_client).to receive(:not_needed_after).and_return(sc_response)
-      allow(Redis).to receive(:new).and_return(redis_client)
-      allow(redis_client).to receive(:set)
+    end
+
+    after do
+      Redis.current.flushall
     end
 
     context 'with valid input' do
@@ -29,14 +30,16 @@ RSpec.describe ChangePickupByDateJob, type: :job do
     context 'with valid input that is returned OK from SymphonyClient' do
       it 'sets a Redis value that marks success' do
         described_class.perform_now(**ws_args)
+        results = Redis.current.get 'pickup_by_date_1'
 
-        expect(redis_client).to have_received(:set).with('pickup_by_date_1', /success/)
+        expect(results).to be_present
       end
 
-      it 'sets a Redis value that contains a translated pickup library code' do
+      it 'sets a Redis value that contains a human-friendly formatted date string' do
         described_class.perform_now(**ws_args)
+        results = Redis.current.get 'pickup_by_date_1'
 
-        expect(redis_client).to have_received(:set).with('pickup_by_date_1', /2010-01-01/)
+        expect(results).to include 'January 1, 2010'
       end
     end
 
@@ -53,9 +56,9 @@ RSpec.describe ChangePickupByDateJob, type: :job do
 
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
+        results = Redis.current.get 'pickup_by_date_1'
 
-        expect(redis_client).to have_received(:set).with('pickup_by_date_1', '{"hold_id":1,"result":'\
-                                                                    '"failure","response":"Some error message"}')
+        expect(results).to eq '{"hold_id":1,"result":"failure","response":"Some error message"}'
       end
     end
   end

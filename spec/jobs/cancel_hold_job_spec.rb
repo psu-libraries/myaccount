@@ -6,13 +6,14 @@ RSpec.describe CancelHoldJob, type: :job do
   let(:mock_sc_client) { instance_double(SymphonyClient) }
   let(:ws_args) { { hold_key: 1, session_token: '1s2fa21465' } }
   let(:sc_response) { instance_double(HTTP::Response, status: 200) }
-  let(:redis_client) { instance_double(Redis) }
 
   before do
     allow(SymphonyClient).to receive(:new).and_return(mock_sc_client)
     allow(mock_sc_client).to receive(:cancel_hold).and_return(sc_response)
-    allow(Redis).to receive(:new).and_return(redis_client)
-    allow(redis_client).to receive(:set)
+  end
+
+  after do
+    Redis.current.flushall
   end
 
   context 'with valid input' do
@@ -26,8 +27,9 @@ RSpec.describe CancelHoldJob, type: :job do
   context 'with valid input that is returned OK from SymphonyClient' do
     it 'sets a Redis value that marks success' do
       described_class.perform_now(**ws_args)
+      results = Redis.current.get 'cancel_hold_1'
 
-      expect(redis_client).to have_received(:set).with('cancel_hold_1', /success/)
+      expect(results).to eq '{"hold_id":1,"result":"success"}'
     end
   end
 
@@ -44,9 +46,9 @@ RSpec.describe CancelHoldJob, type: :job do
 
     it 'makes a record of the failure' do
       described_class.perform_now(**ws_args)
+      results = Redis.current.get 'cancel_hold_1'
 
-      expect(redis_client).to have_received(:set).with('cancel_hold_1', '{"hold_id":1,"result":'\
-                                                                    '"failure","response":"Some error message"}')
+      expect(results).to eq '{"hold_id":1,"result":"failure","response":"Some error message"}'
     end
   end
 end
