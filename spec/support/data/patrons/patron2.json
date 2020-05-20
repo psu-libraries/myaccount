@@ -91,7 +91,7 @@
           },
           "checkOutDate": "2007-07-03T10:34:00-04:00",
           "claimsReturnedDate": null,
-          "overdue": false,
+          "overdue": true,
           "unseenRenewalsRemaining": null,
           "recalledDate": null,
           "status": "ACTIVE"
@@ -104,7 +104,7 @@
             "resource": "/policy/circulationRule",
             "key": "FASTSEMEST"
           },
-          "recallDueDate": null,
+          "recallDueDate": "2020-08-04T10:34:00-04:00",
           "patron": {
             "resource": "/user/patron",
             "key": "18511"
@@ -174,7 +174,7 @@
           "renewalDate": "2020-01-30T16:15:00-05:00",
           "estimatedOverdueAmount": {
             "currencyCode": "USD",
-            "amount": "0.00"
+            "amount": "10.00"
           },
           "seenRenewalsRemaining": null,
           "library": {
@@ -182,10 +182,10 @@
             "key": "UP-PAT"
           },
           "checkOutDate": "2007-07-03T10:34:00-04:00",
-          "claimsReturnedDate": null,
-          "overdue": false,
+          "claimsReturnedDate": "2007-08-03T10:34:00-04:00",
+          "overdue": true,
           "unseenRenewalsRemaining": null,
-          "recalledDate": null,
+          "recalledDate": "2020-01-03T10:34:00-04:00",
           "status": "ACTIVE"
         }
       }
