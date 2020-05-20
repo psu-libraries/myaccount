@@ -73,7 +73,7 @@ RSpec.describe CheckoutsController do
       it 'sends a job to RenewalJob' do
         patch :batch_update, params: { renewal_list: ['123', '456'] }
 
-        expect(RenewCheckoutJob).to have_received(:perform_later).at_least(2)
+        expect(RenewCheckoutJob).to have_received(:perform_later).twice
       end
 
       context 'when the requested item is not checked out to the patron' do
