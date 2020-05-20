@@ -30,6 +30,7 @@ RSpec/ExampleLength:
   Exclude:
     - 'spec/services/symphony_client_spec.rb'
     - 'spec/features/holds_spec.rb'
+    - 'spec/features/checkouts_spec.rb'
 
 RSpec/MultipleExpectations:
   Exclude:
