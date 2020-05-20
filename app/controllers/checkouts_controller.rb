@@ -34,14 +34,6 @@ class CheckoutsController < ApplicationController
 
   private
 
-    def checkouts
-      patron.checkouts.sort_by(&:due_date)
-    end
-
-    def item_details
-      { circRecordList: true }
-    end
-
     def checkouts_to_renew
       patron.checkouts.select { |checkout| renew_params.include? checkout.item_key }
     end

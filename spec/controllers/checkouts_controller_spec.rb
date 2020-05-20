@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutsController do
-  let(:mock_patron) { instance_double(Patron) }
+  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -41,22 +41,22 @@ RSpec.describe CheckoutsController do
       allow(mock_patron).to receive(:checkouts).and_return(checkouts)
     end
 
-    it 'sends the right item details to the web service' do
-      item_details = controller.send(:item_details)
+    describe '#index' do
+      before do
+        allow(ViewCheckoutsJob).to receive(:perform_later)
+      end
 
-      expect(item_details).to eq circRecordList: true
-    end
+      it 'sends a job to ViewCheckoutsJob' do
+        get :index
 
-    it 'renders the index template' do
-      get(:index)
+        expect(ViewCheckoutsJob).to have_received(:perform_later)
+      end
 
-      expect(response).to render_template 'index'
-    end
+      it 'renders the index template' do
+        get :index
 
-    it 'assigns a list of checkouts' do
-      get(:index)
-
-      expect(assigns(:checkouts)).to eq checkouts
+        expect(response).to render_template 'index'
+      end
     end
 
     describe '#batch_update' do
