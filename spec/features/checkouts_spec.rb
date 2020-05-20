@@ -7,7 +7,7 @@ RSpec.describe 'Checkouts', type: :feature do
   let(:mock_user) { 'patron2' }
 
   before do
-    login_as username: 'PATRON2', patron_key: mock_user # , session_token: '1234'
+    login_as username: 'PATRON2', patron_key: mock_user
   end
 
   after do
