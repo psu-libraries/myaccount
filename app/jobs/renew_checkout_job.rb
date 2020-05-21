@@ -38,7 +38,7 @@ class RenewCheckoutJob < ApplicationJob
         status: checkout.status_human
       }.to_json)
     else
-      Sidekiq.logger.error("renewal_#{item_key}: #{renewal_error_message(response)}")
+      Sidekiq.logger.error("renewal_#{item_key}: #{response}")
 
       Redis.current.set("renewal_#{item_key}", {
         item_key: item_key,
