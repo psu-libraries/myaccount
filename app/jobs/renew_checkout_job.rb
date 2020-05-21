@@ -25,11 +25,16 @@ class RenewCheckoutJob < ApplicationJob
     when 200
       checkout = Checkout.new(JSON.parse(response.body)&.dig('circRecord'))
 
+      due_date = ApplicationController.renderer.render(
+        partial: 'checkouts/due_date',
+        locals: { checkout: checkout }
+      )
+
       Redis.current.set("renewal_#{item_key}", {
         item_key: item_key,
         result: :success,
         renewal_count: checkout.renewal_count,
-        due_date: checkout.due_date_human,
+        due_date: due_date,
         status: checkout.status_human
       }.to_json)
     else
