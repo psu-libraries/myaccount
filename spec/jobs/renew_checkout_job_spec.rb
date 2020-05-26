@@ -29,8 +29,7 @@ RSpec.describe RenewCheckoutJob, type: :job do
         results = Redis.current.get 'renewal_1'
 
         expect(results).to eq '{"item_key":1,"result":"success","renewal_count":70,"due_date":'\
-                                      '"\u003ctd class=\"due_date\"\u003e\n  August 13, 2020\n\u003c/td\u003e\n",'\
-                                      '"status":null}'
+                                      '"August 13, 2020","status":null}'
       end
     end
 

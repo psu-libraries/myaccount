@@ -1,3 +1,1 @@
-<td class="due_date">
-  <%= "Recalled<br>#{checkout.recall_due_date_human}<br>" if checkout.recalled? %><%= checkout.due_date_human %>
-</td>
+<%= "Recalled<br>#{checkout.recall_due_date_human}<br>" if checkout.recalled? %><%= checkout.due_date_human -%>

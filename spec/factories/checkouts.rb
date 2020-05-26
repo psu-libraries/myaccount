@@ -80,7 +80,7 @@ FactoryBot.define do
           'renewalDate' => '2019-11-07T04:27:00-05:00',
           'estimatedOverdueAmount' => {
             'currencyCode' => 'USD',
-            'amount' => '0.00'
+            'amount' => '10.00'
           },
           'seenRenewalsRemaining' => 6,
           'library' => {
