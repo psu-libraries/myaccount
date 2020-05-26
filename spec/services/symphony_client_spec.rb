@@ -183,59 +183,47 @@ RSpec.describe SymphonyClient do
     end
   end
 
-  describe '#renew_items' do
+  describe '#renew' do
     before do
       stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
-        .with(body: { item: { resource: 'item', key: '123' } })
-        .to_return(status: 200)
+        .with(query: hash_including(includeFields: 'circRecord{*}'),
+              body: { item: { resource: 'item', key: '123' } })
+        .to_return(status: 200, body: { key: 'checkout_key' }.to_json)
       stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
-        .with(body: { item: { resource: 'item', key: 'invalid' } })
+        .with(query: hash_including(includeFields: 'circRecord{*}'),
+              body: { item: { resource: 'item', key: '456' } })
         .to_return(status: 400, body: error_prompt)
-      stub_request(:post, "#{Settings.symws.url}/circulation/circRecord/renew")
-        .with(body: { item: { resource: 'item', key: 'invalid_custom' } })
-        .to_return(status: 400, body: error_prompt_custom)
-    end
-
-    let(:checkouts) do
-      [
-        instance_double(Checkout, resource: 'item', item_key: '123', title: 'A'),
-        instance_double(Checkout, resource: 'item', item_key: 'invalid', title: 'B'),
-        instance_double(Checkout, resource: 'item', item_key: 'invalid_custom', title: 'C')
-      ]
     end
 
     let(:error_prompt) do
-      { messageList: [{ code: 'some_other_code', message: 'Item has holds' }] }.to_json
+      { messageList: [{ code: 'some_other_code', message: 'Some error message' }] }.to_json
     end
 
-    let(:error_prompt_custom) do
-      { messageList: [{ code: 'hatErrorResponse.252', message: 'Item has holds' }] }.to_json
+    context 'when the web service responds with a 200' do
+      let(:renew_response) { client.renew(resource: 'item',
+                                          item_key: '123',
+                                          session_token: user.session_token) }
+
+      it 'successfully renews the item' do
+        expect(renew_response.status).to eq 200
+      end
+
+      it 'successfully returns the checkout info' do
+        expect(JSON.parse(renew_response.body)).to include 'key' => 'checkout_key'
+      end
     end
 
-    it 'returns all responses for individual renewal requests in symphony regardless of success or error' do
-      renew_response = client.renew_items(user, [checkouts.first, checkouts.second])
-      fail_response = { renewal: checkouts.second, sirsi_response: 'Item has holds' }
-      success_response = { renewal: checkouts.first, sirsi_response: nil }
+    context 'when the web service does not responds with a 200' do
+      let(:renew_response) { client.renew(resource: 'item',
+                                          item_key: '456',
+                                          session_token: user.session_token) }
 
-      expect(renew_response).to eq error: [fail_response],
-                                   success: [success_response]
-    end
+      it 'fails to renew the item' do
+        expect(renew_response.status).to eq 400
+      end
 
-    it 'returns customized error messages' do
-      renew_response = client.renew_items(user, [checkouts.last])
-      error_response = { renewal: checkouts.last, sirsi_response: 'Item has holds, cannot be renewed.' }
-
-      expect(renew_response).to include error: [error_response]
-    end
-
-    context 'when error message in the response does not include expected fields' do
-      let(:error_prompt_custom) { 'Item has holds' }.to_json
-
-      it 'returns empty error message' do
-        renew_response = client.renew_items(user, [checkouts.last])
-        error_response = { renewal: checkouts.last, sirsi_response: '' }
-
-        expect(renew_response).to include error: [error_response]
+      it 'returns an error message' do
+        expect(JSON.parse(renew_response.body)['messageList'].first).to include 'message' => 'Some error message'
       end
     end
   end

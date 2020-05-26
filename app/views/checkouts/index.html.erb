@@ -1,20 +1,7 @@
 <h1>Checkouts/Renewals</h1>
 
-<% if @checkouts.length.positive? %>
-    <p>
-      <div class="ml-4">Total Checked Out: <%= @checkouts.length %></div>
-
-      <% count = @checkouts.select(&:recalled?).length %>
-      <% if count.positive? %>
-          <div class="ml-4">Recalled: <%= count %></div>
-      <% end %>
-
-      <% count = @checkouts.select(&:overdue?).length %>
-      <% if count.positive? %>
-          <div class="ml-4">Overdue: <%= count %></div>
-      <% end %>
-    </p>
-    <%= render 'checkouts/checkouts_table' %>
-<% else %>
-    <p>You have no checkouts at this time.</p>
-<% end %>
+<div class="load-checkouts" data-patron-key="<%= @patron_key %>">
+  <p class="m-5 text-center"><span class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </span> Loading, please wait...</p>
+</div>

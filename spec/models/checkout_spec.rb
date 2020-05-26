@@ -26,12 +26,8 @@ RSpec.describe Checkout, type: :model do
       expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
 
-    it 'has no recalled date' do
-      expect(checkout.recalled_date).to be_nil
-    end
-
     it 'has no recall due date' do
-      expect(checkout.recall_due_date).to be_nil
+      expect(checkout.recall_due_date_human).to be_nil
     end
 
     it 'is not recalled' do
@@ -50,12 +46,8 @@ RSpec.describe Checkout, type: :model do
       expect(checkout.due_date.strftime('%m/%d/%Y')).to eq '12/19/2019'
     end
 
-    it 'has a recalled date' do
-      expect(checkout.recalled_date.strftime('%m/%d/%Y')).to eq '11/10/2019'
-    end
-
     it 'has a recall due date' do
-      expect(checkout.recall_due_date.strftime('%m/%d/%Y')).to eq '11/20/2019'
+      expect(checkout.recall_due_date_human).to eq 'November 20, 2019'
     end
 
     it 'is recalled' do
@@ -131,6 +123,77 @@ RSpec.describe Checkout, type: :model do
     it 'is shadowed' do
       checkout.record['fields']['item']['fields']['bib']['fields']['shadowed'] = true
       expect(checkout).to be_shadowed
+    end
+  end
+
+  describe '#status_human' do
+    context 'when an item is claims returned' do
+      it 'returns the right status_human' do
+        checkout.record['fields']['overdue'] = true
+        checkout.record['fields']['claimsReturnedDate'] = '2019-12-01'
+        expect(checkout.status_human).to eq 'Claims Returned'
+      end
+    end
+
+    context 'when an item is overdue' do
+      it 'returns "Overdue"' do
+        checkout.record['fields']['overdue'] = true
+        expect(checkout.status_human).to eq 'Overdue'
+      end
+    end
+
+    context 'when an item is not overdue' do
+      it 'is nil' do
+        checkout.record['fields']['overdue'] = false
+        expect(checkout.status_human).to be_nil
+      end
+    end
+  end
+
+  describe '#due_date_human' do
+    before do
+      checkout.record['fields']['dueDate'] = '2019-11-10T23:59:00-05:00'
+    end
+
+    context 'when due date time is 11:59pm' do
+      it 'does not include the time' do
+        expect(checkout.due_date_human).to eq('November 10, 2019')
+      end
+    end
+
+    context 'when due date time is not 11:59pm' do
+      it 'includes the time' do
+        checkout.record['fields']['dueDate'] = '2019-11-10T22:30:00-05:00'
+        expect(checkout.due_date_human).to eq('November 10, 2019 10:30pm')
+      end
+    end
+  end
+
+  describe '#recall_due_date_human' do
+    before do
+      checkout.record['fields']['recalledDate'] = '2019-11-09'
+      checkout.record['fields']['recallDueDate'] = '2019-11-09T23:59:00-05:00'
+    end
+
+    context 'when due date time is 11:59pm' do
+      it 'does not include the time' do
+        expect(checkout.recall_due_date_human).to eq('November 9, 2019')
+      end
+    end
+
+    context 'when due date time is not 11:59pm' do
+      it 'includes the time' do
+        checkout.record['fields']['recallDueDate'] = '2019-11-09T22:30:00-05:00'
+        expect(checkout.recall_due_date_human).to eq('November  9, 2019 10:30pm')
+      end
+    end
+
+    context 'when an item is not recalled' do
+      it 'is nil' do
+        checkout.record['fields']['recalledDate'] = ''
+        checkout.record['fields']['recallDueDate'] = ''
+        expect(checkout.recall_due_date_human).to be_nil
+      end
     end
   end
 end

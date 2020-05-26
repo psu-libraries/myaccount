@@ -18,16 +18,22 @@ class Checkout
     fields['status']
   end
 
+  def status_human
+    return unless overdue?
+
+    claims_returned? ? 'Claims Returned' : 'Overdue'
+  end
+
   def due_date
     fields['dueDate'] && Time.zone.parse(fields['dueDate'])
   end
 
-  def recall_due_date
-    fields['recallDueDate'] && Time.zone.parse(fields['recallDueDate'])
+  def due_date_human
+    format_due_date due_date
   end
 
-  def recalled_date
-    Time.zone.parse(fields['recalledDate']) if fields['recalledDate']
+  def recall_due_date_human
+    format_due_date recall_due_date
   end
 
   def recalled?
@@ -56,7 +62,23 @@ class Checkout
       record['fields']
     end
 
+    def recalled_date
+      fields['recalledDate'] && Time.zone.parse(fields['recalledDate'])
+    end
+
+    def recall_due_date
+      fields['recallDueDate'] && Time.zone.parse(fields['recallDueDate'])
+    end
+
     def claims_returned_date
-      Time.zone.parse(fields['claimsReturnedDate']) if fields['claimsReturnedDate']
+      fields['claimsReturnedDate'] && Time.zone.parse(fields['claimsReturnedDate'])
+    end
+
+    def format_due_date(date)
+      return unless date
+
+      return I18n.l(date, format: :long) unless I18n.l(date, format: :time_only) == '11:59pm'
+
+      I18n.l(date, format: :short)
     end
 end

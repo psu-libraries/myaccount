@@ -8,14 +8,15 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   resources :summaries, :fines, :checkouts, only: [:index]
-  resources :renewals, only: [:create]
   resources :holds, only: [:index, :new, :create]
   resources :redis_jobs, only: [:show, :destroy]
   patch '/holds/batch', to: 'holds#batch_update', as: :holds_batch_update
   delete '/holds/batch', to: 'holds#batch_destroy', as: :holds_batch_destroy
+  patch '/checkouts/batch', to: 'checkouts#batch_update', as: :renewals_batch_update
 
   get 'holds/all', to: 'holds#all', as: :holds_all
   get 'holds/result', to: 'holds#result', as: :result
+  get 'checkouts/all', to: 'checkouts#all', as: :checkouts_all
   get '/logout', to: 'sessions#destroy', as: :logout
 
   # error pages

@@ -14,6 +14,7 @@ import 'bootstrap/dist/js/bootstrap'
 import './styles'
 
 // Application javascript
+import checkouts from "../view_checkouts"
 import holds from "../view_holds"
 import selectAll from "../select_all";
 
@@ -24,6 +25,7 @@ require("@rails/activestorage").start();
 document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
     holds();
+    checkouts();
 });
 
 

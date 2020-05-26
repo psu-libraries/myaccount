@@ -29,6 +29,10 @@ class FakeSymphony < Sinatra::Base
     {}.to_json
   end
 
+  post '/symwsbc/circulation/circRecord/renew' do
+    json_response 200, 'other/renewal.json'
+  end
+
   private
 
     def json_response(response_code, file_name)

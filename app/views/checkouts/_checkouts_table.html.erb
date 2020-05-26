@@ -1,10 +1,10 @@
-<%= form_tag renewals_path, method: :post do %>
+<%= form_with url: renewals_batch_update_path, method: :patch, id: 'checkouts' do %>
     <table class="table">
       <caption>Checkouts</caption>
       <thead>
       <tr>
         <th scope="col">
-          <%= render_renew_button %><br>
+          <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %><br>
           <%= render SelectAllComponent, target_keyword: 'renewal' %>
         </th>
         <th scope="col">Item</th>
@@ -16,23 +16,23 @@
       </thead>
       <tfoot>
       <tr>
-        <th scope="col" colspan="7"><%= render_renew_button %></th>
+        <th scope="col" colspan="6">
+          <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %></th>
       </tr>
       </tfoot>
       <tbody>
-      <% @checkouts.each do |checkout| %>
-          <tr>
+      <% checkouts.each do |checkout| %>
+          <tr id="checkout<%= checkout.item_key %>">
             <td>
               <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>
             </td>
             <td>
               <%= render BibItemComponent, bibitem: checkout %>
             </td>
-            <td><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
-            <td><%= render_checkout_due_date checkout %></td>
-            <td><%= render_checkout_status checkout %></td>
-            <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %>
-            </td>
+            <td class="renewal_count"><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
+            <td class="due_date"><%= render partial: 'checkouts/due_date', locals: { checkout: checkout } %></td>
+            <td class="status"><%= checkout.status_human %></td>
+            <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %></td>
           </tr>
       <% end %>
       </tbody>

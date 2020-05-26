@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutsController do
-  let(:mock_patron) { instance_double(Patron) }
+  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -19,14 +19,21 @@ RSpec.describe CheckoutsController do
     let(:user) do
       { username: 'zzz123',
         name: 'Zeke',
-        patron_key: '1234567' }
+        patron_key: '1234567',
+        session_token: 'e0b5e1a3e86a399112b9eb893daeacfd' }
     end
+
+    let(:mock_patron) { instance_double(Patron, checkouts: checkouts) }
+
+    let(:checkouts) { [
+      instance_double(Checkout, item_key: '123', resource: 'item', bib_summary: 'Renewal 1 (ABC)', due_date: nil),
+      instance_double(Checkout, item_key: '456', resource: 'item', bib_summary: 'Renewal 2 (DEF)', due_date: nil),
+      instance_double(Checkout, item_key: '789', resource: 'item', bib_summary: 'Renewal 3 (GHI)', due_date: nil)
+    ] }
 
     let(:mock_client) do
       instance_double(SymphonyClient, ping?: true)
     end
-
-    let(:checkouts) { [instance_double(Checkout, key: '1', due_date: nil)] }
 
     before do
       warden.set_user(user)
@@ -34,22 +41,48 @@ RSpec.describe CheckoutsController do
       allow(mock_patron).to receive(:checkouts).and_return(checkouts)
     end
 
-    it 'sends the right item details to the web service' do
-      item_details = controller.send(:item_details)
+    describe '#index' do
+      before do
+        allow(ViewCheckoutsJob).to receive(:perform_later)
+      end
 
-      expect(item_details).to eq circRecordList: true
+      it 'sends a job to ViewCheckoutsJob' do
+        get :index
+
+        expect(ViewCheckoutsJob).to have_received(:perform_later)
+      end
+
+      it 'renders the index template' do
+        get :index
+
+        expect(response).to render_template 'index'
+      end
     end
 
-    it 'renders the index template' do
-      get(:index)
+    describe '#batch_update' do
+      before do
+        allow(RenewCheckoutJob).to receive(:perform_later)
+      end
 
-      expect(response).to render_template 'index'
-    end
+      it 'requires list of checkouts to be renewed as params' do
+        patch :batch_update, params: {}
 
-    it 'assigns a list of checkouts' do
-      get(:index)
+        expect(flash[:notice]).to match(/No items were selected/)
+      end
 
-      expect(assigns(:checkouts)).to eq checkouts
+      it 'sends a job to RenewalJob' do
+        patch :batch_update, params: { renewal_list: ['123', '456'] }
+
+        expect(RenewCheckoutJob).to have_received(:perform_later).twice
+      end
+
+      context 'when the requested item is not checked out to the patron' do
+        it 'does not renew the item and sets flash messages' do
+          post :batch_update, params: { renewal_list: ['some_made_up_checkout'] }
+
+          expect(flash[:error]).to match('An unexpected error has occurred')
+        end
+      end
     end
   end
 end
