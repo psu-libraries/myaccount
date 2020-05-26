@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ITEM_LOOKUP_RAW_JSON = {
   "resource": '/catalog/item',
   "key": '476022:229:1',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 HOLDABLE_LOCATIONS_RAW_JSON = [{
   "resource": '/policy/location',
   "key": 'ARCHIVE-MP',
