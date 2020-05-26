@@ -189,7 +189,7 @@ RSpec.describe Checkout, type: :model do
     end
 
     context 'when an item is not recalled' do
-      it 'returns an empty recall due date' do
+      it 'is nil' do
         checkout.record['fields']['recalledDate'] = ''
         checkout.record['fields']['recallDueDate'] = ''
         expect(checkout.recall_due_date_human).to be_nil
