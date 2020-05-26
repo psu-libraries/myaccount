@@ -136,7 +136,7 @@ RSpec.describe Checkout, type: :model do
     end
 
     context 'when an item is overdue' do
-      it 'returns the right status_human' do
+      it 'returns "Overdue"' do
         checkout.record['fields']['overdue'] = true
         expect(checkout.status_human).to eq 'Overdue'
       end
