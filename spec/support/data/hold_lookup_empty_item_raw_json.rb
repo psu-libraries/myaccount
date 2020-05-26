@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 HOLD_LOOKUP_NIL_ITEM_RAW_JSON = {
   "resource": '/circulation/holdRecord',
   "key": 'a_hold_key',
