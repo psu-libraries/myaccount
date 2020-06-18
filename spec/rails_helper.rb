@@ -22,7 +22,7 @@ require 'capybara/rspec'
 require 'webmock/rspec'
 require 'action_view/component/test_helpers'
 ## Below picks up our mock objects as well as factory_bot config
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(

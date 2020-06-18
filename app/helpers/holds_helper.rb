@@ -16,7 +16,7 @@ module HoldsHelper
   def render_status(hold)
     case hold.status_code
     when 'SUSPENDED'
-      pretext = content_tag 'em', 'Suspended from'
+      pretext = tag.em 'Suspended from'
       unless hold.suspend_end_date.nil?
         return pretext + ": #{l(hold.suspend_begin_date, format: :short)} - #{l(hold.suspend_end_date, format: :short)}"
       end

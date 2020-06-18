@@ -23,7 +23,7 @@ class ViewCheckoutsJob < ApplicationJob
         result: :success,
         html: html
       }.to_json)
-      return
+      nil
     end
   end
 
