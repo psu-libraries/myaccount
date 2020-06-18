@@ -16,7 +16,7 @@ class DashboardItemComponent < ActionView::Component::Base
       tag.li "#{item[:count]}  #{item[:label]}"
     end.join
 
-    tag.ul facts, nil, false
+    tag.ul facts, escape_attributes: false
   end
 
   def total
