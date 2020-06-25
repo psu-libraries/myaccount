@@ -11,7 +11,7 @@ let validatePickupByDateChange = function (data) {
 };
 
 const updatePickupByDate = function (data) {
-    document.querySelector(`#hold${data.hold_id} .pickup_by`).innerHTML = data.new_value_formatted;
+    document.querySelector(`#hold${data.id} .pickup_by`).innerHTML = data.new_value_formatted;
 };
 
 // This is the public function

@@ -19,7 +19,7 @@ class CancelHoldJob < ApplicationJob
       error_message = error_message_raw&.dig('messageList')&.first&.dig('message') || 'Something went wrong'
       Sidekiq.logger.error("cancel_hold_#{hold_key}: #{error_message}")
       Redis.current.set("cancel_hold_#{hold_key}", {
-        hold_id: hold_key,
+        id: hold_key,
         result: :failure,
         response: error_message
       }.to_json)

@@ -2,9 +2,9 @@ import { allChecked, findForm, responseFromRails, spinner } from './shared'
 import { renderData } from './polling'
 
 const updateCheckout = function (data) {
-    document.querySelector(`[id="checkout${data.item_key}"] .renewal_count`).innerHTML = data.renewal_count;
-    document.querySelector(`[id="checkout${data.item_key}"] .due_date`).innerHTML = data.due_date;
-    document.querySelector(`[id="checkout${data.item_key}"] .status`).innerHTML = data.status;
+    document.querySelector(`[id="checkout${data.id}"] .renewal_count`).innerHTML = data.renewal_count;
+    document.querySelector(`[id="checkout${data.id}"] .due_date`).innerHTML = data.due_date;
+    document.querySelector(`[id="checkout${data.id}"] .status`).innerHTML = data.status;
 };
 
 // This is the public method

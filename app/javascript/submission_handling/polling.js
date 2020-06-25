@@ -2,23 +2,11 @@ import 'jquery' // Only needed for reportError
 import 'bootstrap' // Only needed for reportError
 
 export const reportError = async function (error, arg) {
-    document.querySelector(`#hold${arg} .pickup_at`).innerHTML = '<p class="text-danger"><strong>ERROR</strong></p>';
-    const item = document.querySelector(`#hold${arg} a`).text;
-    const toast =
-        `<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
-          <div class="toast-header bg-danger text-white">
-            <strong class="mr-auto">Error</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="toast-body">
-            <p>Something went wrong and "${item}", pickup location was not updated. Contact your campus library if you need assistance.</p>
-          </div>
-        </div>`;
-    await document.querySelector('.toast-insertion-point').insertAdjacentHTML("beforeend", toast);
-
-    $('.toast').toast('show');
+    const regex = /id\=\"([^\"]*)/gm;
+    let id_results = regex.exec(error);
+    const capture_group = 1;
+    await document.querySelector('.toast-insertion-point').insertAdjacentHTML("beforeend", error);
+    $(`#${id_results[capture_group]}`).toast('show');
 };
 
 export const getJobInfo = async (jobId) => {
@@ -42,6 +30,10 @@ const validateResult = (data, otherRule) => {
     return false;
 };
 
+const checkError = (data) => {
+    return data.result === 'failure';
+};
+
 const pollFetch = function(arg, otherRule = null) {
     const maxWaitTime = 60000;
     const pollInterval = 1000;
@@ -51,6 +43,8 @@ const pollFetch = function(arg, otherRule = null) {
         getJobInfo(arg).then((data) => {
             if (validateResult(data, otherRule)) {
                 resolve(data);
+            } else if (checkError(data)) {
+                resolve(data);
             } else if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, pollInterval, resolve, reject);
             } else {
@@ -59,7 +53,7 @@ const pollFetch = function(arg, otherRule = null) {
         }).
         catch((error) => {
             // This would be a network error
-            reportError(error);
+            console.log(error);
         });
     };
 
@@ -72,11 +66,15 @@ const deleteData = function (jobId) {
 
 export const renderData = (target, resultCallback, otherRule = null) => {
     pollFetch(target, otherRule).then((result) => {
+        if (checkError(result)) {
+            reportError(result.response, result.id);
+        }
+
         resultCallback(result);
         deleteData(target);
     }).
     catch((error) => {
-        // This would be a network error
-        reportError(error);
+        // The max wait time was reached. Web Service is probably down.
+        console.log(error);
     });
 };

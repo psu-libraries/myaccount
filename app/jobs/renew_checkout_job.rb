@@ -31,7 +31,7 @@ class RenewCheckoutJob < ApplicationJob
       )
 
       Redis.current.set("renewal_#{item_key}", {
-        item_key: item_key,
+        id: item_key,
         result: :success,
         renewal_count: checkout.renewal_count,
         due_date: due_date,
@@ -41,9 +41,12 @@ class RenewCheckoutJob < ApplicationJob
       Sidekiq.logger.error("renewal_#{item_key}: #{response}")
 
       Redis.current.set("renewal_#{item_key}", {
-        item_key: item_key,
+        id: item_key,
         result: :failure,
-        error_message: renewal_error_message(response)
+        response: renewal_error_message(response),
+        renewal_count: 'Error',
+        due_date: 'Error',
+        status: 'Error'
       }.to_json)
     end
   end
