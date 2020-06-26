@@ -3,15 +3,6 @@
 class RenewCheckoutJob < ApplicationJob
   queue_as :default
 
-  RENEWAL_CUSTOM_MESSAGELIST = {
-    "hatErrorResponse.141": 'Denied: Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.7703": 'Denied: Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.105": 'Denied: Item has been recalled, cannot be renewed.',
-    "hatErrorResponse.252": 'Denied: Item has holds, cannot be renewed.',
-    "hatErrorResponse.46": 'Denied: Item on reserve, cannot be renewed.',
-    "unhandledException": 'Denied: Item cannot be renewed.'
-  }.with_indifferent_access
-
   def perform(resource:, item_key:, session_token:)
     symphony_client = SymphonyClient.new
 
@@ -38,25 +29,24 @@ class RenewCheckoutJob < ApplicationJob
         status: checkout.status_human
       }.to_json)
     else
-      Sidekiq.logger.error("renewal_#{item_key}: #{response}")
+      processed_error = SirsiResponse::Error.new(error_message_raw: JSON.parse(response.body),
+                                                 symphony_client: symphony_client,
+                                                 symphony_call: :get_item_info,
+                                                 key: item_key,
+                                                 session_token: session_token,
+                                                 bib_type: :hold)
+
+
+      Sidekiq.logger.error("renewal_#{item_key}: #{processed_error.log}")
 
       Redis.current.set("renewal_#{item_key}", {
         id: item_key,
         result: :failure,
-        response: renewal_error_message(response),
+        response: processed_error.html,
         renewal_count: 'Error',
         due_date: 'Error',
         status: 'Error'
       }.to_json)
     end
   end
-
-  private
-
-    def renewal_error_message(response)
-      parsed_messagelist = JSON.parse(response.body)&.dig('messageList')
-
-      RENEWAL_CUSTOM_MESSAGELIST[parsed_messagelist&.first&.dig('code')] ||
-        parsed_messagelist&.first&.dig('message')
-    end
 end
