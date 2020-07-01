@@ -28,27 +28,21 @@ RSpec.describe CancelHoldJob, type: :job do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'cancel_hold_1'
 
-        expect(results).to eq "{\"id\":1,\"result\":\"success\",\"response\":\"\\u003cp class='text-danger'\\u003eCancelled\\u003c/p\\u003e\"}"
+        expect(results).to eq '{"id":1,"result":"success","response":"\\u003cp class=\'text-danger\'\\u003eCancelled\\u003c/p\\u003e"}'
       end
     end
 
     context 'with valid input that is returned not OK from SymphonyClient' do
       before do
-        allow(sc_response).to receive(:status).and_return 500
-        allow(mock_sc_client).to receive(:get_hold_info).and_return()
-        allow(sc_response).to receive(:body).and_return({
-          messageList: [{
-            code: 'some_error_code',
-            message: 'Some error message'
-          }]
-        }.to_json)
+        stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/cancelHold')
+            .to_return(status: 500, body: '{ "messageList": [{ "message": "A bad thing happened" }] }', headers: {})
       end
 
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'cancel_hold_1'
 
-        expect(results).to eq '{"hold_id":1,"result":"failure","response":"Some error message"}'
+        expect(JSON.parse results).to include "id","result","response","display_error"
       end
     end
   end

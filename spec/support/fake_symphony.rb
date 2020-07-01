@@ -19,6 +19,10 @@ class FakeSymphony < Sinatra::Base
     json_response 200, 'other/item_type_map.json'
   end
 
+  get '/symwsbc/circulation/holdRecord/key/1' do
+    json_response 200, 'other/hold.json'
+  end
+
   post '/symwsbc/circulation/holdRecord/changePickupLibrary' do
     content_type :json
     status 200
