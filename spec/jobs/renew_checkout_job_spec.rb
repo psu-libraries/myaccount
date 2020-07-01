@@ -8,15 +8,15 @@ RSpec.describe RenewCheckoutJob, type: :job do
                       resource: '/catalog/item',
                       session_token: '1s2fa21465' } }
 
+    before do
+      stub_request(:any, /example.com/).to_rack(FakeSymphony)
+    end
+
     after do
       Redis.current.flushall
     end
 
     context 'with valid input that is returned OK from SymphonyClient' do
-      before do
-        stub_request(:any, /example.com/).to_rack(FakeSymphony)
-      end
-
       it 'sets a Redis value that marks success' do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'renewal_1'
@@ -28,8 +28,7 @@ RSpec.describe RenewCheckoutJob, type: :job do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'renewal_1'
 
-        expect(results).to eq '{"item_key":1,"result":"success","renewal_count":70,"due_date":'\
-                                      '"August 13, 2020","status":null}'
+        expect(JSON.parse results).to eq({"id"=>1, "result"=>"success", "response"=>{"renewal_count"=>70, "due_date"=>"August 13, 2020", "status"=>nil}})
       end
     end
 
@@ -48,7 +47,7 @@ RSpec.describe RenewCheckoutJob, type: :job do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'renewal_1'
 
-        expect(results).to eq '{"item_key":1,"result":"failure","error_message":"Some error message"}'
+        expect(JSON.parse results).to include "id","result","response","display_error"
       end
     end
   end
