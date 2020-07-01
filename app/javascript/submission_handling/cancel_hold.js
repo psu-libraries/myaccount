@@ -2,7 +2,7 @@ import { allChecked, findForm, responseFromRails, spinner, submitterValue } from
 import { renderData } from './polling'
 
 const updateCancelledHold = function (data) {
-    document.querySelector(`#hold${data.hold_id} .hold_status`).innerHTML = "<p class='text-danger'>Cancelled</p>";
+    document.querySelector(`#hold${data.id} .hold_status`).innerHTML = data.response;
 };
 
 let listenSubmit = (form) => {

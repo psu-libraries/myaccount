@@ -67,14 +67,18 @@ const deleteData = function (jobId) {
 export const renderData = (target, resultCallback, otherRule = null) => {
     pollFetch(target, otherRule).then((result) => {
         if (checkError(result)) {
-            reportError(result.response, result.id);
+            reportError(result.display_error, result.id);
         }
 
         resultCallback(result);
         deleteData(target);
     }).
     catch((error) => {
+        let generic_error = {"id":target, "new_value_formatted": "Error"};
+        resultCallback(generic_error);
+        reportError('There was a network error, please try again later or call your campus library.', target);
         // The max wait time was reached. Web Service is probably down.
         console.log(error);
+        deleteData(target);
     });
 };

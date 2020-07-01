@@ -11,17 +11,24 @@ class CancelHoldJob < ApplicationJob
     case response.status
     when 200
       Redis.current.set("cancel_hold_#{hold_key}", {
-        hold_id: hold_key,
-        result: :success
+        id: hold_key,
+        result: :success,
+        response: '<p class=\'text-danger\'>Cancelled</p>'
       }.to_json)
     else
-      error_message_raw = JSON.parse response.body
-      error_message = error_message_raw&.dig('messageList')&.first&.dig('message') || 'Something went wrong'
-      Sidekiq.logger.error("cancel_hold_#{hold_key}: #{error_message}")
+      processed_error = SirsiResponse::Error.new(error_message_raw: JSON.parse(response.body),
+                                                 symphony_client: symphony_client,
+                                                 key: hold_key,
+                                                 session_token: session_token,
+                                                 bib_type: :hold)
+
+      Sidekiq.logger.error "cancel_hold_#{hold_key}: #{processed_error.log}"
+
       Redis.current.set("cancel_hold_#{hold_key}", {
         id: hold_key,
         result: :failure,
-        response: error_message
+        response: 'Error',
+        display_error: processed_error.html
       }.to_json)
     end
   end

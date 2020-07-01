@@ -24,28 +24,31 @@ class RenewCheckoutJob < ApplicationJob
       Redis.current.set("renewal_#{item_key}", {
         id: item_key,
         result: :success,
-        renewal_count: checkout.renewal_count,
-        due_date: due_date,
-        status: checkout.status_human
+        response: {
+          renewal_count: checkout.renewal_count,
+          due_date: due_date,
+          status: checkout.status_human
+        }
       }.to_json)
     else
+
       processed_error = SirsiResponse::Error.new(error_message_raw: JSON.parse(response.body),
                                                  symphony_client: symphony_client,
-                                                 symphony_call: :get_item_info,
                                                  key: item_key,
                                                  session_token: session_token,
-                                                 bib_type: :hold)
-
+                                                 bib_type: :checkout)
 
       Sidekiq.logger.error("renewal_#{item_key}: #{processed_error.log}")
 
       Redis.current.set("renewal_#{item_key}", {
         id: item_key,
         result: :failure,
-        response: processed_error.html,
-        renewal_count: 'Error',
-        due_date: 'Error',
-        status: 'Error'
+        response: {
+          renewal_count: 'Error',
+          due_date: 'Error',
+          status: 'Error'
+        },
+        display_error: processed_error.html
       }.to_json)
     end
   end

@@ -7,11 +7,11 @@ let pickupByDateInput = () => document.querySelector('#pickup_by_date');
 // is already present in Redis. In this edge case what will happen is that the Redis value
 // will eventually get updated to the "correct" new value.
 let validatePickupByDateChange = function (data) {
-    return data.new_value === pickupByDateInput().value
+    return data.response.new_value === pickupByDateInput().value
 };
 
 const updatePickupByDate = function (data) {
-    document.querySelector(`#hold${data.id} .pickup_by`).innerHTML = data.new_value_formatted;
+    document.querySelector(`#hold${data.id} .pickup_by`).innerHTML = data.response.new_value_formatted;
 };
 
 // This is the public function

@@ -5,11 +5,11 @@ const defaultSelectIndex = 0;
 let pickupChangeSelect = () => document.querySelector('[data="pickup-location"]');
 
 let validatePickupChange = function (data) {
-    return data.new_value_id === pickupChangeSelect().value;
+    return data.response.new_value_id === pickupChangeSelect().value;
 };
 
 const updatePickupChange = function (data) {
-    document.querySelector(`#hold${data.hold_id} .pickup_at`).innerHTML = data.new_value;
+    document.querySelector(`#hold${data.id} .pickup_at`).innerHTML = data.response.new_value;
 };
 
 // This is the public function
