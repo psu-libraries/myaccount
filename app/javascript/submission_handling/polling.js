@@ -1,12 +1,12 @@
-import 'jquery' // Only needed for reportError
-import 'bootstrap' // Only needed for reportError
+// jquery and bootrsap are only needed for reportError
+import 'jquery'
+import 'bootstrap'
 
-export const reportError = async function (error, arg) {
-    const regex = /id\=\"([^\"]*)/gm;
-    let id_results = regex.exec(error);
-    const capture_group = 1;
+export const reportError = async function (error) {
+    const regex = /id="(?<id>[^"]*)/gm;
+    let idResults = regex.exec(error);
     await document.querySelector('.toast-insertion-point').insertAdjacentHTML("beforeend", error);
-    $(`#${id_results[capture_group]}`).toast('show');
+    $(`#${idResults.groups.id}`).toast('show');
 };
 
 export const getJobInfo = async (jobId) => {
@@ -30,9 +30,7 @@ const validateResult = (data, otherRule) => {
     return false;
 };
 
-const checkError = (data) => {
-    return data.result === 'failure';
-};
+const checkError = (data) => data.result === 'failure';
 
 const pollFetch = function(arg, otherRule = null) {
     const maxWaitTime = 60000;
@@ -53,7 +51,9 @@ const pollFetch = function(arg, otherRule = null) {
         }).
         catch((error) => {
             // This would be a network error
-            console.log(error);
+            // @todo: create a logging service
+            // eslint-disable-next-line no-console
+            console.error(error);
         });
     };
 
@@ -74,11 +74,14 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         deleteData(target);
     }).
     catch((error) => {
-        let generic_error = {"id":target, "new_value_formatted": "Error"};
-        resultCallback(generic_error);
+        let genericError = { "new_value_formatted": "Error",
+                             "id": target };
+        resultCallback(genericError);
         reportError('There was a network error, please try again later or call your campus library.', target);
         // The max wait time was reached. Web Service is probably down.
-        console.log(error);
+        // @todo: create a logging service
+        // eslint-disable-next-line no-console
+        console.error(error);
         deleteData(target);
     });
 };
