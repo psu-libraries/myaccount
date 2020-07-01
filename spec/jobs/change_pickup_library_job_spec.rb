@@ -42,14 +42,14 @@ RSpec.describe ChangePickupLibraryJob, type: :job do
     context 'with valid input that is returned not OK from SymphonyClient' do
       before do
         stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
-            .to_return(status: 500, body: '{ "messageList": [{ "message": "A bad thing happened" }] }', headers: {})
+          .to_return(status: 500, body: '{ "messageList": [{ "message": "A bad thing happened" }] }', headers: {})
       end
 
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'pickup_library_1'
 
-        expect(JSON.parse results).to include "id","result","response","display_error"
+        expect(JSON.parse(results)).to include 'id', 'result', 'response', 'display_error'
       end
     end
   end
