@@ -399,7 +399,7 @@ RSpec.describe SymphonyClient do
     let(:include_fields) { '*,bib{shadowed,title,author},call{*}' }
 
     it 'returns the resource item record' do
-      item_response = client.get_item_info(barcode, user.session_token)
+      item_response = client.get_item_info(barcode, user.session_token, nil)
 
       expect(JSON.parse(item_response)).to include 'resource' => '/catalog/item'
     end
