@@ -5,6 +5,7 @@ inherit_from:
   - .rubocop_todo.yml
 
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.6.5
   Exclude:
     - 'bin/**/*'
@@ -18,7 +19,7 @@ Metrics/BlockLength:
   Exclude:
   - 'spec/**/*'
 
-Metrics/LineLength:
+Layout/LineLength:
   Exclude:
   - 'spec/factories/bibs.rb'
 

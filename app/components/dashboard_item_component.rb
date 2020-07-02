@@ -13,10 +13,10 @@ class DashboardItemComponent < ActionView::Component::Base
     return nil if @items.nil?
 
     facts = @items.map do |item|
-      content_tag :li, "#{item[:count]}  #{item[:label]}"
+      tag.li "#{item[:count]}  #{item[:label]}"
     end.join
 
-    content_tag :ul, facts, nil, false
+    tag.ul facts, escape_attributes: false
   end
 
   def total
