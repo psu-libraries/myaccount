@@ -67,7 +67,7 @@ const deleteData = function (jobId) {
 export const renderData = (target, resultCallback, otherRule = null) => {
     pollFetch(target, otherRule).then((result) => {
         if (checkError(result)) {
-            reportError(result.display_error, result.id);
+            reportError(result.display_error);
         }
 
         resultCallback(result);
