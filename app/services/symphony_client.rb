@@ -124,7 +124,7 @@ class SymphonyClient
                           }
   end
 
-  def get_item_info(barcode, session_token, key)
+  def get_item_info(barcode = nil, session_token = nil, key = nil)
     request_path_suffix = if barcode.present?
                             "barcode/#{barcode}"
                           elsif key.present?

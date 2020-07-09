@@ -51,25 +51,10 @@ class HoldsController < ApplicationController
   #
   # POST /holds
   def create
-    results = barcodes.each_with_object(success: [], error: []) do |barcode, status|
-      hold_args = { pickup_library: params['pickup_library'], pickup_by_date: params['pickup_by_date'] }
-      response = symphony_client.place_hold(patron,
-                                            current_user.session_token,
-                                            barcode,
-                                            hold_args)
-      case response.status
-      when 200
-        status[:success] << { barcode: barcode,
-                              hold_key: JSON.parse(response.body).dig('holdRecord', 'key') }
-      else
-        Rails.logger.error("Place Hold for #{barcode} by #{patron.barcode}: #{response.body}")
-        status[:error] << { barcode: barcode,
-                            error_message: JSON.parse(response.body).dig('messageList')[0].dig('message') }
-      end
-    end
-
-    session[:place_hold_results] = results
-    session[:place_hold_catkey] = params['catkey']
+    PlaceHoldsJob.perform_later barcodes: barcodes,
+                                session_token: current_user.session_token,
+                                patron_key: current_user.patron_key,
+                                pickup_library: params['pickup_library'], pickup_by_date: params['pickup_by_date']
 
     redirect_to result_path
   end
@@ -78,17 +63,7 @@ class HoldsController < ApplicationController
   #
   # GET /holds/result
   def result
-    return redirect_to holds_path if session[:place_hold_results].blank?
-
-    @place_hold_catkey = session[:place_hold_catkey]
-
-    results_builder = PlaceHoldResults::Builder.new(user_token: current_user.session_token,
-                                                    client: symphony_client,
-                                                    place_hold_results: session[:place_hold_results])
-    @place_hold_results = results_builder.generate
-
-    session.delete(:place_hold_catkey)
-    session.delete(:place_hold_results)
+    render
   end
 
   # Handles form submission for canceling holds in Symphony

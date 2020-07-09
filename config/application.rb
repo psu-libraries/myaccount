@@ -47,10 +47,6 @@ module Myaccount
       manager.default_strategies :library_id
     end
 
-    config.cache_store = :redis_cache_store, { url: Settings.redis.cache.uri }
-    config.action_controller.perform_caching = true
-    config.session_store :cache_store, key: ENV['APP_SESSION_KEY']
-
     config.active_job.queue_adapter = :sidekiq
   end
 end
