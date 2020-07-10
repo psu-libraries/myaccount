@@ -29,9 +29,9 @@
             <td>
               <%= render BibItemComponent, bibitem: checkout %>
             </td>
-            <td class="renewal_count"><%= checkout.renewal_count if checkout.renewal_count.positive? %></td>
-            <td class="due_date"><%= render partial: 'checkouts/due_date', locals: { checkout: checkout } %></td>
-            <td class="status"><%= checkout.status_human %></td>
+            <td class="renewal_count"><span><%= checkout.renewal_count if checkout.renewal_count.positive? %></span></td>
+            <td class="due_date"><span><%= render partial: 'checkouts/due_date', locals: { checkout: checkout } %></span></td>
+            <td class="status"><span><%= checkout.status_human %></span></td>
             <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %></td>
           </tr>
       <% end %>

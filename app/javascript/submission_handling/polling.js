@@ -74,7 +74,7 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         deleteData(target);
     }).
     catch((error) => {
-        let genericError = { "new_value_formatted": "Error",
+        let genericError = { "result": "failure",
                              "id": target };
         resultCallback(genericError);
         reportError('There was a network error, please try again later or call your campus library.');

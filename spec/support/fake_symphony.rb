@@ -46,7 +46,13 @@ class FakeSymphony < Sinatra::Base
   end
 
   post '/symwsbc/circulation/circRecord/renew' do
-    json_response 200, 'other/renewal.json'
+    request.body.rewind
+    key = json_body(request).dig('item', 'key')
+    if key == '3591032:1:1'
+      json_response 500, "other/renewal_#{key}.json"
+    else
+      json_response 200, "other/renewal_#{key}.json"
+    end
   end
 
   private
@@ -55,5 +61,9 @@ class FakeSymphony < Sinatra::Base
       content_type :json
       status response_code
       File.open(File.dirname(__FILE__) + '/data/' + file_name, 'rb').read
+    end
+
+    def json_body(request)
+      JSON.parse request.body.read
     end
 end

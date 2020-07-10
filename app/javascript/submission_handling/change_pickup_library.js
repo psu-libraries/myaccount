@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -9,7 +9,11 @@ let validatePickupChange = function (data) {
 };
 
 const updatePickupChange = function (data) {
-    document.querySelector(`#hold${data.id} .pickup_at`).innerHTML = data.response.new_value;
+    if (data.result === 'failure') {
+        toggleSpin('hold', data.id, 'pickup_at');
+    } else {
+        document.querySelector(`#hold${data.id} .pickup_at`).innerHTML = data.response.new_value;
+    }
 };
 
 // This is the public function
@@ -23,7 +27,7 @@ let changePickupLibrary = function () {
         if (submitterValue(event) === "Update Selected Holds" &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
-                document.querySelector(`#hold${checkbox.value} .pickup_at`).innerHTML = spinner;
+                toggleSpin('hold', checkbox.value, 'pickup_at');
             });
         }
     });

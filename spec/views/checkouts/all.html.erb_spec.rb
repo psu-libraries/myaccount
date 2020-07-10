@@ -36,7 +36,7 @@ RSpec.describe 'checkouts/all.html.erb', type: :view do
     end
 
     it 'displays checkout\'s renewal count' do
-      expect(rendered).to include '<td class="renewal_count">2</td>'
+      expect(rendered).to include '<td class="renewal_count"><span>2</span></td>'
     end
 
     it 'displays checkout\'s estimated overdue amount when item is overdue' do
@@ -44,11 +44,11 @@ RSpec.describe 'checkouts/all.html.erb', type: :view do
     end
 
     it 'displays checkout\'s due date correctly when recalled' do
-      expect(rendered).to include 'Recalled&lt;br&gt;December 20, 2019&lt;br&gt;November 14, 2019'
+      expect(rendered).to match /(Recalled<br>)\s*(December 20, 2019<br>)\s*November 14, 2019/
     end
 
     it 'displays checkout\'s status correctly when overdue' do
-      expect(rendered).to include '<td class="status">Overdue</td>'
+      expect(rendered).to include '<td class="status"><span>Overdue</span></td>'
     end
 
     it 'displays a renew all select' do

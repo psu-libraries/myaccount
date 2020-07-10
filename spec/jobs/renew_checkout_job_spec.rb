@@ -4,10 +4,10 @@ require 'rails_helper'
 
 RSpec.describe RenewCheckoutJob, type: :job do
   describe '#perform_later' do
-    let(:ws_args) { { item_key: 1,
+    let(:ws_args) { { item_key: '2145643:5:1',
                       resource: '/catalog/item',
                       session_token: '1s2fa21465' } }
-    let(:success_hash) { { 'id' => 1,
+    let(:success_hash) { { 'id' => '2145643:5:1',
                            'result' => 'success',
                            'response' => {
                              'renewal_count' => 70,
@@ -26,14 +26,14 @@ RSpec.describe RenewCheckoutJob, type: :job do
     context 'with valid input that is returned OK from SymphonyClient' do
       it 'sets a Redis value that marks success' do
         described_class.perform_now(**ws_args)
-        results = Redis.current.get 'renewal_1'
+        results = Redis.current.get 'renewal_2145643:5:1'
 
         expect(results).to include 'success'
       end
 
       it 'sets a Redis value that contains a translated item key' do
         described_class.perform_now(**ws_args)
-        results = Redis.current.get 'renewal_1'
+        results = Redis.current.get 'renewal_2145643:5:1'
 
         expect(JSON.parse(results)).to eq(success_hash)
       end
@@ -46,15 +46,15 @@ RSpec.describe RenewCheckoutJob, type: :job do
 
       before do
         stub_request(:post, 'https://example.com/symwsbc/circulation/circRecord/renew?includeFields=circRecord%7B*%7D')
-          .with(body: { item: { resource: '/catalog/item', key: 1 } })
+          .with(body: { item: { resource: '/catalog/item', key: '2145643:5:1' } })
           .to_return(status: 400, body: error_prompt, headers: {})
       end
 
       it 'makes a record of the failure' do
         described_class.perform_now(**ws_args)
-        results = Redis.current.get 'renewal_1'
+        results = Redis.current.get 'renewal_2145643:5:1'
 
-        expect(JSON.parse(results)).to include 'id', 'result', 'response', 'display_error'
+        expect(JSON.parse(results)).to include 'id', 'result', 'display_error'
       end
     end
   end

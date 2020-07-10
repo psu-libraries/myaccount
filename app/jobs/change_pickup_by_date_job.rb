@@ -34,10 +34,6 @@ class ChangePickupByDateJob < ApplicationJob
       Redis.current.set("pickup_by_date_#{hold_key}", {
         id: hold_key,
         result: :failure,
-        response: {
-          new_value: 'Error',
-          new_value_formatted: 'Error'
-        },
         display_error: processed_error.html
       }.to_json)
     end

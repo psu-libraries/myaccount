@@ -1,15 +1,19 @@
-import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const updateCancelledHold = function (data) {
-    document.querySelector(`#hold${data.id} .hold_status`).innerHTML = data.response;
+    if (data.result === 'failure') {
+        toggleSpin('hold', data.id, 'hold_status');
+    } else {
+        document.querySelector(`#hold${data.id} .hold_status`).innerHTML = data.response;
+    }
 };
 
 let listenSubmit = (form) => {
     form.addEventListener("submit", function (event) {
         if (submitterValue(event) === "Cancel") {
             allChecked(form).forEach((checkbox) => {
-                document.querySelector(`#hold${checkbox.value} .hold_status`).innerHTML = spinner;
+                toggleSpin('hold', checkbox.value, 'hold_status');
             });
         }
     });

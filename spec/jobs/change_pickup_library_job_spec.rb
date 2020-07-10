@@ -49,7 +49,7 @@ RSpec.describe ChangePickupLibraryJob, type: :job do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'pickup_library_1'
 
-        expect(JSON.parse(results)).to include 'id', 'result', 'response', 'display_error'
+        expect(JSON.parse(results)).to include 'id', 'result', 'display_error'
       end
     end
   end

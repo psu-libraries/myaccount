@@ -27,7 +27,6 @@ class CancelHoldJob < ApplicationJob
       Redis.current.set("cancel_hold_#{hold_key}", {
         id: hold_key,
         result: :failure,
-        response: 'Error',
         display_error: processed_error.html
       }.to_json)
     end

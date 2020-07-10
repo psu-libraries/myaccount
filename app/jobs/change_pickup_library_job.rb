@@ -35,10 +35,6 @@ class ChangePickupLibraryJob < ApplicationJob
       Redis.current.set("pickup_library_#{hold_key}", {
         id: hold_key,
         result: :failure,
-        response: {
-          new_value: 'Error',
-          new_value_id: 'Error'
-        },
         display_error: processed_error.html
       }.to_json)
     end

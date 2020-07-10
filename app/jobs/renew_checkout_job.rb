@@ -43,11 +43,6 @@ class RenewCheckoutJob < ApplicationJob
       Redis.current.set("renewal_#{item_key}", {
         id: item_key,
         result: :failure,
-        response: {
-          renewal_count: 'Error',
-          due_date: 'Error',
-          status: 'Error'
-        },
         display_error: processed_error.html
       }.to_json)
     end
