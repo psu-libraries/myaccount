@@ -26,7 +26,7 @@ RSpec.describe SirsiResponse::Error, type: :service do
       Redis.current.flushall
     end
 
-    context 'when an error for a hold occurs that does not have a translation' do
+    context 'when an error occurs that does not have a translation' do
       it 'returns a generic error response in HTML' do
         expect(error.html).to include '<p>Some error message Contact your campus library if you need assistance.</p>'
       end
