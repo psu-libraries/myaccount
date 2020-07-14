@@ -7,6 +7,14 @@ class FakeSymphony < Sinatra::Base
     json_response 200, "patrons/#{params[:key]}.json"
   end
 
+  get '/symwsbc/catalog/bib/key/:key' do
+    json_response 200, "other/bib_#{params[:key]}.json"
+  end
+
+  get '/symwsbc/policy/location/simpleQuery' do
+    json_response 200, 'other/locations.json'
+  end
+
   get '/symwsbc/policy/itemType/simpleQuery' do
     json_response 200, 'other/item_type_map.json'
   end
