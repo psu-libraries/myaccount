@@ -5,7 +5,7 @@
   <%= render GenericValueWithLabelComponent, label: 'Author', value: @place_hold_form_params[:author] %>
 </p>
 
-<%= form_with url: '/holds', method: :post do %>
+<%= form_with url: '/holds', local: true, method: :post do %>
   <%= render PlaceHoldHiddenInputComponent, barcode: @place_hold_form_params[:barcode] %>
   <%= hidden_field_tag :catkey, params[:catkey] %>
   <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: true } %>
