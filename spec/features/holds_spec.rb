@@ -49,4 +49,11 @@ RSpec.describe 'Holds', type: :feature do
       expect(page).to have_css '#hold3906718 .hold_status', text: 'Cancelled'
     end
   end
+
+  context 'when a patron attempts to create a hold for a monograph', js: true do
+    it 'renders a form for the item being requested' do
+      visit '/holds/new?catkey=6066288'
+      expect(page).to have_text 'Title: 13 bankers : the Wall Street takeover and the next financial meltdown'
+    end
+  end
 end
