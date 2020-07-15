@@ -13,6 +13,28 @@ ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../config/environment', __dir__)
 
+# Monkey patching Warden
+module Warden
+  module Test
+    module Helpers
+      def login_permanently_as(user, opts = {})
+        Warden::Manager.on_request do |proxy|
+          opts[:event] || :authentication
+          proxy.set_user(user, opts)
+        end
+      end
+
+      def inject_into_session(hash)
+        Warden::Manager.on_request do |proxy|
+          hash.each do |key, value|
+            proxy.env['rack.session'][key] = value
+          end
+        end
+      end
+    end
+  end
+end
+
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 
