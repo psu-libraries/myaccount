@@ -1,1 +1,5 @@
-<%= "Recalled<br>#{checkout.recall_due_date_human}<br>" if checkout.recalled? %><%= checkout.due_date_human -%>
+<% if checkout.recalled? %>
+  Recalled<br>
+  <%= checkout.recall_due_date_human %><br>
+<% end %>
+<%= checkout.due_date_human -%>

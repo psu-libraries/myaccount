@@ -25,4 +25,14 @@ RSpec.describe 'Checkouts', type: :feature do
         .and have_css '[id="checkout2145643:5:1"] .status', text: ''
     end
   end
+
+  context 'when patron fails to renew a checkout successfully' do
+    it 'generates an error message (a "toast")', js: true do
+      visit checkouts_path
+      login_as username: 'PATRON2', patron_key: mock_user
+      page.check 'renewal_list__3591032:1:1'
+      page.click_button 'Renew', match: :first
+      expect(page).to have_css('.toast')
+    end
+  end
 end

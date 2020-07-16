@@ -124,8 +124,14 @@ class SymphonyClient
                           }
   end
 
-  def get_item_info(barcode, session_token)
-    authenticated_request "/catalog/item/barcode/#{barcode}",
+  def get_item_info(barcode, session_token, key)
+    request_path_suffix = if barcode.present?
+                            "barcode/#{barcode}"
+                          elsif key.present?
+                            "key/#{key}"
+                          end
+
+    authenticated_request "/catalog/item/#{request_path_suffix}",
                           headers: { 'x-sirs-sessionToken': session_token },
                           params: {
                             includeFields: '*,bib{shadowed,title,author},call{*}'

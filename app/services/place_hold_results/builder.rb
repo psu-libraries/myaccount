@@ -32,7 +32,7 @@ class PlaceHoldResults::Builder
     end
 
     def item_lookup(barcode)
-      parsed_item = SymphonyClientParser::parsed_response(@client, :get_item_info, barcode, @user_token)
+      parsed_item = SymphonyClientParser::parsed_response(@client, :get_item_info, barcode, @user_token, nil)
       Item.new parsed_item
     end
 end

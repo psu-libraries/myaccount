@@ -15,19 +15,26 @@ class ChangePickupByDateJob < ApplicationJob
     case response.status
     when 200
       Redis.current.set("pickup_by_date_#{hold_key}", {
-        hold_id: hold_key,
+        id: hold_key,
         result: :success,
-        new_value: pickup_by_date,
-        new_value_formatted: Date.parse(pickup_by_date).strftime('%B %-d, %Y')
+        response: {
+          new_value: pickup_by_date,
+          new_value_formatted: Date.parse(pickup_by_date).strftime('%B %-d, %Y')
+        }
       }.to_json)
     else
-      error_message_raw = JSON.parse response.body
-      error_message = error_message_raw&.dig('messageList')&.first&.dig('message') || 'Something went wrong'
-      Sidekiq.logger.error("pickup_by_date_#{hold_key}: #{error_message}")
+      processed_error = SirsiResponse::Error.new(error_message_raw: JSON.parse(response.body),
+                                                 symphony_client: symphony_client,
+                                                 key: hold_key,
+                                                 session_token: session_token,
+                                                 bib_type: :hold)
+
+      Sidekiq.logger.error("pickup_by_date_#{hold_key}: #{processed_error.log}")
+
       Redis.current.set("pickup_by_date_#{hold_key}", {
-        hold_id: hold_key,
+        id: hold_key,
         result: :failure,
-        response: error_message
+        display_error: processed_error.html
       }.to_json)
     end
   end

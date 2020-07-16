@@ -1,11 +1,18 @@
-import { allChecked, findForm, responseFromRails, spinner } from './shared'
+import { allChecked, findForm, responseFromRails, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const updateCheckout = function (data) {
-    document.querySelector(`[id="checkout${data.item_key}"] .renewal_count`).innerHTML = data.renewal_count;
-    document.querySelector(`[id="checkout${data.item_key}"] .due_date`).innerHTML = data.due_date;
-    document.querySelector(`[id="checkout${data.item_key}"] .status`).innerHTML = data.status;
+    if (data.result === 'failure') {
+        toggleSpin('checkout', data.id, 'renewal_count');
+        toggleSpin('checkout', data.id, 'due_date');
+        toggleSpin('checkout', data.id, 'status');
+    } else {
+        document.querySelector(`[id="checkout${data.id}"] .renewal_count`).innerHTML = data.response.renewal_count;
+        document.querySelector(`[id="checkout${data.id}"] .due_date`).innerHTML = data.response.due_date;
+        document.querySelector(`[id="checkout${data.id}"] .status`).innerHTML = data.response.status;
+    }
 };
+
 
 // This is the public method
 let renewCheckout = function () {
@@ -16,9 +23,9 @@ let renewCheckout = function () {
 
     findForm('checkouts').addEventListener("submit", function () {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
-                document.querySelector(`[id="checkout${checkbox.value}"] .renewal_count`).innerHTML = spinner;
-                document.querySelector(`[id="checkout${checkbox.value}"] .due_date`).innerHTML = spinner;
-                document.querySelector(`[id="checkout${checkbox.value}"] .status`).innerHTML = spinner;
+                toggleSpin('checkout', checkbox.value, 'renewal_count');
+                toggleSpin('checkout', checkbox.value, 'due_date');
+                toggleSpin('checkout', checkbox.value, 'status');
             });
     });
 

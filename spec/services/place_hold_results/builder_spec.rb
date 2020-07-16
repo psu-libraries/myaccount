@@ -10,7 +10,7 @@ RSpec.describe PlaceHoldResults::Builder do
   let(:user_token) { '2asf' }
   let(:symphony_client) { instance_double(SymphonyClient) }
   let(:hold_info_params) { ['a_hold_key', user_token] }
-  let(:item_info_params) { ['not_holdable_barcode', user_token] }
+  let(:item_info_params) { ['not_holdable_barcode', user_token, nil] }
   # HOLD_LOOKUP_RAW_JSON and ITEM_LOOKUP_RAW_JSON are mocked SymphonyClient responses
   let(:parsed_hold_info) { JSON.parse HOLD_LOOKUP_RAW_JSON.to_json }
   let(:parsed_item_info) { JSON.parse ITEM_LOOKUP_RAW_JSON.to_json }

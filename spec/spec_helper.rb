@@ -99,7 +99,7 @@ RSpec.configure do |config|
   #   Kernel.srand config.seed
 
   # Mock all requests to symphony for feature tests
-  config.before type: :feature do
+  config.before :example, type: Proc.new { :service || :feature } do
     stub_request(:any, /example.com/).to_rack(FakeSymphony)
   end
 end

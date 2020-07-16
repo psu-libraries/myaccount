@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, spinner, submitterValue } from './shared'
+import { allChecked, findForm, responseFromRails, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
@@ -7,11 +7,15 @@ let pickupByDateInput = () => document.querySelector('#pickup_by_date');
 // is already present in Redis. In this edge case what will happen is that the Redis value
 // will eventually get updated to the "correct" new value.
 let validatePickupByDateChange = function (data) {
-    return data.new_value === pickupByDateInput().value
+    return data.response.new_value === pickupByDateInput().value
 };
 
 const updatePickupByDate = function (data) {
-    document.querySelector(`#hold${data.hold_id} .pickup_by`).innerHTML = data.new_value_formatted;
+    if (data.result === 'failure') {
+        toggleSpin('hold', data.id, 'pickup_by');
+    } else {
+        document.querySelector(`#hold${data.id} .pickup_by`).innerHTML = data.response.new_value_formatted;
+    }
 };
 
 // This is the public function
@@ -24,7 +28,7 @@ let changePickupByDate = function () {
     findForm('pending-holds').addEventListener("submit", function (event) {
         if (submitterValue(event) === "Update Selected Holds" && pickupByDateInput().value !== '') {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
-                document.querySelector(`#hold${checkbox.value} .pickup_by`).innerHTML = spinner;
+                toggleSpin('hold', checkbox.value, 'pickup_by');
             });
         }
     });

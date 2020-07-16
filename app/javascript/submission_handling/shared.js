@@ -5,13 +5,13 @@ export let submitterValue = (event) => {
     }
 
     return 'Not defined';
-}
+};
 
 export const findForm = (form) => document.querySelector(`form#${form}`);
 
 export const spinner = `<div class="spinner-border" role="status">
-                   <span class="sr-only">Loading...</span>
-                 </div>`;
+                            <span class="sr-only">Loading...</span>
+                        </div>`;
 
 export let responseFromRails = (event) => {
     // See https://guides.rubyonrails.org/working_with_javascript_in_rails.html#rails-ujs-event-handlers
@@ -21,4 +21,17 @@ export let responseFromRails = (event) => {
     }
 
     return 'Not defined';
+};
+
+export const toggleSpin = function (type, key, className) {
+    const cssPath = `[id="${type}${key}"] .${className}`;
+    document.querySelector(`${cssPath} span`).classList.toggle('invisible');
+    if (document.querySelector(`${cssPath} .spinner-border`)) {
+        document.querySelector(`${cssPath} .spinner-border`).remove();
+    } else {
+        document.querySelector(`${cssPath}`).innerHTML += spinner;
+        if (document.querySelector(`${cssPath} .warning`)) {
+            document.querySelector(`${cssPath} .warning`).remove();
+        }
+    }
 };
