@@ -39,6 +39,14 @@ class FakeSymphony < Sinatra::Base
     {}.to_json
   end
 
+  get '/symwsbc/circulation/holdRecord/key/:key' do
+    json_response 200, "other/hold_lookup_#{params[:key]}.json"
+  end
+
+  post '/symwsbc/circulation/holdRecord/placeHold' do
+    json_response 200, 'other/place_hold.json'
+  end
+
   post '/symwsbc/circulation/holdRecord/cancelHold' do
     content_type :json
     status 200

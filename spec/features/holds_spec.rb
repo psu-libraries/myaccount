@@ -7,7 +7,7 @@ RSpec.describe 'Holds', type: :feature do
   let(:mock_user) { 'patron1' }
 
   before do
-    login_as username: 'PATRON1', patron_key: mock_user
+    login_permanently_as username: 'PATRON1', patron_key: mock_user
   end
 
   after do
@@ -17,7 +17,6 @@ RSpec.describe 'Holds', type: :feature do
   context 'when a patron has some holds not yet ready to pickup (i.e., pending)' do
     it 'lets the user change the pickup library of a hold', js: true do
       visit holds_path
-      login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3911148'
       page.select 'Penn State York', from: 'pickup_library'
       page.click_button 'Update Selected Holds'
@@ -26,7 +25,6 @@ RSpec.describe 'Holds', type: :feature do
 
     it 'lets the user change the pickup by date of a hold', js: true do
       visit holds_path
-      login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3911148'
       page.fill_in 'pickup_by_date', with: '01-01-9999'
       page.click_button 'Update Selected Holds'
@@ -35,7 +33,6 @@ RSpec.describe 'Holds', type: :feature do
 
     it 'lets the user cancel a pending hold', js: true do
       visit holds_path
-      login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3911148'
       page.click_button 'Cancel'
       expect(page).to have_css '#hold3911148 .hold_status', text: 'Cancelled'
@@ -43,7 +40,6 @@ RSpec.describe 'Holds', type: :feature do
 
     it 'lets the user cancel a ready for pickup hold', js: true do
       visit holds_path
-      login_as username: 'PATRON1', patron_key: mock_user
       page.check 'hold_list__3906718'
       page.click_button 'Cancel Selected Holds'
       expect(page).to have_css '#hold3906718 .hold_status', text: 'Cancelled'
@@ -54,6 +50,21 @@ RSpec.describe 'Holds', type: :feature do
     it 'renders a form for the item being requested' do
       visit '/holds/new?catkey=6066288'
       expect(page).to have_text 'Title: 13 bankers : the Wall Street takeover and the next financial meltdown'
+    end
+
+    it 'allows user to place a hold for a holdable item', js: true do
+      inject_into_session place_hold_results: { success: [{
+        barcode: '000080951629',
+        hold_key: '3912343'
+      }], error: [] },
+                          place_hold_catkey: '26474837'
+
+      visit '/holds/new?catkey=6066288'
+      select 'College of Medicine (Hershey)', from: 'pickup_library'
+      fill_in 'pickup_by_date', with: '10-10-2050'
+
+      page.click_button 'Place Hold'
+      expect(page).to have_text 'Hold(s) Placed'
     end
   end
 end
