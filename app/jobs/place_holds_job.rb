@@ -14,17 +14,12 @@ class PlaceHoldsJob < ApplicationJob
       response = symphony_client.place_hold(patron, session_token, barcode, hold_args)
 
       sirsi_response = SirsiResponse.new response
-      if sirsi_response.busy?
-        start = DateTime.now
-        while sirsi_response.busy? && start + 5.seconds > DateTime.now
-          response = symphony_client.place_hold(patron, session_token, barcode, hold_args)
-          sirsi_response = SirsiResponse.new response
-        end
-      end
 
       if response.status == 200
         status[:success] << { barcode: barcode,
                               hold_key: sirsi_response.hold.key }
+        Sidekiq.logger.error "raw response: #{sirsi_response.response_raw}"
+        Sidekiq.logger.error "holdkey #{sirsi_response.hold.key}"
       else
         Sidekiq.logger.error("place_holds_results_#{patron_key} #{barcode}: #{sirsi_response.response_raw}")
         status[:error] << { barcode: barcode,

@@ -3,8 +3,6 @@
 class SirsiResponse
   attr_reader :response_raw, :response_hash
 
-  RECORD_IN_USE = 'The records are currently in use.  Please try again later.'
-
   def initialize(response)
     @response_raw = response.body
     @response_hash = JSON.parse(@response_raw)
@@ -20,10 +18,6 @@ class SirsiResponse
         message: code_and_message&.dig('message')
       }
     end
-  end
-
-  def busy?
-    messages&.first&.dig(:message) == RECORD_IN_USE
   end
 
   def hold

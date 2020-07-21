@@ -77,9 +77,10 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         let genericError = { "result": "failure",
                              "id": target };
         resultCallback(genericError);
-        alert('There was a network error, please try again later or call your campus library.');
         // The max wait time was reached. Web Service is probably down.
         // @todo: create a logging service
+        // eslint-disable-next-line no-alert
+        alert('There was a network error, please try again later or call your campus library.');
         // eslint-disable-next-line no-console
         console.error(error);
         deleteData(target);
