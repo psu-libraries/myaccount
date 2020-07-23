@@ -13,14 +13,17 @@ RSpec.describe SirsiResponse::Error, type: :service do
     let(:error) { subject }
     let(:error_code) { 'Not a real code 1234' }
     let(:error_message) { 'Some error message' }
-    let(:error_response_obj) {
-      { 'messageList' => [{ 'code' => error_code,
-                            'message' => error_message }] }
-    }
+    let(:error_response_obj) { instance_double(HTTP::Response) }
     let(:mock_client) { SymphonyClient.new } # Creates actual object, stubs API responses with Sinatra
     let(:key) { '123457' }
     let(:session_token) { '92929292' }
     let(:bib_type) { 'checkout' }
+
+    before do
+      allow(error_response_obj).to receive(:body).and_return(
+        { 'messageList' => [{ 'code' => error_code, 'message' => error_message }] }.to_json
+      )
+    end
 
     after do
       Redis.current.flushall

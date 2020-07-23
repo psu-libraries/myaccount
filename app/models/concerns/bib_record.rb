@@ -53,7 +53,7 @@ module BibRecord
     end
 
     def bib
-      fields.dig('bib', 'fields') || fields.dig('item', 'fields', 'bib', 'fields') || {}
+      fields&.dig('bib', 'fields') || fields&.dig('item', 'fields', 'bib', 'fields') || {}
     end
 
     def call

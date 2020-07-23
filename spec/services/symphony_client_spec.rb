@@ -374,16 +374,19 @@ RSpec.describe SymphonyClient do
       stub_request(:get, uri)
         .with(query: hash_including(includeFields: include_fields))
         .to_return(status: 200, body: { resource: '/circulation/holdRecord' }.to_json)
+      stub_const 'SymphonyClient::MAX_WAIT_TIME', 0.3
+      stub_const 'SymphonyClient::DELAY', 0.1
     end
 
     let(:hold_key) { 'a_hold_key' }
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
     let(:include_fields) { '*,item{*,bib{shadowed,title,author},call{*}}' }
 
-    it 'returns the resource hold record' do
-      hold_response = client.get_hold_info(hold_key, user.session_token)
-
-      expect(JSON.parse(hold_response)).to include 'resource' => '/circulation/holdRecord'
+    context 'when item level information is missing' do
+      it 'retries' do
+        Sidekiq.logger.should_receive(:error).at_least(5).times
+        client.get_hold_info(hold_key, user.session_token)
+      end
     end
   end
 

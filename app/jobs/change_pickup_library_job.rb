@@ -24,7 +24,7 @@ class ChangePickupLibraryJob < ApplicationJob
         }
       }.to_json)
     else
-      processed_error = SirsiResponse::Error.new(error_message_raw: JSON.parse(response.body),
+      processed_error = SirsiResponse::Error.new(error_message_raw: response,
                                                  symphony_client: symphony_client,
                                                  key: hold_key,
                                                  session_token: session_token,

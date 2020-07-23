@@ -7,17 +7,16 @@ RSpec.describe 'Checkouts', type: :feature do
   let(:mock_user) { 'patron2' }
 
   before do
-    login_as username: 'PATRON2', patron_key: mock_user
+    login_permanently_as username: 'PATRON2', patron_key: mock_user
   end
 
   after do
-    Redis.new.del 'item_type_map'
+    Redis.current.flushall
   end
 
   context 'when patron renews a checkout successfully' do
     it 'updates the renewal count, due date and status', js: true do
       visit checkouts_path
-      login_as username: 'PATRON2', patron_key: mock_user
       page.check 'renewal_list__2145643:5:1'
       page.click_button 'Renew', match: :first
       expect(page).to have_css('[id="checkout2145643:5:1"] .renewal_count', text: '70')
@@ -29,7 +28,6 @@ RSpec.describe 'Checkouts', type: :feature do
   context 'when patron fails to renew a checkout successfully' do
     it 'generates an error message (a "toast")', js: true do
       visit checkouts_path
-      login_as username: 'PATRON2', patron_key: mock_user
       page.check 'renewal_list__3591032:1:1'
       page.click_button 'Renew', match: :first
       expect(page).to have_css('.toast')

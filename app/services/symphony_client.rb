@@ -177,7 +177,7 @@ class SymphonyClient
 
       # Log a terrible event: a request that has hung for too long leaving the user stranded. User will get a "Network
       # Error" message if this occurs.
-      Sidekiq.logger.error('Request timeout reached')
+      Sidekiq.logger.error 'Request timeout reached'
       false
     end
 
@@ -195,7 +195,7 @@ class SymphonyClient
       response = JSON.parse response_raw.body
 
       if Hold.new(response).title.nil?
-        Sidekiq.logger.error 'Hold\'s title missing... trying againp'
+        Sidekiq.logger.error 'Hold\'s title missing... trying again'
         return true
       end
       false

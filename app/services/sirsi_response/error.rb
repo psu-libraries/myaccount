@@ -14,6 +14,7 @@ class SirsiResponse::Error
 
   def initialize(error_message_raw:, symphony_client:, key:, session_token:, bib_type:)
     @sirsi_response = SirsiResponse.new error_message_raw
+    @log = @sirsi_response.response_hash
     display_error = make_human_friendly_response
     parsed_response = wrangle_symphony bib_type, symphony_client, session_token, key
     klass = bib_type.to_s.classify.constantize
@@ -29,8 +30,8 @@ class SirsiResponse::Error
   private
 
     def make_human_friendly_response
-      SIRSI_RESPONSE_TRANSLATIONS[@sirsi_response.message_list.first.code] ||
-        @sirsi_response.message_list.first.message ||
+      SIRSI_RESPONSE_TRANSLATIONS[@sirsi_response.messages.first[:code]] ||
+        @sirsi_response.messages.first[:message] ||
         'Something went wrong'
     end
 

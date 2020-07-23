@@ -5,13 +5,13 @@ class SirsiResponse
 
   def initialize(response)
     @response_raw = response.body
-    @response_hash = JSON.parse(@response_raw)
+    @response_hash = JSON.parse @response_raw
   end
 
   def messages
-    return nil unless @response_hash&.dig('messageList')
+    return nil unless @response_hash&.dig 'messageList'
 
-    message_array = @response_hash&.dig('messageList')
+    message_array = @response_hash&.dig 'messageList'
     message_array.map do |code_and_message|
       {
         code: code_and_message&.dig('code'),
