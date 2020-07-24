@@ -370,22 +370,26 @@ RSpec.describe SymphonyClient do
   end
 
   describe '#get_hold_info' do
+    let(:sidekiq) { class_double(Sidekiq) }
+    let(:hold_key) { 'a_hold_key' }
+    let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
+    let(:include_fields) { '*,item{*,bib{shadowed,title,author},call{*}}' }
+    let(:sidekiq_logger) { instance_double(Sidekiq::Logger) }
+
     before do
       stub_request(:get, uri)
         .with(query: hash_including(includeFields: include_fields))
         .to_return(status: 200, body: { resource: '/circulation/holdRecord' }.to_json)
       stub_const 'SymphonyClient::MAX_WAIT_TIME', 0.3
       stub_const 'SymphonyClient::DELAY', 0.1
+      allow(sidekiq).to receive(:logger).and_return(sidekiq_logger)
+      allow(sidekiq_logger).to receive(:error)
     end
-
-    let(:hold_key) { 'a_hold_key' }
-    let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
-    let(:include_fields) { '*,item{*,bib{shadowed,title,author},call{*}}' }
 
     context 'when item level information is missing' do
       it 'retries' do
-        expect(Sidekiq.logger).to receive(:error).at_least(5).times
         client.get_hold_info(hold_key, user.session_token)
+        expect(sidekiq).to have_received(:error).at_least(5).times
       end
     end
   end

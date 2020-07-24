@@ -32,7 +32,9 @@ module HoldsHelper
     Hash[default_choice, ''].merge(Hold::PICKUP_LOCATION_REQUESTED.invert)
   end
 
-  def default_pickup_by_date
+  def default_pickup_by_date(make_default: false)
+    return '' unless make_default
+
     DateTime.now.+(2.months).strftime('%Y-%m-%d')
   end
 

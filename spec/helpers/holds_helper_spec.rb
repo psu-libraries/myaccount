@@ -112,8 +112,16 @@ RSpec.describe HoldsHelper, type: :helper do
     end
 
     describe '#default_pickup_by_date' do
-      it 'sets the default pickup time to two months from today' do
-        expect(helper.default_pickup_by_date).to eq '2001-04-03'
+      context 'when provided given an argument of make_default is true' do
+        it 'sets the default pickup time to two months from today' do
+          expect(helper.default_pickup_by_date(make_default: true)).to eq '2001-04-03'
+        end
+      end
+
+      context 'when given an argument of make_default is false' do
+        it 'does not set a default value by returning an empty string' do
+          expect(helper.default_pickup_by_date(make_default: false)).to eq ''
+        end
       end
     end
 
