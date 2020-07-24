@@ -25,6 +25,6 @@ class PlaceHoldResults::Builder
     end
 
     def item_lookup(barcode)
-      SirsiResponse.new(@client.get_item_info(barcode, @user_token)).item
+      SirsiResponse.new(@client.get_item_info(session_token: @user_token, barcode: barcode)).item
     end
 end

@@ -37,7 +37,7 @@ class SirsiResponse::Error
 
     def wrangle_symphony(bib_type, symphony_client, session_token, key)
       if bib_type == :checkout
-        return SymphonyClientParser::parsed_response(symphony_client, :get_item_info, nil, session_token, key)
+        return SymphonyClientParser::parsed_response(symphony_client, :get_item_info, session_token: session_token, key: key)
       end
 
       SymphonyClientParser::parsed_response(symphony_client, :get_hold_info, key, session_token)
