@@ -384,7 +384,7 @@ RSpec.describe SymphonyClient do
 
     context 'when item level information is missing' do
       it 'retries' do
-        Sidekiq.logger.should_receive(:error).at_least(5).times
+        expect(Sidekiq.logger).to receive(:error).at_least(5).times
         client.get_hold_info(hold_key, user.session_token)
       end
     end
