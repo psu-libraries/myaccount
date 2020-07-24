@@ -233,14 +233,6 @@ class SymphonyClient
       end
     end
 
-    def hold_info_request
-      authenticated_request "/circulation/holdRecord/key/#{hold_key}",
-                            headers: { 'x-sirs-sessionToken': session_token },
-                            params: {
-                              includeFields: '*,item{*,bib{shadowed,title,author},call{*}}'
-                            }
-    end
-
     def authenticated_request(path, headers: {}, **other)
       response = request(path, headers: headers, **other)
       start = DateTime.now
