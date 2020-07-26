@@ -4,8 +4,6 @@ class RenewCheckoutJob < ApplicationJob
   queue_as :default
 
   def perform(resource:, item_key:, session_token:)
-    symphony_client = SymphonyClient.new
-
     response = symphony_client.renew(
       resource: resource,
       item_key: item_key,

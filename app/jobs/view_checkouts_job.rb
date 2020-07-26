@@ -6,7 +6,6 @@ class ViewCheckoutsJob < ApplicationJob
   queue_as :default
 
   def perform(patron_key:, session_token:)
-    symphony_client = SymphonyClient.new
     response = symphony_client.patron_info(patron_key: patron_key,
                                            session_token: session_token,
                                            item_details: { circRecordList: true })

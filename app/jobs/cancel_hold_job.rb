@@ -4,8 +4,6 @@ class CancelHoldJob < ApplicationJob
   queue_as :default
 
   def perform(hold_key:, session_token:)
-    symphony_client = SymphonyClient.new
-
     response = symphony_client.cancel_hold(hold_key: hold_key, session_token: session_token)
 
     case response.status

@@ -370,7 +370,6 @@ RSpec.describe SymphonyClient do
   end
 
   describe '#get_hold_info' do
-
     let(:hold_key) { 'a_hold_key' }
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
     let(:include_fields) { '*,item{*,bib{shadowed,title,author},call{*}}' }
@@ -382,7 +381,7 @@ RSpec.describe SymphonyClient do
 
       it 'returns the hold info' do
         response = client.get_hold_info('3912343', user.session_token)
-        parsed_response =  JSON.parse response.body
+        parsed_response = JSON.parse response.body
         expect(parsed_response&.dig('fields', 'pickupLibrary')).to be_truthy
       end
     end
@@ -398,7 +397,8 @@ RSpec.describe SymphonyClient do
 
       it 'retries' do
         client.get_hold_info(hold_key, user.session_token)
-        expect { client.get_hold_info(hold_key, user.session_token) }.to output(/title missing/).to_stdout_from_any_process
+        expect { client.get_hold_info(hold_key, user.session_token) }
+          .to output(/title missing/).to_stdout_from_any_process
       end
     end
   end

@@ -4,8 +4,6 @@ class ChangePickupLibraryJob < ApplicationJob
   queue_as :default
 
   def perform(hold_key:, session_token:, pickup_library:)
-    symphony_client = SymphonyClient.new
-
     response = symphony_client.change_pickup_library(
       hold_key: hold_key,
       pickup_library: pickup_library,
