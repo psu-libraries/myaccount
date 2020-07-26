@@ -21,7 +21,7 @@ RSpec.describe PlaceHoldsJob, type: :job do
     end
 
     it 'sets a Redis record containing success denoted by patron\'s key' do
-      described_class.perform_now(ws_args)
+      described_class.perform_now(**ws_args)
       results = Redis.current.get 'place_holds_results_patron1'
 
       expect(results).to be_present
