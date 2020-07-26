@@ -1,59 +1,12 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Internet Explorer use the highest version available -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <title>My Account | Pennsylvania State University Libraries</title>
-
-    <%= stylesheet_pack_tag 'application' %>
-    <%= javascript_pack_tag 'application', defer: true %>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= content_for(:head) %>
-
-    <script type="text/javascript">
-        var _paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-            var u = "https://analytics.libraries.psu.edu/matomo/";
-            _paq.push(['setTrackerUrl', u + 'matomo.php']);
-            _paq.push(['setSiteId', <%= ENV.fetch 'MATOMO_ID', 11 %>]);
-            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-            g.type = 'text/javascript';
-            g.async = true;
-            g.defer = true;
-            g.src = u + 'matomo.js';
-            s.parentNode.insertBefore(g, s);
-        })();
-    </script>
-  </head>
+<html lang="en" class="h-100">
+  <%= render 'layouts/head' %>
 
   <body class="d-flex flex-column h-100">
-    <main id="main" role="main" class="container mt-3 mb-3">
-      <nav role="navigation" aria-label="Main navigation" id="mainnav" class="pt-3 pb-3">
-        <ul class="nav nav-pills nav-justified container pr-0">
-          <li class="nav-item">
-            <%= link_to 'Account Summary', summaries_path, class: 'nav-link', aria: { current: controller_name == 'summaries' ? 'page' : false } %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Checkouts/Renewals', checkouts_path, class: 'nav-link', aria: { current: controller_name == 'checkouts' ? 'page' : false } %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Holds', holds_path, class: 'nav-link', aria: { current: controller_name == 'holds' ? 'page' : false } %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Bills', fines_path, class: 'nav-link', aria: { current: controller_name == 'fines' ? 'page' : false } %>
-          </li>
-        </ul>
-      </nav>
-    </main>
-    <div id="main-container" class="container">
+    <%= render 'layouts/top_bar' %>
+    <%= render 'layouts/navigation' %>
+
+    <div id="main-container" class="container my-3">
       <div class="row">
         <div class="col-md-12">
           <%= render partial: '/shared/flash_msg', layout: nil %>
@@ -62,6 +15,9 @@
       </div>
       <%= render 'shared/user_util_links' %>
     </div>
+
+    <%= render 'layouts/footer' %>
+
     <div aria-live="polite" aria-atomic="true">
       <div class="toast-insertion-point" style="position: fixed; top: 15px; right: 15px;"></div>
     </div>
