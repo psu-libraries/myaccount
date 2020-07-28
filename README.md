@@ -65,7 +65,7 @@ Monitor the behavior by tailing the logs:
 Locally you'll need to run:
 
 ```
-bundle exec rails s --dev-caching
+bundle exec rails s
 docker start redis-the-new-black
 bin/webpack-dev-server
 bundle exec sidekiq

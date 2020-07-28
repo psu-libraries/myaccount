@@ -5,7 +5,6 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.5'
 
-gem 'actionview-component'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'config', '~> 2.0'
 gem 'hiredis'
@@ -15,6 +14,7 @@ gem 'rails', '~> 6.0.2'
 gem 'redis'
 gem 'sidekiq'
 gem 'simplecov', '< 0.18', require: false, group: :test
+gem 'view_component'
 gem 'warden', '~> 1.2'
 gem 'webpacker'
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PlaceHoldHiddenInputComponent < ActionView::Component::Base
+class PlaceHoldHiddenInputComponent < ViewComponent::Base
   def initialize(barcode:)
     @barcode = barcode
   end

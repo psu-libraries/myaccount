@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldCheckboxWrapperComponent, type: :component do
-  let(:component) { render_inline(described_class, volumetric_calls: volumetric_calls).to_html }
+  let(:component) { render_inline(described_class.new(volumetric_calls: volumetric_calls)).to_html }
 
   context 'when volumetric calls are not present' do
     let(:volumetric_calls) { [] }

@@ -6,7 +6,7 @@
     <tr>
       <th scope="col">
         Select <br>
-        <%= render SelectAllComponent, target_keyword: 'pending' %>
+        <%= render SelectAllComponent.new target_keyword: 'pending' %>
       </th>
       <th scope="col">Item</th>
       <th scope="col">Availability</th>
@@ -20,10 +20,10 @@
     <% holds_not_ready.each do |hold| %>
       <tr id="hold<%= hold.key %>">
         <td>
-          <%= render SelectAllChildComponent, key: hold.key, target_keyword: 'pending', name: 'hold_list[]' %>
+          <%= render SelectAllChildComponent.new key: hold.key, target_keyword: 'pending', name: 'hold_list[]' %>
         </td>
         <td>
-          <%= render BibItemComponent, bibitem: hold %>
+          <%= render BibItemComponent.new bibitem: hold %>
         </td>
         <td><%= render_queue_position hold %></td>
         <td class="pickup_at"><span><%= hold.pickup_library_human %></span></td>

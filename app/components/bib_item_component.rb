@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BibItemComponent < ActionView::Component::Base
+class BibItemComponent < ViewComponent::Base
   CATALOG_URL = Rails.application.config.catalog_url
   TYPES_NOT_LINKED = Rails.application.config.unlinked_types
 

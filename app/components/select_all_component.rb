@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SelectAllComponent < ActionView::Component::Base
+class SelectAllComponent < ViewComponent::Base
   def initialize(target_keyword:)
     @target_keyword = target_keyword
     @name = "#{target_keyword}_all"

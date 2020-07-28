@@ -37,8 +37,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    actionview-component (1.17.0)
-      capybara (~> 3)
     activejob (6.0.3.2)
       activesupport (= 6.0.3.2)
       globalid (>= 0.3.6)
@@ -351,6 +349,8 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
+    view_component (2.18.0)
+      activesupport (>= 5.0.0, < 7.0)
     warden (1.2.8)
       rack (>= 2.0.6)
     warden-rspec-rails (0.2.0)
@@ -378,7 +378,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionview-component
   better_errors
   binding_of_caller
   bootsnap (>= 1.4.4)
@@ -402,6 +401,7 @@ DEPENDENCIES
   sinatra
   spring
   spring-watcher-listen (~> 2.0.0)
+  view_component
   warden (~> 1.2)
   warden-rspec-rails
   webdrivers (~> 4.0)
