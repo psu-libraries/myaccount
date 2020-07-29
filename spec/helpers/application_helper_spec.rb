@@ -11,7 +11,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '#nav_link_attributes' do
     it 'produces user-friendly features indicating current location' do
-      expect(helper.nav_link_attributes('test')).to eq({ aria: { current: 'page' }, class: 'nav-link active' })
+      expect(helper.nav_link_attributes('test')).to eq({ aria: { current: 'page' }, class: 'nav-link hover-change'\
+                                                            ' rounded-0 py-3 active-nav-link' })
     end
   end
 

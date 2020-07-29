@@ -15,9 +15,9 @@ class BibItemComponent < ViewComponent::Base
   end
 
   def processed_title
-    return @title if @author.blank?
+    return title if author.blank?
 
-    "#{@title} / #{@author}"
+    "#{title} / #{author}"
   end
 
   def final_title
@@ -25,11 +25,11 @@ class BibItemComponent < ViewComponent::Base
   end
 
   def catalog_url
-    CATALOG_URL + @catkey
+    CATALOG_URL + catkey
   end
 
   def render?
-    @catkey
+    catkey
   end
 
   private
@@ -37,6 +37,6 @@ class BibItemComponent < ViewComponent::Base
     attr_reader :title, :catkey, :type_human, :type_code, :author, :call_number
 
     def unlinked?
-      TYPES_NOT_LINKED.include?(@type_code) || @shadowed
+      TYPES_NOT_LINKED.include?(type_code) || @shadowed
     end
 end

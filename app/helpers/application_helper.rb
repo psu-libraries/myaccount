@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  ACTIVE_LINK_CLASS = 'active-nav-link'
+
   def nav_link_attributes(path)
     {
-      class: "nav-link #{('active' if active_controller?(path))}",
+      class: "nav-link hover-change rounded-0 py-3 #{(ACTIVE_LINK_CLASS if active_controller?(path))}",
       aria: {
         current: ('page' if active_controller?(path))
       }
