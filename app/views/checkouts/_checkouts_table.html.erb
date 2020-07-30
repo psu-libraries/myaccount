@@ -4,7 +4,6 @@
       <thead>
       <tr>
         <th scope="col">
-          <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %><br>
           <%= render SelectAllComponent.new target_keyword: 'renewal' %>
         </th>
         <th scope="col">Item</th>
@@ -17,7 +16,7 @@
       <tfoot>
       <tr>
         <th scope="col" colspan="6">
-          <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %></th>
+          <%= submit_tag 'Renew', class: 'btn btn-primary deflatten', data: { disable_with: 'Please wait...' } %></th>
       </tr>
       </tfoot>
       <tbody>
@@ -30,7 +29,7 @@
               <%= render BibItemComponent.new bibitem: checkout %>
             </td>
             <td class="renewal_count"><span><%= checkout.renewal_count if checkout.renewal_count.positive? %></span></td>
-            <td class="due_date"><span><%= render partial: 'checkouts/due_date', locals: { checkout: checkout } %></span></td>
+            <td class="due-date"><span><%= render partial: 'checkouts/due_date', locals: { checkout: checkout } %></span></td>
             <td class="status"><span><%= checkout.status_human %></span></td>
             <td><%= number_to_currency checkout.accrued if checkout.accrued.positive? %></td>
           </tr>

@@ -20,7 +20,7 @@ RSpec.describe 'Checkouts', type: :feature do
       page.check 'renewal_list__2145643:5:1'
       page.click_button 'Renew', match: :first
       expect(page).to have_css('[id="checkout2145643:5:1"] .renewal_count', text: '70')
-        .and have_css('[id="checkout2145643:5:1"] .due_date', text: 'August 13, 2020')
+        .and have_css('[id="checkout2145643:5:1"] .due-date', text: 'August 13, 2020')
         .and have_css '[id="checkout2145643:5:1"] .status', text: ''
     end
   end

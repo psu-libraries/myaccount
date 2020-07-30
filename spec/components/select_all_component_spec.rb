@@ -16,6 +16,6 @@ RSpec.describe SelectAllComponent, type: :component do
   end
 
   it 'render a label for select all' do
-    expect(component).to include '<label for="renewal_all">All</label>'
+    expect(component).to include '<label class="sr-only" for="renewal_all">All</label>'
   end
 end

@@ -5,11 +5,10 @@
 
     <tr>
       <th scope="col">
-        Select <br>
         <%= render SelectAllComponent.new target_keyword: 'pending' %>
       </th>
       <th scope="col">Item</th>
-      <th scope="col">Availability</th>
+      <th scope="col">Position in queue</th>
       <th scope="col">Pickup at</th>
       <th scope="col">Pick up by</th>
       <th scope="col">Status</th>
@@ -27,7 +26,7 @@
         </td>
         <td><%= render_queue_position hold %></td>
         <td class="pickup_at"><span><%= hold.pickup_library_human %></span></td>
-        <td class="pickup_by"><span><%= l(hold.fill_by_date, format: :short) %></span></td>
+        <td class="pickup-by"><span><%= l(hold.fill_by_date, format: :short) %></span></td>
         <td class="hold_status"><span><%= render_status hold %></span></td>
       </tr>
     <% end %>
@@ -44,13 +43,13 @@
               <h5>Edit Selected Holds</h5>
               <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false, make_default: false } %>
               <br>
-              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: { disable_with: 'Please wait...' }) %>
+              <%= submit_tag('Update Selected Holds', class: 'btn btn-primary deflatten', formmethod: 'PATCH', data: { disable_with: 'Please wait...' }) %>
             </div>
           </div>
           <div class="col-4 border-left">
             <div class="card-body">
               <h5 class="card-title">Cancel Selected Holds</h5>
-              <%= submit_tag('Cancel', class: 'btn btn-danger') %>
+              <%= submit_tag('Cancel', class: 'btn btn-danger deflatten') %>
             </div>
           </div>
         </div>

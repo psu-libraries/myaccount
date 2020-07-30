@@ -12,9 +12,9 @@ let validatePickupByDateChange = function (data) {
 
 const updatePickupByDate = function (data) {
     if (data.result === 'failure') {
-        toggleSpin('hold', data.id, 'pickup_by');
+        toggleSpin('hold', data.id, 'pickup-by');
     } else {
-        document.querySelector(`#hold${data.id} .pickup_by`).innerHTML = data.response.new_value_formatted;
+        document.querySelector(`#hold${data.id} .pickup-by`).innerHTML = data.response.new_value_formatted;
     }
 };
 
@@ -28,7 +28,7 @@ let changePickupByDate = function () {
     findForm('pending-holds').addEventListener("submit", function (event) {
         if (submitterValue(event) === "Update Selected Holds" && pickupByDateInput().value !== '') {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
-                toggleSpin('hold', checkbox.value, 'pickup_by');
+                toggleSpin('hold', checkbox.value, 'pickup-by');
             });
         }
     });
