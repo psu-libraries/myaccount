@@ -11,7 +11,7 @@ RSpec.describe 'Holds', type: :feature do
   end
 
   after do
-    Redis.new.del 'item_type_map'
+    Redis.current.flushall
   end
 
   context 'when a patron has some holds not yet ready to pickup (i.e., pending)' do
@@ -53,18 +53,12 @@ RSpec.describe 'Holds', type: :feature do
     end
 
     it 'allows user to place a hold for a holdable item', js: true do
-      inject_into_session place_hold_results: { success: [{
-        barcode: '000080951629',
-        hold_key: '3912343'
-      }], error: [] },
-                          place_hold_catkey: '26474837'
-
       visit '/holds/new?catkey=6066288'
       select 'College of Medicine (Hershey)', from: 'pickup_library'
       fill_in 'pickup_by_date', with: '10-10-2050'
 
       page.click_button 'Place Hold'
-      expect(page).to have_text 'Hold(s) Placed'
+      expect(page).to have_text 'Hold Placed'
     end
   end
 end

@@ -6,4 +6,10 @@ class ApplicationJob < ActiveJob::Base
 
   # Most jobs are safe to ignore if the underlying records are no longer available
   # discard_on ActiveJob::DeserializationError
+  #
+  private
+
+    def symphony_client
+      @symphony_client || SymphonyClient.new
+    end
 end

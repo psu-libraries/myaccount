@@ -33,7 +33,7 @@ const validateResult = (data, otherRule) => {
 const checkError = (data) => data.result === 'failure';
 
 const pollFetch = function(arg, otherRule = null) {
-    const maxWaitTime = 60000;
+    const maxWaitTime = 300000;
     const pollInterval = 1000;
     const endTime = Number(new Date()) + maxWaitTime;
 
@@ -77,9 +77,10 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         let genericError = { "result": "failure",
                              "id": target };
         resultCallback(genericError);
-        reportError('There was a network error, please try again later or call your campus library.');
         // The max wait time was reached. Web Service is probably down.
         // @todo: create a logging service
+        // eslint-disable-next-line no-alert
+        alert('There was a network error, please try again later or call your campus library.');
         // eslint-disable-next-line no-console
         console.error(error);
         deleteData(target);

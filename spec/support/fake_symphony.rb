@@ -11,6 +11,10 @@ class FakeSymphony < Sinatra::Base
     json_response 200, "other/bib_#{params[:key]}.json"
   end
 
+  get '/symwsbc/catalog/item/barcode/:barcode' do
+    json_response 200, "other/barcode_#{params[:barcode]}.json"
+  end
+
   get '/symwsbc/policy/location/simpleQuery' do
     json_response 200, 'other/locations.json'
   end

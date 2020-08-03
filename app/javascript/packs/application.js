@@ -17,6 +17,7 @@ import './styles'
 import checkouts from "../view_checkouts"
 import holds from "../view_holds"
 import selectAll from "../select_all";
+import viewRequestedHolds from "../view_requested_holds"
 
 // Rails stuff
 require("@rails/ujs").start()
@@ -26,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
     selectAll.start();
     holds();
     checkouts();
+    viewRequestedHolds();
 });
 
 

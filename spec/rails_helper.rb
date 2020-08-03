@@ -23,14 +23,6 @@ module Warden
           proxy.set_user(user, opts)
         end
       end
-
-      def inject_into_session(hash)
-        Warden::Manager.on_request do |proxy|
-          hash.each do |key, value|
-            proxy.env['rack.session'][key] = value
-          end
-        end
-      end
     end
   end
 end

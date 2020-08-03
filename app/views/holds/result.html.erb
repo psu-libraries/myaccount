@@ -1,24 +1,7 @@
 <h1>Results of Hold Request for <%= patron.display_name %></h1>
 
-<% unless @place_hold_results[:error].blank? %>
-    <h3> Hold(s) Failed </h3>
-    <% @place_hold_results[:error].each do |result| %>
-        <%= render PlaceHoldErrorComponent, result: result %>
-    <% end %>
-    <p><%= t('myaccount.hold.place_hold.error_html') %></p><br>
-<% end %>
-
-<% unless @place_hold_results[:success].blank? %>
-    <h3> Hold(s) Placed </h3>
-    <% @place_hold_results[:success].each do |result| %>
-      <%= render PlaceHoldSuccessComponent, result: result %>
-    <% end %>
-    <p><%= t('myaccount.hold.place_hold.success_html') %></p><br>
-<% end %>
-
-<br>
-
-<%= link_to 'Back to Catalog',
-            "https://catalog.libraries.psu.edu/catalog/#{@place_hold_catkey}",
-            class: 'btn btn-info' %>
-<%= link_to 'See all Holds', holds_path, class: 'btn btn-info' %>
+<div class="load-requested-holds" data-patron-key="<%= patron.key %>">
+  <p class="m-5 text-center"><span class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </span> Attempting to place holds, please wait...</p>
+</div>

@@ -21,18 +21,10 @@ class PlaceHoldResults::Builder
   private
 
     def hold_lookup(hold_key)
-      parsed_hold = SymphonyClientParser::parsed_response(@client, :get_hold_info, hold_key, @user_token)
-
-      start = DateTime.now
-      while parsed_hold.dig('fields', 'item').nil? && start + 5.seconds > DateTime.now
-        parsed_hold = SymphonyClientParser::parsed_response(@client, :get_hold_info, hold_key, @user_token)
-      end
-
-      Hold.new parsed_hold
+      SirsiResponse.new(@client.get_hold_info(hold_key, @user_token)).hold
     end
 
     def item_lookup(barcode)
-      parsed_item = SymphonyClientParser::parsed_response(@client, :get_item_info, barcode, @user_token, nil)
-      Item.new parsed_item
+      SirsiResponse.new(@client.get_item_info(session_token: @user_token, barcode: barcode)).item
     end
 end

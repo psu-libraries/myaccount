@@ -3,6 +3,6 @@
                                                     disabled: '', selected: ''),
                class: 'custom-select', data: 'pickup-location', required: validate_pickup_info %>
 <%= label_tag :pickup_by_date, 'Not needed after:' %>
-<%= date_field_tag :pickup_by_date, '', required: validate_pickup_info, min: minimum_pickup_by_date %>
+<%= date_field_tag :pickup_by_date, default_pickup_by_date(make_default: make_default), required: validate_pickup_info, min: minimum_pickup_by_date %>
 <p class="card-text"><small class="text-muted">The date you enter is the date that the system will stop
   trying to obtain the item for you.  It is not a guaranteed delivery date.</small></p>

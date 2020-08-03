@@ -13,7 +13,8 @@ class SirsiResponse::Error
   }.with_indifferent_access
 
   def initialize(error_message_raw:, symphony_client:, key:, session_token:, bib_type:)
-    @log = error_message_raw
+    @sirsi_response = SirsiResponse.new error_message_raw
+    @log = @sirsi_response.response_hash
     display_error = make_human_friendly_response
     parsed_response = wrangle_symphony bib_type, symphony_client, session_token, key
     klass = bib_type.to_s.classify.constantize
@@ -29,14 +30,16 @@ class SirsiResponse::Error
   private
 
     def make_human_friendly_response
-      SIRSI_RESPONSE_TRANSLATIONS[@log&.dig('messageList')&.first&.dig('code')] ||
-        @log&.dig('messageList')&.first&.dig('message') ||
+      SIRSI_RESPONSE_TRANSLATIONS[@sirsi_response.messages.first[:code]] ||
+        @sirsi_response.messages.first[:message] ||
         'Something went wrong'
     end
 
     def wrangle_symphony(bib_type, symphony_client, session_token, key)
       if bib_type == :checkout
-        return SymphonyClientParser::parsed_response(symphony_client, :get_item_info, nil, session_token, key)
+        return SymphonyClientParser::parsed_response(symphony_client,
+                                                     :get_item_info,
+                                                     session_token: session_token, key: key)
       end
 
       SymphonyClientParser::parsed_response(symphony_client, :get_hold_info, key, session_token)

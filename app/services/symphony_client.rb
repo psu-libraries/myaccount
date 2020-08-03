@@ -12,7 +12,8 @@ class SymphonyClient
     'item{*,bib{shadowed,title,author},call{sortCallNumber,dispCallNumber}}'
   ].join(',')
 
-  DELAY = 0.05
+  DELAY = 0.75
+  MAX_WAIT_TIME = 30
 
   def login(user_id, password)
     response = request('/user/patron/login', method: :post, json: {
@@ -117,14 +118,19 @@ class SymphonyClient
   end
 
   def get_hold_info(hold_key, session_token)
-    authenticated_request "/circulation/holdRecord/key/#{hold_key}",
-                          headers: { 'x-sirs-sessionToken': session_token },
-                          params: {
-                            includeFields: '*,item{*,bib{shadowed,title,author},call{*}}'
-                          }
+    response_raw = hold_request hold_key, session_token
+
+    start = DateTime.now
+
+    while hold_missing_title?(response_raw) && time_left_to_request_again?(start)
+      sleep DELAY
+      response_raw = hold_request hold_key, session_token
+    end
+
+    response_raw
   end
 
-  def get_item_info(barcode, session_token, key)
+  def get_item_info(session_token:, barcode: nil, key: nil)
     request_path_suffix = if barcode.present?
                             "barcode/#{barcode}"
                           elsif key.present?
@@ -166,6 +172,35 @@ class SymphonyClient
 
   private
 
+    def time_left_to_request_again?(start)
+      return true if DateTime.now < (start + MAX_WAIT_TIME.seconds)
+
+      # Log a terrible event: a request that has hung for too long leaving the user stranded. User will get a "Network
+      # Error" message if this occurs.
+      Sidekiq.logger.error 'Request timeout reached'
+      false
+    end
+
+    def hold_request(hold_key, session_token)
+      authenticated_request "/circulation/holdRecord/key/#{hold_key}",
+                            headers: { 'x-sirs-sessionToken': session_token },
+                            params: {
+                              includeFields: '*,item{*,bib{shadowed,title,author},call{*}}'
+                            }
+    end
+
+    # This is here to check for a malformed response from Sirsi's web service where, probably due to the "record being
+    # busy", the hold is missing item info of title.
+    def hold_missing_title?(response_raw)
+      response = JSON.parse response_raw.body
+
+      if Hold.new(response).title.nil?
+        Sidekiq.logger.error 'Hold\'s title missing... trying again'
+        return true
+      end
+      false
+    end
+
     def error_code(response)
       return if response.status.ok?
 
@@ -175,7 +210,10 @@ class SymphonyClient
     end
 
     def records_in_use?(response)
-      error_code(response) == 'hatErrorResponse.116'
+      return false unless error_code(response) == 'hatErrorResponse.116'
+
+      Sidekiq.logger.error(JSON.parse(response.body))
+      true
     end
 
     def patron_linked_resources_fields(item_details = {})
@@ -196,10 +234,10 @@ class SymphonyClient
     end
 
     def authenticated_request(path, headers: {}, **other)
-      start = DateTime.now
       response = request(path, headers: headers, **other)
+      start = DateTime.now
 
-      while records_in_use?(response) && start + 5.seconds > DateTime.now
+      while records_in_use?(response) && time_left_to_request_again?(start)
         sleep DELAY
         response = request(path, headers: headers, **other)
       end

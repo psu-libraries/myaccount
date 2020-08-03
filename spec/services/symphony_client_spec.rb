@@ -370,20 +370,36 @@ RSpec.describe SymphonyClient do
   end
 
   describe '#get_hold_info' do
-    before do
-      stub_request(:get, uri)
-        .with(query: hash_including(includeFields: include_fields))
-        .to_return(status: 200, body: { resource: '/circulation/holdRecord' }.to_json)
-    end
-
     let(:hold_key) { 'a_hold_key' }
     let(:uri) { "#{Settings.symws.url}/circulation/holdRecord/key/#{hold_key}" }
     let(:include_fields) { '*,item{*,bib{shadowed,title,author},call{*}}' }
 
-    it 'returns the resource hold record' do
-      hold_response = client.get_hold_info(hold_key, user.session_token)
+    context 'when item level information is present' do
+      before do
+        stub_request(:any, /example.com/).to_rack(FakeSymphony)
+      end
 
-      expect(JSON.parse(hold_response)).to include 'resource' => '/circulation/holdRecord'
+      it 'returns the hold info' do
+        response = client.get_hold_info('3912343', user.session_token)
+        parsed_response = JSON.parse response.body
+        expect(parsed_response&.dig('fields', 'pickupLibrary')).to be_truthy
+      end
+    end
+
+    context 'when item level information is missing' do
+      before do
+        stub_request(:get, uri)
+          .with(query: hash_including(includeFields: include_fields))
+          .to_return(status: 200, body: { resource: '/circulation/holdRecord' }.to_json)
+        stub_const 'SymphonyClient::MAX_WAIT_TIME', 0.3
+        stub_const 'SymphonyClient::DELAY', 0.1
+      end
+
+      it 'retries' do
+        client.get_hold_info(hold_key, user.session_token)
+        expect { client.get_hold_info(hold_key, user.session_token) }
+          .to output(/title missing/).to_stdout_from_any_process
+      end
     end
   end
 
@@ -399,7 +415,7 @@ RSpec.describe SymphonyClient do
     let(:include_fields) { '*,bib{shadowed,title,author},call{*}' }
 
     it 'returns the resource item record' do
-      item_response = client.get_item_info(barcode, user.session_token, nil)
+      item_response = client.get_item_info(barcode: barcode, session_token: user.session_token)
 
       expect(JSON.parse(item_response)).to include 'resource' => '/catalog/item'
     end

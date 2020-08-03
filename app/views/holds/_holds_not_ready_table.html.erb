@@ -26,9 +26,9 @@
           <%= render BibItemComponent, bibitem: hold %>
         </td>
         <td><%= render_queue_position hold %></td>
-        <td class="pickup_at"><%= hold.pickup_library_human %></td>
-        <td class="pickup_by"><%= l(hold.fill_by_date, format: :short) %></td>
-        <td class="hold_status"><%= render_status hold %></td>
+        <td class="pickup_at"><span><%= hold.pickup_library_human %></span></td>
+        <td class="pickup_by"><span><%= l(hold.fill_by_date, format: :short) %></span></td>
+        <td class="hold_status"><span><%= render_status hold %></span></td>
       </tr>
     <% end %>
     </tbody>
@@ -42,7 +42,7 @@
           <div class="col-8">
             <div class="card-body">
               <h5>Edit Selected Holds</h5>
-              <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false } %>
+              <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false, make_default: false } %>
               <br>
               <%= submit_tag('Update Selected Holds', class: 'btn btn-primary', formmethod: 'PATCH', data: { disable_with: 'Please wait...' }) %>
             </div>
