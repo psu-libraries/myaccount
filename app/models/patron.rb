@@ -42,11 +42,11 @@ class Patron
   end
 
   def holds
-    @holds ||= fields['holdRecordList'].map { |hold| Hold.new(hold) }
+    @holds ||= fields['holdRecordList']&.map { |hold| Hold.new(hold) }
   end
 
   def fines
-    @fines ||= fields['blockList'].map { |fine| Fine.new(fine) }
+    @fines ||= fields['blockList']&.map { |fine| Fine.new(fine) }
   end
 
   def standing_human

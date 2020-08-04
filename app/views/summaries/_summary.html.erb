@@ -8,28 +8,28 @@
 <div class="page-section">
   <h1>Summary</h1>
   <div class="row">
-    <%= render DashboardItemComponent, model: 'Fines',
-                                       count: patron.fines.sum(&:owed_amount),
-                                       currency: true,
-                                       count_term: 'You owe' %>
+    <%= render DashboardItemComponent.new(model: 'Fines',
+                                          count: patron.fines&.sum(&:owed_amount),
+                                          currency: true,
+                                          count_term: 'You owe') %>
 
-    <%= render DashboardItemComponent, model: 'Checkouts',
-                                       count: patron.checkouts.length,
-                                       count_term: 'Total checked out',
-                                       items: [
-                                         { label: 'recalled', count: patron.checkouts.select(&:recalled?).length },
-                                         { label: 'overdue', count: patron.checkouts.select(&:overdue?).length }
-                                       ] %>
+    <%= render DashboardItemComponent.new(model: 'Checkouts',
+                                          count: patron.checkouts&.length,
+                                          count_term: 'Total checked out',
+                                          items: [
+                                            { label: 'recalled', count: patron.checkouts&.select(&:recalled?)&.length },
+                                            { label: 'overdue', count: patron.checkouts&.select(&:overdue?)&.length }
+                                          ]) %>
 
-    <%= render DashboardItemComponent, model: 'Holds',
-                                       count: patron.holds.length,
-                                       count_term: 'Total holds',
-                                       items: [
-                                         { label: 'ready for pickup',
-                                           count: patron.holds.select(&:ready_for_pickup?).length },
-                                         { label: 'not yet ready for pickup',
-                                           count: patron.holds.reject(&:ready_for_pickup?).length }
-                                       ] %>
+    <%= render DashboardItemComponent.new(model: 'Holds',
+                                          count: patron.holds&.length,
+                                          count_term: 'Total holds',
+                                          items: [
+                                            { label: 'ready for pickup',
+                                              count: patron.holds&.select(&:ready_for_pickup?)&.length },
+                                            { label: 'not yet ready for pickup',
+                                              count: patron.holds&.reject(&:ready_for_pickup?)&.length }
+                                          ]) %>
   </div>
 
 </div>
