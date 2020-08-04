@@ -1,0 +1,62 @@
+@import '~bootstrap';
+
+// scss-lint:disable PlaceholderInExtend
+
+.navbar-brand {
+  padding-left: 0;
+  padding-right: 0;
+
+  a {
+    display: inline-block;
+    max-width: 50%;
+  }
+}
+
+.site-title {
+  border-left: 1px solid $white;
+  color: $white;
+  font-family: $headings-font-family;
+  font-size: 25px;
+  margin-left: 10px;
+  padding-left: 1rem;
+
+  &:hover {
+    color: $white;
+    text-decoration: none;
+  }
+}
+
+.navbar-search {
+  z-index: 1;
+
+  .search-field {
+    // This prevents the widget from being squished so the text overflows
+    min-width: 7em;
+  }
+
+  .search-query-form {
+    @include make-col-ready();
+    @include media-breakpoint-up(sm) {
+      @include make-col(12);
+    }
+
+    @include media-breakpoint-up(md) {
+      @include make-col(8);
+    }
+  }
+}
+
+.navbar-nav {
+  @include media-breakpoint-down(md) {
+    flex-direction: row;
+
+    .nav-item {
+      font-size: .75rem;
+      text-align: center;
+
+      &:not(:first-child) {
+        margin-left: 26px;
+      }
+    }
+  }
+}
