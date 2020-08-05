@@ -1,7 +1,7 @@
 <% if place_hold_results[:error].present? %>
   <h3> <%= pluralize place_hold_results[:error].length, 'Hold' %> Failed </h3>
   <% place_hold_results[:error].each do |result| %>
-    <%= render PlaceHoldErrorComponent, result: result %>
+    <%= render PlaceHoldErrorComponent.new result: result %>
   <% end %>
   <p><%= t('myaccount.hold.place_hold.error_html') %></p><br>
 <% end %>
@@ -9,7 +9,7 @@
 <% if place_hold_results[:success].present? %>
   <h3> <%= pluralize place_hold_results[:success].length, 'Hold' %> Placed </h3>
   <% place_hold_results[:success].each do |result| %>
-    <%= render PlaceHoldSuccessComponent, result: result %>
+    <%= render PlaceHoldSuccessComponent.new result: result %>
   <% end %>
   <p><%= t('myaccount.hold.place_hold.success_html') %></p><br>
 <% end %>

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SelectAllChildComponent < ActionView::Component::Base
+class SelectAllChildComponent < ViewComponent::Base
   def initialize(name: nil, key:, target_keyword:)
     @name = name || "#{target_keyword}_list[]"
     @key = key

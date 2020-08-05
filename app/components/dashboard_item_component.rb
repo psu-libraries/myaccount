@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DashboardItemComponent < ActionView::Component::Base
+class DashboardItemComponent < ViewComponent::Base
   def initialize(model:, count:, count_term: nil, currency: nil, items: nil)
     @model = model
     @count = count

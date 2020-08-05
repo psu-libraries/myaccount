@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GenericValueWithLabelComponent < ActionView::Component::Base
+class GenericValueWithLabelComponent < ViewComponent::Base
   def initialize(label:, value:)
     @label = label
     @value = value

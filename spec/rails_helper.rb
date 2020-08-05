@@ -34,7 +34,7 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/rspec'
 require 'webmock/rspec'
-require 'action_view/component/test_helpers'
+require 'view_component/test_helpers'
 ## Below picks up our mock objects as well as factory_bot config
 Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
@@ -104,7 +104,7 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-  config.include ActionView::Component::TestHelpers, type: :component
+  config.include ViewComponent::TestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
 end
 

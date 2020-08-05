@@ -15,7 +15,7 @@
   <% @fines.each do |fine| %>
     <tr>
       <td>
-        <%= render BibItemComponent, bibitem: fine %>
+        <%= render BibItemComponent.new bibitem: fine %>
       </td>
       <td><%= fine.author %></td>
       <td><%= fine.status_human %></td>

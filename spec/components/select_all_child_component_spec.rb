@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe SelectAllChildComponent, type: :component do
   let(:select_all_child_args) { { target_keyword: 'renewal', key: '1111111:1:1' } }
 
-  let(:component) { render_inline(described_class, select_all_child_args).to_html }
+  let(:component) { render_inline(described_class.new(select_all_child_args)).to_html }
 
   context 'when a name is not given as an argument, uses type as name' do
     it 'makes a child checkbox' do

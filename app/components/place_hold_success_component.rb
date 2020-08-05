@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PlaceHoldSuccessComponent < ActionView::Component::Base
+class PlaceHoldSuccessComponent < ViewComponent::Base
   def initialize(result:)
     @placed_hold = result[:placed_hold]
   end

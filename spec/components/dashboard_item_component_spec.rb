@@ -12,7 +12,7 @@ RSpec.describe DashboardItemComponent, type: :component do
                                     count: 3
                                   }
                                 ] }}
-  let(:component) { render_inline(described_class, dashboard_item_args).to_html }
+  let(:component) { render_inline(described_class.new(dashboard_item_args)).to_html }
 
   it 'makes a list' do
     dashboard_item_args[:items] << {

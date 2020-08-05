@@ -5,7 +5,7 @@
       <tr>
         <th scope="col">
           <%= submit_tag 'Renew', class: 'btn btn-primary', data: { disable_with: 'Please wait...' } %><br>
-          <%= render SelectAllComponent, target_keyword: 'renewal' %>
+          <%= render SelectAllComponent.new target_keyword: 'renewal' %>
         </th>
         <th scope="col">Item</th>
         <th scope="col">Times Renewed</th>
@@ -24,10 +24,10 @@
       <% checkouts.each do |checkout| %>
           <tr id="checkout<%= checkout.item_key %>">
             <td>
-              <%= render SelectAllChildComponent, key: checkout.item_key, target_keyword: 'renewal' %>
+              <%= render SelectAllChildComponent.new key: checkout.item_key, target_keyword: 'renewal' %>
             </td>
             <td>
-              <%= render BibItemComponent, bibitem: checkout %>
+              <%= render BibItemComponent.new bibitem: checkout %>
             </td>
             <td class="renewal_count"><span><%= checkout.renewal_count if checkout.renewal_count.positive? %></span></td>
             <td class="due_date"><span><%= render partial: 'checkouts/due_date', locals: { checkout: checkout } %></span></td>

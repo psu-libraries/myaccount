@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe BibItemComponent, type: :component do
   let(:hold) { build(:hold) }
-  let(:component) { render_inline(described_class, bibitem: hold).to_html }
+  let(:component) { render_inline(described_class.new(bibitem: hold)).to_html }
 
   before do
     allow(hold).to receive(:item_type_mapping).and_return(ITEM_TYPE_MAPPING)

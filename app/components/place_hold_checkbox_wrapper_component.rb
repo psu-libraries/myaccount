@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PlaceHoldCheckboxWrapperComponent < ActionView::Component::Base
+class PlaceHoldCheckboxWrapperComponent < ViewComponent::Base
   def initialize(volumetric_calls: nil)
     @volumetric_calls = volumetric_calls
   end
