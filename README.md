@@ -85,3 +85,7 @@ This is an attempt at a quick and rough "[ubiquitous language](https://martinfow
 
 # CI 
 We use Circle CI to test myaccount. In the event of a test failure you can visit <https://circleci.com/gh/psu-libraries/myaccount> to see the jobs output. You can gain shell access to the build by choosing "Rerun with SSH" once logged in, your code will be checked out at the `/project` path.
+
+# Config gem and environment variables
+
+You can use either the yml file inheritance structure inherent to the config gem, or you can set environment variables. See ["Working with Environment Variable"](https://github.com/rubyconfig/config#working-with-environment-variables).
