@@ -32,7 +32,7 @@ class DashboardItemComponent < ActionView::Component::Base
   end
 
   def render?
-    @count.positive?
+    @count&.positive?
   end
 
   private
