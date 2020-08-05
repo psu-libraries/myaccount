@@ -20,7 +20,7 @@ RSpec.describe HoldsHelper, type: :helper do
       end
 
       it 'renders some pretext and then the position' do
-        expect(helper.render_queue_position(hold)).to eq 'Your position in the holds queue: 10'
+        expect(helper.render_queue_position(hold)).to eq '10th'
       end
     end
 
