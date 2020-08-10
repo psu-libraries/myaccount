@@ -24,4 +24,9 @@ RSpec.describe Fine do
     fine.record['fields']['billDate'] = '2019-10-08'
     expect(fine.bill_date.strftime('%m/%d/%Y')).to eq '10/08/2019'
   end
+
+  it 'has a customized title for Miscellaneous Charges' do
+    fine.record['fields']['item'] = nil
+    expect(fine.title).to eq 'NOT ASSOCIATED WITH AN ITEM'
+  end
 end
