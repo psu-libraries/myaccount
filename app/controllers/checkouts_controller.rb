@@ -2,6 +2,7 @@
 
 class CheckoutsController < ApplicationController
   include ActionView::Helpers::TagHelper
+  before_action :set_cache_headers
   before_action :authenticate_user!
   before_action :renew_params, only: :batch_update
   before_action :authorize_update!, only: :batch_update
