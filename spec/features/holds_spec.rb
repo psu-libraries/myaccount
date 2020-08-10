@@ -61,4 +61,13 @@ RSpec.describe 'Holds', type: :feature do
       expect(page).to have_text 'Hold Placed'
     end
   end
+
+  context 'when patron uses browser back button to holds page' do
+    it 'forces checkout page to reload', js: true do
+      visit holds_path
+      visit summaries_path
+      page.go_back
+      expect(page).to have_css '#hold3911148'
+    end
+  end
 end
