@@ -33,4 +33,13 @@ RSpec.describe 'Checkouts', type: :feature do
       expect(page).to have_css('.toast')
     end
   end
+
+  context 'when patron uses browser back button to checkouts page' do
+    it 'forces checkout page to reload', js: true do
+      visit checkouts_path
+      visit summaries_path
+      page.go_back
+      expect(page).to have_css '[id="checkout2145643:5:1"]'
+    end
+  end
 end
