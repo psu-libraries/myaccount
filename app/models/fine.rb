@@ -38,7 +38,7 @@ class Fine
     EQUPREPAIR: 'Fee for repair costs of equipment damaged by borrowers'
   }.with_indifferent_access.freeze
 
-  NO_TITLE_TEXT = 'NOT ASSOCIATED WITH AN ITEM'
+  NO_TITLE_TEXT = 'Not associated with an item'
 
   def initialize(record)
     @record = record
