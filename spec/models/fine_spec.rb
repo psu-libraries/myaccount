@@ -27,6 +27,6 @@ RSpec.describe Fine do
 
   it 'has a customized title for Miscellaneous Charges' do
     fine.record['fields']['item'] = nil
-    expect(fine.title).to eq 'NOT ASSOCIATED WITH AN ITEM'
+    expect(fine.title).to eq 'Not associated with an item'
   end
 end
