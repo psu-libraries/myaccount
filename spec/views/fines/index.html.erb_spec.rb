@@ -40,7 +40,7 @@ RSpec.describe 'fines/index.html.erb', type: :view do
     it 'displays customized title if the fine does not have an item associated with it' do
       fine.record['fields']['item'] = nil
       render
-      expect(rendered).to include 'NOT ASSOCIATED WITH AN ITEM'
+      expect(rendered).to include 'Not associated with an item'
     end
 
     it 'displays fine\'s item\'s author' do
