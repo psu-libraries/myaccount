@@ -89,3 +89,7 @@ We use Circle CI to test myaccount. In the event of a test failure you can visit
 # Config gem and environment variables
 
 You can use either the yml file inheritance structure inherent to the config gem, or you can set environment variables. See ["Working with Environment Variable"](https://github.com/rubyconfig/config#working-with-environment-variables).
+
+## Overriding pickup location labels
+
+Pickup locations for holds placed are manually dictated by Lending and Reserves Services. They tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overrideable. 
