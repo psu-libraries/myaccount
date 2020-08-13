@@ -14,9 +14,7 @@
   <tbody>
   <% @fines.each do |fine| %>
     <tr>
-      <td>
-        <%= (render BibItemComponent.new(bibitem: fine) unless fine.catkey.nil?) || fine.title %>
-      </td>
+      <td><%= fine_title_display(fine: fine) %></td>
       <td><%= fine.author %></td>
       <td><%= fine.status_human %></td>
       <td><%= number_to_currency fine.owed_amount %></td>
