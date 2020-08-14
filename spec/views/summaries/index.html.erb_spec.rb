@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'summaries/index', type: :view do
-  let(:fine) { build(:fine) }
+  let(:fines) { [build(:fine)] }
   let(:patron_standing) { {} }
   let(:patron) do
     instance_double(
@@ -11,7 +11,7 @@ RSpec.describe 'summaries/index', type: :view do
       display_name: 'Test First Last',
       checkouts: [],
       holds: [],
-      fines: [fine],
+      fines: fines,
       **patron_standing
     )
   end
@@ -48,6 +48,17 @@ RSpec.describe 'summaries/index', type: :view do
       render
 
       expect(rendered).to have_css('h3', text: 'Alerts:')
+    end
+  end
+
+  context 'when the patron does not have any checkouts, holds or bills' do
+    let(:patron_standing) { { standing_human: '' } }
+    let(:fines) { [] }
+
+    it 'renders text for no materials and no bills' do
+      render
+
+      expect(rendered).to include('You do not have any outstanding materials or bills.')
     end
   end
 end
