@@ -92,4 +92,6 @@ You can use either the yml file inheritance structure inherent to the config gem
 
 ## Overriding pickup location labels
 
-Pickup locations for holds placed are manually dictated by Lending and Reserves Services. They tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overrideable. 
+Pickup locations for holds placed are manually dictated by Lending and Reserves Services. They tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. For production we use `production.local.yml` to override these values. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overridable. 
+
+When changing these values you must restart the web server (passenger) _and_ sidekiq. Run `/bin/systemctl restart sidekiq` and  `passenger-config restart-app` on the server where the change is being applied. Locally just stop and start these again.
