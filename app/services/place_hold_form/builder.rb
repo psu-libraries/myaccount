@@ -19,7 +19,7 @@ class PlaceHoldForm::Builder
       title: bib_info.title,
       author: bib_info.author,
       volumetric_calls: @volumetric_calls,
-      barcode: @volumetric_calls.present? ? nil : @call_list.sample.items.sample.barcode
+      barcode: @volumetric_calls.present? ? nil : @call_list&.sample&.items&.sample&.barcode
     }
   end
 
