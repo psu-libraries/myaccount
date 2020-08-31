@@ -10,7 +10,7 @@ class Bib
   end
 
   def call_list
-    bib.dig 'callList'
+    bib&.dig 'callList'
   end
 
   private

@@ -11,6 +11,9 @@ class PlaceHoldForm::Builder
 
   def generate
     bib_info = Bib.new(SymphonyClientParser::parsed_response(@client, :get_bib_info, @catkey, @user_token))
+
+    return if bib_info.call_list.blank?
+
     @call_list = bib_info.call_list.map { |call| Call.new record: call }
     process_volumetric_calls
 

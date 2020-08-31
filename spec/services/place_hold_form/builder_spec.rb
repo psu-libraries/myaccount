@@ -36,6 +36,16 @@ RSpec.describe PlaceHoldForm::Builder do
       expect(form_params[:author]).to eq 'Hill Street blues (Television program)'
     end
 
+    context 'when item is not holdable' do
+      before do
+        bib_info.record['fields']['callList'] = ''
+      end
+
+      it 'will not generate form params' do
+        expect(form_params).to be_nil
+      end
+    end
+
     context 'when there are volumetric calls to present to the user' do
       it 'will generate holdables when supplied with a body that has a callList' do
         expect(form_params[:volumetric_calls].count).to be 8

@@ -87,6 +87,22 @@ RSpec.describe HoldsController, type: :controller do
 
         expect(assigns(:place_hold_form_params)).to eq(form_params)
       end
+
+      context 'when user tries with a non holdable record' do
+        let(:form_params) {}
+
+        it 'sets a flash error message' do
+          get :new
+
+          expect(flash[:error]).to match(/cannot place a hold on this item/)
+        end
+
+        it 'redirects to the summaries' do
+          get :new
+
+          expect(response).to redirect_to summaries_path
+        end
+      end
     end
 
     describe '#create' do
