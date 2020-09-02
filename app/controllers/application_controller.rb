@@ -37,6 +37,8 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user!
+      session[:original_fullpath] = request.original_fullpath unless request.original_fullpath == '/'
+
       return redirect_to root_url unless current_user?
 
       renew_session_token unless symphony_client.ping?(current_user)
