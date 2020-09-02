@@ -22,6 +22,16 @@ RSpec.describe SessionsController do
       it 'redirects to the home page' do
         expect(get(:index)).to redirect_to summaries_url
       end
+
+      context 'when user requested a page before authentication' do
+        before do
+          session[:original_fullpath] = '/holds/new?catkey=12345'
+        end
+
+        it 'redirects to the original request url' do
+          expect(get(:index)).to redirect_to '/holds/new?catkey=12345'
+        end
+      end
     end
 
     describe 'GET destroy' do
