@@ -70,4 +70,5 @@ en:
           success_html: <small class="text-secondary">For placed hold(s), you will receive a library notice once items are available for pick up. On-shelf items generally arrive within 2-3 weekdays. Items checked out to other borrowers will be recalled. Recalled items take a minimum of 10 days to arrive at your pickup location.</small>
           error_html: <small class="text-secondary">We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a></small>
         new_hold:
+          catkey_missing: Please select an item to place a hold.
           error_html: <span class="font-weight-bold">Sorry!</span> You cannot place a hold on this item. Contact your library if you need assistance.<br>

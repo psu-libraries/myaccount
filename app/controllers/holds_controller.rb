@@ -43,6 +43,8 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
+    raise NewHoldException, 'Error' if params[:catkey].blank?
+
     form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
                                               user_token: current_user.session_token,
                                               client: symphony_client)
@@ -92,7 +94,11 @@ class HoldsController < ApplicationController
     end
 
     def deny_new
-      flash[:error] = t 'myaccount.hold.new_hold.error_html'
+      flash[:error] = if params['catkey'].blank?
+                        t 'myaccount.hold.new_hold.catkey_missing'
+                      else
+                        t 'myaccount.hold.new_hold.error_html'
+                      end
 
       redirect_to summaries_path
     end
