@@ -9,6 +9,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'config', '~> 2.0'
 gem 'hiredis'
 gem 'http', '~> 4.0'
+gem 'lograge'
 gem 'puma', '~> 3.12'
 gem 'rails', '~> 6.0.2'
 gem 'redis'

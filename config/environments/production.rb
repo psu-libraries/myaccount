@@ -44,7 +44,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -81,6 +81,20 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
+
+  # Adds lograge and parametrizes log name. Capture parameters other than `controller` and `action` in lograge. ALso
+  # captures timestamp.
+  config.lograge.enabled = true
+  config.lograge.custom_options = lambda do |event|
+    params = event.payload[:params].reject { |k| %w(controller action).include?(k) }
+    {
+      params: params,
+      time: Time.now,
+      host: controller.request.host
+    }
+  end
+  hostname = Socket.gethostname || 'production'
+  config.paths['log'] = "log/#{hostname}.log"
 
   # Do not dump schema after migrations.
   # config.active_record.dump_schema_after_migration = false
