@@ -10,7 +10,14 @@ class SessionsController < ApplicationController
       authenticate_webaccess
     end
 
-    redirect_to summaries_url if current_user?
+    if current_user?
+      original_fullpath = session[:original_fullpath]
+      session.delete(:original_fullpath)
+
+      return redirect_to original_fullpath if original_fullpath.present?
+
+      redirect_to summaries_url
+    end
   end
 
   # Handle user logout
