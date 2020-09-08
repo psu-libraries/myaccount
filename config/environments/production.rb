@@ -89,8 +89,7 @@ Rails.application.configure do
     params = event.payload[:params].reject { |k| %w(controller action).include?(k) }
     {
       params: params,
-      time: Time.now,
-      host: controller.request.host
+      time: Time.now
     }
   end
   hostname = Socket.gethostname || 'production'
