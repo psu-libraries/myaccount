@@ -41,3 +41,7 @@ group :development, :test do
   gem 'webdrivers', '~> 4.0'
   gem 'webmock'
 end
+
+group :production do
+  gem 'ddtrace'
+end
