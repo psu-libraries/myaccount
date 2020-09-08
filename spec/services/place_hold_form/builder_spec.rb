@@ -46,6 +46,14 @@ RSpec.describe PlaceHoldForm::Builder do
       end
     end
 
+    context 'when item has no items with holdable locations' do
+      let(:bib_info) { build(:bib_with_no_holdable_locations) }
+
+      it 'will not generate form params' do
+        expect(form_params).to be_nil
+      end
+    end
+
     context 'when there are volumetric calls to present to the user' do
       it 'will generate holdables when supplied with a body that has a callList' do
         expect(form_params[:volumetric_calls].count).to be 8
