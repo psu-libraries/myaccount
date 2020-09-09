@@ -92,7 +92,7 @@ RSpec.describe HoldsController, type: :controller do
         it 'sets a flash error message' do
           get :new, params: {}
 
-          expect(flash[:error]).to match(/select an item to place a hold/)
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.catkey_missing')
         end
 
         it 'redirects to the summaries' do
@@ -108,7 +108,7 @@ RSpec.describe HoldsController, type: :controller do
         it 'sets a flash error message' do
           get :new, params: { catkey: 1 }
 
-          expect(flash[:error]).to match(/cannot place a hold on this item/)
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.error_html')
         end
 
         it 'redirects to the summaries' do
