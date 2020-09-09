@@ -42,12 +42,22 @@ class PlaceHoldForm::Builder
     #
     # Third: If there happen to be non-voluemtrics along-side the volumetrics, reduce them to just 1.
     #
-    # Fourth: Only pass along the volumetric calls that have unique Call#call_number
+    # Fourth: Only pass along the volumetric calls that have unique Call#call_number (and there has to be more than 1)
     def process_volumetric_calls
       filter_holdables if @call_list.count > 1
       @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
       volumetric_natural_sort
       compact_non_volumetric_calls if @volumetric_calls.select { |call| call.volumetric.nil? }.count > 1
+      reduce_to_unique_call_numbers
+
+      nil_if_only_one
+    end
+
+    def nil_if_only_one
+      @volumetric_calls = [] if @volumetric_calls.count < 2
+    end
+
+    def reduce_to_unique_call_numbers
       @volumetric_calls.uniq!(&:call_number)
     end
 

@@ -58,7 +58,7 @@ RSpec.describe PlaceHoldForm::Builder do
         end
       end
 
-      context 'when multiple calls that not volumetric are mixed in' do
+      context 'when multiple calls that are not volumetric are mixed in' do
         let(:bib_info) { build(:bib_with_multiple_non_volumetrics) }
 
         it 'will keep only one non-volumetric call' do
@@ -73,6 +73,15 @@ RSpec.describe PlaceHoldForm::Builder do
 
         it 'will remove calls that are not unique' do
           expect(form_params[:volumetric_calls].count).to be 8
+        end
+      end
+
+      context 'when multiple volumetric calls of the same call number are mixed in but there is only one unique call '\
+              'number' do
+        let(:bib_info) { build(:bib_with_dupe_call_number_volumetrics_one_unique) }
+
+        it 'will remove calls that are not unique' do
+          expect(form_params[:volumetric_calls].count).to be 0
         end
       end
     end

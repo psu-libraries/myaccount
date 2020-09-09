@@ -678,6 +678,101 @@ FactoryBot.define do
         }
       }
     end
+
+    factory :bib_with_dupe_call_number_volumetrics_one_unique do
+      initialize_with {
+        new(body)
+      }
+      body {
+        { 'resource' => '/catalog/bib',
+          'key' => '1220805',
+          'fields' =>
+             { 'shadowed' => false,
+               'author' =>
+                  'American University (Washington, D.C.). Foreign Areas Studies Division.',
+               'titleControlNumber' => 'l72600260',
+               'catalogDate' => '1997-07-23',
+               'catalogFormat' => { 'resource' => '/policy/catalogFormat', 'key' => 'SERIAL' },
+               'modifiedDate' => '2020-01-15',
+               'systemModifiedDate' => '2020-09-09T13:27:00-04:00',
+               'title' => 'Area handbook for the Democratic Republic of Sudan',
+               'callList' =>
+                  [{ 'resource' => '/catalog/call',
+                     'key' => '1220805:1',
+                     'fields' =>
+                        { 'library' => { 'resource' => '/policy/library', 'key' => 'HARRISBURG' },
+                          'callNumber' => 'DT154.6.S93',
+                          'shadowed' => false,
+                          'volumetric' => '1973',
+                          'dispCallNumber' => 'DT154.6.S93 1973',
+                          'bib' => { 'resource' => '/catalog/bib', 'key' => '1220805' },
+                          'itemList' =>
+                             [{ 'resource' => '/catalog/item',
+                                'key' => '1220805:1:1',
+                                'fields' =>
+                                   { 'call' => { 'resource' => '/catalog/call', 'key' => '1220805:1' },
+                                     'mediaDesk' => nil,
+                                     'itemType' => { 'resource' => '/policy/itemType', 'key' => 'SERIAL' },
+                                     'library' => { 'resource' => '/policy/library', 'key' => 'HARRISBURG' },
+                                     'shadowed' => false,
+                                     'homeLocation' =>
+                                        { 'resource' => '/policy/location', 'key' => 'STACKS-HB2' },
+                                     'copyNumber' => 1,
+                                     'bib' => { 'resource' => '/catalog/bib', 'key' => '1220805' },
+                                     'barcode' => '000022026637',
+                                     'circulate' => true,
+                                     'currentLocation' =>
+                                        { 'resource' => '/policy/location', 'key' => 'STACKS-HB2' } } }],
+                          'classification' =>
+                             { 'resource' => '/policy/classification', 'key' => 'LCPER' } } },
+                   { 'resource' => '/catalog/call',
+                     'key' => '1220805:4',
+                     'fields' =>
+                        { 'library' => { 'resource' => '/policy/library', 'key' => 'UP-ANNEX' },
+                          'callNumber' => 'DT154.6.S93',
+                          'shadowed' => false,
+                          'volumetric' => '1973',
+                          'dispCallNumber' => 'DT154.6.S93 1973',
+                          'bib' => { 'resource' => '/catalog/bib', 'key' => '1220805' },
+                          'itemList' =>
+                             [{ 'resource' => '/catalog/item',
+                                'key' => '1220805:4:1',
+                                'fields' =>
+                                   { 'call' => { 'resource' => '/catalog/call', 'key' => '1220805:4' },
+                                     'mediaDesk' => nil,
+                                     'itemType' => { 'resource' => '/policy/itemType', 'key' => 'SERIAL' },
+                                     'library' => { 'resource' => '/policy/library', 'key' => 'UP-ANNEX' },
+                                     'shadowed' => false,
+                                     'homeLocation' =>
+                                        { 'resource' => '/policy/location', 'key' => 'CATO-2' },
+                                     'copyNumber' => 1,
+                                     'bib' => { 'resource' => '/catalog/bib', 'key' => '1220805' },
+                                     'barcode' => '000002040981',
+                                     'circulate' => true,
+                                     'currentLocation' =>
+                                        { 'resource' => '/policy/location', 'key' => 'CATO-2' } } },
+                              { 'resource' => '/catalog/item',
+                                'key' => '1220805:4:2',
+                                'fields' =>
+                                   { 'call' => { 'resource' => '/catalog/call', 'key' => '1220805:4' },
+                                     'mediaDesk' => nil,
+                                     'itemType' => { 'resource' => '/policy/itemType', 'key' => 'SERIAL' },
+                                     'library' => { 'resource' => '/policy/library', 'key' => 'UP-ANNEX' },
+                                     'shadowed' => false,
+                                     'homeLocation' =>
+                                        { 'resource' => '/policy/location', 'key' => 'CATO-2' },
+                                     'copyNumber' => 2,
+                                     'bib' => { 'resource' => '/catalog/bib', 'key' => '1220805' },
+                                     'barcode' => '000010494721',
+                                     'circulate' => true,
+                                     'currentLocation' =>
+                                        { 'resource' => '/policy/location', 'key' => 'CATO-2' } } }],
+                          'classification' =>
+                             { 'resource' => '/policy/classification', 'key' => 'LCPER' } } }],
+               'createDate' => '2001-04-13' } }
+      }
+    end
+
     factory :bib_with_dupe_call_number_volumetrics do
       initialize_with {
         new(body)
