@@ -27,7 +27,7 @@ class PlaceHoldForm::Builder
       title: bib_info.title,
       author: bib_info.author,
       volumetric_calls: @volumetric_calls,
-      barcode: @volumetric_calls.present? ? nil : @call_list&.sample&.items&.sample&.barcode
+      barcode: find_barcode
     }
   end
 
@@ -101,5 +101,9 @@ class PlaceHoldForm::Builder
 
     def volumetric?
       @call_list&.any? { |call| call.volumetric.present? }
+    end
+
+    def find_barcode
+      @volumetric_calls.present? ? nil : @call_list&.sample&.items&.sample&.barcode
     end
 end
