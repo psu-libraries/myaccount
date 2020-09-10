@@ -37,21 +37,28 @@ class ApplicationController < ActionController::Base
     end
 
     def authenticate_user!
-      set_original_fullpath
+      # Go through auth (which happens at the root_url which is the SessionsController)
+      unless current_user?
+        set_original_fullpath
+        return redirect_to root_url
+      end
 
-      return redirect_to root_url unless current_user?
-
+      # So current_user is set, Warden has got a user for us. However, our session with Sirsi WS has not gone stale.
+      # We know it's stale because the ping returned something other than 200.
       renew_session_token unless symphony_client.ping?(current_user)
     end
 
+    # This is used in the scenario where a user is not known to Warden yet. The application will redirect the
+    # user back to this originally requested URL after the authentication has taken place.
     def set_original_fullpath
       session[:original_fullpath] = request.original_fullpath unless request.original_fullpath == '/'
     end
 
+    # Things have gotten stale, clear user out by logging Warden out and send back through the authentication pipes.
     def renew_session_token
       request.env['warden'].logout
 
-      authenticate_webaccess
+      authenticate_user!
     end
 
     def item_details
