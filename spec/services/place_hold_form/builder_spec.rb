@@ -42,7 +42,7 @@ RSpec.describe PlaceHoldForm::Builder do
       end
 
       it 'will not generate form params' do
-        expect(form_params).to be_nil
+        expect(form_params).to be_empty
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe PlaceHoldForm::Builder do
       let(:bib_info) { build(:bib_with_no_holdable_locations) }
 
       it 'will not generate form params' do
-        expect(form_params).to be_nil
+        expect(form_params).to be_empty
       end
     end
 

@@ -12,14 +12,15 @@ class PlaceHoldForm::Builder
   def generate
     bib_info = Bib.new(SymphonyClientParser::parsed_response(@client, :get_bib_info, @catkey, @user_token))
 
-    # record with empty callList
-    return if bib_info.call_list.blank?
+    if bib_info.call_list.present?
+      @call_list = bib_info.call_list.map { |call| Call.new record: call }
+      filter_holdables if @call_list.count > 1
+    end
 
-    @call_list = bib_info.call_list.map { |call| Call.new record: call }
+    # no holdable items found
+    return {} if @call_list.blank?
+
     process_volumetric_calls
-
-    # no holdable locations found
-    return if @call_list.blank?
 
     {
       catkey: @catkey,
@@ -51,7 +52,6 @@ class PlaceHoldForm::Builder
     #
     # Fourth: Only pass along the volumetric calls that have unique Call#call_number
     def process_volumetric_calls
-      filter_holdables if @call_list.count > 1
       @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
       volumetric_natural_sort
       compact_non_volumetric_calls if @volumetric_calls.select { |call| call.volumetric.nil? }.count > 1
