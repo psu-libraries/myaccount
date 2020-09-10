@@ -71,4 +71,4 @@ en:
           error_html: <small class="text-secondary">We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a></small>
         new_hold:
           catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
-          error_html: <span class="font-weight-bold">Sorry!</span> You cannot place a hold on this item. Contact your library if you need assistance.<br>
+          error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
