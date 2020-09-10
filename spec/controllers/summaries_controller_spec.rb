@@ -51,10 +51,14 @@ RSpec.describe SummariesController do
     context 'with a stale session' do
       let(:ping_response) { false }
 
+      before do
+        allow(controller).to receive(:current_user?).and_return(true, false)
+      end
+
       it 'redirects to the application authentication mechanism' do
         get(:index)
 
-        expect(response).to have_http_status '302'
+        expect(response).to redirect_to root_url
       end
     end
   end
