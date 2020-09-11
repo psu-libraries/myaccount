@@ -11,14 +11,7 @@ class PlaceHoldForm::Builder
 
   def generate
     bib_info = Bib.new(SymphonyClientParser::parsed_response(@client, :get_bib_info, @catkey, @user_token))
-
-    if bib_info.call_list.present?
-      @call_list = bib_info.call_list.map { |call| Call.new record: call }
-      filter_holdables if @call_list.count > 1
-    end
-
-    # no holdable items found
-    return {} if @call_list.blank?
+    return {} unless holdables_present?(bib_info)
 
     process_volumetric_calls
 
@@ -33,12 +26,23 @@ class PlaceHoldForm::Builder
 
   private
 
+    # Find out what Items are holdable inside Calls. Set Calls to be just those that contain holdable items.
+    #
+    #  * Each potential holdable must have a current location that is holdable.
+    def holdables_present?(bib_info)
+      return false if bib_info.call_list.blank?
+
+      @call_list = bib_info.call_list.map { |call| Call.new record: call }
+      filter_holdables if @call_list.count > 1
+
+      @call_list.present?
+    end
+
     # Take the @call_list (Array of Calls) and check for volumetrics and process if present.
     #
-    # First: find out what Items are holdable inside Calls. Order is important.
+    # First: determine holdable volumetrics.
     #
     #  * Must be more than 1 overall potential holdable Call.
-    #  * Each potential holdable must have a current location that is holdable.
     #  * To be a holdable set:
     #    * Must be at least one volumetric Call.
     #    * Must be more than one Call with items that are holdable.
