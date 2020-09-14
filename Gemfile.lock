@@ -96,7 +96,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
-    ddtrace (0.33.1)
+    ddtrace (0.40.0)
       msgpack
     debug_inspector (0.0.3)
     deep_merge (1.2.1)

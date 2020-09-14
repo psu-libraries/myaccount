@@ -24,6 +24,8 @@ Bundler.require(*Rails.groups)
 
 module Myaccount
   class Application < Rails::Application
+    config.myaccount_verison = IO.binread('./VERSION').chomp
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
@@ -48,5 +50,10 @@ module Myaccount
     end
 
     config.active_job.queue_adapter = :sidekiq
+
+    Config.setup do |config|
+      config.const_name = 'Settings'
+      config.use_env = true
+    end
   end
 end
