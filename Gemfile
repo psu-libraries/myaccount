@@ -28,6 +28,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'axe-matchers'
   gem 'byebug'
   gem 'capybara'
   gem 'factory_bot_rails'
