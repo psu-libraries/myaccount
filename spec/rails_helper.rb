@@ -35,6 +35,8 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'webmock/rspec'
 require 'view_component/test_helpers'
+require 'axe/rspec'
+
 ## Below picks up our mock objects as well as factory_bot config
 Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 

@@ -1,4 +1,5 @@
-<%= check_box_tag "#{name}[#{key}]",
+<%= label_tag id, 'Select', class: 'sr-only' %>
+<%= check_box_tag id,
                   key,
                   false,
                   data: { select_all_target: target_keyword },

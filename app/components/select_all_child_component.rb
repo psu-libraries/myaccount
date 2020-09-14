@@ -4,10 +4,11 @@ class SelectAllChildComponent < ViewComponent::Base
   def initialize(name: nil, key:, target_keyword:)
     @name = name || "#{target_keyword}_list[]"
     @key = key
+    @id = "#{@name}[#{key}]"
     @target_keyword = target_keyword
   end
 
   private
 
-    attr_reader :name, :target_keyword, :key
+    attr_reader :name, :target_keyword, :key, :id
 end
