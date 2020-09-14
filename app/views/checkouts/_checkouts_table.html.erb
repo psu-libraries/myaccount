@@ -29,7 +29,7 @@
             <td>
               <%= render SelectAllChildComponent.new key: checkout.item_key, target_keyword: 'renewal' %>
             </td>
-            <td>
+            <td class="bibitem">
               <%= render BibItemComponent.new bibitem: checkout %>
             </td>
             <td class="renewal_count"><span><%= checkout.renewal_count if checkout.renewal_count.positive? %></span></td>

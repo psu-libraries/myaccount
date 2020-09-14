@@ -9,6 +9,8 @@ linters:
     enabled: true
   FinalNewline:
     enabled: true
+    exclude:
+      - '**/app/views/shared/_success_badge.html.erb'
   HardCodedString:
     enabled: false
   RightTrim:

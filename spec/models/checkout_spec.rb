@@ -143,9 +143,9 @@ RSpec.describe Checkout, type: :model do
     end
 
     context 'when an item is not overdue' do
-      it 'is nil' do
+      it 'is an empty string' do
         checkout.record['fields']['overdue'] = false
-        expect(checkout.status_human).to be_nil
+        expect(checkout.status_human).to eq ''
       end
     end
   end

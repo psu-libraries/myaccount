@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const updateCheckout = function (data) {
@@ -7,9 +7,14 @@ const updateCheckout = function (data) {
         toggleSpin('checkout', data.id, 'due-date');
         toggleSpin('checkout', data.id, 'status');
     } else {
-        document.querySelector(`[id="checkout${data.id}"] .renewal_count`).innerHTML = data.response.renewal_count;
-        document.querySelector(`[id="checkout${data.id}"] .due-date`).innerHTML = data.response.due_date;
-        document.querySelector(`[id="checkout${data.id}"] .status`).innerHTML = data.response.status;
+        document.querySelector(`[id="checkout${data.id}"] .bibitem`).
+            innerHTML += data.response.badge;
+        document.querySelector(`[id="checkout${data.id}"] .renewal_count`).
+            innerHTML = `<span>${data.response.renewal_count}</span>`;
+        document.querySelector(`[id="checkout${data.id}"] .due-date`).
+            innerHTML = `<span>${data.response.due_date}</span>`;
+        document.querySelector(`[id="checkout${data.id}"] .status`).
+            innerHTML = `<span>${data.response.status}</span>`;
     }
 };
 
@@ -27,6 +32,7 @@ let renewCheckout = function () {
                 toggleSpin('checkout', checkbox.value, 'due-date');
                 toggleSpin('checkout', checkbox.value, 'status');
             });
+            scrollToTop();
     });
 
     findForm('checkouts').addEventListener("ajax:success", function (event) {

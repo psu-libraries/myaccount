@@ -25,7 +25,8 @@ class RenewCheckoutJob < ApplicationJob
         response: {
           renewal_count: checkout.renewal_count,
           due_date: due_date,
-          status: checkout.status_human
+          status: checkout.status_human,
+          badge: badge(message: 'Successfully renewed')
         }
       }.to_json)
     else
