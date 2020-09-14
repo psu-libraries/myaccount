@@ -51,13 +51,19 @@ RSpec.describe 'Holds', type: :feature do
   end
 
   context 'when a patron attempts to create a hold for a monograph', js: true do
-    it 'renders a form for the item being requested' do
+    before do
       visit '/holds/new?catkey=6066288'
+    end
+
+    it 'is accessible', js: true do
+      expect(page).to be_accessible
+    end
+
+    it 'renders a form for the item being requested' do
       expect(page).to have_text 'Title: 13 bankers : the Wall Street takeover and the next financial meltdown'
     end
 
     it 'allows user to place a hold for a holdable item', js: true do
-      visit '/holds/new?catkey=6066288'
       select 'College of Medicine (Hershey)', from: 'pickup_library'
       fill_in 'pickup_by_date', with: '10-10-2050'
 

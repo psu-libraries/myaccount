@@ -1,6 +1,7 @@
 // Theme colors
 $psu-dark-blue: #1f427c;
 $psu-blue: #0071bc;
+$medium-blue: #176db8;
 $light-blue: #6888c2;
 $link-color: $psu-blue;
 $grayish: #e6e6e6;
@@ -22,6 +23,7 @@ $theme-colors: (
         "light": #f2f2f2,
 );
 $primary: $psu-blue;
+$info: $medium-blue;
 
 //  Navbar
 $navbar-brand-padding-y: 0;
