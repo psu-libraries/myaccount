@@ -12,7 +12,7 @@
 | Software |  Version |
 |----------|------|
 | `ruby`    |  2.6.5 <br> (_ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin18]_) |
-| `rails`   |  6.0.2 |
+| `rails`   |  6.0.3 |
 | `redis`   | 5.0.7 |
 
 # Development Setup
