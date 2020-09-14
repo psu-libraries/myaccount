@@ -39,7 +39,7 @@ $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
 $major-third: 1.25;
 $major-second: 1.125;
 $just-right: 1.19;
-$ratio: $just-right;
+$ratio: 1.15;
 $h6-font-size: $font-size-base !default;
 $h5-font-size: $h6-font-size * $ratio !default;
 $h4-font-size: $h5-font-size * $ratio !default;

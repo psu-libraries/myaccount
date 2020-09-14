@@ -15,8 +15,15 @@ RSpec.describe 'Holds', type: :feature do
   end
 
   context 'when a patron has some holds not yet ready to pickup (i.e., pending)' do
-    it 'lets the user change the pickup library of a hold', js: true do
+    before do
       visit holds_path
+    end
+
+    it 'is accessible', js: true do
+      expect(page).to be_accessible
+    end
+
+    it 'lets the user change the pickup library of a hold', js: true do
       page.check 'hold_list__3911148'
       page.select 'Penn State York', from: 'pickup_library'
       page.click_button 'Update Selected Holds'
@@ -24,7 +31,6 @@ RSpec.describe 'Holds', type: :feature do
     end
 
     it 'lets the user change the pickup by date of a hold', js: true do
-      visit holds_path
       page.check 'hold_list__3911148'
       page.fill_in 'pickup_by_date', with: '01-01-9999'
       page.click_button 'Update Selected Holds'
@@ -32,14 +38,12 @@ RSpec.describe 'Holds', type: :feature do
     end
 
     it 'lets the user cancel a pending hold', js: true do
-      visit holds_path
       page.check 'hold_list__3911148'
       page.click_button 'Cancel'
       expect(page).to have_css '#hold3911148 .hold_status', text: 'Cancelled'
     end
 
     it 'lets the user cancel a ready for pickup hold', js: true do
-      visit holds_path
       page.check 'hold_list__3906718'
       page.click_button 'Cancel Selected Holds'
       expect(page).to have_css '#hold3906718 .hold_status', text: 'Cancelled'
