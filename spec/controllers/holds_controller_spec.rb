@@ -83,9 +83,39 @@ RSpec.describe HoldsController, type: :controller do
       end
 
       it 'sends the form parameters to the view' do
-        get :new
+        get :new, params: { catkey: 1 }
 
         expect(assigns(:place_hold_form_params)).to eq(form_params)
+      end
+
+      context 'when catkey param is missing' do
+        it 'sets a flash error message' do
+          get :new, params: {}
+
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.catkey_missing')
+        end
+
+        it 'redirects to the summaries' do
+          get :new, params: {}
+
+          expect(response).to redirect_to summaries_path
+        end
+      end
+
+      context 'when user tries with a non holdable record' do
+        let(:form_params) {}
+
+        it 'sets a flash error message' do
+          get :new, params: { catkey: 1 }
+
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.error_html')
+        end
+
+        it 'redirects to the summaries' do
+          get :new, params: { catkey: 1 }
+
+          expect(response).to redirect_to summaries_path
+        end
       end
     end
 

@@ -4,6 +4,7 @@ class HoldsController < ApplicationController
   before_action :set_cache_headers
   before_action :authenticate_user!
   before_action :check_for_blanks!, only: :create
+  rescue_from NewHoldException, with: :deny_new
   rescue_from HoldCreateException, with: :deny_create
   rescue_from HoldException, with: :past_date
 
@@ -42,10 +43,14 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
+    raise NewHoldException, 'Error' if params[:catkey].blank?
+
     form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
                                               user_token: current_user.session_token,
                                               client: symphony_client)
     @place_hold_form_params = form_builder.generate
+
+    raise NewHoldException, 'Error' if @place_hold_form_params.blank?
   end
 
   # Handles placing holds
@@ -86,6 +91,16 @@ class HoldsController < ApplicationController
       return unless barcodes.blank? || params['pickup_library'].blank? || params['pickup_by_date'].blank?
 
       raise HoldCreateException, 'Error'
+    end
+
+    def deny_new
+      flash[:error] = if params['catkey'].blank?
+                        t 'myaccount.hold.new_hold.catkey_missing'
+                      else
+                        t 'myaccount.hold.new_hold.error_html'
+                      end
+
+      redirect_to summaries_path
     end
 
     def deny_create

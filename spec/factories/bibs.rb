@@ -269,6 +269,196 @@ FactoryBot.define do
       }
     end
 
+    factory :bib_with_no_holdable_locations do
+      initialize_with {
+        new(body)
+      }
+
+      body {
+        {
+          'resource' => '/catalog/bib',
+          'key' => '26141494',
+          'fields' => {
+            'shadowed' => false,
+            'author' => 'Diamond, Jared M. author.',
+            'titleControlNumber' => 'l2018952825',
+            'catalogDate' => '2019-05-28',
+            'catalogFormat' => {
+              'resource' => '/policy/catalogFormat', 'key' => 'MARC'
+            },
+            'modifiedDate' => '2019-12-08',
+            'systemModifiedDate' => '2020-02-04T15:11:00-05:00',
+            'title' => 'Upheaval : turning points for nations in crisis',
+            'callList' => [{
+              'resource' => '/catalog/call',
+              'key' => '26141494:4',
+              'fields' => {
+                'library' => {
+                  'resource' => '/policy/library', 'key' => 'UP-PAT'
+                },
+                'callNumber' => 'HN13.D52 2019',
+                'shadowed' => false,
+                'volumetric' => nil,
+                'dispCallNumber' => 'HN13.D52 2019',
+                'bib' => {
+                  'resource' => '/catalog/bib', 'key' => '26141494'
+                },
+                'itemList' => [{
+                  'resource' => '/catalog/item',
+                  'key' => '26141494:4:2',
+                  'fields' => {
+                    'call' => {
+                      'resource' => '/catalog/call', 'key' => '26141494:4'
+                    },
+                    'mediaDesk' => nil,
+                    'itemType' => {
+                      'resource' => '/policy/itemType', 'key' => 'BOOK'
+                    },
+                    'library' => {
+                      'resource' => '/policy/library', 'key' => 'UP-PAT'
+                    },
+                    'shadowed' => false,
+                    'homeLocation' => {
+                      'resource' => '/policy/location', 'key' => 'PATERNO-2'
+                    },
+                    'copyNumber' => 2,
+                    'bib' => {
+                      'resource' => '/catalog/bib', 'key' => '26141494'
+                    },
+                    'barcode' => '000081297085',
+                    'circulate' => false,
+                    'currentLocation' => {
+                      'resource' => '/policy/location', 'key' => 'ILLEND'
+                    }
+                  }
+                }],
+                'classification' => {
+                  'resource' => '/policy/classification', 'key' => 'LC'
+                }
+              }
+            },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '26141494:6',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'ALTOONA'
+                               },
+                               'callNumber' => 'HN13.D52 2019',
+                               'shadowed' => false,
+                               'volumetric' => nil,
+                               'dispCallNumber' => 'HN13.D52 2019',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '26141494'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '26141494:6:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '26141494:6'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'BOOKFLOAT'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'ALTOONA'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'STACKS-AA'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '26141494'
+                                   },
+                                   'barcode' => '000081321605',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'ILLEND'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '26141494:3',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'HN13.D52 2019',
+                               'shadowed' => false,
+                               'volumetric' => nil,
+                               'dispCallNumber' => 'HN13.D52 2019',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '26141494'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '26141494:3:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '26141494:3'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'BOOKFLOAT'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'STACKS-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '26141494'
+                                   },
+                                   'barcode' => '000081287932',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'ILLEND'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '26141494:1',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'WSCRANTON'
+                               },
+                               'callNumber' => 'SN15687372',
+                               'shadowed' => false,
+                               'volumetric' => nil,
+                               'dispCallNumber' => 'SN15687372',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '26141494'
+                               },
+                               'itemList' => [],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           }],
+            'createDate' => '2019-03-11'
+          }
+        }
+      }
+    end
+
     factory :bib_with_holdables do
       initialize_with {
         new(body)

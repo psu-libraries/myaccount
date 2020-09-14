@@ -36,6 +36,24 @@ RSpec.describe PlaceHoldForm::Builder do
       expect(form_params[:author]).to eq 'Hill Street blues (Television program)'
     end
 
+    context 'when response from Sirsi is an error, meaning no callList set' do
+      before do
+        bib_info.record['fields']['callList'] = ''
+      end
+
+      it 'will return an empty hash' do
+        expect(form_params).to be_empty
+      end
+    end
+
+    context 'when bib response has no holdable items' do
+      let(:bib_info) { build(:bib_with_no_holdable_locations) }
+
+      it 'will return an empty hash' do
+        expect(form_params).to be_empty
+      end
+    end
+
     context 'when there are volumetric calls to present to the user' do
       it 'will generate holdables when supplied with a body that has a callList' do
         expect(form_params[:volumetric_calls].count).to be 8

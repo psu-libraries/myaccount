@@ -11,7 +11,8 @@ class PlaceHoldForm::Builder
 
   def generate
     bib_info = Bib.new(SymphonyClientParser::parsed_response(@client, :get_bib_info, @catkey, @user_token))
-    @call_list = bib_info.call_list.map { |call| Call.new record: call }
+    return {} unless holdables_present?(bib_info)
+
     process_volumetric_calls
 
     {
@@ -19,18 +20,29 @@ class PlaceHoldForm::Builder
       title: bib_info.title,
       author: bib_info.author,
       volumetric_calls: @volumetric_calls,
-      barcode: @volumetric_calls.present? ? nil : @call_list&.sample&.items&.sample&.barcode
+      barcode: find_barcode
     }
   end
 
   private
 
+    # Find out what Items are holdable inside Calls. Set Calls to be just those that contain holdable items.
+    #
+    #  * Each potential holdable must have a current location that is holdable.
+    def holdables_present?(bib_info)
+      return false if bib_info.call_list.blank?
+
+      @call_list = bib_info.call_list.map { |call| Call.new record: call }
+      filter_holdables if @call_list.count > 1
+
+      @call_list.present?
+    end
+
     # Take the @call_list (Array of Calls) and check for volumetrics and process if present.
     #
-    # First: find out what Items are holdable inside Calls. Order is important.
+    # First: determine holdable volumetrics.
     #
     #  * Must be more than 1 overall potential holdable Call.
-    #  * Each potential holdable must have a current location that is holdable.
     #  * To be a holdable set:
     #    * Must be at least one volumetric Call.
     #    * Must be more than one Call with items that are holdable.
@@ -44,7 +56,6 @@ class PlaceHoldForm::Builder
     #
     # Fourth: Only pass along the volumetric calls that have unique Call#call_number (and there has to be more than 1)
     def process_volumetric_calls
-      filter_holdables if @call_list.count > 1
       @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
       volumetric_natural_sort
       compact_non_volumetric_calls if @volumetric_calls.select { |call| call.volumetric.nil? }.count > 1
@@ -104,5 +115,9 @@ class PlaceHoldForm::Builder
 
     def volumetric?
       @call_list&.any? { |call| call.volumetric.present? }
+    end
+
+    def find_barcode
+      @volumetric_calls.present? ? nil : @call_list&.sample&.items&.sample&.barcode
     end
 end
