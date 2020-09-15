@@ -1,6 +1,6 @@
 <%= form_with url: holds_batch_destroy_path, method: :delete, id: 'pending-holds' do %>
   <table class="table">
-    <caption>Holds that are not ready for pickup</caption>
+    <caption><h2>Holds that are not ready for pickup</h2></caption>
     <thead>
 
     <tr>
@@ -36,11 +36,11 @@
   <div class="row">
     <div class="col-12 col-lg-10">
       <div class="card">
-        <h5 class="card-header">What to do with selected holds</h5>
+        <h3 class="card-header">What to do with selected holds</h3>
         <div class="row">
           <div class="col-8">
             <div class="card-body">
-              <h5>Edit Selected Holds</h5>
+              <h4>Edit Selected Holds</h4>
               <%= render partial: 'holds/form_inputs', locals: { validate_pickup_info: false, make_default: false } %>
               <br>
               <%= submit_tag('Update Selected Holds', class: 'btn btn-primary deflatten', formmethod: 'PATCH', data: { disable_with: 'Please wait...' }) %>
@@ -48,7 +48,7 @@
           </div>
           <div class="col-4 border-left">
             <div class="card-body">
-              <h5 class="card-title">Cancel Selected Holds</h5>
+              <h4 class="card-title">Cancel Selected Holds</h4>
               <%= submit_tag('Cancel', class: 'btn btn-danger deflatten') %>
             </div>
           </div>

@@ -7,6 +7,9 @@
 
 <div class="page-section">
   <h1>Summary</h1>
+
+  <p>Library account record for <strong><%= patron.display_name %></strong></p>
+
   <% if patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? %>
       <p>You do not have any outstanding materials or bills.</p>
   <% else %>

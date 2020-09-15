@@ -8,13 +8,13 @@ class FinesController < ApplicationController
   # GET /fines
   def index
     @fines = fines
-    @total_owed = fines.sum(&:owed_amount)
+    @total_owed = @fines&.sum(&:owed_amount)
   end
 
   private
 
     def fines
-      patron.fines
+      @fines ||= patron.fines
     end
 
     def item_details

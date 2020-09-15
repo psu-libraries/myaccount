@@ -1,6 +1,6 @@
 <%= form_with url: renewals_batch_update_path, method: :patch, id: 'checkouts' do %>
-    <table class="table">
-      <caption>Checkouts</caption>
+    <table id="checkouts-table" class="table" role="table" aria-live="polite">
+      <caption><h2>Checkouts</h2></caption>
       <thead>
       <tr>
         <th scope="col">
@@ -16,7 +16,11 @@
       <tfoot>
       <tr>
         <th scope="col" colspan="6">
-          <%= submit_tag 'Renew', class: 'btn btn-primary deflatten', data: { disable_with: 'Please wait...' } %></th>
+          <%= submit_tag 'Renew',
+                         class: 'btn btn-primary deflatten',
+                         aria: { controls: 'checkouts-table' },
+                         data: { disable_with: 'Please wait...' } %>
+        </th>
       </tr>
       </tfoot>
       <tbody>

@@ -1,6 +1,7 @@
 // Theme colors
 $psu-dark-blue: #1f427c;
 $psu-blue: #0071bc;
+$medium-blue: #176db8;
 $light-blue: #6888c2;
 $link-color: $psu-blue;
 $grayish: #e6e6e6;
@@ -21,6 +22,8 @@ $theme-colors: (
         "dark": $psu-dark-blue,
         "light": #f2f2f2,
 );
+$primary: $psu-blue;
+$info: $medium-blue;
 
 //  Navbar
 $navbar-brand-padding-y: 0;
@@ -38,7 +41,7 @@ $font-size-base: 1rem !default; // Assumes the browser default, typically `16px`
 $major-third: 1.25;
 $major-second: 1.125;
 $just-right: 1.19;
-$ratio: $just-right;
+$ratio: 1.15;
 $h6-font-size: $font-size-base !default;
 $h5-font-size: $h6-font-size * $ratio !default;
 $h4-font-size: $h5-font-size * $ratio !default;
