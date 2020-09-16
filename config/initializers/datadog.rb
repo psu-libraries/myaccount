@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
-puts Rails.application.config.myaccount_verison
-if Settings.datadog
+if Settings&.datadog&.on_server
   require 'ddtrace'
   Datadog.configure do |c|
     c.service = 'myaccount'
-    c.env = 'production'
+    c.env = Settings.datadog.environment
     c.version = Rails.application.config.myaccount_verison
     c.use :rails
     c.use :httprb, service_name: 'myaccount-httprb'

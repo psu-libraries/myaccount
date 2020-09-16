@@ -1,1 +1,3 @@
-datadog: true
+datadog:
+  on_server: true
+  environment: production
