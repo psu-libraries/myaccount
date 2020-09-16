@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'sinatra/base'
+require 'support/fake_webservice'
 
-class FakeSymphony < Sinatra::Base
+class FakeSymphony < FakeWebservice
   get '/symwsbc/user/patron/key/:key' do
     json_response 200, "patrons/#{params[:key]}.json"
   end
@@ -68,12 +68,6 @@ class FakeSymphony < Sinatra::Base
   end
 
   private
-
-    def json_response(response_code, file_name)
-      content_type :json
-      status response_code
-      File.open(File.dirname(__FILE__) + '/data/' + file_name, 'rb').read
-    end
 
     def json_body(request)
       JSON.parse request.body.read
