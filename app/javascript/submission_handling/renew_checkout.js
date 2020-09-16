@@ -4,6 +4,8 @@ import { renderData } from './polling'
 const updateCheckout = function (data) {
     if (data.result === 'failure') {
         toggleSpin('checkout', data.id, 'renewal_count');
+        toggleSpin('checkout', data.id, 'due-date', false);
+        toggleSpin('checkout', data.id, 'status', false);
     } else {
         document.querySelector(`[id="checkout${data.id}"] .bibitem`).
             innerHTML += data.response.badge;
@@ -27,8 +29,8 @@ let renewCheckout = function () {
     findForm('checkouts').addEventListener("submit", function () {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
                 toggleSpin('checkout', checkbox.value, 'renewal_count');
-                document.querySelector(`[id="checkout${checkbox.value}"] .due-date`).innerHTML = '';
-                document.querySelector(`[id="checkout${checkbox.value}"] .status`).innerHTML = '';
+                toggleSpin('checkout', checkbox.value, 'due-date', false);
+                toggleSpin('checkout', checkbox.value, 'status', false);
             });
             scrollToTop();
     });
