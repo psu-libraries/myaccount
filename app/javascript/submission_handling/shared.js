@@ -35,3 +35,11 @@ export const toggleSpin = function (type, key, className) {
         }
     }
 };
+
+export const scrollToTop = () => {
+    window.scroll({
+        "top": 0,
+        "left": 0,
+        "behavior": 'smooth'
+    });
+};

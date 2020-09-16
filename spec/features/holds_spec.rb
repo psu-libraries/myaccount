@@ -27,6 +27,8 @@ RSpec.describe 'Holds', type: :feature do
       page.check 'hold_list__3911148'
       page.select 'Penn State York', from: 'pickup_library'
       page.click_button 'Update Selected Holds'
+
+      expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location'
       expect(page).to have_css '#hold3911148 .pickup_at', text: 'York'
     end
 
@@ -34,6 +36,8 @@ RSpec.describe 'Holds', type: :feature do
       page.check 'hold_list__3911148'
       page.fill_in 'pickup_by_date', with: '01-01-9999'
       page.click_button 'Update Selected Holds'
+
+      expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date'
       expect(page).to have_css '#hold3911148 .pickup-by', text: 'January 1, 9999'
     end
 

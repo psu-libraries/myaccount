@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, submitterValue, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const updateCancelledHold = function (data) {
@@ -17,6 +17,7 @@ let listenSubmit = (form) => {
             });
         }
     });
+    scrollToTop();
 };
 
 let listenAjaxSuccess = (form) => {

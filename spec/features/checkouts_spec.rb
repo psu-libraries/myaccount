@@ -27,6 +27,10 @@ RSpec.describe 'Checkouts', type: :feature do
       page.click_button 'Renew', match: :first
     end
 
+    it 'adds a success badge', js: true do
+      expect(page).to have_css '.badge-success', text: 'Successfully renewed'
+    end
+
     it 'updates the renewal count, due date and status', js: true do
       expect(page).to have_css('[id="checkout2145643:5:1"] .renewal_count', text: '70')
         .and have_css('[id="checkout2145643:5:1"] .due-date', text: 'August 13, 2020')

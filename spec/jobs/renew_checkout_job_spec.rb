@@ -8,12 +8,12 @@ RSpec.describe RenewCheckoutJob, type: :job do
                       resource: '/catalog/item',
                       session_token: '1s2fa21465' } }
     let(:success_hash) { { 'id' => '2145643:5:1',
-                           'result' => 'success',
-                           'response' => {
-                             'renewal_count' => 70,
-                             'due_date' => 'August 13, 2020',
-                             'status' => nil
-                           } }}
+                           'response' => { 'badge' => '<span class="badge badge-pill badge-success">Successfully '\
+                                                      'renewed</span>',
+                                           'due_date' => 'August 13, 2020',
+                                           'renewal_count' => 70,
+                                           'status' => '' },
+                           'result' => 'success' } }
 
     before do
       stub_request(:any, /example.com/).to_rack(FakeSymphony)

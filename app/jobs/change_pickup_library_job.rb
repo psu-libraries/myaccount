@@ -13,12 +13,14 @@ class ChangePickupLibraryJob < ApplicationJob
     case response.status
     when 200
       human_readable_location = Hold::PICKUP_LOCATION_ACTUAL[pickup_library.to_sym]
+
       Redis.current.set("pickup_library_#{hold_key}", {
         id: hold_key,
         result: :success,
         response: {
           new_value: human_readable_location,
-          new_value_id: pickup_library
+          new_value_id: pickup_library,
+          badge: badge(message: 'Successfully changed pickup location')
         }
       }.to_json)
     else

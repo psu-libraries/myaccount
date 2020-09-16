@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, submitterValue, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
@@ -14,7 +14,10 @@ const updatePickupByDate = function (data) {
     if (data.result === 'failure') {
         toggleSpin('hold', data.id, 'pickup-by');
     } else {
-        document.querySelector(`#hold${data.id} .pickup-by`).innerHTML = data.response.new_value_formatted;
+        document.querySelector(`#hold${data.id} .bibitem`).
+            innerHTML += data.response.badge;
+        document.querySelector(`#hold${data.id} .pickup-by`).
+            innerHTML = `<span>${data.response.new_value_formatted}</span>`;
     }
 };
 
@@ -31,6 +34,7 @@ let changePickupByDate = function () {
                 toggleSpin('hold', checkbox.value, 'pickup-by');
             });
         }
+        scrollToTop();
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {

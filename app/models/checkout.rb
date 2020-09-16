@@ -19,7 +19,7 @@ class Checkout
   end
 
   def status_human
-    return unless overdue?
+    return '' unless overdue?
 
     claims_returned? ? 'Claims Returned' : 'Overdue'
   end

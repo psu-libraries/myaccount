@@ -21,7 +21,7 @@
         <td>
           <%= render SelectAllChildComponent.new key: hold.key, target_keyword: 'pending', name: 'hold_list[]' %>
         </td>
-        <td>
+        <td class="bibitem">
           <%= render BibItemComponent.new bibitem: hold %>
         </td>
         <td><%= render_queue_position hold %></td>

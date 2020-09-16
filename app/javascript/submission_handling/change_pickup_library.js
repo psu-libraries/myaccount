@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, submitterValue, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -12,7 +12,9 @@ const updatePickupChange = function (data) {
     if (data.result === 'failure') {
         toggleSpin('hold', data.id, 'pickup_at');
     } else {
-        document.querySelector(`#hold${data.id} .pickup_at`).innerHTML = data.response.new_value;
+        document.querySelector(`#hold${data.id} .bibitem`).innerHTML += data.response.badge;
+        document.querySelector(`#hold${data.id} .pickup_at`).
+            innerHTML = `<span>${data.response.new_value}</span>`;
     }
 };
 
@@ -30,6 +32,7 @@ let changePickupLibrary = function () {
                 toggleSpin('hold', checkbox.value, 'pickup_at');
             });
         }
+        scrollToTop();
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {

@@ -12,12 +12,14 @@ class ChangePickupByDateJob < ApplicationJob
 
     case response.status
     when 200
+
       Redis.current.set("pickup_by_date_#{hold_key}", {
         id: hold_key,
         result: :success,
         response: {
           new_value: pickup_by_date,
-          new_value_formatted: Date.parse(pickup_by_date).strftime('%B %-d, %Y')
+          new_value_formatted: Date.parse(pickup_by_date).strftime('%B %-d, %Y'),
+          badge: badge(message: 'Successfully updated pickup by date')
         }
       }.to_json)
     else
