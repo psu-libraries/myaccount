@@ -1,11 +1,11 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, toggleResults } from './shared'
 import { renderData } from './polling'
 
 const updateCheckout = function (data) {
     if (data.result === 'failure') {
-        toggleSpin('checkout', data.id, 'renewal_count');
-        toggleSpin('checkout', data.id, 'due-date', false);
-        toggleSpin('checkout', data.id, 'status', false);
+        toggleResults('checkout', data.id, 'renewal_count');
+        toggleResults('checkout', data.id, 'due-date', false);
+        toggleResults('checkout', data.id, 'status', false);
     } else {
         document.querySelector(`[id="checkout${data.id}"] .bibitem`).
             innerHTML += data.response.badge;
@@ -28,9 +28,9 @@ let renewCheckout = function () {
 
     findForm('checkouts').addEventListener("submit", function () {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
-                toggleSpin('checkout', checkbox.value, 'renewal_count');
-                toggleSpin('checkout', checkbox.value, 'due-date', false);
-                toggleSpin('checkout', checkbox.value, 'status', false);
+                toggleResults('checkout', checkbox.value, 'renewal_count');
+                toggleResults('checkout', checkbox.value, 'due-date', false);
+                toggleResults('checkout', checkbox.value, 'status', false);
             });
             scrollToTop();
     });
