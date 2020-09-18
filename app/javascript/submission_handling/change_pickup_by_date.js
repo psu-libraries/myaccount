@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleResults } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
@@ -12,7 +12,7 @@ let validatePickupByDateChange = function (data) {
 
 const updatePickupByDate = function (data) {
     if (data.result === 'failure') {
-        toggleResults('hold', data.id, 'pickup-by');
+        toggleSpin('hold', data.id, 'pickup-by');
     } else {
         document.querySelector(`#hold${data.id} .bibitem`).
             innerHTML += data.response.badge;
@@ -31,7 +31,7 @@ let changePickupByDate = function () {
     findForm('pending-holds').addEventListener("submit", function (event) {
         if (submitterValue(event) === "Update Selected Holds" && pickupByDateInput().value !== '') {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
-                toggleResults('hold', checkbox.value, 'pickup-by');
+                toggleSpin('hold', checkbox.value, 'pickup-by');
             });
         }
         scrollToTop();

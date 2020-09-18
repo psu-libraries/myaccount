@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleResults } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -10,7 +10,7 @@ let validatePickupChange = function (data) {
 
 const updatePickupChange = function (data) {
     if (data.result === 'failure') {
-        toggleResults('hold', data.id, 'pickup_at');
+        toggleSpin('hold', data.id, 'pickup_at');
     } else {
         document.querySelector(`#hold${data.id} .bibitem`).innerHTML += data.response.badge;
         document.querySelector(`#hold${data.id} .pickup_at`).
@@ -29,7 +29,7 @@ let changePickupLibrary = function () {
         if (submitterValue(event) === "Update Selected Holds" &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
-                toggleResults('hold', checkbox.value, 'pickup_at');
+                toggleSpin('hold', checkbox.value, 'pickup_at');
             });
         }
         scrollToTop();

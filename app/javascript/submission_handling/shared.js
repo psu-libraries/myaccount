@@ -23,7 +23,9 @@ export let responseFromRails = (event) => {
     return 'Not defined';
 };
 
-export const toggleSpin = function (cssPath) {
+export const toggleSpin = function (type, key, className) {
+    const cssPath = `[id="${type}${key}"] .${className}`;
+    document.querySelector(`${cssPath} span`).classList.toggle('invisible');
     if (document.querySelector(`${cssPath} .spinner-border`)) {
         document.querySelector(`${cssPath} .spinner-border`).remove();
     } else {
@@ -31,15 +33,6 @@ export const toggleSpin = function (cssPath) {
         if (document.querySelector(`${cssPath} .warning`)) {
             document.querySelector(`${cssPath} .warning`).remove();
         }
-    }
-};
-
-// eslint-disable-next-line max-params
-export const toggleResults = function (type, key, className, showSpinner = true) {
-    const cssPath = `[id="${type}${key}"] .${className}`;
-    document.querySelector(`${cssPath} span`).classList.toggle('invisible');
-    if (showSpinner) {
-        toggleSpin(cssPath)
     }
 };
 
