@@ -9,7 +9,7 @@ export let submitterValue = (event) => {
 
 export const findForm = (form) => document.querySelector(`form#${form}`);
 
-export const spinner = `<div class="spinner-border" role="status">
+export const spinner = `<div class="spinner-border spinner-border-sm text-secondary" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>`;
 

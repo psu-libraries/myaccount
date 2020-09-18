@@ -4,8 +4,8 @@ import { renderData } from './polling'
 const updateCheckout = function (data) {
     if (data.result === 'failure') {
         toggleSpin('checkout', data.id, 'renewal_count');
-        toggleSpin('checkout', data.id, 'due-date');
-        toggleSpin('checkout', data.id, 'status');
+        document.querySelector(`[id="checkout${data.id}"] .due-date span`).classList.toggle('invisible');
+        document.querySelector(`[id="checkout${data.id}"] .status span`).classList.toggle('invisible');
     } else {
         document.querySelector(`[id="checkout${data.id}"] .bibitem`).
             innerHTML += data.response.badge;
@@ -29,8 +29,8 @@ let renewCheckout = function () {
     findForm('checkouts').addEventListener("submit", function () {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
                 toggleSpin('checkout', checkbox.value, 'renewal_count');
-                toggleSpin('checkout', checkbox.value, 'due-date');
-                toggleSpin('checkout', checkbox.value, 'status');
+                document.querySelector(`[id="checkout${checkbox.value}"] .due-date span`).classList.toggle('invisible');
+                document.querySelector(`[id="checkout${checkbox.value}"] .status span`).classList.toggle('invisible');
             });
             scrollToTop();
     });
