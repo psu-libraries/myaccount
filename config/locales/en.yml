@@ -72,3 +72,4 @@ en:
         new_hold:
           catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
           error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
+      loading_html: Items are loading. Longer lists of items will take a few moments to load.
