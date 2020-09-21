@@ -16,6 +16,7 @@ export const spinner = () => {
     let spinElement = document.createElement('div');
     spinElement.classList.add('myaccount-spinner');
     spinElement.innerHTML = innerSpinnerHTML;
+
     return spinElement;
 };
 
