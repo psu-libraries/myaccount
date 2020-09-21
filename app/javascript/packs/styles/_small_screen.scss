@@ -1,4 +1,6 @@
 @import 'theme';
+@import '~bootstrap';
+@import 'bootstrap_overrides';
 
 @include media-breakpoint-down(sm) {
   h1, .h1 {
