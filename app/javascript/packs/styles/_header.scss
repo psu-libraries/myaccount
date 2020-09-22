@@ -43,7 +43,10 @@
   }
 }
 
-.active-nav-link {
-  @include white-on-gray;
+
+@include media-breakpoint-up(sm) {
+  .active-nav-link {
+    @include white-on-gray;
+  }
 }
 
