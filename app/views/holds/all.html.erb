@@ -8,7 +8,8 @@
     <p>You have no holds ready to be picked up at this time.</p>
   <% end %>
   <% if holds_not_ready.present? %>
-    <%= render partial: 'holds/holds_not_ready_table', locals: { holds_not_ready: holds_not_ready } %>
+    <%= render partial: 'holds/holds_not_ready_table', locals: { holds_not_ready: holds_not_ready,
+                                                                 pickup_library: pickup_library } %>
   <% end %>
 
 <% end %>

@@ -12,10 +12,10 @@ class HoldsController < ApplicationController
   #
   # GET /holds
   def index
-    ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
+    @patron_key = current_user.patron_key
+    ws_args = { patron_key: @patron_key, session_token: current_user.session_token }
     ViewHoldsJob.perform_later **ws_args
 
-    @patron_key = current_user.patron_key
     render
   end
 
@@ -47,7 +47,8 @@ class HoldsController < ApplicationController
 
     form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
                                               user_token: current_user.session_token,
-                                              client: symphony_client)
+                                              client: symphony_client,
+                                              library: patron.library)
     @place_hold_form_params = form_builder.generate
 
     raise NewHoldException, 'Error' if @place_hold_form_params.blank?

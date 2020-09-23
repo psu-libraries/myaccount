@@ -1,6 +1,5 @@
 <%= label_tag :pickup_library, 'Pickup at:' %>
-<%= select_tag 'pickup_library', options_for_select(render_pickup_libraries,
-                                                    disabled: '', selected: ''),
+<%= select_tag 'pickup_library', render_pickup_libraries(selected),
                class: 'custom-select', data: 'pickup-location', required: validate_pickup_info %>
 <%= label_tag :pickup_by_date, 'Not needed after:' %>
 <%= date_field_tag :pickup_by_date, default_pickup_by_date(make_default: make_default), required: validate_pickup_info, min: minimum_pickup_by_date %>

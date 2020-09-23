@@ -131,4 +131,11 @@ RSpec.describe HoldsHelper, type: :helper do
       end
     end
   end
+
+  describe '#render_pickup_library' do
+    it 'returns an html select list with the patron\s default library selected' do
+      expect(helper.render_pickup_libraries('UP-PAT')).to include '<option selected="selected" value="UP-PAT">'\
+                                                                          'Pattee Commons Services Desk</option>'
+    end
+  end
 end
