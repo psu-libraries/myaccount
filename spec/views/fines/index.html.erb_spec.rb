@@ -26,7 +26,7 @@ RSpec.describe 'fines/index.html.erb', type: :view do
     end
 
     it 'displays fine\'s reason correctly' do
-      fine.record['fields']['block']['key'] = 'DAMAGE'
+      fine.record['fields']['block']['fields']['description'] = 'Fee for damaged materials'
       render
       expect(rendered).to include 'Fee for damaged materials'
     end

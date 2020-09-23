@@ -219,7 +219,7 @@ class SymphonyClient
     def patron_linked_resources_fields(item_details = {})
       case item_details
       when ->(h) { h[:blockList] }
-        ["blockList{*,#{ITEM_RESOURCES}}"]
+        ["blockList{*,#{ITEM_RESOURCES},block{description}}"]
       when ->(h) { h[:circRecordList] }
         ["circRecordList{*,#{ITEM_RESOURCES}}"]
       when ->(h) { h[:holdRecordList] }

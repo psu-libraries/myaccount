@@ -10,13 +10,8 @@ RSpec.describe Fine do
     expect(fine.owed_amount).to eq 12
   end
 
-  it 'has a status code' do
-    fine.record['fields']['block']['key'] = 'RECALLOVD'
-    expect(fine.status_code).to eq 'RECALLOVD'
-  end
-
   it 'has a reason' do
-    fine.record['fields']['block']['key'] = 'RECALLOVD'
+    fine.record['fields']['block']['fields']['description'] = 'Recall overdue'
     expect(fine.status_human).to eq 'Recall overdue'
   end
 
