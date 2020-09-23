@@ -80,7 +80,11 @@ FactoryBot.define do
           },
           'callNumber' => 'INSTRUCTOR COPY - COMM 150H',
           'block' => {
-            'resource' => '/policy/block', 'key' => 'RESERVEOVD'
+            'resource' => '/policy/block',
+            'key' => 'RESERVEOVD',
+            'fields' => {
+              'description' => 'Recall overdue'
+            }
           },
           'comment' => nil
         }
