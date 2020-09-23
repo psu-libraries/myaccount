@@ -50,3 +50,8 @@ export const scrollToTop = () => {
         "behavior": 'smooth'
     });
 };
+
+export const clearBadges = () => {
+    const badges = document.getElementsByClassName('badge-success');
+    while (badges.length > 0) badges[0].remove();
+};

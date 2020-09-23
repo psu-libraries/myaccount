@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin, clearBadges } from './shared'
 import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
@@ -34,6 +34,7 @@ let changePickupByDate = function () {
                 toggleSpin('hold', checkbox.value, 'pickup-by');
             });
         }
+        clearBadges();
         scrollToTop();
     });
 

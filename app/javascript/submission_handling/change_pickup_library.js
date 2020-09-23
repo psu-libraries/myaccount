@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin, clearBadges } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -32,6 +32,7 @@ let changePickupLibrary = function () {
                 toggleSpin('hold', checkbox.value, 'pickup_at');
             });
         }
+        clearBadges();
         scrollToTop();
     });
 
