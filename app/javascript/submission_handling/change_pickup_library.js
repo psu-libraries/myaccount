@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin, clearBadges } from './shared'
+import { allChecked, clearBadges, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -32,13 +32,13 @@ let changePickupLibrary = function () {
                 toggleSpin('hold', checkbox.value, 'pickup_at');
             });
         }
-        clearBadges();
         scrollToTop();
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Update scheduled' &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
+            clearBadges();
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_library_${checkbox.value}`, updatePickupChange, validatePickupChange);
             });

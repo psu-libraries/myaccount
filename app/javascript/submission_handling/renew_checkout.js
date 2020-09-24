@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, toggleSpin, clearBadges } from './shared'
+import { allChecked, clearBadges, findForm, responseFromRails, scrollToTop, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const updateCheckout = function (data) {
@@ -32,12 +32,12 @@ let renewCheckout = function () {
                 document.querySelector(`[id="checkout${checkbox.value}"] .due-date span`).classList.toggle('invisible');
                 document.querySelector(`[id="checkout${checkbox.value}"] .status span`).classList.toggle('invisible');
             });
-            clearBadges();
             scrollToTop();
     });
 
     findForm('checkouts').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Renew') {
+            clearBadges();
             allChecked(findForm('checkouts')).forEach((checkbox) => {
                 renderData(`renewal_${checkbox.value}`, updateCheckout);
             });
