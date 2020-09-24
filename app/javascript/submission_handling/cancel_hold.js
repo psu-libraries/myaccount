@@ -1,4 +1,4 @@
-import { allChecked, clearBadges, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
+import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const updateCancelledHold = function (data) {
@@ -23,7 +23,6 @@ let listenSubmit = (form) => {
 let listenAjaxSuccess = (form) => {
     form.addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Deletion scheduled') {
-            clearBadges();
             allChecked(form).forEach((checkbox) => {
                 renderData(`cancel_hold_${checkbox.value}`, updateCancelledHold);
             });
