@@ -36,6 +36,15 @@ RSpec.describe 'Checkouts', type: :feature do
         .and have_css('[id="checkout2145643:5:1"] .due-date', text: 'August 13, 2020')
         .and have_css '[id="checkout2145643:5:1"] .status', text: ''
     end
+
+    context 'when renewing the same checkout successfully more than once' do
+      it 'success badges gets cleared each time', js: true do
+        page.check 'renewal_list__2145643:5:1'
+        page.click_button 'Renew', match: :first
+
+        expect(page).to have_css '.badge-success', text: 'Successfully renewed', count: 1
+      end
+    end
   end
 
   context 'when patron fails to renew a checkout successfully' do
