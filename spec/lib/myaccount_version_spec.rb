@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe MyaccountVersion do
   subject(:myaccount_version) { described_class }
 
+  after do
+    Redis.current.flushall
+  end
+
   describe 'self.version' do
     context 'when the GitHub API is operating as expected' do
       it 'returns the current version according to GitHub' do
@@ -18,7 +22,7 @@ RSpec.describe MyaccountVersion do
       it 'returns the string "not set"' do
         stub_request(:get, 'https://api.github.com/repos/psu-libraries/myaccount/releases')
           .to_return(status: 200, body: '{}', headers: {})
-        expect(myaccount_version.version).to eq 'not set'
+        expect(myaccount_version.version).to eq 'Version could not be determined'
       end
     end
   end
