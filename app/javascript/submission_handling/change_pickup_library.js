@@ -35,10 +35,16 @@ let changePickupLibrary = function () {
         scrollToTop();
     });
 
+    findForm('pending-holds').addEventListener("ajax:before", function (event) {
+        if (submitterValue(event) === "Update Selected Holds" &&
+            pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
+            clearBadges();
+        }
+    });
+
     findForm('pending-holds').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Update scheduled' &&
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
-            clearBadges();
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_library_${checkbox.value}`, updatePickupChange, validatePickupChange);
             });

@@ -35,9 +35,12 @@ let renewCheckout = function () {
             scrollToTop();
     });
 
+    findForm('checkouts').addEventListener("ajax:before", function () {
+            clearBadges();
+    });
+
     findForm('checkouts').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Renew') {
-            clearBadges();
             allChecked(findForm('checkouts')).forEach((checkbox) => {
                 renderData(`renewal_${checkbox.value}`, updateCheckout);
             });

@@ -37,9 +37,14 @@ let changePickupByDate = function () {
         scrollToTop();
     });
 
+    findForm('pending-holds').addEventListener("ajax:before", function (event) {
+        if (submitterValue(event) === "Update Selected Holds" && pickupByDateInput().value !== '') {
+            clearBadges();
+        }
+    });
+
     findForm('pending-holds').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Update scheduled' && pickupByDateInput().value !== '') {
-            clearBadges();
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_by_date_${checkbox.value}`, updatePickupByDate, validatePickupByDateChange);
             });
