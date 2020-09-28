@@ -1,3 +1,5 @@
+const defaultIndex = 0;
+
 export let allChecked = (form) => form.querySelectorAll('.checkbox:checked');
 export let submitterValue = (event) => {
     if (event.submitter) {
@@ -49,4 +51,11 @@ export const scrollToTop = () => {
         "left": 0,
         "behavior": 'smooth'
     });
+};
+
+export const clearBadges = () => {
+    const badges = document.getElementsByClassName('badge-success');
+    while (badges.length > defaultIndex) {
+        badges[defaultIndex].remove();
+    }
 };

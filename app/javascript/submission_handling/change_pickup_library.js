@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
+import { allChecked, clearBadges, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 const defaultSelectIndex = 0;
@@ -33,6 +33,10 @@ let changePickupLibrary = function () {
             });
         }
         scrollToTop();
+    });
+
+    findForm('pending-holds').addEventListener("ajax:before", function () {
+            clearBadges();
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {

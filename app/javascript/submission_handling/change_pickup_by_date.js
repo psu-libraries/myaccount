@@ -1,4 +1,4 @@
-import { allChecked, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
+import { allChecked, clearBadges, findForm, responseFromRails, scrollToTop, submitterValue, toggleSpin } from './shared'
 import { renderData } from './polling'
 
 let pickupByDateInput = () => document.querySelector('#pickup_by_date');
@@ -35,6 +35,10 @@ let changePickupByDate = function () {
             });
         }
         scrollToTop();
+    });
+
+    findForm('pending-holds').addEventListener("ajax:before", function () {
+        clearBadges();
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {

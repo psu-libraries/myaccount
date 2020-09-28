@@ -23,22 +23,50 @@ RSpec.describe 'Holds', type: :feature do
       expect(page).to be_accessible
     end
 
-    it 'lets the user change the pickup library of a hold', js: true do
-      page.check 'hold_list__3911148'
-      page.select 'Penn State York', from: 'pickup_library'
-      page.click_button 'Update Selected Holds'
+    describe 'change_pickup_library' do
+      before do
+        page.check 'hold_list__3911148'
+        page.select 'Penn State York', from: 'pickup_library'
+        page.click_button 'Update Selected Holds'
+      end
 
-      expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location'
-      expect(page).to have_css '#hold3911148 .pickup_at', text: 'York'
+      it 'lets the user change the pickup library of a hold', js: true do
+        expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location'
+        expect(page).to have_css '#hold3911148 .pickup_at', text: 'York'
+      end
+
+      context 'when the user successfully changes the pickup library of the same hold more than once' do
+        it 'success badges gets cleared each time', js: true do
+          page.check 'hold_list__3911148'
+          page.select 'Penn State Berks', from: 'pickup_library'
+          page.click_button 'Update Selected Holds'
+
+          expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location', count: 1
+        end
+      end
     end
 
-    it 'lets the user change the pickup by date of a hold', js: true do
-      page.check 'hold_list__3911148'
-      page.fill_in 'pickup_by_date', with: '01-01-9999'
-      page.click_button 'Update Selected Holds'
+    describe 'change_pickup_by_date' do
+      before do
+        page.check 'hold_list__3911148'
+        page.fill_in 'pickup_by_date', with: '01-01-9999'
+        page.click_button 'Update Selected Holds'
+      end
 
-      expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date'
-      expect(page).to have_css '#hold3911148 .pickup-by', text: 'January 1, 9999'
+      it 'lets the user change the pickup by date of a hold', js: true do
+        expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date'
+        expect(page).to have_css '#hold3911148 .pickup-by', text: 'January 1, 9999'
+      end
+
+      context 'when the user successfully changes the pickup up by date of the same hold more than once' do
+        it 'success badges gets cleared each time', js: true do
+          page.check 'hold_list__3911148'
+          page.fill_in 'pickup_by_date', with: '01-01-2020'
+          page.click_button 'Update Selected Holds'
+
+          expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date', count: 1
+        end
+      end
     end
 
     it 'lets the user cancel a pending hold', js: true do
