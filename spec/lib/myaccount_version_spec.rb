@@ -14,7 +14,7 @@ RSpec.describe MyaccountVersion do
       it 'returns the current version according to GitHub' do
         stub_request(:any, /api.github.com/).to_rack(FakeGithub)
 
-        expect(myaccount_version.version).to eq 'v0.3.2'
+        expect(myaccount_version.resolve_version).to eq 'v0.3.2'
       end
     end
 
@@ -22,7 +22,7 @@ RSpec.describe MyaccountVersion do
       it 'returns the string "not set"' do
         stub_request(:get, 'https://api.github.com/repos/psu-libraries/myaccount/releases')
           .to_return(status: 200, body: '{}', headers: {})
-        expect(myaccount_version.version).to eq 'Version could not be determined'
+        expect(myaccount_version.resolve_version).to eq 'Version could not be determined'
       end
     end
   end

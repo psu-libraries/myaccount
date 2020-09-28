@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 module MyaccountVersion
-  def self.version
-    retrieve_version
+  def self.resolve_version
+    set_version
+    Redis.current.get 'myaccount_version'
   end
 
   VERSION_CACHE_TIME = 300
   VERSION_NOT_SET_NAME = 'Version could not be determined'
-
-  def self.retrieve_version
-    set_version
-    Redis.current.get 'myaccount_version'
-  end
 
   # `nx: true` means that Redis will only set this value if it doesn't exist. The `ex` option tells Redis when to delete
   # the key.
