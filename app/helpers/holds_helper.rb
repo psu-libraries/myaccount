@@ -27,9 +27,8 @@ module HoldsHelper
     end
   end
 
-  def render_pickup_libraries
-    default_choice = t('myaccount.hold.update_pickup.pickup_choose_text')
-    Hash[default_choice, ''].merge(Hold::PICKUP_LOCATION_REQUESTED.invert)
+  def render_pickup_libraries(selected)
+    options_for_select(Hold::PICKUP_LOCATION_REQUESTED, disabled: '', selected: selected)
   end
 
   def default_pickup_by_date(make_default: false)

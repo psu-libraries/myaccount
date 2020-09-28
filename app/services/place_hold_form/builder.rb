@@ -2,11 +2,12 @@
 
 # Responsible for building data needed to populate the place hold form.
 class PlaceHoldForm::Builder
-  def initialize(catkey:, user_token:, client:)
+  def initialize(catkey:, user_token:, client:, library:)
     @catkey = catkey
     @user_token = user_token
     @client = client # SymphonyClient
     @volumetric_calls = []
+    @library = library
   end
 
   def generate
@@ -20,7 +21,8 @@ class PlaceHoldForm::Builder
       title: bib_info.title,
       author: bib_info.author,
       volumetric_calls: @volumetric_calls,
-      barcode: find_barcode
+      barcode: find_barcode,
+      pickup_library: @library
     }
   end
 

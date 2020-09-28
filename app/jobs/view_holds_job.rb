@@ -16,7 +16,8 @@ class ViewHoldsJob < ApplicationJob
     holds_ready = patron.holds.select(&:ready_for_pickup?)
     holds_not_ready = patron.holds.reject(&:ready_for_pickup?)
     html = HoldsController.render template: 'holds/all', layout: false, locals: { holds_ready: holds_ready,
-                                                                                  holds_not_ready: holds_not_ready }
+                                                                                  holds_not_ready: holds_not_ready,
+                                                                                  pickup_library: patron.library }
     if response.present?
       Redis.current.set("view_holds_#{patron_key}", {
         result: :success,

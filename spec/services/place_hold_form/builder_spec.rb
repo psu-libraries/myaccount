@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldForm::Builder do
-  subject(:builder) { described_class.new(catkey: catkey, user_token: user_token, client: client) }
+  subject(:builder) { described_class.new(catkey: catkey, user_token: user_token, client: client, library: 'UP-PAT') }
 
   let(:catkey) { '1' }
   let(:user_token) { '2asf' }

@@ -4,7 +4,7 @@
 class Hold
   include BibRecord
 
-  PICKUP_LOCATION_REQUESTED = Settings.pickup_locations.to_h
+  PICKUP_LOCATION_REQUESTED = Settings.pickup_locations.to_h.invert
 
   PICKUP_LOCATION_ACTUAL = {
     ABINGTON: 'Abington',
