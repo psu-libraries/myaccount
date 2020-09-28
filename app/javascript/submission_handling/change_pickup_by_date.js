@@ -37,10 +37,8 @@ let changePickupByDate = function () {
         scrollToTop();
     });
 
-    findForm('pending-holds').addEventListener("ajax:before", function (event) {
-        if (submitterValue(event) === "Update Selected Holds" && pickupByDateInput().value !== '') {
-            clearBadges();
-        }
+    findForm('pending-holds').addEventListener("ajax:before", function () {
+        clearBadges();
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {

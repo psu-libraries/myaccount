@@ -35,11 +35,8 @@ let changePickupLibrary = function () {
         scrollToTop();
     });
 
-    findForm('pending-holds').addEventListener("ajax:before", function (event) {
-        if (submitterValue(event) === "Update Selected Holds" &&
-            pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
+    findForm('pending-holds').addEventListener("ajax:before", function () {
             clearBadges();
-        }
     });
 
     findForm('pending-holds').addEventListener("ajax:success", function (event) {
