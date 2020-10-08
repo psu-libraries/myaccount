@@ -34,7 +34,7 @@ module HoldsHelper
   def default_pickup_by_date(make_default: false)
     return '' unless make_default
 
-    DateTime.now.+(2.months).strftime('%Y-%m-%d')
+    DateTime.now.+(14.days).strftime('%Y-%m-%d')
   end
 
   def minimum_pickup_by_date
