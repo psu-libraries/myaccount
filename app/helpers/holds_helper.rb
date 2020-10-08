@@ -30,7 +30,7 @@ module HoldsHelper
   def render_pickup_libraries(selected)
     pickup_libraries = Hold::PICKUP_LOCATION_REQUESTED
 
-    unless selected.present?
+    if selected.blank?
       default_choice = t('myaccount.hold.update_pickup.pickup_choose_text')
       pickup_libraries = Hash[default_choice, ''].merge(Hold::PICKUP_LOCATION_REQUESTED)
     end
