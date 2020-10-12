@@ -28,13 +28,20 @@ module HoldsHelper
   end
 
   def render_pickup_libraries(selected)
-    options_for_select(Hold::PICKUP_LOCATION_REQUESTED, disabled: '', selected: selected)
+    pickup_libraries = Hold::PICKUP_LOCATION_REQUESTED
+
+    if selected.blank?
+      default_choice = t('myaccount.hold.update_pickup.pickup_choose_text')
+      pickup_libraries = Hash[default_choice, ''].merge(Hold::PICKUP_LOCATION_REQUESTED)
+    end
+
+    options_for_select(pickup_libraries, disabled: '', selected: selected)
   end
 
   def default_pickup_by_date(make_default: false)
     return '' unless make_default
 
-    DateTime.now.+(2.months).strftime('%Y-%m-%d')
+    DateTime.now.+(14.days).strftime('%Y-%m-%d')
   end
 
   def minimum_pickup_by_date
