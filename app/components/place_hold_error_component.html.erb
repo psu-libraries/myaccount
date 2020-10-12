@@ -1,7 +1,6 @@
-<p>
-  <%= render BibItemComponent.new bibitem: bib %>
-  <small class="text-secondary">
-    <strong><%= error_message %></strong>
-  </small>
-</p>
-<br>
+<li class="list-group-item py-3">
+  <p class="card-title text-danger"><%= error_message %></p>
+  <p class="card-text">
+    <%= render BibItemComponent.new bibitem: bib %>
+  </p>
+</li>

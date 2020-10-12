@@ -67,8 +67,8 @@ en:
           select_library: To place a hold, please choose a pickup location.
           select_date: To place a hold, please choose a not needed after date.
           select_volumes: To place a hold, please select a volume.
-          success_html: <small class="text-secondary">For placed hold(s), you will receive a library notice once items are available for pick up. Items generally arrive within 2-3 weekdays.</small>
-          error_html: <small class="text-secondary">We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a></small>
+          success_html: For placed hold(s), you will receive a library notice once items are available for pick up. Items generally arrive within 2-3 weekdays.
+          error_html: We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a>
         new_hold:
           catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
           error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
