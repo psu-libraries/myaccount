@@ -32,8 +32,9 @@
 en:
   user_util_links:
     borrowing: 'Borrowing privileges: information about loan periods, check out limits, and more'
-    questions: 'Questions about your library account?'
+    questions: 'Frequently asked questions: borrowing and renewing'
     user_privacy: 'Information about library user privacy'
+    feedback: 'Questions? Feedback? Need to report a problem?'
   time:
     formats:
       short: '%B %-d, %Y'
