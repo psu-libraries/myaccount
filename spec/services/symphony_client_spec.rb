@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe SymphonyClient do
-  let(:client) { subject }
+  subject(:client) { described_class.new }
+
   let(:user) {
     instance_double(User,
                     username: 'zzz123',
@@ -338,9 +339,8 @@ RSpec.describe SymphonyClient do
     let(:error_prompt) { { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json }
 
     context 'when place hold is successful' do
-      let(:item_barcode) { 'success_item_barcode' }
-
       it 'returns the hold key' do
+        item_barcode = 'success_item_barcode'
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
         expect(JSON.parse(place_hold_response)).to include 'key' => 'some_hold_key'
@@ -348,9 +348,8 @@ RSpec.describe SymphonyClient do
     end
 
     context 'when place hold fails' do
-      let(:item_barcode) { 'fail_item_barcode' }
-
       it 'returns the reason as the error message' do
+        item_barcode = 'fail_item_barcode'
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
         expect(JSON.parse(place_hold_response)['messageList'].first).to include 'message' => 'Some error message'
@@ -358,9 +357,8 @@ RSpec.describe SymphonyClient do
     end
 
     context 'when place hold does not include fill by date' do
-      let(:item_barcode) { 'no_date_item_barcode' }
-
       it 'returns the hold key' do
+        item_barcode = 'no_date_item_barcode'
         hold_args = { pickup_library: 'UP-PAT' }
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
@@ -369,10 +367,10 @@ RSpec.describe SymphonyClient do
     end
 
     context 'when place hold return records in use error' do
-      let(:item_barcode) { 'records_in_use_barcode' }
       let(:error_prompt) { { messageList: [{ code: 'hatErrorResponse.116', message: 'Records in use' }] }.to_json }
 
       it 'keeps trying for 5 seconds max until the record is not in use' do
+        item_barcode = 'records_in_use_barcode'
         place_hold_response = client.place_hold(patron, user.session_token, item_barcode, hold_args)
 
         expect(JSON.parse(place_hold_response)).to include 'key' => 'some_hold_key'

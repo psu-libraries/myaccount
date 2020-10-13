@@ -77,7 +77,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
@@ -85,8 +85,9 @@ Rails.application.configure do
   # Adds lograge and parametrizes log name. Capture parameters other than `controller` and `action` in lograge. ALso
   # captures timestamp.
   config.lograge.enabled = true
+  params_to_include = %w(controller action)
   config.lograge.custom_options = lambda do |event|
-    params = event.payload[:params].reject { |k| %w(controller action).include?(k) }
+    params = event.payload[:params].reject { |k| params_to_include.include?(k) }
     {
       params: params,
       time: Time.now

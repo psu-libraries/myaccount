@@ -4,15 +4,13 @@ require 'rails_helper'
 
 RSpec.describe SymphonyClientParser do
   let(:symphony_client) { instance_double(SymphonyClient) }
-  let(:hold_key) { 'a_hold_key' }
-  let(:session_token) { 'a_session_token' }
-  let(:params) { [hold_key, session_token] }
-  let(:hold_info) { HOLD_LOOKUP_RAW_JSON }
   let(:get_hold_info_response) { instance_double(HTTP::Response) }
 
+  params = ['fakekey', 'faketoken']
+
   before do
-    allow(symphony_client).to receive(:get_hold_info).with(hold_key, session_token).and_return(get_hold_info_response)
-    allow(get_hold_info_response).to receive(:body).and_return hold_info.to_json
+    allow(symphony_client).to receive(:get_hold_info).with(*params).and_return(get_hold_info_response)
+    allow(get_hold_info_response).to receive(:body).and_return HOLD_LOOKUP_RAW_JSON.to_json
   end
 
   describe '.parsed_response' do

@@ -12,7 +12,6 @@ RSpec.describe HoldsController, type: :controller do
                             bib_summary: 'Some Good Book (ABC124)')
     ]
   end
-  let(:error_prompt) { { messageList: [{ code: 'some_error_code', message: 'Some error message' }] }.to_json }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -64,13 +63,14 @@ RSpec.describe HoldsController, type: :controller do
 
     describe '#new' do
       let(:form_builder) { instance_double(PlaceHoldForm::Builder) }
-      let(:form_params) { {
+
+      form_params = {
         catkey: '1',
         title: 'How to Eat More Pizza',
         author: 'Samantha Smith',
         volumetric_calls: [],
         barcode: '2'
-      } }
+      }
 
       before do
         allow(PlaceHoldForm::Builder).to receive(:new).and_return(form_builder)
@@ -98,7 +98,7 @@ RSpec.describe HoldsController, type: :controller do
       end
 
       context 'when user tries with a non holdable record' do
-        let(:form_params) {}
+        form_params = {}
 
         it 'sets a flash error message' do
           get :new, params: { catkey: 1 }

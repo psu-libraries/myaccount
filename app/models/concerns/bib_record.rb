@@ -14,7 +14,7 @@ module BibRecord
   end
 
   def item_type_human
-    item_type_mapping.find { |type| type.dig('key') == item_type_code }&.dig('fields', 'description') || item_type_code
+    item_type_mapping.find { |type| type['key'] == item_type_code }&.dig('fields', 'description') || item_type_code
   end
 
   def title
