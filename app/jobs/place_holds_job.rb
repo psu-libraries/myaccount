@@ -3,9 +3,10 @@
 class PlaceHoldsJob < ApplicationJob
   queue_as :default
 
-  def perform(patron_key:, barcodes:, session_token:, **hold_args)
+  def perform(patron_key:, catkey:, barcodes:, session_token:, **hold_args)
     @barcodes = barcodes
     @session_token = session_token
+    @catkey = catkey
     @hold_args = hold_args
     @patron = fetch_patron patron_key
 
@@ -29,7 +30,7 @@ class PlaceHoldsJob < ApplicationJob
 
       ApplicationController.render partial: 'holds/results',
                                    layout: false,
-                                   locals: { place_hold_results: results_builder.generate }
+                                   locals: { place_hold_catkey: @catkey, place_hold_results: results_builder.generate }
     end
 
     def fetch_patron(patron_key)

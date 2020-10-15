@@ -6,6 +6,7 @@ RSpec.describe PlaceHoldsJob, type: :job do
   let(:ws_args) { {
     patron_key: 'patron1',
     barcodes: ['1'],
+    catkey: '1',
     session_token: 'session_token',
     pickup_library: 'UP-PAT',
     pickup_by_date: '01-20-2021'
