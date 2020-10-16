@@ -102,6 +102,14 @@ RSpec.describe 'Holds', type: :feature do
       page.click_button 'Place Hold'
       expect(page).to have_text 'Hold Placed'
     end
+
+    it 'displays Back To Catalog link with the catkey', js: true do
+      select 'College of Medicine (Hershey)', from: 'pickup_library'
+      fill_in 'pickup_by_date', with: '10-10-2050'
+
+      page.click_button 'Place Hold'
+      expect(page).to have_link 'Back to Catalog', href: 'https://catalog.libraries.psu.edu/catalog/6066288'
+    end
   end
 
   context 'when patron uses browser back button to holds page' do

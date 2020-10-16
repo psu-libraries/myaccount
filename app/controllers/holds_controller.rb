@@ -61,6 +61,7 @@ class HoldsController < ApplicationController
     PlaceHoldsJob.perform_later barcodes: barcodes,
                                 session_token: current_user.session_token,
                                 patron_key: current_user.patron_key,
+                                catkey: params['catkey'],
                                 pickup_library: params['pickup_library'],
                                 pickup_by_date: params['pickup_by_date']
 
