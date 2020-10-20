@@ -52,25 +52,28 @@ en:
       success_html: <span class="font-weight-bold">Success!</span> %{count} items were renewed.
       error_html: <span class="font-weight-bold">Sorry!</span> %{count} items failed to be renewed. Due dates remain unchanged. Review list of checked out items below and contact us if you require assistance.
   myaccount:
-      hold:
-        cancel:
-          success_html: <span class="font-weight-bold">Success!</span> %{bib_summary} was canceled.<br>
-          error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" was not canceled. Contact your campus library if you need assistance.<br>
-        update_not_needed_after:
-          success_html: <span class="font-weight-bold">Success!</span> "%{bib_summary}" not needed after date was updated.<br>
-          error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" not needed after date was not updated. Contact your campus library if you need assistance.<br>
-        update_pickup:
-          past_date: You specified a "Not needed after" date that is in the past. "Not needed after" date must be in the future.
-          pickup_choose_text: Please choose a pickup location
-          success_html: <span class="font-weight-bold">Success!</span> "%{bib_summary}" pickup location was updated.<br>
-          error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" pickup location was not updated. Contact your campus library if you need assistance.<br>
-        place_hold:
-          select_library: To place a hold, please choose a pickup location.
-          select_date: To place a hold, please choose a not needed after date.
-          select_volumes: To place a hold, please select a volume.
-          success_html: For placed hold(s), you will receive a library notice once items are available for pick up. Items generally arrive within 2-3 weekdays.
-          error_html: We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a>
-        new_hold:
-          catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
-          error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
-      loading_html: Items are loading. Longer lists of items will take a few moments to load.
+    callout:
+      label_html: <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Notice
+      message: Returned materials may be quarantined for four days and will remain on your account during the quarantine period.
+    hold:
+      cancel:
+        success_html: <span class="font-weight-bold">Success!</span> %{bib_summary} was canceled.<br>
+        error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" was not canceled. Contact your campus library if you need assistance.<br>
+      update_not_needed_after:
+        success_html: <span class="font-weight-bold">Success!</span> "%{bib_summary}" not needed after date was updated.<br>
+        error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" not needed after date was not updated. Contact your campus library if you need assistance.<br>
+      update_pickup:
+        past_date: You specified a "Not needed after" date that is in the past. "Not needed after" date must be in the future.
+        pickup_choose_text: Please choose a pickup location
+        success_html: <span class="font-weight-bold">Success!</span> "%{bib_summary}" pickup location was updated.<br>
+        error_html: <span class="font-weight-bold">Sorry!</span> Something went wrong and "%{bib_summary}" pickup location was not updated. Contact your campus library if you need assistance.<br>
+      place_hold:
+        select_library: To place a hold, please choose a pickup location.
+        select_date: To place a hold, please choose a not needed after date.
+        select_volumes: To place a hold, please select a volume.
+        success_html: For placed hold(s), you will receive a library notice once items are available for pick up. Items generally arrive within 2-3 weekdays.
+        error_html: We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a>
+      new_hold:
+        catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
+        error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
+    loading_html: Items are loading. Longer lists of items will take a few moments to load.
