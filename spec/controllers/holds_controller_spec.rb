@@ -182,10 +182,30 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#result' do
-      it 'renders the result template' do
-        get :result
+      context 'when not redirected from /holds/new' do
+        it 'redirects to the summary page' do
+          get :result
 
-        expect(response).to render_template(:result)
+          expect(response).to redirect_to summaries_path
+        end
+      end
+
+      context 'when redirected from /holds/new' do
+        let(:place_hold_params) {
+          { catkey: '1',
+            barcodes: ['1'],
+            pickup_library: 'UP_PAT',
+            pickup_by_date: '2050-02-02' }
+        }
+
+        before do
+          allow(PlaceHoldsJob).to receive(:perform_later)
+          post :create, params: place_hold_params
+        end
+
+        it 'renders the result template' do
+          expect(response).to redirect_to('/holds/result')
+        end
       end
     end
 

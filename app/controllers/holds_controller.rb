@@ -72,7 +72,11 @@ class HoldsController < ApplicationController
   #
   # GET /holds/result
   def result
-    render
+    if request.referer && URI(request.referer).path == '/holds/new'
+      render
+    else
+      redirect_to summaries_path
+    end
   end
 
   # Handles form submission for canceling holds in Symphony
