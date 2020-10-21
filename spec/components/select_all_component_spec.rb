@@ -7,6 +7,18 @@ RSpec.describe SelectAllComponent, type: :component do
 
   let(:component) { render_inline(described_class.new(select_all_args)).to_html }
 
+  context 'when site is in maintenance mode' do
+    after do
+      Settings.maintenance_mode = false
+    end
+
+    it 'does not render' do
+      Settings.maintenance_mode = true
+
+      expect(component).to be_empty
+    end
+  end
+
   it 'makes a select all checkbox' do
     expect(component).to include 'input type="checkbox" name="renewal_all"'
   end

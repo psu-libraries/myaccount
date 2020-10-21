@@ -3,6 +3,7 @@
 class PatronsController < ApplicationController
   before_action :set_patron, only: [:show, :edit, :update]
   before_action :authenticate_user!
+  before_action :unless_maintenance_mode, only: [:edit, :update]
   rescue_from PatronArgumentError, with: :handle
 
   # GET /patrons/1

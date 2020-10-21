@@ -120,4 +120,20 @@ RSpec.describe 'Holds', type: :feature do
       expect(page).to have_css '#hold3911148'
     end
   end
+
+  context 'when site is in maintenance mode' do
+    after do
+      Settings.maintenance_mode = false
+    end
+
+    it 'makes a child checkbox with that name', js: true do
+      Settings.maintenance_mode = true
+
+      visit holds_path
+
+      expect(page).not_to have_unchecked_field '.checkbox'
+      expect(page).not_to have_button 'Cancel'
+      expect(page).not_to have_button 'Cancel Selected Holds'
+    end
+  end
 end

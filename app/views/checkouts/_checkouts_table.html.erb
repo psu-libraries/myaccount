@@ -16,10 +16,12 @@
       <tfoot>
       <tr>
         <th scope="col" colspan="6">
-          <%= submit_tag 'Renew',
-                         class: 'btn btn-primary deflatten',
-                         aria: { controls: 'checkouts-table' },
-                         data: { disable_with: 'Please wait...' } %>
+          <% unless Settings.maintenance_mode -%>
+            <%= submit_tag 'Renew',
+                           class: 'btn btn-primary deflatten',
+                           aria: { controls: 'checkouts-table' },
+                           data: { disable_with: 'Please wait...' } %>
+          <% end -%>
         </th>
       </tr>
       </tfoot>

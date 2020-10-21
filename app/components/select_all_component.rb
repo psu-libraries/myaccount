@@ -6,6 +6,10 @@ class SelectAllComponent < ViewComponent::Base
     @name = "#{target_keyword}_all"
   end
 
+  def render?
+    !Settings.maintenance_mode
+  end
+
   private
 
     attr_reader :name, :target_keyword

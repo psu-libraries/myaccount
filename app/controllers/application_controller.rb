@@ -61,6 +61,10 @@ class ApplicationController < ActionController::Base
       authenticate_user!
     end
 
+    def unless_maintenance_mode
+      redirect_to root_path if Settings.maintenance_mode
+    end
+
     def item_details
       {}
     end

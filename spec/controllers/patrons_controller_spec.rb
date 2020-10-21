@@ -35,6 +35,20 @@ RSpec.describe PatronsController do
 
         expect(response).to be_successful
       end
+
+      context 'when the site is put into maintenance mode' do
+        after do
+          Settings.maintenance_mode = false
+        end
+
+        it 'returns redirects to the homepage' do
+          Settings.maintenance_mode = true
+
+          get :edit, params: { id: 'idhere' }
+
+          expect(response).to redirect_to root_path
+        end
+      end
     end
 
     describe 'PUT #update' do
@@ -59,6 +73,25 @@ RSpec.describe PatronsController do
                                  'city' => 'Jersey Shore', 'state' => 'KY', 'zip' => '00000', 'id' => 'idhere' }
 
           expect(response).to redirect_to(edit_patron_path)
+        end
+      end
+
+      context 'when the site is put into maintenance mode' do
+        let(:new_attributes) { { 'first_name' => 'JOHN', 'middle_name' => 'ADAM', 'last_name' => 'DOE',
+                                 'suffix' => 'SR', 'email' => 'zzz123@psu.edu', 'street1' => '123 Fake Street',
+                                 'street2' => '', 'city' => 'Jersey Shore', 'state' => 'KY', 'zip' => '00000',
+                                 'id' => 'idhere' } }
+
+        after do
+          Settings.maintenance_mode = false
+        end
+
+        it 'returns redirects to the homepage' do
+          Settings.maintenance_mode = true
+
+          put :update, params: new_attributes
+
+          expect(response).to redirect_to root_path
         end
       end
     end

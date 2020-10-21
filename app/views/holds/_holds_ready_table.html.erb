@@ -27,5 +27,7 @@
     <% end %>
     </tbody>
   </table>
-  <%= submit_tag('Cancel Selected Holds', class: 'btn btn-danger') %>
+  <% unless Settings.maintenance_mode -%>
+    <%= submit_tag('Cancel Selected Holds', class: 'btn btn-danger deflatten') %>
+  <% end %>
 <% end %>
