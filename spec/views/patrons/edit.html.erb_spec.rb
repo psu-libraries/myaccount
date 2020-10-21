@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'patrons/edit', type: :view do
   before do
     client = SymphonyClient.new
-    # Patron below is mocked, see patron.json
+    # Patron below is mocked, see patron1.json
     assign(:patron, Patron.new(client.patron_info(patron_key: 'patron1', session_token: 'fasfasf', item_details: {})))
   end
 
