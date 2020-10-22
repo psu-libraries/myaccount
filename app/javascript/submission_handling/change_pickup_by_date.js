@@ -48,6 +48,10 @@ let changePickupByDate = function () {
             });
         }
     });
+
+    findForm('pending-holds').addEventListener("ajax:error", function () {
+        $('#expiryModal').modal({ "keyboard": false });
+    });
 };
 
 export default changePickupByDate;

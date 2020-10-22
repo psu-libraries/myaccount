@@ -30,16 +30,26 @@ let listenAjaxSuccess = (form) => {
     });
 };
 
+let listenAjaxError = (form) => {
+    form.addEventListener("ajax:error", function () {
+        $('#expiryModal').modal({ "keyboard": false });
+    });
+};
+
 // This is the public function
 let cancelHold = function () {
     // Guard statement
     if (findForm('pending-holds')) {
-        listenSubmit(findForm('pending-holds'));
-        listenAjaxSuccess(findForm('pending-holds'));
+        let pendingHoldsForm = findForm('pending-holds')
+        listenSubmit(pendingHoldsForm);
+        listenAjaxSuccess(pendingHoldsForm);
+        listenAjaxError(pendingHoldsForm);
     }
     if (findForm('active-holds')) {
-        listenSubmit(findForm('active-holds'));
-        listenAjaxSuccess(findForm('active-holds'));
+        let activeHoldsForm = findForm('active-holds')
+        listenSubmit(activeHoldsForm);
+        listenAjaxSuccess(activeHoldsForm);
+        listenAjaxError(activeHoldsForm);
     }
 };
 

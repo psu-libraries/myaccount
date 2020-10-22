@@ -6,7 +6,7 @@
     </button>
   </div>
   <div class="toast-body">
-    <strong>For <%= title %></strong>
+    <%= render GenericValueWithLabelComponent.new label: 'For', value: title %>
     <p><%= display_error %> Contact your campus library if you need assistance.</p>
   </div>
 </div>
