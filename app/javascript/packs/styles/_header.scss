@@ -28,18 +28,11 @@
   }
 }
 
-.navbar-nav {
-  @include media-breakpoint-down(md) {
-    flex-direction: row;
+.nav-link {
+  font-size: 14px;
 
-    .nav-item {
-      font-size: .75rem;
-      text-align: center;
-
-      &:not(:first-child) {
-        margin-left: 26px;
-      }
-    }
+  @include media-breakpoint-up(md) {
+    @include font-size($font-size-base);
   }
 }
 
