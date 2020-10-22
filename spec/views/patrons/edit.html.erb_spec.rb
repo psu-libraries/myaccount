@@ -17,6 +17,6 @@ RSpec.describe 'patrons/edit', type: :view do
     expect(rendered).to match(/\*Street/)
     expect(rendered).to match(/\*City/)
     expect(rendered).to match(/\*State/)
-    expect(rendered).to match(/\*Zip/)
+    expect(rendered).to match(/\*ZIP Code/)
   end
 end
