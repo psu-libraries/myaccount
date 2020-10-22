@@ -6,7 +6,6 @@ class HoldsController < ApplicationController
   before_action :check_for_blanks!, only: :create
   rescue_from NewHoldException, with: :deny_new
   rescue_from HoldCreateException, with: :deny_create
-  rescue_from HoldException, with: :past_date
 
   # Render patron holds
   #
@@ -75,7 +74,7 @@ class HoldsController < ApplicationController
     if request.referer && URI(request.referer).path == '/holds/new'
       render
     else
-      redirect_to summaries_path
+      redirect_to '/not_found'
     end
   end
 

@@ -186,7 +186,7 @@ RSpec.describe HoldsController, type: :controller do
         it 'redirects to the summary page' do
           get :result
 
-          expect(response).to redirect_to summaries_path
+          expect(response).to redirect_to '/not_found'
         end
       end
 
