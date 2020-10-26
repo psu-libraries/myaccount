@@ -4,11 +4,9 @@ class RenewCheckoutJob < ApplicationJob
   queue_as :default
 
   def perform(resource:, item_key:, session_token:)
-    response = symphony_client.renew(
-      resource: resource,
-      item_key: item_key,
-      session_token: session_token
-    )
+    response = symphony_client.renew resource: resource,
+                                     item_key: item_key,
+                                     session_token: session_token
 
     case response.status
     when 200
@@ -30,7 +28,6 @@ class RenewCheckoutJob < ApplicationJob
         }
       }.to_json)
     else
-
       processed_error = SirsiResponse::Error.new(error_message_raw: response,
                                                  symphony_client: symphony_client,
                                                  key: item_key,

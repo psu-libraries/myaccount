@@ -46,6 +46,10 @@ let renewCheckout = function () {
             });
         }
     });
+
+    findForm('checkouts').addEventListener("ajax:error", function () {
+        $('#expiryModal').modal({ "keyboard": false });
+    });
 };
 
 
