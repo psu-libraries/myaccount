@@ -18,7 +18,7 @@
         <td>
           <%= render SelectAllChildComponent.new key: hold.key, target_keyword: 'ready', name: 'hold_list[]' %>
         </td>
-        <td>
+        <td class="bibitem">
           <%= render BibItemComponent.new bibitem: hold %>
         </td>
         <td><%= hold.pickup_library_human %></td>

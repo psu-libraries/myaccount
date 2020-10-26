@@ -5,6 +5,8 @@ const updateCancelledHold = function (data) {
     if (data.result === 'failure') {
         toggleSpin('hold', data.id, 'hold_status');
     } else {
+        document.querySelector(`#hold${data.id} .bibitem`).
+            innerHTML += data.badge;
         document.querySelector(`#hold${data.id} .hold_status`).innerHTML = data.response;
     }
 };
