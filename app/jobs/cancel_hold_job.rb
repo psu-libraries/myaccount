@@ -11,7 +11,8 @@ class CancelHoldJob < ApplicationJob
       Redis.current.set("cancel_hold_#{hold_key}", {
         id: hold_key,
         result: :success,
-        response: '<p class=\'text-danger\'>Cancelled</p>'
+        badge: badge(message: 'Hold canceled'),
+        response: '<p class=\'text-danger\'>Canceled</p>'
       }.to_json)
     else
       processed_error = SirsiResponse::Error.new(error_message_raw: response,

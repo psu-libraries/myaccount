@@ -72,13 +72,15 @@ RSpec.describe 'Holds', type: :feature do
     it 'lets the user cancel a pending hold', js: true do
       page.check 'hold_list__3911148'
       page.click_button 'Cancel'
-      expect(page).to have_css '#hold3911148 .hold_status', text: 'Cancelled'
+      expect(page).to have_css '#hold3911148 .hold_status', text: 'Canceled'
+      expect(page).to have_css '.badge-success', text: 'Hold canceled'
     end
 
     it 'lets the user cancel a ready for pickup hold', js: true do
       page.check 'hold_list__3906718'
       page.click_button 'Cancel Selected Holds'
-      expect(page).to have_css '#hold3906718 .hold_status', text: 'Cancelled'
+      expect(page).to have_css '#hold3906718 .hold_status', text: 'Canceled'
+      expect(page).to have_css '.badge-success', text: 'Hold canceled'
     end
   end
 

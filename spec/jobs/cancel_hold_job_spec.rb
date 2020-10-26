@@ -28,9 +28,11 @@ RSpec.describe CancelHoldJob, type: :job do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'cancel_hold_1'
 
-        expect(JSON.parse(results)).to eq('id' => 1,
-                                          'result' => 'success',
-                                          'response' => '<p class=\'text-danger\'>Cancelled</p>')
+        expect(JSON.parse(results)).to eq('badge' =>
+                                              '<span class="badge badge-pill badge-success">Hold canceled</span>',
+                                          'id' => 1,
+                                          'response' => "<p class='text-danger'>Canceled</p>",
+                                          'result' => 'success')
       end
     end
 
