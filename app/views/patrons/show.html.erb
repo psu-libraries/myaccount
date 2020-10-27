@@ -19,6 +19,8 @@
 <div class="row py-4">
   <div class="col">
     <p>Have a question? Please contact the <a href="mailto:ul-lending@lists.psu.edu">Circulation Staff</a>.</p>
-    <%= link_to 'Update Personal Information', edit_patron_path(@patron), class: 'btn btn-info deflatten' %>
+    <% unless Settings.maintenance_mode -%>
+      <%= link_to 'Update Personal Information', edit_patron_path(@patron), class: 'btn btn-info deflatten' %>
+    <% end -%>
   </div>
 </div>

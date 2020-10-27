@@ -8,6 +8,10 @@ class SelectAllChildComponent < ViewComponent::Base
     @target_keyword = target_keyword
   end
 
+  def render?
+    !Settings.maintenance_mode
+  end
+
   private
 
     attr_reader :name, :target_keyword, :key, :id

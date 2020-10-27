@@ -19,5 +19,20 @@ RSpec.describe 'patrons/show', type: :view do
     expect(rendered).to match(/123 Fake Street/)
     expect(rendered).to match(/Jersey Shore, KY/)
     expect(rendered).to match(/00000/)
+    expect(rendered).to match(/Update Personal Information/)
+  end
+
+  context 'when the site is put into maintenance mode' do
+    after do
+      Settings.maintenance_mode = false
+    end
+
+    it 'does not display the submit button' do
+      Settings.maintenance_mode = true
+
+      render
+
+      expect(rendered).not_to match(/Update Personal Information/)
+    end
   end
 end

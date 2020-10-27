@@ -4,6 +4,7 @@ class HoldsController < ApplicationController
   before_action :set_cache_headers
   before_action :authenticate_user!
   before_action :check_for_blanks!, only: :create
+  before_action :unless_maintenance_mode, only: :new
   rescue_from NewHoldException, with: :deny_new
   rescue_from HoldCreateException, with: :deny_create
   rescue_from HoldException, with: :past_date

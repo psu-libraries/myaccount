@@ -3,10 +3,7 @@
     <caption><h2>Holds that are ready for pickup</h2></caption>
     <thead>
     <tr>
-      <th scope="col">
-        Select <br>
-        <%= render SelectAllComponent.new target_keyword: 'ready' %>
-      </th>
+      <th scope="col"><%= render SelectAllComponent.new target_keyword: 'ready' %></th>
       <th scope="col">Item</th>
       <th scope="col">Pickup at</th>
       <th scope="col">Expires</th>
@@ -27,5 +24,7 @@
     <% end %>
     </tbody>
   </table>
-  <%= submit_tag('Cancel Selected Holds', class: 'btn btn-danger') %>
+  <% unless Settings.maintenance_mode -%>
+    <%= submit_tag('Cancel Selected Holds', class: 'btn btn-danger deflatten') %>
+  <% end %>
 <% end %>

@@ -110,6 +110,20 @@ RSpec.describe HoldsController, type: :controller do
           expect(response).to redirect_to summaries_path
         end
       end
+
+      context 'when the site is in maintenance mode' do
+        after do
+          Settings.maintenance_mode = false
+        end
+
+        it 'returns redirects to the homepage' do
+          Settings.maintenance_mode = true
+
+          put :new, params: { catkey: 1 }
+
+          expect(response).to redirect_to root_path
+        end
+      end
     end
 
     describe '#create' do

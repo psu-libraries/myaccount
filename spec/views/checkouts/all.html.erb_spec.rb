@@ -58,5 +58,19 @@ RSpec.describe 'checkouts/all.html.erb', type: :view do
     it 'displays a renew button' do
       expect(rendered).to have_button 'Renew'
     end
+
+    context 'when the site is put into maintenance mode' do
+      before :all do
+        Settings.maintenance_mode = true
+      end
+
+      after do
+        Settings.maintenance_mode = false
+      end
+
+      it 'does not display a renew button' do
+        expect(rendered).not_to have_button 'Renew'
+      end
+    end
   end
 end

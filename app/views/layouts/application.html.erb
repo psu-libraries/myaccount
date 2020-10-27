@@ -9,11 +9,12 @@
     <main id="main-container" class="container my-3" role="main">
       <div class="row">
         <div class="col-md-12">
-          <%= render partial: '/shared/flash_msg', layout: nil %>
+          <%= render 'content/maintenance' if Settings.maintenance_mode %>
+          <%= render partial: 'shared/flash_msg', layout: nil %>
           <%= yield %>
         </div>
       </div>
-      <%= render 'shared/user_util_links' %>
+      <%= render 'content/user_util_links' %>
     </main>
 
     <%= render 'layouts/footer' %>
