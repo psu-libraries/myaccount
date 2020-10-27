@@ -189,24 +189,6 @@ RSpec.describe HoldsController, type: :controller do
           expect(response).to redirect_to '/not_found'
         end
       end
-
-      context 'when redirected from /holds/new' do
-        let(:place_hold_params) {
-          { catkey: '1',
-            barcodes: ['1'],
-            pickup_library: 'UP_PAT',
-            pickup_by_date: '2050-02-02' }
-        }
-
-        before do
-          allow(PlaceHoldsJob).to receive(:perform_later)
-          post :create, params: place_hold_params
-        end
-
-        it 'renders the result template' do
-          expect(response).to redirect_to('/holds/result')
-        end
-      end
     end
 
     describe '#batch_update' do
