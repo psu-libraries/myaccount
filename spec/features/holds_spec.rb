@@ -126,7 +126,7 @@ RSpec.describe 'Holds', type: :feature do
       Settings.maintenance_mode = false
     end
 
-    it 'makes a child checkbox with that name', js: true do
+    it 'removes the checkboxes and hold cancellation buttons', js: true do
       Settings.maintenance_mode = true
 
       visit holds_path
