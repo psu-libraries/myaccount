@@ -7,7 +7,6 @@ class HoldsController < ApplicationController
   before_action :unless_maintenance_mode, only: :new
   rescue_from NewHoldException, with: :deny_new
   rescue_from HoldCreateException, with: :deny_create
-  rescue_from HoldException, with: :past_date
 
   # Render patron holds
   #
@@ -73,7 +72,11 @@ class HoldsController < ApplicationController
   #
   # GET /holds/result
   def result
-    render
+    if request.referer && URI(request.referer).path == '/holds/new'
+      render
+    else
+      redirect_to '/not_found'
+    end
   end
 
   # Handles form submission for canceling holds in Symphony

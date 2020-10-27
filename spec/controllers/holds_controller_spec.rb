@@ -196,10 +196,12 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#result' do
-      it 'renders the result template' do
-        get :result
+      context 'when not redirected from /holds/new' do
+        it 'redirects to the summary page' do
+          get :result
 
-        expect(response).to render_template(:result)
+          expect(response).to redirect_to '/not_found'
+        end
       end
     end
 
