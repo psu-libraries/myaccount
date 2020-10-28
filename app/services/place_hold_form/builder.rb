@@ -35,7 +35,7 @@ class PlaceHoldForm::Builder
       return false if bib_info.call_list.blank?
 
       @call_list = bib_info.call_list.map { |call| Call.new record: call }
-      filter_holdables if @call_list.count > 1
+      filter_holdables if @call_list.count.positive?
 
       @call_list.present?
     end
