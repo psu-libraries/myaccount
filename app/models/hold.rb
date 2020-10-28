@@ -5,7 +5,6 @@ class Hold
   include BibRecord
 
   PICKUP_LOCATION_REQUESTED = Settings.pickup_locations.to_h.invert
-
   PICKUP_LOCATION_ACTUAL = Settings.pickup_locations_actual.to_h
 
   attr_reader :record
