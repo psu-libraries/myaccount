@@ -41,20 +41,12 @@ en:
       long: '%B %e, %Y %l:%M%P'
       time_today: 'Today at %-l:%M%P'
       time_only: '%-l:%M%P'
-  renew_all_items:
-    success_html:
-      one: <span class="font-weight-bold">Success!</span> 1 item was renewed. %{items}
-      other: <span class="font-weight-bold">Success!</span> %{count} items were renewed. %{items}
-    error_html:
-      one: <span class="font-weight-bold">Sorry!</span> 1 item failed to be renewed. Due date remains unchanged. Review list of checked out items below and contact us if you require assistance. %{items}
-      other: <span class="font-weight-bold">Sorry!</span> %{count} items failed to be renewed. Due dates remain unchanged. Review list of checked out items below and contact us if you require assistance. %{items}
-  renew_all_items_summary:
-      success_html: <span class="font-weight-bold">Success!</span> %{count} items were renewed.
-      error_html: <span class="font-weight-bold">Sorry!</span> %{count} items failed to be renewed. Due dates remain unchanged. Review list of checked out items below and contact us if you require assistance.
   myaccount:
     callout:
       label_html: <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Notice
       message: Returned materials may be quarantined for four days and will remain on your account during the quarantine period.
+    checkouts_info: Materials borrowed through Illiad or Medianet do not appear on this list and must be renewed separately.
+    holds_info: Materials requested through Illiad or Medianet do not appear on this list and must be managed separately.
     hold:
       cancel:
         success_html: <span class="font-weight-bold">Success!</span> %{bib_summary} was canceled.<br>
