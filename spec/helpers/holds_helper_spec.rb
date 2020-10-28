@@ -158,5 +158,10 @@ RSpec.describe HoldsHelper, type: :helper do
       expect(helper.render_pickup_libraries('UP-PAT')).to include '<option selected="selected" value="UP-PAT">'\
                                                                           'Pattee Commons Services Desk</option>'
     end
+
+    it 'returns an html select list with a blank option as selected' do
+      expect(helper.render_pickup_libraries('not-a-pickup-location')).to include '<option selected="selected" '\
+                                            'disabled="disabled" value="">Please choose a pickup location</option>'
+    end
   end
 end
