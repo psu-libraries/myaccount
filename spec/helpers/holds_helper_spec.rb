@@ -35,7 +35,7 @@ RSpec.describe HoldsHelper, type: :helper do
     end
   end
 
-  describe '#render_expiration_date' do
+  describe '#render_hold_date' do
     context 'when there is an expiration date present' do
       before do
         expiration_date = DateTime.new(2025, 2, 3, 4, 5, 6)
@@ -43,7 +43,7 @@ RSpec.describe HoldsHelper, type: :helper do
       end
 
       it 'renders some pretext and then the position' do
-        expect(helper.render_expiration_date(hold)).to eq 'February 3, 2025'
+        expect(helper.render_hold_date(hold, date_field: 'expiration_date')).to eq 'February 3, 2025'
       end
     end
 
@@ -53,7 +53,28 @@ RSpec.describe HoldsHelper, type: :helper do
       end
 
       it 'renders never expires' do
-        expect(helper.render_expiration_date(hold)).to eq 'Never expires'
+        expect(helper.render_hold_date(hold, date_field: 'expiration_date')).to eq 'Never expires'
+      end
+    end
+
+    context 'when there is an fill by date present' do
+      before do
+        fill_by_date = DateTime.new(2025, 2, 3, 4, 5, 6)
+        allow(hold).to receive_messages(fill_by_date: fill_by_date)
+      end
+
+      it 'renders some pretext and then the position' do
+        expect(helper.render_hold_date(hold, date_field: 'fill_by_date')).to eq 'February 3, 2025'
+      end
+    end
+
+    context 'when there is not a fill by date present' do
+      before do
+        allow(hold).to receive_messages(fill_by_date: nil)
+      end
+
+      it 'renders never expires' do
+        expect(helper.render_hold_date(hold, date_field: 'fill_by_date')).to eq 'Never expires'
       end
     end
   end

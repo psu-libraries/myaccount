@@ -19,7 +19,7 @@
           <%= render BibItemComponent.new bibitem: hold %>
         </td>
         <td><%= hold.pickup_library_human %></td>
-        <td class="hold_status"><%= render_expiration_date hold %></td>
+        <td class="hold_status"><%= render_hold_date hold, date_field: 'expiration_date' %></td>
       </tr>
     <% end %>
     </tbody>

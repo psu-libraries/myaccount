@@ -7,8 +7,8 @@ module HoldsHelper
     'Unknown'
   end
 
-  def render_expiration_date(hold)
-    return l(hold.expiration_date, format: :short) if hold.expiration_date
+  def render_hold_date(hold, date_field:)
+    return l(hold.send(date_field), format: :short) if hold.send(date_field)
 
     'Never expires'
   end
