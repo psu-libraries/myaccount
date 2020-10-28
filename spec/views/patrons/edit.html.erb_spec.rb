@@ -13,7 +13,7 @@ RSpec.describe 'patrons/edit', type: :view do
     render
     expect(rendered).to match(/\*First Name/)
     expect(rendered).to match(/\*Last Name/)
-    expect(rendered).to match(/\*Email Address/)
+    expect(rendered).to match(/Email Address/)
     expect(rendered).to match(/\*Street/)
     expect(rendered).to match(/\*City/)
     expect(rendered).to match(/\*State/)
