@@ -2,6 +2,8 @@
 import 'jquery'
 import 'bootstrap'
 
+const defaultIndex = 0;
+
 export const reportError = async function (error) {
     const regex = /id="(?<id>[^"]*)/gm;
     let idResults = regex.exec(error);
@@ -31,7 +33,7 @@ const validateResult = (data, otherRule) => {
 };
 
 const checkError = (data) => data.result === 'failure';
-const checkIfCached = () => performance.getEntriesByType("navigation")[0].type === "back_forward";
+const checkIfCached = () => performance.getEntriesByType("navigation")[defaultIndex].type === "back_forward";
 
 const pollFetch = function(arg, otherRule = null) {
     const maxWaitTime = 300000;
@@ -89,8 +91,8 @@ export const renderData = (target, resultCallback, otherRule = null) => {
             // @todo: create a logging service
             // eslint-disable-next-line no-alert
             alert('There was a network error, please try again later or call your campus library.');
-            // eslint-disable-next-line no-console
         }
+        // eslint-disable-next-line no-console
         console.error(error);
         deleteData(target);
     });
