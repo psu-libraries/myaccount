@@ -1,6 +1,6 @@
+<p><%= t('myaccount.checkouts_info') %></p>
 <% if checkouts.length.positive? %>
     <p>
-      <div class="ml-4"><p><%= t('myaccount.checkouts_info') %></p></div>
       <div class="ml-4">Total Checked Out: <%= checkouts.length %></div>
 
       <% count = checkouts.select(&:recalled?).length %>
