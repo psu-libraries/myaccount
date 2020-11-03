@@ -45,8 +45,8 @@ en:
     callout:
       label_html: <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Notice
       message: Returned materials may be quarantined for four days and will remain on your account during the quarantine period.
-    checkouts_info_html: Materials borrowed through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">Medianet</a> do not appear on this list and must be renewed separately.
-    holds_info_html: Materials requested through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">Medianet</a> do not appear on this list and must be managed separately.
+    checkouts_info_html: Materials borrowed through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be renewed separately.
+    holds_info_html: Materials requested through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be managed separately.
     hold:
       cancel:
         success_html: <span class="font-weight-bold">Success!</span> %{bib_summary} was canceled.<br>
