@@ -112,6 +112,20 @@ RSpec.describe 'Holds', type: :feature do
       page.click_button 'Place Hold'
       expect(page).to have_link 'Back to Catalog', href: 'https://catalog.libraries.psu.edu/catalog/6066288'
     end
+
+    context 'when patron uses browser back button to place hold result page' do
+      it 'redirects to 404', js: true do
+        select 'College of Medicine (Hershey)', from: 'pickup_library'
+        fill_in 'pickup_by_date', with: '10-10-2050'
+
+        page.click_button 'Place Hold'
+        expect(page).to have_text 'Hold Placed'
+        visit summaries_path
+        page.go_back
+
+        expect(page).to have_current_path('/not_found')
+      end
+    end
   end
 
   context 'when patron uses browser back button to holds page' do
