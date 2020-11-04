@@ -39,7 +39,7 @@ RSpec.describe SummariesController do
       warden.set_user(user)
       allow(controller).to receive(:current_user).and_return(user)
       allow(mock_client).to receive(:patron_info).with(patron_key: user.patron_key,
-                                                       session_token: user.session_token, item_details: {})
+                                                       session_token: user.session_token, item_details: { all: true })
         .and_return(mock_response)
       allow(mock_client).to receive(:ping?).and_return(ping_response)
     end
