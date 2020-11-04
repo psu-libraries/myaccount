@@ -10,4 +10,10 @@ class SummariesController < ApplicationController
   def index
     @patron = patron
   end
+
+  private
+
+    def item_details
+      { all: true }
+    end
 end

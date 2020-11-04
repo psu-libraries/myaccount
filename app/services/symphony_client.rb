@@ -271,12 +271,14 @@ class SymphonyClient
         ["holdRecordList{*,#{ITEM_RESOURCES}}"]
       when ->(h) { h[:address1] }
         ['address1']
-      else
+      when ->(h) { h[:all] }
         [
           'blockList{*}',
           'holdRecordList{*}',
           'circRecordList{*}'
         ]
+      else
+        ['alternateID']
       end
     end
 
