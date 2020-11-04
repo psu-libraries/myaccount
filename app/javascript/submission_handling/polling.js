@@ -2,6 +2,8 @@
 import 'jquery'
 import 'bootstrap'
 
+const defaultIndex = 0;
+
 export const reportError = async function (error) {
     const regex = /id="(?<id>[^"]*)/gm;
     let idResults = regex.exec(error);
@@ -31,6 +33,7 @@ const validateResult = (data, otherRule) => {
 };
 
 const checkError = (data) => data.result === 'failure';
+const checkIfCached = () => performance.getEntriesByType("navigation")[defaultIndex].type === "back_forward";
 
 const pollFetch = function(arg, otherRule = null) {
     const maxWaitTime = 300000;
@@ -43,6 +46,8 @@ const pollFetch = function(arg, otherRule = null) {
                 resolve(data);
             } else if (checkError(data)) {
                 resolve(data);
+            } else if (checkIfCached()) {
+                reject(new Error('not found'));
             } else if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, pollInterval, resolve, reject);
             } else {
@@ -74,13 +79,19 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         deleteData(target);
     }).
     catch((error) => {
-        let genericError = { "result": "failure",
-                             "id": target };
-        resultCallback(genericError);
-        // The max wait time was reached. Web Service is probably down.
-        // @todo: create a logging service
-        // eslint-disable-next-line no-alert
-        alert('There was a network error, please try again later or call your campus library.');
+        if (error.message === 'not found') {
+            location.href = '/not_found';
+        } else {
+            let genericError = {
+                "result": "failure",
+                "id": target
+            };
+            resultCallback(genericError);
+            // The max wait time was reached. Web Service is probably down.
+            // @todo: create a logging service
+            // eslint-disable-next-line no-alert
+            alert('There was a network error, please try again later or call your campus library.');
+        }
         // eslint-disable-next-line no-console
         console.error(error);
         deleteData(target);
