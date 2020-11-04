@@ -59,3 +59,23 @@ export const clearBadges = () => {
         badges[defaultIndex].remove();
     }
 };
+
+export const fetchHTML = async (url) => {
+    // try/catch as a wrapper to the fetch and parse of attempted fetch handles all errors including 404, 500 or
+    // general network problems
+    try {
+        let fetchResponse = await fetch(url).
+            then((response) => {
+                if (!response.ok) {
+                    throw new Error('There was a problem, please try again or contact the Libraries if the problem' +
+                        ' persists.');
+                }
+
+                return response;
+            });
+
+return await fetchResponse.text();
+    } catch (err) {
+        return err;
+    }
+};

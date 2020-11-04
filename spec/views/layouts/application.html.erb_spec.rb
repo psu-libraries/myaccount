@@ -9,6 +9,7 @@ RSpec.describe 'layouts/application', type: :view do
     without_partial_double_verification do
       allow(view).to receive(:patron).and_return(mock_patron)
     end
+    allow(mock_patron).to receive(:valid?).and_return(true)
   end
 
   context 'when site is not in maintenance mode' do

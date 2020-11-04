@@ -42,20 +42,36 @@ RSpec.describe CheckoutsController do
     end
 
     describe '#index' do
-      before do
-        allow(ViewCheckoutsJob).to receive(:perform_later)
-      end
-
-      it 'sends a job to ViewCheckoutsJob' do
-        get :index
-
-        expect(ViewCheckoutsJob).to have_received(:perform_later)
-      end
-
       it 'renders the index template' do
         get :index
 
         expect(response).to render_template 'index'
+      end
+    end
+
+    describe '#all' do
+      context 'when the Patron is valid' do
+        before do
+          allow(mock_patron).to receive(:valid?).and_return(true)
+        end
+
+        it 'redirects to 500 response' do
+          get :all
+
+          expect(response).to render_template 'all'
+        end
+      end
+
+      context 'when the Patron is not valid' do
+        before do
+          allow(mock_patron).to receive(:valid?).and_return(false)
+        end
+
+        it 'redirects to 500 response' do
+          get :all
+
+          expect(response).to redirect_to('/500')
+        end
       end
     end
 

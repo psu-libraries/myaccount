@@ -43,6 +43,9 @@ class SymphonyClient
                                        ].join(',')
                                      })
     JSON.parse(response.body)
+  rescue HTTP::TimeoutError => e
+    # Allow execution to proceed. Error response handled Patron creation downstream.
+    puts "Rescued: #{e.inspect}"
   end
 
   def change_pickup_library(hold_key:, pickup_library:, session_token:)
