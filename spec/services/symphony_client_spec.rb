@@ -63,6 +63,17 @@ RSpec.describe SymphonyClient do
                                 session_token: user.session_token)).to include 'key' => '1234567'
     end
 
+    context 'when the network connection times out' do
+      before do
+        stub_request(:get, /example.com/).to_timeout
+      end
+
+      it 'rescues' do
+        expect { client.patron_info(patron_key: user.patron_key,
+                                    session_token: user.session_token) }.not_to raise_error HTTP::TimeoutError
+      end
+    end
+
     context 'when requesting item details' do
       it 'requests the item details for checkouts' do
         client.patron_info(patron_key: user.patron_key,

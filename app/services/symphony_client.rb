@@ -44,7 +44,7 @@ class SymphonyClient
                                      })
     JSON.parse(response.body)
   rescue HTTP::TimeoutError => e
-    # Allow execution to proceed. Error response handled Patron creation downstream.
+    # Allow execution to proceed. Error response handled by validating Patron creation downstream.
     puts "Rescued: #{e.inspect}"
   end
 

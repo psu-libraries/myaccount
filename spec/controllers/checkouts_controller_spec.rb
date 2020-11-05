@@ -55,7 +55,7 @@ RSpec.describe CheckoutsController do
           allow(mock_patron).to receive(:valid?).and_return(true)
         end
 
-        it 'redirects to 500 response' do
+        it 'renders the checkouts/all template' do
           get :all
 
           expect(response).to render_template 'all'
