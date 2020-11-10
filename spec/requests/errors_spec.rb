@@ -22,6 +22,18 @@ RSpec.describe 'Errors', type: :request do
       end
     end
 
+    describe 'not found with formats other than html' do
+      before { get '/404.xml' }
+
+      it 'has http status 404' do
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it 'redirects to customized not_found error page' do
+        expect(response.body).to include '<h4>The page you were looking for doesn\'t exist.</h4>'
+      end
+    end
+
     describe 'internal server error' do
       before { get '/500' }
 
