@@ -36,7 +36,7 @@
   <div class="form-group row">
     <%= label_tag :email, 'Email Address:', class: 'col-sm-2 col-form-label' %>
     <div class="col-sm-10 col-lg-5">
-      <%= email_field_tag 'email', @patron.email, class: 'form-control' %>
+      <%= email_field_tag 'email', @patron.email, class: 'form-control', multiple: true %>
       <small class="form-text text-muted">
         How can I receive library notices as text messages? <a href="https://libraries.psu.edu/services/lending-services/about-lending-services/text-messaging-library-notices">More information here</a>.
       </small>
