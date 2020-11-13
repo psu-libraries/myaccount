@@ -2,6 +2,10 @@
 
 # Class to model Patron information
 class Patron
+  include ActiveModel::Validations
+  include ActiveModel::Conversion
+  extend ActiveModel::Naming
+
   attr_reader :record
 
   CAMPUSES = { 'UP-PAT' => 'UNIVERSITY PARK or WORLD CAMPUS',
@@ -35,6 +39,8 @@ class Patron
     DELINQUENT: 'The user is DELINQUENT.',
     COLLECTION: 'The user has been sent to collection agency.'
   }.with_indifferent_access
+
+  validates_presence_of :record
 
   def initialize(record)
     @record = record

@@ -8,7 +8,6 @@ RSpec.describe 'Checkouts', type: :feature do
 
   before do
     login_permanently_as username: 'PATRON2', patron_key: mock_user
-    visit checkouts_path
   end
 
   after do
@@ -17,12 +16,25 @@ RSpec.describe 'Checkouts', type: :feature do
 
   context 'when visiting the checkouts page', js: true do
     it 'is accessible' do
+      visit checkouts_path
+
       expect(page).to be_accessible
+    end
+  end
+
+  context 'when encountering a network error in fetching results', js: true do
+    it 'replaces the spinner with error text' do
+      stub_request(:any, /circRecordList/).to_timeout
+
+      visit checkouts_path
+
+      expect(page).to have_text 'Error:'
     end
   end
 
   context 'when patron renews a checkout successfully' do
     before do
+      visit checkouts_path
       page.check 'renewal_list__2145643:5:1'
       page.click_button 'Renew', match: :first
     end
@@ -39,6 +51,7 @@ RSpec.describe 'Checkouts', type: :feature do
 
     context 'when renewing the same checkout successfully more than once' do
       it 'success badges gets cleared each time', js: true do
+        visit checkouts_path
         page.check 'renewal_list__2145643:5:1'
         page.click_button 'Renew', match: :first
 
@@ -49,16 +62,20 @@ RSpec.describe 'Checkouts', type: :feature do
 
   context 'when patron fails to renew a checkout successfully' do
     it 'generates an error message (a "toast")', js: true do
+      visit checkouts_path
       page.check 'renewal_list__3591032:1:1'
       page.click_button 'Renew', match: :first
+
       expect(page).to have_css('.toast')
     end
   end
 
   context 'when patron uses browser back button to checkouts page' do
     it 'forces checkout page to reload', js: true do
+      visit checkouts_path
       visit summaries_path
       page.go_back
+
       expect(page).to have_css '[id="checkout2145643:5:1"]'
     end
   end

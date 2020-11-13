@@ -9,7 +9,9 @@
         <%= render partial: 'shared/nav_link', locals: { name: 'Checkouts/Renewals', path: checkouts_path } %>
         <%= render partial: 'shared/nav_link', locals: { name: 'Holds', path: holds_path } %>
         <%= render partial: 'shared/nav_link', locals: { name: 'Bills', path: fines_path } %>
-        <%= render partial: 'shared/nav_link', locals: { name: 'Update Address', path: patron_path(patron) } %>
+        <% if patron.valid? %>
+          <%= render partial: 'shared/nav_link', locals: { name: 'Update Address', path: patron_path(patron) } %>
+        <% end %>
       </ul>
     </div>
   </div>
