@@ -40,7 +40,7 @@ class Patron
     COLLECTION: 'The user has been sent to collection agency.'
   }.with_indifferent_access
 
-  validates_presence_of :record
+  validates_presence_of :record, :key
 
   def initialize(record)
     @record = record
@@ -51,7 +51,7 @@ class Patron
   end
 
   def key
-    record['key']
+    record['key'] unless record.blank?
   end
 
   def id
