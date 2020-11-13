@@ -51,7 +51,7 @@ class Patron
   end
 
   def key
-    record['key'] unless record.blank?
+    record['key'] if record.present?
   end
 
   def id
