@@ -1,6 +1,6 @@
-<h2>Your Information</h2>
+<h1>Your Information</h1>
 
-<h3 class="pt-5 pb-3">Personal</h3>
+<h2 class="pt-5 pb-3">Personal</h2>
 
 <%= render PatronFieldComponent.new(label: 'First name', value: @patron.first_name) %>
 <%= render PatronFieldComponent.new(label: 'Middle name', value: @patron.middle_name) %>
@@ -9,7 +9,7 @@
 <%= render PatronFieldComponent.new(label: 'Library', value: Patron::CAMPUSES[@patron.library]) %>
 <%= render PatronFieldComponent.new(label: 'Email address', value: @patron.email) %>
 
-<h3 class="pt-5 pb-3">Mailing Address</h3>
+<h2 class="pt-5 pb-3">Mailing Address</h2>
 
 <%= render PatronFieldComponent.new(label: 'Address line 1', value: @patron.address[:street1]) %>
 <%= render PatronFieldComponent.new(label: 'Address line 2', value: @patron.address[:street2]) %>
