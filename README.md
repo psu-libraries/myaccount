@@ -92,6 +92,12 @@ You can use either the yml file inheritance structure inherent to the config gem
 
 ## Overriding pickup location labels
 
-Pickup locations for holds placed are manually dictated by Lending and Reserves Services. They tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. For production we use `production.local.yml` to override these values. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overridable. 
+Pickup locations for holds placed are manually dictated by Lending and Reserves Services. Meaning, that although the Symphony system does have the ability to automate this and could be deriven from web service calls we do not do this (for reasons). The workflow is: they tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. For production we use `production.local.yml` to override these values. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overridable. 
+
+*Knockout prefix* - because we sometimes need to remove only certain keys in a Hash stored in settings we need to make use of the [`knockout_prefix`](https://github.com/rubyconfig/config#merge-customization) feature in the Config gem. The override of the Hash goes like this: 
+
+1. Defined initially in settings.yml and tracked in repo
+1. Overridden to be knocked out in settings.local.yml (i.e., `pickup_locations: --`)
+1. Overridden again to be redefined in `settings/production.local.yml` without the keys that are meant to be removed
 
 When changing these values you must restart the web server (passenger) _and_ sidekiq. Run `/bin/systemctl restart sidekiq` and  `passenger-config restart-app` on the server where the change is being applied. Locally just stop and start these again.
