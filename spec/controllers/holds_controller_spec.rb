@@ -43,22 +43,20 @@ RSpec.describe HoldsController, type: :controller do
     end
 
     describe '#index' do
+      before do
+        allow(ViewHoldsJob).to receive(:perform_later)
+      end
+
+      it 'sends a job to ViewHoldsJob' do
+        get :index
+
+        expect(ViewHoldsJob).to have_received(:perform_later)
+      end
+
       it 'renders the index template' do
         get :index
 
         expect(response).to render_template 'index'
-      end
-    end
-
-    describe '#all' do
-      before do
-        allow(mock_patron).to receive(:valid?).and_return(true)
-      end
-
-      it 'renders the holds/all template' do
-        get :all
-
-        expect(response).to render_template 'all'
       end
     end
 
@@ -237,18 +235,6 @@ RSpec.describe HoldsController, type: :controller do
         delete :batch_destroy, params: { hold_list: ['3911148'] }
 
         expect(CancelHoldJob).to have_received(:perform_later)
-      end
-    end
-
-    context 'when the Patron is not valid' do
-      before do
-        allow(mock_patron).to receive(:valid?).and_return(false)
-      end
-
-      it 'redirects to 500 response' do
-        get :all
-
-        expect(response).to redirect_to('/500')
       end
     end
   end

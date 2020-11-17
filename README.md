@@ -59,6 +59,12 @@ Monitor the behavior by tailing the logs:
  ```
  bundle exec sidekiq
  ```
+ 
+ Sidekiq is being used as a means of speeding things up for our end users. This is especially true for large batches of changes being requested and most true for large batches of changes that apply to a single bib (multiple calls). Without the concurrency that Sidekiq provides, these requests would take significantly more time. For example a request to place a hold on 32 volumes might take 106 seconds without Sidekiq and with Sidekiq that comes down to a still long, but much quicker 15 seconds. 
+ 
+ Another option could have been hijacking the HTML and sending individual HTTP requests from JavaScript and then handling the response on each in JavaScript as well, but, we feel that this is approach is less attractive due to the fact that it's even more complex than the Sidekiq and polling apparatus and seems to work against the intention of a form in HTML rather than with it.
+ 
+ We have also decided to not allow Sidekiq jobs to retry due to failure. This is because we have already built in retries due to expected problems that could occur when attempting to interact with the web service. A retry could potentially be harmful given the immediate response needed by the user. 
 
 ## Putting it all together
 
