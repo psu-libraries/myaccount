@@ -3,7 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe 'Errors', type: :request do
-  RSpec.shared_examples 'error examples' do
+  context 'with unauthenticated user' do
+    it 'goes to the application root' do
+      get '/bad_route'
+
+      expect(response).to redirect_to root_url
+    end
+  end
+
+  context 'with an authenticated request' do
+    let(:mock_user) { 'patron2' }
+
+    before do
+      login_permanently_as username: 'PATRON2', patron_key: mock_user
+    end
+
     context 'when GET to errors route' do
       describe 'not found' do
         before { get '/bad_route' }
@@ -67,19 +81,5 @@ RSpec.describe 'Errors', type: :request do
         end
       end
     end
-  end
-
-  context 'with an unauthenticated request' do
-    include_examples 'error examples'
-  end
-
-  context 'with an authenticated request' do
-    let(:mock_user) { 'patron2' }
-
-    before do
-      login_permanently_as username: 'PATRON2', patron_key: mock_user
-    end
-
-    include_examples 'error examples'
   end
 end
