@@ -6,7 +6,7 @@ RSpec.describe 'Ask a librarian', type: :feature do
   let(:mock_user) { 'patron2' }
 
   before do
-    login_permanently_as username: 'PATRON2', patron_key: mock_user
+    login_as username: 'PATRON2', patron_key: mock_user
   end
 
   describe 'side tab widget', js: true do

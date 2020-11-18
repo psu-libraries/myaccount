@@ -11,6 +11,7 @@ RSpec.describe 'Checkouts', type: :feature do
   end
 
   after do
+    Warden::Manager._on_request.clear
     Redis.current.flushall
   end
 
