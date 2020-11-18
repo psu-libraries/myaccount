@@ -9,9 +9,15 @@ RSpec.describe 'Patron', type: :feature do
     login_permanently_as username: 'PATRON1', patron_key: mock_user
   end
 
-  it 'is accessible', js: true do
-    visit patron_path 'foo'
+  after do
+    Warden::Manager._on_request.clear
+  end
 
-    expect(page).to be_accessible
+  describe 'the patron page', js: true do
+    it 'is accessible' do
+      visit patron_path 'foo'
+
+      expect(page).to be_accessible
+    end
   end
 end

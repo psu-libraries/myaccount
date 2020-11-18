@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class ErrorsController < ApplicationController
+  before_action :authenticate_user!
+
   def not_found
-    render status: 404
+    respond_to do |format|
+      format.any { render status: 404, formats: :html, content_type: 'text/html' }
+    end
   end
 
   def internal_server_error

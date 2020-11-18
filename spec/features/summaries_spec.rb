@@ -10,9 +10,15 @@ RSpec.describe 'Summaries', type: :feature do
     login_permanently_as username: 'PATRON1', patron_key: mock_user
   end
 
-  it 'is accessible', js: true do
-    visit summaries_path
+  after do
+    Warden::Manager._on_request.clear
+  end
 
-    expect(page).to be_accessible
+  describe 'the summaries page', js: true do
+    it 'is accessible' do
+      visit summaries_path
+
+      expect(page).to be_accessible
+    end
   end
 end

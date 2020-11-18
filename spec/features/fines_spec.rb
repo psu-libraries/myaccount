@@ -10,6 +10,10 @@ RSpec.describe 'Fines', type: :feature do
     login_permanently_as username: 'PATRON1', patron_key: mock_user
   end
 
+  after do
+    Warden::Manager._on_request.clear
+  end
+
   it 'is accessible', js: true do
     visit fines_path
 
