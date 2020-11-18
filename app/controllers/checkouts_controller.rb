@@ -60,8 +60,4 @@ class CheckoutsController < ApplicationController
 
       redirect_to checkouts_path
     end
-
-    def item_details
-      { circRecordList: true }
-    end
 end
