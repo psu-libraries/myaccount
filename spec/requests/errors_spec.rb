@@ -18,6 +18,10 @@ RSpec.describe 'Errors', type: :request do
       login_permanently_as username: 'PATRON2', patron_key: mock_user
     end
 
+    after do
+      Warden::Manager._on_request.clear
+    end
+
     context 'when GET to errors route' do
       describe 'not found' do
         before { get '/bad_route' }

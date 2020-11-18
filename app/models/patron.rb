@@ -40,7 +40,7 @@ class Patron
     COLLECTION: 'The user has been sent to collection agency.'
   }.with_indifferent_access
 
-  validates_presence_of :record, :key
+  validates_presence_of :key
 
   def initialize(record)
     @record = record
