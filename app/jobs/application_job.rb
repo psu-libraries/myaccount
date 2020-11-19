@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 class ApplicationJob < ActiveJob::Base
-  sidekiq_options retry: 1
-  # Automatically retry jobs that encountered a deadlock
-  # retry_on ActiveRecord::Deadlocked
+  # Using ActiveJob to manage retries, only if there's a HTTP related problem. Using 0 seconds because AJ adds jitter
+  # time. In reality "1 second" can be up to 5 and 0 is around 1-2.
+  retry_on(HTTP::Error, wait: 0.seconds, attempts: 2)
+  # Telling Sidekiq to discard jobs instead of retrying (job failed twice already)
+  sidekiq_options retry: false
 
-  # Most jobs are safe to ignore if the underlying records are no longer available
-  # discard_on ActiveJob::DeserializationError
-  #
   private
 
     def symphony_client
