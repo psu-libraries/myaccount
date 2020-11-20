@@ -11,7 +11,7 @@ class Call
   end
 
   def item_list
-    fields.dig('itemList')
+    fields['itemList']
   end
 
   def volumetric
@@ -21,6 +21,6 @@ class Call
   private
 
     def fields
-      record.dig('fields')
+      record['fields']
     end
 end

@@ -35,3 +35,7 @@ RSpec/ExampleLength:
 RSpec/MultipleExpectations:
   Exclude:
     - 'spec/services/symphony_client_spec.rb'
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/components/**/*'
