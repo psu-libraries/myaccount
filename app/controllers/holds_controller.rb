@@ -13,17 +13,10 @@ class HoldsController < ApplicationController
   # GET /holds
   def index
     @patron_key = current_user.patron_key
+    ws_args = { patron_key: @patron_key, session_token: current_user.session_token }
+    ViewHoldsJob.perform_later **ws_args
 
     render
-  end
-
-  def all
-    return redirect_to '/500' unless patron.valid?
-
-    holds_ready = patron.holds.select(&:ready_for_pickup?)
-    holds_not_ready = patron.holds.reject(&:ready_for_pickup?)
-    render template: 'holds/all', layout: false, locals: { holds_ready: holds_ready,
-                                                           holds_not_ready: holds_not_ready }
   end
 
   # Handles form submission for changing holds in Symphony
@@ -131,9 +124,5 @@ class HoldsController < ApplicationController
 
     def barcodes
       [params['barcodes']].flatten.compact
-    end
-
-    def item_details
-      { holdRecordList: true }
     end
 end

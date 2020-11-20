@@ -12,15 +12,11 @@ class CheckoutsController < ApplicationController
   #
   # GET /checkouts
   def index
+    ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
+    ViewCheckoutsJob.perform_later **ws_args
+
     @patron_key = current_user.patron_key
     render
-  end
-
-  def all
-    return redirect_to '/500' unless patron.valid?
-
-    checkouts = patron.checkouts.sort_by(&:due_date)
-    render template: 'checkouts/all', layout: false, locals: { checkouts: checkouts }
   end
 
   # Handles form submission for batch checkout renewal requests
@@ -63,9 +59,5 @@ class CheckoutsController < ApplicationController
       flash[:error] = 'An unexpected error has occurred'
 
       redirect_to checkouts_path
-    end
-
-    def item_details
-      { circRecordList: true }
     end
 end

@@ -129,16 +129,6 @@ RSpec.describe 'Holds', type: :feature do
     end
   end
 
-  context 'when encountering a network error in fetching results', js: true do
-    it 'replaces the spinner with error text' do
-      stub_request(:any, /holdRecordList/).to_timeout
-
-      visit holds_path
-
-      expect(page).to have_text 'Error:'
-    end
-  end
-
   context 'when patron uses browser back button to holds page' do
     it 'forces checkout page to reload', js: true do
       visit holds_path

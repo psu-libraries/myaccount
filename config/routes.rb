@@ -16,9 +16,9 @@ Rails.application.routes.draw do
   delete '/holds/batch', to: 'holds#batch_destroy', as: :holds_batch_destroy
   patch '/checkouts/batch', to: 'checkouts#batch_update', as: :renewals_batch_update
 
-  get 'holds/all', to: 'holds#all'
+  get 'holds/all', to: 'holds#all', as: :holds_all
   get 'holds/result', to: 'holds#result', as: :result
-  get 'checkouts/all', to: 'checkouts#all'
+  get 'checkouts/all', to: 'checkouts#all', as: :checkouts_all
   get '/logout', to: 'sessions#destroy', as: :logout
 
   # error pages

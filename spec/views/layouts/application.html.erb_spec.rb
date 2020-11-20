@@ -7,11 +7,10 @@ RSpec.describe 'layouts/application', type: :view do
     without_partial_double_verification do
       allow(view).to receive(:patron).and_return(mock_patron)
     end
-    allow(mock_patron).to receive(:valid?).and_return(true)
   end
 
   context 'with an authenticated request' do
-    let(:mock_patron) { instance_double Patron, id: 'idhere' }
+    let(:mock_patron) { instance_double Patron, id: 'idhere', valid?: true }
 
     it 'displays the navigation' do
       render
