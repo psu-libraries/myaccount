@@ -20,7 +20,7 @@ class CheckoutsController < ApplicationController
   #
   # PATCH /checkouts/batch
   def batch_update
-    checkouts_to_renew.each do |checkout|
+    checkouts_to_renew&.each do |checkout|
       ws_args = { resource: '/catalog/item',
                   item_key: checkout,
                   session_token: current_user.session_token }
