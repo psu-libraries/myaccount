@@ -4,9 +4,6 @@ class CheckoutsController < ApplicationController
   include ActionView::Helpers::TagHelper
   before_action :set_cache_headers
   before_action :authenticate_user!
-  before_action :renew_params, only: :batch_update
-  before_action :authorize_update!, only: :batch_update
-  rescue_from RenewalException, with: :deny_access
 
   # Render a list of checkouts and renewals for patron
   #
@@ -24,8 +21,8 @@ class CheckoutsController < ApplicationController
   # PATCH /checkouts/batch
   def batch_update
     checkouts_to_renew.each do |checkout|
-      ws_args = { resource: checkout.resource,
-                  item_key: checkout.item_key,
+      ws_args = { resource: '/catalog/item',
+                  item_key: checkout,
                   session_token: current_user.session_token }
       RenewCheckoutJob.perform_later(**ws_args)
     end
@@ -36,23 +33,7 @@ class CheckoutsController < ApplicationController
   private
 
     def checkouts_to_renew
-      patron.checkouts.select { |checkout| renew_params.include? checkout.item_key }
-    end
-
-    def renew_params
-      if params[:renewal_list].blank?
-        flash[:notice] = 'No items were selected for renewal.'
-
-        redirect_to checkouts_path
-      else
-        params[:renewal_list]
-      end
-    end
-
-    def authorize_update!
-      return unless checkouts_to_renew.empty?
-
-      raise RenewalException, 'Error'
+      params['renewal_list']
     end
 
     def deny_access
