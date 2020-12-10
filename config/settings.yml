@@ -1,5 +1,5 @@
 maintenance_mode: false
-show_announcement: false
+show_announcement: true
 announcement:
   icon:
   message:
