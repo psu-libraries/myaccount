@@ -3,6 +3,7 @@
   <%= render 'layouts/head' %>
 
   <body class="d-flex flex-column h-100">
+    <%= render 'layouts/announcement' if Settings.show_announcement %>
     <%= render 'layouts/top_bar' %>
     <%= render 'layouts/navigation' %>
 

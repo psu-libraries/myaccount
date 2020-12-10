@@ -1,4 +1,9 @@
 maintenance_mode: false
+show_announcement: false
+announcement:
+  icon:
+  message:
+  html_class:
 symws:
   webaccess_url:
   url:
