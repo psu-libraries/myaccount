@@ -46,6 +46,21 @@ RSpec.describe 'layouts/application', type: :view do
         expect(rendered).to have_text 'System Maintenance'
       end
     end
+
+    context 'when announcement bar is enabled' do
+      after do
+        Settings.show_announcement = false
+      end
+
+      it 'adds the announcement message on top' do
+        assign('patron', instance_double(Patron, id: 'idhere'))
+        Settings.show_announcement = true
+
+        render
+
+        expect(rendered).to have_selector '.announcement'
+      end
+    end
   end
 
   context 'with an unauthenticated request' do

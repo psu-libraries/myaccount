@@ -96,6 +96,8 @@ We use Circle CI to test myaccount. In the event of a test failure you can visit
 
 You can use either the yml file inheritance structure inherent to the config gem, or you can set environment variables. See ["Working with Environment Variable"](https://github.com/rubyconfig/config#working-with-environment-variables).
 
+When changing these values you must restart the web server (passenger) _and_ sidekiq. Run `/bin/systemctl restart sidekiq` and  `passenger-config restart-app` on the server where the change is being applied. Locally just stop and start these again.
+
 ## Overriding pickup location labels
 
 Pickup locations for holds placed are manually dictated by Lending and Reserves Services. Meaning, that although the Symphony system does have the ability to automate this and could be deriven from web service calls we do not do this (for reasons). The workflow is: they tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. For production we use `production.local.yml` to override these values. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overridable. 
@@ -106,4 +108,19 @@ Pickup locations for holds placed are manually dictated by Lending and Reserves 
 1. Overridden to be knocked out in settings.local.yml (i.e., `pickup_locations: --`)
 1. Overridden again to be redefined in `settings/production.local.yml` without the keys that are meant to be removed
 
-When changing these values you must restart the web server (passenger) _and_ sidekiq. Run `/bin/systemctl restart sidekiq` and  `passenger-config restart-app` on the server where the change is being applied. Locally just stop and start these again.
+## Modifying announcement bar
+
+1. Defined initially in settings.yml and tracked in repo
+1. Overridden in settings.local.yml
+
+```rb
+show_announcement: true
+announcement:
+  # See https://fontawesome.com/icons
+  icon: fa-exclamation-circle
+  message: All University Libraries locations are closed, but we're here to help! See <a href="https://libraries.psu.edu/covid19"> University Libraries COVID-19 (novel coronavirus) Updates and Resources</a> for more information.
+  # See https://getbootstrap.com/docs/4.4/utilities/colors/
+  html_class: bg-warning
+```
+
+If one of the special keys isn't present, there is no ill-effect. It is just not there and the system operates as per usual. If the announcement array isn't present, then the default announcement in the translation file will show.
