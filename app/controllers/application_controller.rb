@@ -22,6 +22,9 @@ class ApplicationController < ActionController::Base
 
   private
 
+    MAX_SESSION_LIFE = 12.hours - 5.minutes
+    MAX_INACTIVE_TIME = 2.hours - 5.minutes
+
     def authenticate_webaccess
       redirect_to Settings.symws.webaccess_url + request.base_url
     end
@@ -43,9 +46,39 @@ class ApplicationController < ActionController::Base
         return redirect_to root_url
       end
 
-      # So current_user is set, Warden has got a user for us. However, our session with Sirsi WS has not gone stale.
-      # We know it's stale because the ping returned something other than 200.
+      manage_session_life_cookies
+
+      # So current_user is set, Warden has got a user for us. However, our session with Sirsi WS may have gone stale.
+      # We'll know it's stale because the ping will return something other than 200.
       renew_session_token unless symphony_client.ping?(current_user)
+    end
+
+    def manage_session_life_cookies
+      if session_life_cookies_present?
+        return renew_session_token if session_life_ending?
+      else
+        session_life_cookie(:session_began)
+      end
+
+      session_life_cookie(:last_active)
+    end
+
+    def session_life_ending?
+      DateTime.parse(cookies[:last_active]) + MAX_INACTIVE_TIME < Time.now ||
+        DateTime.parse(cookies[:session_began]) + MAX_SESSION_LIFE < Time.now
+    end
+
+    def session_life_cookies_present?
+      cookies[:last_active].present? && cookies[:session_began].present?
+    end
+
+    def clear_session_life_cookies
+      cookies.delete :last_active
+      cookies.delete :session_began
+    end
+
+    def session_life_cookie(cookie_name)
+      cookies[cookie_name] = Time.now.to_s
     end
 
     # This is used in the scenario where a user is not known to Warden yet. The application will redirect the
@@ -56,6 +89,7 @@ class ApplicationController < ActionController::Base
 
     # Things have gotten stale, clear user out by logging Warden out and send back through the authentication pipes.
     def renew_session_token
+      clear_session_life_cookies
       request.env['warden'].logout
 
       authenticate_user!
