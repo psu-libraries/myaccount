@@ -22,13 +22,14 @@ if Settings&.datadog&.on_server
 
         case response.code.to_i
         when 400...599
-          begin
-            message = JSON.parse(response.body)['messageList']
-          rescue StandardError
-            message = 'Error'
-          end
-          span.set_error(["Error #{response.code}", message]) unless message.first['code'] == 'hatErrorResponse.116'
+          message = parsed_response response
+          code = message&.first&.dig('code')
+          span.set_error(["Error #{response.code}", message]) unless code == 'hatErrorResponse.116'
         end
+      end
+
+      def parsed_response(response)
+        JSON.parse(response.body)&.dig('messageList') || 'Error'
       end
   end
 end
