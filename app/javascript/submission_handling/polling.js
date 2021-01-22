@@ -33,7 +33,13 @@ const validateResult = (data, otherRule) => {
 };
 
 const checkError = (data) => data.result === 'failure';
-const checkIfCached = () => performance.getEntriesByType("navigation")[defaultIndex].type === "back_forward";
+const checkIfCached = () => {
+    if (window.performance && window.performance.getEntriesByType("navigation").length) {
+        return window.performance.getEntriesByType("navigation")[defaultIndex].type === "back_forward";
+    }
+
+    return false;
+};
 
 const pollFetch = function(arg, otherRule = null) {
     const maxWaitTime = 300000;
