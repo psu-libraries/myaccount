@@ -24,7 +24,7 @@ class HoldsController < ApplicationController
   # PATCH /holds
   # PUT /holds
   def batch_update
-    params['hold_list'].each do |hold_key|
+    params['hold_list']&.each do |hold_key|
       ws_args = { hold_key: hold_key, session_token: current_user.session_token }
 
       if params[:pickup_library].present?
@@ -83,7 +83,7 @@ class HoldsController < ApplicationController
   #
   # DELETE /holds
   def batch_destroy
-    params['hold_list'].each do |hold_key|
+    params['hold_list']&.each do |hold_key|
       ws_args = { hold_key: hold_key, session_token: current_user.session_token }
 
       CancelHoldJob.perform_later(**ws_args)
