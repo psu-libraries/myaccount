@@ -9,6 +9,8 @@ class SirsiResponse::Error
     "hatErrorResponse.105": 'Denied: Item has been recalled, cannot be renewed.',
     "hatErrorResponse.252": 'Denied: Item has holds, cannot be renewed.',
     "hatErrorResponse.46": 'Denied: Item on reserve, cannot be renewed.',
+    "hatErrorResponse.238": 'This item cannot be automatically renewed. Please contact '\
+          '<a href="mailto:ul-lending@lists.psu.edu">ul-lending@lists.psu.edu</a> for assistance in renewing the item.',
     "unhandledException": 'Denied: Item cannot be renewed.'
   }.with_indifferent_access
 

@@ -7,6 +7,6 @@
   </div>
   <div class="toast-body">
     <%= render GenericValueWithLabelComponent.new label: 'For', value: title %>
-    <p><%= display_error %> Contact your campus library if you need assistance.</p>
+    <p><%= sanitize display_error %> Contact your campus library if you need assistance.</p>
   </div>
 </div>
