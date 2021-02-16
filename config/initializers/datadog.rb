@@ -2,6 +2,18 @@
 
 if Settings&.datadog&.on_server
   require 'ddtrace'
+
+  SIRSI_RESPONSE_EXCLUDES = [
+    'hatErrorResponse.116',
+    'hatErrorResponse.141',
+    'hatErrorResponse.7703',
+    'hatErrorResponse.105',
+    'hatErrorResponse.252',
+    'hatErrorResponse.46',
+    'hatErrorResponse.238',
+    'unhandledException'
+  ].freeze
+
   Datadog.configure do |c|
     c.service = 'myaccount'
     c.env = Settings.datadog.environment
@@ -24,7 +36,7 @@ if Settings&.datadog&.on_server
         when 400...599
           message = parsed_response response
           code = message&.first&.dig('code')
-          span.set_error(["Error #{response.code}", message]) unless code == 'hatErrorResponse.116'
+          span.set_error(["Error #{response.code}", message]) unless SIRSI_RESPONSE_EXCLUDES.include? code
         end
       end
 
