@@ -46,14 +46,6 @@ class ApplicationController < ActionController::Base
         return redirect_to root_url
       end
 
-      manage_session_life_cookies
-
-      # So current_user is set, Warden has got a user for us. However, our session with Sirsi WS may have gone stale.
-      # We'll know it's stale because the ping will return something other than 200.
-      renew_session_token unless symphony_client.ping?(current_user)
-    end
-
-    def manage_session_life_cookies
       if session_life_cookies_present?
         return renew_session_token if session_life_ending?
       else
@@ -61,6 +53,10 @@ class ApplicationController < ActionController::Base
       end
 
       session_life_cookie(:last_active)
+
+      # So current_user is set, Warden has got a user for us. However, our session with Sirsi WS may have gone stale.
+      # We'll know it's stale because the ping will return something other than 200.
+      renew_session_token unless symphony_client.ping?(current_user)
     end
 
     def session_life_ending?
