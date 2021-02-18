@@ -9,6 +9,10 @@ class SirsiResponse::Error
     "hatErrorResponse.105": 'Denied: Item has been recalled, cannot be renewed.',
     "hatErrorResponse.252": 'Denied: Item has holds, cannot be renewed.',
     "hatErrorResponse.46": 'Denied: Item on reserve, cannot be renewed.',
+    "hatErrorResponse.238": ActionController::Base.helpers.sanitize(
+      'This item cannot be automatically renewed. Please contact '\
+      "#{ApplicationController.helpers.mail_to 'ul-lending@lists.psu.edu'} for assistance in renewing the item."
+    ),
     "unhandledException": 'Denied: Item cannot be renewed.'
   }.with_indifferent_access
 
