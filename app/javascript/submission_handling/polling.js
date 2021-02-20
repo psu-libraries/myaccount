@@ -75,6 +75,18 @@ const deleteData = function (jobId) {
     fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
+const renderSummary = function () {
+    if (document.querySelector('.myaccount-info .alert-info')) {
+        const successCount = document.querySelectorAll('.bibitem .badge-success').length;
+        const failCount = document.querySelectorAll('.bibitem .badge-danger').length;
+        const summary = `Renewals processing completed <br>
+                        ${successCount} successfully renewed <br> 
+                        ${failCount} failed to renew`;
+        document.querySelector('.myaccount-info .alert-info').
+            innerHTML = `<span>${summary}</span>`;
+     }
+};
+
 export const renderData = (target, resultCallback, otherRule = null) => {
     pollFetch(target, otherRule).then((result) => {
         if (checkError(result)) {
@@ -83,6 +95,10 @@ export const renderData = (target, resultCallback, otherRule = null) => {
 
         resultCallback(result);
         deleteData(target);
+
+        if (resultCallback.name === 'updateCheckout') {
+            renderSummary();
+        }
     }).
     catch((error) => {
         if (error.message === 'not found') {

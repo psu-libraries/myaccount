@@ -20,6 +20,21 @@ const updateCheckout = function (data) {
     }
 };
 
+const renderProcessing = function () {
+    const infoHTML = `<div class="alert alert-info" role="alert">
+                        <span>Renewals are in progress...</span>
+                      </div>`;
+
+    if (document.querySelector('.myaccount-info')) {
+        document.querySelector('.myaccount-info').innerHTML = infoHTML;
+    } else {
+        let infoElement = document.createElement('div');
+        infoElement.classList.add('myaccount-info');
+        infoElement.innerHTML = infoHTML;
+
+        document.querySelector('.load-checkouts').prepend(infoElement);
+    }
+};
 
 // This is the public method
 let renewCheckout = function () {
@@ -34,6 +49,7 @@ let renewCheckout = function () {
                 document.querySelector(`[id="checkout${checkbox.value}"] .due-date span`).classList.toggle('invisible');
                 document.querySelector(`[id="checkout${checkbox.value}"] .status span`).classList.toggle('invisible');
             });
+            renderProcessing();
             scrollToTop();
     });
 
