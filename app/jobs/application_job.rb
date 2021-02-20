@@ -13,10 +13,11 @@ class ApplicationJob < ActiveJob::Base
       @symphony_client || SymphonyClient.new
     end
 
-    def badge(message: message)
+    def badge(message: message, badge_class: badge_class)
+      badge_class ||= 'success'
       ApplicationController.renderer.render(
-        partial: 'shared/success_badge',
-        locals: { message: message }
+        partial: 'shared/badge',
+        locals: { message: message, badge_class: badge_class }
       )
     end
 end

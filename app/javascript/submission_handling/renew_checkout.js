@@ -4,6 +4,8 @@ import { renderData } from './polling'
 const updateCheckout = function (data) {
     if (data.result === 'failure') {
         toggleSpin('checkout', data.id, 'renewal_count');
+        document.querySelector(`[id="checkout${data.id}"] .bibitem`).
+            innerHTML += data.response.badge;
         document.querySelector(`[id="checkout${data.id}"] .due-date span`).classList.toggle('invisible');
         document.querySelector(`[id="checkout${data.id}"] .status span`).classList.toggle('invisible');
     } else {
