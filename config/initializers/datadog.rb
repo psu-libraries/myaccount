@@ -11,6 +11,8 @@ if Settings&.datadog&.on_server
     'hatErrorResponse.252',
     'hatErrorResponse.46',
     'hatErrorResponse.238',
+    'hatErrorResponse.722',
+    'hatErrorResponse.17286',
     'unhandledException'
   ].freeze
 
