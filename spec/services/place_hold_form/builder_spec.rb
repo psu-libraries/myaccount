@@ -33,6 +33,18 @@ RSpec.describe PlaceHoldForm::Builder do
       expect(builder.generate[:author]).to eq 'Hill Street blues (Television program)'
     end
 
+    context 'when catkey has a prefix "a"' do
+      let(:catkey) { 'a1' }
+
+      before do
+        allow(client).to receive(:get_bib_info).with('1', 'fake-token').and_return(get_bib_info_response)
+      end
+
+      it 'will pass along the catkey after deleting the prefix' do
+        expect(builder.generate[:catkey]).to eq '1'
+      end
+    end
+
     context 'when response from Sirsi is an error, meaning no callList set' do
       before do
         bib_info.record['fields']['callList'] = ''
