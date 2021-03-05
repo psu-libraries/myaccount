@@ -2,15 +2,20 @@
 
 Warden::Strategies.add(:library_id) do
   def valid?
-    params['user_id'].present? && params['password'].present?
+    remote_user
+  end
+
+  def remote_user
+    request.env.fetch("HTTP_REMOTE_USER", false) 
   end
 
   def authenticate!
-    response = SymphonyClient.new.login(params['user_id'], params['password'])
+
+    response = SymphonyClient.new.login(Settings.symws.username, Settings.symws.pin, remote_user)
 
     if response['patronKey']
       user = {
-        username: params['user_id'],
+        username: remote_user,
         name: response['name'],
         patron_key: response['patronKey'],
         session_token: response['sessionToken']
