@@ -28,6 +28,7 @@ class SymphonyClient
     user['patronKey'] = resp['result'][0]['key']
     user['name'] = resp['result'][0]['displayName']
     user['sessionToken'] = session_token
+    user
   end
 
   def login(user_id, password, remote_user=nil)
