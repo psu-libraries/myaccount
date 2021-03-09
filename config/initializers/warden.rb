@@ -6,17 +6,19 @@ Warden::Strategies.add(:library_id) do
   end
 
   def remote_user
-    request.env.fetch("HTTP_REMOTE_USER", false) 
+    user = request.env.fetch(Settings.remote_user_header, false) 
+    user = user.split('@')[0]
   end
 
   def authenticate!
 
-    response = SymphonyClient.new.login(Settings.symws.username, Settings.symws.pin, remote_user)
+    response = SymphonyClient.new.login(Settings.symws.username, Settings.symws.pin, remote_user) || {}
 
-    if response['patronKey']
+
+    if response.fetch('patronKey', nil)
       user = {
         username: remote_user,
-        name: response['name'],
+        name: response['fields']['displayName'],
         patron_key: response['patronKey'],
         session_token: response['sessionToken']
       }

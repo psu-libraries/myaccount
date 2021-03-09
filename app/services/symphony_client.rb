@@ -24,9 +24,11 @@ class SymphonyClient
                                    q: "ALT_ID:#{remote_user.upcase}",
                                    includeFields: '*'
                                  })
-    resp = JSON.parse(resp.body)
-    user['patronKey'] = resp['result'][0]['key']
-    user['name'] = resp['result'][0]['displayName']
+    return nil unless resp.status == 200
+    resp = JSON.parse(resp.body)['result'].first
+    return nil unless resp
+    user['patronKey'] = resp['key']
+    user['fields'] = resp['fields']
     user['sessionToken'] = session_token
     user
   end

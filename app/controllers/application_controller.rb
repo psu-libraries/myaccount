@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
       # if we aren't given a REMOTE_USER variable we are unauthorized. 
       # this maybe should be a 401, however if apache is misconfigured
       # there's no amount of retrying that will fix this for the guest
-      redirect_to '/500' unless request.env.fetch('HTTP_REMOTE_USER', nil)
+      redirect_to '/500' unless request.env.fetch(Settings.remote_user_header, nil)
     end
 
     def symphony_client
