@@ -7,7 +7,7 @@ Warden::Strategies.add(:library_id) do
 
   def remote_user
     user = request.env.fetch(Settings.remote_user_header, false) 
-    user = user.split('@')[0]
+    user = user.split('@')[0] if user
   end
 
   def authenticate!
