@@ -1,4 +1,4 @@
-// jquery and bootrsap are only needed for reportError
+// jquery and bootstrap are only needed for reportError
 import 'jquery'
 import 'bootstrap'
 
@@ -75,19 +75,8 @@ const deleteData = function (jobId) {
     fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
-const renderSummary = function () {
-    if (document.querySelector('.myaccount-info .alert-info')) {
-        const successCount = document.querySelectorAll('.bibitem .badge-success').length;
-        const failCount = document.querySelectorAll('.bibitem .badge-danger').length;
-        const summary = `Renewals processing completed <br>
-                        ${successCount} successfully renewed <br> 
-                        ${failCount} failed to renew`;
-        document.querySelector('.myaccount-info .alert-info').
-            innerHTML = `<span>${summary}</span>`;
-     }
-};
-
-export const renderData = (target, resultCallback, otherRule = null) => {
+/* eslint-disable max-params */
+export const renderData = (target, resultCallback, otherRule = null, summaryCallback = null) => {
     pollFetch(target, otherRule).then((result) => {
         if (checkError(result)) {
             reportError(result.display_error);
@@ -96,8 +85,8 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         resultCallback(result);
         deleteData(target);
 
-        if (resultCallback.name === 'updateCheckout') {
-            renderSummary();
+        if (summaryCallback) {
+            summaryCallback();
         }
     }).
     catch((error) => {
@@ -119,3 +108,4 @@ export const renderData = (target, resultCallback, otherRule = null) => {
         deleteData(target);
     });
 };
+/* eslint-enable max-params */

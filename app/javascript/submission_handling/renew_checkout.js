@@ -36,6 +36,23 @@ const renderProcessing = function () {
     }
 };
 
+const renderSummary = function () {
+    if (document.querySelector('.myaccount-info .alert-info')) {
+        const successCount = document.querySelectorAll('.bibitem .badge-success').length;
+        const failCount = document.querySelectorAll('.bibitem .badge-danger').length;
+        const allCheckedCount = allChecked(findForm('checkouts')).length;
+        let info = 'Your renewals are processing...';
+        if (allCheckedCount === failCount + successCount) {
+            info = 'Renewals processing completed.';
+        }
+        const summary = `${info} <br>
+                        ${successCount} successfully renewed <br> 
+                        ${failCount} failed to renew`;
+        document.querySelector('.myaccount-info .alert-info').
+            innerHTML = `<span>${summary}</span>`;
+    }
+};
+
 // This is the public method
 let renewCheckout = function () {
     // Guard statement
@@ -60,7 +77,7 @@ let renewCheckout = function () {
     findForm('checkouts').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Renew') {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
-                renderData(`renewal_${checkbox.value}`, updateCheckout);
+                renderData(`renewal_${checkbox.value}`, updateCheckout, null, renderSummary);
             });
         }
     });
