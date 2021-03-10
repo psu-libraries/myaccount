@@ -18,22 +18,24 @@ class SymphonyClient
 
   def get_patron_record(remote_user, session_token)
     user = Hash.new
-    resp = authenticated_request("/user/patron/search",
-                                 headers: { 'x-sirs-sessionToken': session_token},
+    resp = authenticated_request('/user/patron/search',
+                                 headers: { 'x-sirs-sessionToken': session_token },
                                  params: {
                                    q: "ALT_ID:#{remote_user.upcase}",
                                    includeFields: '*'
                                  })
     return nil unless resp.status == 200
+
     resp = JSON.parse(resp.body)['result'].first
     return nil unless resp
+
     user['patronKey'] = resp['key']
     user['fields'] = resp['fields']
     user['sessionToken'] = session_token
     user
   end
 
-  def login(user_id, password, remote_user=nil)
+  def login(user_id, password, remote_user = nil)
     response = request('/user/staff/login', method: :post, json: {
                          login: user_id,
                          password: password

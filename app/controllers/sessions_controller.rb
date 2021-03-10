@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
       redirect_to summaries_url
     else
-      # if the symphony client returns no user we might want to redirect to a page that 
+      # if the symphony client returns no user we might want to redirect to a page that
       # says that they don't have a record?
       redirect_to '/500'
     end
