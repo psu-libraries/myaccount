@@ -25,11 +25,11 @@ const renderProcessing = function () {
                         <span>Renewals are in progress...</span>
                       </div>`;
 
-    if (document.querySelector('.myaccount-info')) {
-        document.querySelector('.myaccount-info').innerHTML = infoHTML;
+    if (document.querySelector('.renewals-summary')) {
+        document.querySelector('.renewals-summary').innerHTML = infoHTML;
     } else {
         let infoElement = document.createElement('div');
-        infoElement.classList.add('myaccount-info');
+        infoElement.classList.add('renewals-summary');
         infoElement.innerHTML = infoHTML;
 
         document.querySelector('.load-checkouts').prepend(infoElement);
@@ -37,18 +37,18 @@ const renderProcessing = function () {
 };
 
 const renderSummary = function () {
-    if (document.querySelector('.myaccount-info .alert-info')) {
+    if (document.querySelector('.renewals-summary .alert-info')) {
         const successCount = document.querySelectorAll('.bibitem .badge-success').length;
-        const failCount = document.querySelectorAll('.bibitem .badge-danger').length;
+        const failsCount = document.querySelectorAll('.bibitem .badge-danger').length;
         const allCheckedCount = allChecked(findForm('checkouts')).length;
         let info = 'Your renewals are processing...';
-        if (allCheckedCount === failCount + successCount) {
+        if (allCheckedCount === failsCount + successCount) {
             info = 'Renewals processing completed.';
         }
-        const summary = `${info} <br>
-                        ${successCount} successfully renewed <br> 
-                        ${failCount} failed to renew`;
-        document.querySelector('.myaccount-info .alert-info').
+        const summary = `${info}<br>
+                         ${successCount} successfully renewed<br>
+                         ${failsCount} failed to renew`;
+        document.querySelector('.renewals-summary .alert-info').
             innerHTML = `<span>${summary}</span>`;
     }
 };

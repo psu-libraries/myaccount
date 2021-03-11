@@ -75,7 +75,7 @@ const deleteData = function (jobId) {
     fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
-/* eslint-disable max-params */
+// eslint-disable-next-line max-params
 export const renderData = (target, resultCallback, otherRule = null, summaryCallback = null) => {
     pollFetch(target, otherRule).then((result) => {
         if (checkError(result)) {
@@ -108,4 +108,3 @@ export const renderData = (target, resultCallback, otherRule = null, summaryCall
         deleteData(target);
     });
 };
-/* eslint-enable max-params */
