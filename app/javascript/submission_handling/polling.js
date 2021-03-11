@@ -85,7 +85,7 @@ export const renderData = (target, resultCallback, otherRule = null, summaryCall
         resultCallback(result);
         deleteData(target);
 
-        if (summaryCallback) {
+        if (summaryCallback && typeof summaryCallback === 'function') {
             summaryCallback();
         }
     }).
