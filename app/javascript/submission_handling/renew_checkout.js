@@ -20,7 +20,7 @@ const updateCheckout = function (data) {
     }
 };
 
-const renderProcessing = function () {
+const initializeRenewalSummary = function () {
     const infoHTML = `<div class="alert alert-info" role="alert">
                         <span>Renewals are in progress...</span>
                       </div>`;
@@ -36,7 +36,7 @@ const renderProcessing = function () {
     }
 };
 
-const renderSummary = function () {
+const updateRenewalSummary = function () {
     if (document.querySelector('.renewals-summary .alert-info')) {
         const successCount = document.querySelectorAll('.bibitem .badge-success').length;
         const failsCount = document.querySelectorAll('.bibitem .badge-danger').length;
@@ -66,7 +66,7 @@ let renewCheckout = function () {
                 document.querySelector(`[id="checkout${checkbox.value}"] .due-date span`).classList.toggle('invisible');
                 document.querySelector(`[id="checkout${checkbox.value}"] .status span`).classList.toggle('invisible');
             });
-            renderProcessing();
+            initializeRenewalSummary();
             scrollToTop();
     });
 
@@ -77,7 +77,7 @@ let renewCheckout = function () {
     findForm('checkouts').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Renew') {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
-                renderData(`renewal_${checkbox.value}`, updateCheckout, null, renderSummary);
+                renderData(`renewal_${checkbox.value}`, updateCheckout, null, updateRenewalSummary);
             });
         }
     });

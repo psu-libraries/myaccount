@@ -21,7 +21,7 @@ export const getJobInfo = async (jobId) => {
 const validateResult = (data, otherRule) => {
     if (data) {
         if (data.result !== 'not_found') {
-            if (otherRule !== null) {
+            if (otherRule !== null && typeof otherRule === 'function') {
                 return otherRule(data);
             }
 
