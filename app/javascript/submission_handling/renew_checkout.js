@@ -4,6 +4,8 @@ import { renderData } from './polling'
 const updateCheckout = function (data) {
     if (data.result === 'failure') {
         toggleSpin('checkout', data.id, 'renewal_count');
+        document.querySelector(`[id="checkout${data.id}"] .bibitem`).
+            innerHTML += data.response.badge;
         document.querySelector(`[id="checkout${data.id}"] .due-date span`).classList.toggle('invisible');
         document.querySelector(`[id="checkout${data.id}"] .status span`).classList.toggle('invisible');
     } else {
@@ -18,6 +20,38 @@ const updateCheckout = function (data) {
     }
 };
 
+const initializeRenewalSummary = function () {
+    const infoHTML = `<div class="alert alert-info" role="alert">
+                        <span>Renewals are in progress...</span>
+                      </div>`;
+
+    if (document.querySelector('.renewals-summary')) {
+        document.querySelector('.renewals-summary').innerHTML = infoHTML;
+    } else {
+        let infoElement = document.createElement('div');
+        infoElement.classList.add('renewals-summary');
+        infoElement.innerHTML = infoHTML;
+
+        document.querySelector('.load-checkouts').prepend(infoElement);
+    }
+};
+
+const updateRenewalSummary = function () {
+    if (document.querySelector('.renewals-summary .alert-info')) {
+        const successCount = document.querySelectorAll('.bibitem .badge-success').length;
+        const failsCount = document.querySelectorAll('.bibitem .badge-danger').length;
+        const allCheckedCount = allChecked(findForm('checkouts')).length;
+        let info = 'Your renewals are processing...';
+        if (allCheckedCount === failsCount + successCount) {
+            info = 'Renewals processing completed.';
+        }
+        const summary = `${info}<br>
+                         ${successCount} successfully renewed<br>
+                         ${failsCount} failed to renew`;
+        document.querySelector('.renewals-summary .alert-info').
+            innerHTML = `<span>${summary}</span>`;
+    }
+};
 
 // This is the public method
 let renewCheckout = function () {
@@ -32,6 +66,7 @@ let renewCheckout = function () {
                 document.querySelector(`[id="checkout${checkbox.value}"] .due-date span`).classList.toggle('invisible');
                 document.querySelector(`[id="checkout${checkbox.value}"] .status span`).classList.toggle('invisible');
             });
+            initializeRenewalSummary();
             scrollToTop();
     });
 
@@ -42,7 +77,7 @@ let renewCheckout = function () {
     findForm('checkouts').addEventListener("ajax:success", function (event) {
         if (responseFromRails(event) === 'Renew') {
             allChecked(findForm('checkouts')).forEach((checkbox) => {
-                renderData(`renewal_${checkbox.value}`, updateCheckout);
+                renderData(`renewal_${checkbox.value}`, updateCheckout, null, updateRenewalSummary);
             });
         }
     });

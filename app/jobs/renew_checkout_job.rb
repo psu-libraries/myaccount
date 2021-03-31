@@ -39,6 +39,9 @@ class RenewCheckoutJob < ApplicationJob
       Redis.current.set("renewal_#{item_key}", {
         id: item_key,
         result: :failure,
+        response: {
+          badge: badge(message: 'Failed to renew', badge_class: 'danger')
+        },
         display_error: processed_error.html
       }.to_json)
     end

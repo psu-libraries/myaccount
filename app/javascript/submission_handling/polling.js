@@ -1,4 +1,4 @@
-// jquery and bootrsap are only needed for reportError
+// jquery and bootstrap are only needed for reportError
 import 'jquery'
 import 'bootstrap'
 
@@ -21,7 +21,7 @@ export const getJobInfo = async (jobId) => {
 const validateResult = (data, otherRule) => {
     if (data) {
         if (data.result !== 'not_found') {
-            if (otherRule !== null) {
+            if (otherRule !== null && typeof otherRule === 'function') {
                 return otherRule(data);
             }
 
@@ -75,7 +75,8 @@ const deleteData = function (jobId) {
     fetch(`/redis_jobs/${jobId}`, { "method": "delete" });
 };
 
-export const renderData = (target, resultCallback, otherRule = null) => {
+// eslint-disable-next-line max-params
+export const renderData = (target, resultCallback, otherRule = null, summaryCallback = null) => {
     pollFetch(target, otherRule).then((result) => {
         if (checkError(result)) {
             reportError(result.display_error);
@@ -83,6 +84,10 @@ export const renderData = (target, resultCallback, otherRule = null) => {
 
         resultCallback(result);
         deleteData(target);
+
+        if (summaryCallback && typeof summaryCallback === 'function') {
+            summaryCallback();
+        }
     }).
     catch((error) => {
         if (error.message === 'not found') {
