@@ -11,7 +11,7 @@ gem 'hiredis'
 gem 'http', '~> 4.0'
 gem 'lograge'
 gem 'puma', '~> 3.12'
-gem 'rails', '~> 6.0.2'
+gem 'rails', '~> 6.0.3.6'
 gem 'redis'
 gem 'sidekiq'
 gem 'simplecov', '< 0.18', require: false, group: :test
@@ -35,7 +35,7 @@ group :development, :test do
   gem 'niftany'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
-  gem 'rspec-rails', '~> 4.0.0.beta2'
+  gem 'rspec-rails', '~> 5.0.0'
   gem 'selenium-webdriver'
   gem 'sinatra', require: false # used for faking the symphony api for integration tests
   gem 'warden-rspec-rails'
