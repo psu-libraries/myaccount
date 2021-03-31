@@ -11,7 +11,7 @@ gem 'hiredis'
 gem 'http', '~> 4.0'
 gem 'lograge'
 gem 'puma', '~> 3.12'
-gem 'rails', '~> 6.0.2'
+gem 'rails', '~> 6.1'
 gem 'redis'
 gem 'sidekiq'
 gem 'simplecov', '< 0.18', require: false, group: :test
