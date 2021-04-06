@@ -16,25 +16,6 @@ class SymphonyClient
   MAX_WAIT_TIME = 30
   SAFE_PATRON_ADDRESS_FIELDS = [:email, :street1, :street2, :zip].freeze
 
-  def get_patron_record(remote_user, session_token)
-    user = Hash.new
-    resp = authenticated_request('/user/patron/search',
-                                 headers: { 'x-sirs-sessionToken': session_token },
-                                 params: {
-                                   q: "ALT_ID:#{remote_user.upcase}",
-                                   includeFields: '*'
-                                 })
-    return nil unless resp.status == 200
-
-    resp = JSON.parse(resp.body)['result'].first
-    return nil unless resp
-
-    user['patronKey'] = resp['key']
-    user['fields'] = resp['fields']
-    user['sessionToken'] = session_token
-    user
-  end
-
   def login(user_id, password, remote_user = nil)
     response = request('/user/staff/login', method: :post, json: {
                          login: user_id,
@@ -214,6 +195,26 @@ class SymphonyClient
   end
 
   private
+
+    def get_patron_record(remote_user, session_token)
+      user = Hash.new
+
+      response = authenticated_request('/user/patron/search',
+                                       headers: { 'x-sirs-sessionToken': session_token },
+                                       params: {
+                                         q: "ALT_ID:#{remote_user.upcase}",
+                                         includeFields: '*'
+                                       })
+      return nil unless response.status == 200
+
+      parsed_response = JSON.parse(response.body)['result'].first
+      return nil unless parsed_response
+
+      user['patronKey'] = parsed_response['key']
+      user['fields'] = parsed_response['fields']
+      user['sessionToken'] = session_token
+      user
+    end
 
     def patron_address(params)
       params.permit(SAFE_PATRON_ADDRESS_FIELDS)

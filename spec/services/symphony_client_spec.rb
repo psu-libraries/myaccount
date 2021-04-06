@@ -19,14 +19,20 @@ RSpec.describe SymphonyClient do
 
   describe '#login' do
     before do
-      stub_request(:post, "#{Settings.symws.url}/user/patron/login")
+      stub_request(:post, "#{Settings.symws.url}/user/staff/login")
         .with(body: Settings.symws.login_params.to_h,
               headers: Settings.symws.headers)
-        .to_return(body: { patronKey: Settings.symws.patron_key }.to_json)
+        .to_return(body: { sessionToken: user.session_token }.to_json)
+
+      stub_request(:get, "#{Settings.symws.url}/user/patron/search")
+        .with(headers: Settings.symws.headers.to_h.merge('X-Sirs-Sessiontoken': 'e0b5e1a3e86a399112b9eb893daeacfd'),
+              query: hash_including(includeFields: '*'))
+        .to_return(status: 200,
+                   body: { result: [{ key: Settings.symws.patron_key, fields: '' }] }.to_json)
     end
 
     it 'logs the user in to symphony' do
-      expect(client.login('fake_user', 'some_password')).to include 'patronKey' => 'some_patron_key'
+      expect(client.login('fake_user', 'some_password', 'remote_user')).to include 'patronKey' => 'some_patron_key'
     end
   end
 
