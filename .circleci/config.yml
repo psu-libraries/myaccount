@@ -1,6 +1,64 @@
 version: 2.1
 
+orbs:
+  docker: circleci/docker@1.5.0
+
 jobs:
+  release:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.0.6
+    environment:
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_REPO: library/myaccount
+      DOCKER_USERNAME: 'robot$circleci'
+      GITHUB_USER: 'psu-stewardship-bot'
+      CONFIG_REPO: git@github.com:psu-libraries/myaccount-config.git
+    steps:
+      - add_ssh_keys
+      - run:
+          name: "Release"
+          command: |
+            /usr/local/bin/tag-image
+            ssh-keyscan github.com > ~/.ssh/known_hosts
+            git clone $CONFIG_REPO
+            cd myaccount-config
+            /usr/local/bin/pr-release clusters/prod/manifests/myaccount/prod.yaml
+
+  publish:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.0.6
+        user: root
+    steps:
+      - setup_remote_docker:
+          version: 19.03.13
+      - checkout
+      - docker/check:
+          registry: harbor.k8s.libraries.psu.edu
+      - docker/build:
+          image: library/myaccount
+          registry: harbor.k8s.libraries.psu.edu
+          extra_build_args: "--target production"
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: library/myaccount
+          registry: harbor.k8s.libraries.psu.edu
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+  deploy:
+    docker:
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.0.6
+    environment:
+      CONFIG_REPO: git@github.com:psu-libraries/myaccount-config.git
+    steps:
+      - add_ssh_keys
+      - run:
+          name: "Updating Config Repo"
+          command: |
+            ssh-keyscan github.com > ~/.ssh/known_hosts
+            git clone $CONFIG_REPO
+            cd myaccount-config
+            ./bin/generate_app
   test:
     docker:
       - image: circleci/ruby:2.6.5-buster-node-browsers
@@ -59,4 +117,27 @@ workflows:
   version: 2
   myaccount:
     jobs:
+      - release:
+          name: "release image"
+          filters:
+            tags:
+              only:
+                - /^v\d+.\d+.\d+.*/
+            branches:
+              ignore:
+                - /.*/
       - test
+      - publish:
+          filters:
+            branches:
+              only:
+                - main
+                - /preview\/.*/
+      - deploy:
+          requires:
+            - publish
+          filters:
+            branches:
+              only:
+                - main
+                - /preview\/.*/

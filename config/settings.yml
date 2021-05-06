@@ -14,7 +14,7 @@ symws:
   pin: "<%= ENV.fetch("SYMWS_PIN") { nil } %>"
   headers:
     sd_originating_app_id: cs
-    x_sirs_clientID: PSUCATALOG
+    x_sirs_clientID: <%= ENV.fetch("X_SIRS_CLIENTID") { "PSUCATALOG" } %>
     content_type: 'application/json'
     accept: 'application/json'
 redis:

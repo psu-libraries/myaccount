@@ -68,13 +68,72 @@ Monitor the behavior by tailing the logs:
 
 ## Putting it all together
 
-Locally you'll need to run:
+Locally you'll need to run these commands:
 
 ```
 bundle exec rails s
 docker start redis-the-new-black
 bin/webpack-dev-server
 bundle exec sidekiq
+```
+
+## Docker-compose (experimental)
+You can run the whole myaccount stack via docker-compose. This will build a container for myaccount, sidekiq, and run web, sidekiq, and redis services. You will need a SYMWS_PIN to run locally. 
+
+1.) copy example .envrc file 
+```
+cp .envrc.example .envrc
+```
+2.) edit and source the .envrc file
+
+```
+source .envrc
+# optionally if you have direnv this is done for you for free
+# https://direnv.net/
+```
+Once the configuration is set, you can start developing.
+
+### Common Tasks
+Start Up myaccount and start developing
+
+```
+docker-compose up --build -d
+```
+
+Get a shell into the myaccount container
+replace "web" with "test" or "sidekiq" to get a shell into those services
+Here you can run any linting, or tests that you normally run locally. i.e updating your bundle etc.
+```
+docker-compose exec web bash
+```
+
+Restart a container
+```
+docker-compose restart web
+```
+
+Volumes
+sometimes you may want to remove a volume you can easily remove all volumes with the follwowing commmand, they will get re-created when you do an up
+```
+docker-compose down -v
+```
+
+Run a one off command
+```
+docker-compose exec web bundle
+```
+
+Attach to the running container
+If you want to do byebug, or pry you can attach your current session into the running container 
+A Ctrl+C in this window will halt the web process, you can reload it by running 
+`docker-compose restart web`
+```
+./bin/attach
+```
+
+Stop developing for the day, and go home!
+```
+docker-compose down
 ```
 
 Drop `--dev-caching` if it is getting in the way of dev work.

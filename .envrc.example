@@ -1,0 +1,4 @@
+# move this file to .envrc and source:
+# source .envrc
+# OR use direnv https://direnv.net/
+export SYMWS_PIN='some-password'
