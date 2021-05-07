@@ -1,7 +1,7 @@
 maintenance_mode: false
 show_announcement: false
 remote_user_header: <%= ENV.fetch("REMOTE_USER_HEADER") { "HTTP_REMOTE_USER"} %>
-# list of users that can masqurade as other users
+# list of users that can masquerade as other users
 admin_users: []
 announcement:
   icon:
