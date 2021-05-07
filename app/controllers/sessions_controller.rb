@@ -30,6 +30,5 @@ class SessionsController < ApplicationController
   def destroy
     request.env['warden'].logout
 
-    return 'thanks for stopping by'
   end
 end

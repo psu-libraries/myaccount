@@ -9,7 +9,7 @@ Warden::Strategies.add(:library_id) do
     user = request.env.fetch(Settings.remote_user_header, false)
     user = user.split('@')[0] if user
 
-    if request.params['masquerade'] and Settings.admin_users.include?(user)
+    if request.params['masquerade'] && Settings.admin_users.include?(user)
       user = request.params['masquerade']
     end
 
