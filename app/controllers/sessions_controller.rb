@@ -29,6 +29,5 @@ class SessionsController < ApplicationController
   # GET /logout
   def destroy
     request.env['warden'].logout
-
   end
 end
