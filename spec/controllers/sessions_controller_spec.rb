@@ -42,7 +42,7 @@ RSpec.describe SessionsController do
       end
 
       it 'redirects to the root' do
-        expect(get(:destroy)).to redirect_to root_url
+        expect(get(:destroy)).to render_template 'destroy'
       end
     end
   end
