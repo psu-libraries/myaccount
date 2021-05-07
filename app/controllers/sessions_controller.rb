@@ -30,6 +30,6 @@ class SessionsController < ApplicationController
   def destroy
     request.env['warden'].logout
 
-    redirect_to root_url
+    return 'thanks for stopping by'
   end
 end
