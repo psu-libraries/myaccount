@@ -1,3 +1,8 @@
 #!/bin/bash
 # runs rspec in test container 
+
+# Starts up the test service if it's not running
+docker-compose ps test || docker-compose up -d test
+
+#Run rspec in the running container
 docker-compose exec test bundle exec rspec $1

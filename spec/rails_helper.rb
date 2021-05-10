@@ -110,7 +110,17 @@ RSpec.configure do |config|
   config.include Capybara::RSpecMatchers, type: :component
 end
 
+Capybara.register_driver :chrome_headless do |app|\
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    options: Selenium::WebDriver::Chrome::Options.new(
+      args: %w[no-sandbox headless disable-gpu]
+    )
+  )
+end
+
 # Capybara
 Capybara.configure do |config|
-  config.javascript_driver = :selenium_chrome_headless # This is slower
+  config.javascript_driver = :chrome_headless # This is slower
 end
