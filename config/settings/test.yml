@@ -7,3 +7,4 @@ symws:
     login: 'fake_user'
     password: 'some_password'
   patron_key: 'some_patron_key'
+  remote_user: 'remote_user'

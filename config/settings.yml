@@ -1,18 +1,27 @@
 maintenance_mode: false
 show_announcement: false
+remote_user_header: <%= ENV.fetch("REMOTE_USER_HEADER") { "HTTP_REMOTE_USER"} %>
+# list of users that can masquerade as other users
+admin_users: []
 announcement:
   icon:
   message:
   html_class:
 symws:
   webaccess_url:
-  url:
-  headers: {}
+  url: <%= ENV.fetch("SYMWS_URL") { nil } %>
+  username: <%= ENV.fetch("SYMWS_USERNAME") { nil } %>
+  pin: "<%= ENV.fetch("SYMWS_PIN") { nil } %>"
+  headers:
+    sd_originating_app_id: cs
+    x_sirs_clientID: PSUCATALOG
+    content_type: 'application/json'
+    accept: 'application/json'
 redis:
   sidekiq:
-    uri: redis://127.0.0.1:6379/1
+    uri: <%= ENV.fetch("REDIS_SIDEKIQ_URI") { "redis://127.0.0.1:6379/1" } %>
   database:
-    uri: redis://127.0.0.1:6379/2
+    uri: <%= ENV.fetch("REDIS_DATABASE_URI") { "redis://127.0.0.1:6379/2" } %>
 matomo_id: 11
 pickup_locations:
   UP-PAT: 'Pattee Commons Services Desk'

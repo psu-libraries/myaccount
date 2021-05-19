@@ -7,7 +7,7 @@ RSpec.describe 'Errors', type: :request do
     it 'goes to the application root' do
       get '/bad_route'
 
-      expect(response).to redirect_to root_url
+      expect(response).to have_http_status(:not_found)
     end
   end
 

@@ -17,6 +17,10 @@ class SessionsController < ApplicationController
       return redirect_to original_fullpath if original_fullpath.present?
 
       redirect_to summaries_url
+    else
+      # if the symphony client returns no user we might want to redirect to a page that
+      # says that they don't have a record?
+      redirect_to '/500'
     end
   end
 
@@ -25,7 +29,5 @@ class SessionsController < ApplicationController
   # GET /logout
   def destroy
     request.env['warden'].logout
-
-    redirect_to root_url
   end
 end
