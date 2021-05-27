@@ -136,7 +136,16 @@ Stop developing for the day, and go home!
 docker-compose down
 ```
 
-Drop `--dev-caching` if it is getting in the way of dev work.
+Change the Redis Port
+If you're running redis locally for another project, you may need to change the redis port that's exposed for myaccount
+
+```
+echo "export REDIS_PORT=9999" >> .envrc
+source .envrc
+docker-compose up -d
+```
+Now, myaccount redis will be exposed on port 9999.
+
 
 # Terminology
 
