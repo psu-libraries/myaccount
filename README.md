@@ -112,6 +112,17 @@ Restart a container
 docker-compose restart web
 ```
 
+Run tests
+```
+docker-compose run test bundle exec rspec <path to file>
+# we've wrapped this into a helper script
+./bin/test <path to spec>
+
+# or to run all specs
+./bin/test
+```
+
+
 Volumes
 sometimes you may want to remove a volume you can easily remove all volumes with the follwowing commmand, they will get re-created when you do an up
 ```
