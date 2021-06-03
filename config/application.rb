@@ -24,6 +24,7 @@ Bundler.require(*Rails.groups)
 
 module Myaccount
   class Application < Rails::Application
+    require 'healthchecks'
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
