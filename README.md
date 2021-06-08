@@ -172,6 +172,15 @@ This is an attempt at a quick and rough "[ubiquitous language](https://martinfow
 # CI 
 We use Circle CI to test myaccount. In the event of a test failure you can visit <https://circleci.com/gh/psu-libraries/myaccount> to see the jobs output. You can gain shell access to the build by choosing "Rerun with SSH" once logged in, your code will be checked out at the `/project` path.
 
+# Healthcheck endpoint `/health`
+
+* Uses OkComputer to help with writing healthchecks. The convention for healthchecks is as follows:
+  * https://myaccount-okcomputer.dev.k8s.libraries.psu.edu/health - shows the application health (is rails started ok?)
+  * https://myaccount-okcomputer.dev.k8s.libraries.psu.edu/health/all - shows all registered health checks in the system
+  * https://myaccount-okcomputer.dev.k8s.libraries.psu.edu/health/{check_name} - shows an indiviual check. for example, https://myaccount-okcomputer.dev.k8s.libraries.psu.edu/health/version -- to emit the version that's running
+* The current checks are default, version, redis, and all.
+* You can also tack on .json to the routes to get a machine readable version of the healthcheck. i.e. https://myaccount-okcomputer.dev.k8s.libraries.psu.edu/health/all.json
+
 # Config gem and environment variables
 
 You can use either the yml file inheritance structure inherent to the config gem, or you can set environment variables. See ["Working with Environment Variable"](https://github.com/rubyconfig/config#working-with-environment-variables).
