@@ -4,6 +4,8 @@ if Settings&.datadog&.on_server
   require 'ddtrace'
 
   SIRSI_RESPONSE_EXCLUDES = [
+    'hatErrorResponse.17',
+    'hatErrorResponse.91',
     'hatErrorResponse.116',
     'hatErrorResponse.141',
     'hatErrorResponse.7703',
@@ -14,7 +16,12 @@ if Settings&.datadog&.on_server
     'hatErrorResponse.722',
     'hatErrorResponse.17286',
     'hatErrorResponse.753',
-    'unhandledException'
+    'unhandledException',
+    'recordNotFound',
+    'acknowledgeRenewalFeeCircPrompt',
+    'invalidPacket',
+    'invalidDateFormat',
+    'permissionDeniedRecordHidden'
   ].freeze
 
   Datadog.configure do |c|
