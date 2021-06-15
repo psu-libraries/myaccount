@@ -9,8 +9,6 @@ services:
   test:
     depends_on:
       - redis
-    profiles:
-      - test
     command: ["sleep" ,"9999"]
     environment:
       SYMWS_URL: 'https://cat-stage.libraries.psu.edu:28443/symwsbc'
