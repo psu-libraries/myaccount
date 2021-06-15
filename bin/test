@@ -1,4 +1,4 @@
 #!/bin/bash
 # runs rspec in test container 
 
-docker-compose run test bundle exec rspec $1
+docker-compose exec test bundle exec rspec $1
