@@ -11,8 +11,8 @@ services:
       - redis
     command: ["sleep" ,"9999"]
     environment:
-      SYMWS_URL: 'https://cat-stage.libraries.psu.edu:28443/symwsbc'
-      SYMWS_USERNAME: 'myaccount'
+      SYMWS_URL: "${SYMWS_URL}"
+      SYMWS_USERNAME: "${SYMWS_USERNAME:-myaccount}"
       REDIS_SIDEKIQ_URI: "redis://redis:6379/1"
       RAILS_ENV: "test"
       REDIS_DATABASE_URI: "redis://redis:6379/2"
@@ -30,8 +30,8 @@ services:
       target: /app/
   sidekiq:
     environment:
-      SYMWS_URL: 'https://cat-stage.libraries.psu.edu:28443/symwsbc'
-      SYMWS_USERNAME: 'myaccount'
+      SYMWS_URL: "${SYMWS_URL}"
+      SYMWS_USERNAME: "${SYMWS_USERNAME:-myaccount}"
       REDIS_SIDEKIQ_URI: "redis://redis:6379/1"
       RAILS_ENV: "development"
       REDIS_DATABASE_URI: "redis://redis:6379/2"
@@ -50,8 +50,8 @@ services:
     command: ["/app/bin/sidekiq"]
   web:
     environment:
-      SYMWS_URL: 'https://cat-stage.libraries.psu.edu:28443/symwsbc'
-      SYMWS_USERNAME: 'myaccount'
+      SYMWS_URL: "${SYMWS_URL}"
+      SYMWS_USERNAME: "${SYMWS_USERNAME:-myaccount}"
       REDIS_SIDEKIQ_URI: "redis://redis:6379/1"
       RAILS_ENV: "development"
       REDIS_DATABASE_URI: "redis://redis:6379/2"
