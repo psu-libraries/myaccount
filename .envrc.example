@@ -2,6 +2,8 @@
 # source .envrc
 # OR use direnv https://direnv.net/
 export SYMWS_PIN='some-password'
+export SYMWS_URL='some-url'
+export SYMWS_USERNAME='some-username'
 
 
 ## Ports exposed on the system Change these from the defaults
