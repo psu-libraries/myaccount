@@ -39,7 +39,7 @@ RSpec.describe Hold, type: :model do
 
   it 'has a pickup library set that can be understood by humans' do
     hold.record['fields']['pickupLibrary']['key'] = 'UP-PAT'
-    expect(hold.pickup_library_human).to eq 'Pattee Library and Paterno Library Stacks'
+    expect(hold.pickup_library_human).to eq 'Pattee and Paterno Library - Commons Services Desk'
   end
 
   it 'has a queue position' do
