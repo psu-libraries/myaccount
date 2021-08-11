@@ -35,7 +35,7 @@ RSpec.describe ChangePickupLibraryJob, type: :job do
         described_class.perform_now(**ws_args)
         results = Redis.current.get 'pickup_library_1'
 
-        expect(results).to include 'Pattee Library and Paterno Library Stacks'
+        expect(results).to include 'Pattee and Paterno Library - Commons Services Desk'
       end
     end
 
