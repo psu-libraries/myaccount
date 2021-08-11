@@ -12,7 +12,7 @@ gem 'http', '~> 4.0'
 gem 'lograge'
 gem 'okcomputer', '~> 1.18'
 gem 'puma', '~> 4.3'
-gem 'rails', '~> 6.0.3.6'
+gem 'rails', '~> 6.0.4'
 gem 'redis'
 gem 'sidekiq'
 gem 'simplecov', '< 0.18', require: false, group: :test
