@@ -156,7 +156,7 @@ RSpec.describe HoldsHelper, type: :helper do
   describe '#render_pickup_library' do
     it 'returns an html select list with the patron\s default library selected' do
       expect(helper.render_pickup_libraries('UP-PAT')).to include '<option selected="selected" value="UP-PAT">'\
-                                                                          'Pattee Commons Services Desk</option>'
+                                            'Pattee and Paterno Library - Commons Services Desk</option>'
     end
 
     it 'returns an html select list with a blank option as selected when selected is not a pickup location' do
