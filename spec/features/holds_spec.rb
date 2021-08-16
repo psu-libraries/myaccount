@@ -34,6 +34,7 @@ RSpec.describe 'Holds', type: :feature do
       it 'lets the user change the pickup library of a hold', js: true do
         expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location'
         expect(page).to have_css '#hold3911148 .pickup_at', text: 'York'
+        expect(page).to have_unchecked_field 'hold_list__3911148'
       end
 
       context 'when the user successfully changes the pickup library of the same hold more than once' do
@@ -57,6 +58,7 @@ RSpec.describe 'Holds', type: :feature do
       it 'lets the user change the pickup by date of a hold', js: true do
         expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date'
         expect(page).to have_css '#hold3911148 .pickup-by', text: 'January 1, 9999'
+        expect(page).to have_unchecked_field 'hold_list__3911148'
       end
 
       context 'when the user successfully changes the pickup up by date of the same hold more than once' do

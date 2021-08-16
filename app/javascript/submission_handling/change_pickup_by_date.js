@@ -49,7 +49,10 @@ let changePickupByDate = function () {
         if (responseFromRails(event) === 'Update scheduled' && pickupByDateInput().value !== '') {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_by_date_${checkbox.value}`, updatePickupByDate, validatePickupByDateChange);
+                checkbox.checked = false;
             });
+
+            document.getElementById('pending_all').checked = false;
         }
     });
 
