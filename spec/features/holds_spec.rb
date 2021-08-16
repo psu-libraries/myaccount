@@ -77,6 +77,7 @@ RSpec.describe 'Holds', type: :feature do
       page.click_button 'Cancel'
       expect(page).to have_css '#hold3911148 .hold_status', text: 'Canceled'
       expect(page).to have_css '.badge-success', text: 'Hold canceled'
+      expect(page).to have_unchecked_field 'hold_list__3911148'
     end
 
     it 'lets the user cancel a ready for pickup hold', js: true do
@@ -84,6 +85,7 @@ RSpec.describe 'Holds', type: :feature do
       page.click_button 'Cancel Selected Holds'
       expect(page).to have_css '#hold3906718 .hold_status', text: 'Canceled'
       expect(page).to have_css '.badge-success', text: 'Hold canceled'
+      expect(page).to have_unchecked_field 'hold_list__3911148'
     end
   end
 
