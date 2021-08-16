@@ -44,7 +44,10 @@ let changePickupLibrary = function () {
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_library_${checkbox.value}`, updatePickupChange, validatePickupChange);
+                checkbox.checked = false;
             });
+
+            document.getElementById('pending_all').checked = false;
         }
     });
 
