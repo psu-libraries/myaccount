@@ -6,7 +6,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.0.6
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_REPO: library/myaccount
@@ -26,7 +26,7 @@ jobs:
 
   publish:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.0.6
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
         user: root
     steps:
       - setup_remote_docker:
@@ -47,7 +47,7 @@ jobs:
             echo "Digest is: $(</tmp/digest.txt)"
   deploy:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v1.0.6
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v2.0.1
     environment:
       CONFIG_REPO: git@github.com:psu-libraries/myaccount-config.git
     steps:
