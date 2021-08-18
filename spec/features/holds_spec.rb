@@ -39,11 +39,11 @@ RSpec.describe 'Holds', type: :feature do
 
       context 'when the user successfully changes the pickup library of the same hold more than once' do
         it 'success badges gets cleared each time', js: true do
-          page.check 'hold_list__3911148'
+          page.find("input[type='checkbox'][id='hold_list__3911148']").click
           page.select 'Berks Campus Library', from: 'pickup_library'
           page.click_button 'Update Selected Holds'
 
-          expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location', count: 1
+          expect(page.find('.badge-success')).to have_text 'Successfully changed pickup location', count: 1
         end
       end
     end
