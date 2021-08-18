@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if Settings&.datadog&.on_server
+if Settings&.datadog&.enabled
   require 'ddtrace'
 
   SIRSI_RESPONSE_EXCLUDES = [
