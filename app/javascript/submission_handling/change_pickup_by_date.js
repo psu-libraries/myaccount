@@ -18,6 +18,7 @@ const updatePickupByDate = function (data) {
     if (data.result === 'failure') {
         toggleSpin('hold', data.id, 'pickup-by');
     } else {
+        document.querySelector(`#hold_list__${data.id}`).checked = false;
         document.querySelector(`#hold${data.id} .bibitem`).
             innerHTML += data.response.badge;
         document.querySelector(`#hold${data.id} .pickup-by`).
@@ -49,7 +50,6 @@ let changePickupByDate = function () {
         if (responseFromRails(event) === 'Update scheduled' && pickupByDateInput().value !== '') {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_by_date_${checkbox.value}`, updatePickupByDate, validatePickupByDateChange);
-                checkbox.checked = false;
             });
 
             document.getElementById('pending_all').checked = false;
