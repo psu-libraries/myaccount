@@ -5,6 +5,7 @@ const updateCancelledHold = function (data) {
     if (data.result === 'failure') {
         toggleSpin('hold', data.id, 'hold_status');
     } else {
+        document.querySelector(`#hold_list__${data.id}`).checked = false;
         document.querySelector(`#hold${data.id} .bibitem`).
             innerHTML += data.badge;
         document.querySelector(`#hold${data.id} .hold_status`).innerHTML = data.response;
@@ -27,7 +28,6 @@ let listenAjaxSuccess = (form) => {
         if (responseFromRails(event) === 'Deletion scheduled') {
             allChecked(form).forEach((checkbox) => {
                 renderData(`cancel_hold_${checkbox.value}`, updateCancelledHold);
-                checkbox.checked = false;
             });
 
             document.getElementById('pending_all').checked = false;

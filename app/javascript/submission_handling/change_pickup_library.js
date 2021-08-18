@@ -12,6 +12,7 @@ const updatePickupChange = function (data) {
     if (data.result === 'failure') {
         toggleSpin('hold', data.id, 'pickup_at');
     } else {
+        document.querySelector(`#hold_list__${data.id}`).checked = false;
         document.querySelector(`#hold${data.id} .bibitem`).innerHTML += data.response.badge;
         document.querySelector(`#hold${data.id} .pickup_at`).
             innerHTML = `<span>${data.response.new_value}</span>`;
@@ -44,7 +45,6 @@ let changePickupLibrary = function () {
             pickupChangeSelect().selectedIndex !== defaultSelectIndex) {
             allChecked(findForm('pending-holds')).forEach((checkbox) => {
                 renderData(`pickup_library_${checkbox.value}`, updatePickupChange, validatePickupChange);
-                checkbox.checked = false;
             });
 
             document.getElementById('pending_all').checked = false;
