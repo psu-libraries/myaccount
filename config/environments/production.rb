@@ -69,9 +69,6 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   # config.active_support.deprecation = :notify
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
-
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
@@ -79,12 +76,13 @@ Rails.application.configure do
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    config.logger    = ActiveSupport::Logger.new($stdout)
   end
 
   # Adds lograge and parametrizes log name. Capture parameters other than `controller` and `action` in lograge. ALso
   # captures timestamp.
   config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Json.new
   params_to_include = %w(controller action)
   config.lograge.custom_options = lambda do |event|
     params = event.payload[:params].reject { |k| params_to_include.include?(k) }
