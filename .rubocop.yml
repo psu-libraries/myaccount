@@ -17,6 +17,7 @@ AllCops:
 
 Metrics/BlockLength:
   Exclude:
+  - 'config/environments/production.rb'
   - 'spec/**/*'
 
 Layout/LineLength:
