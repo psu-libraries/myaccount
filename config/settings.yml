@@ -1,4 +1,6 @@
 maintenance_mode: false
+# Maintenance until text for date/time
+maintenance_until:
 show_announcement: false
 remote_user_header: <%= ENV.fetch("REMOTE_USER_HEADER") { "HTTP_REMOTE_USER"} %>
 # list of users that can masquerade as other users
