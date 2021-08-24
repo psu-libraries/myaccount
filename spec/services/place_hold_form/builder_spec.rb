@@ -128,5 +128,18 @@ RSpec.describe PlaceHoldForm::Builder do
         expect(possible_barcodes).to include builder.generate[:barcode]
       end
     end
+
+    context 'when volumetric_natural_sort fails' do
+      let(:bib_info) { build(:bib_with_bad_volumetric_data) }
+
+      it 'will log an error' do
+        allow(Rails.logger).to receive(:error)
+
+        expect(builder.generate[:volumetric_calls].count).to be 5
+
+        expect(Rails.logger).to have_received(:error)
+          .with('place_hold_form/volumetric_natural_sort failure for catkey: 1')
+      end
+    end
   end
 end

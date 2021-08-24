@@ -99,7 +99,14 @@ class PlaceHoldForm::Builder
 
     def volumetric_natural_sort
       @volumetric_calls.each { |call| call.record['naturalized_volumetric'] = naturalize(call.volumetric.to_s) }
-        .sort_by! { |call| call.record['naturalized_volumetric'] }
+
+      # Bad data in the volumetric field can sometimes cause this sort to fail.
+      # If the sort fails, log an error so that we can go back and fix the data.
+      begin
+        @volumetric_calls.sort_by! { |call| call.record['naturalized_volumetric'] }
+      rescue ArgumentError
+        Rails.logger.error("place_hold_form/volumetric_natural_sort failure for catkey: #{catkey}")
+      end
     end
 
     # Replace periods with spaces and then transform string into an array of "naturalized" values.
