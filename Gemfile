@@ -17,6 +17,7 @@ gem 'rails', '~> 6.0.4'
 gem 'redis'
 gem 'sidekiq'
 gem 'simplecov', '< 0.18', require: false, group: :test
+gem 'simple_json_log_formatter'
 gem 'view_component'
 gem 'warden', '~> 1.2'
 gem 'webpacker'

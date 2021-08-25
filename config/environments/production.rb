@@ -69,14 +69,15 @@ Rails.application.configure do
   # Send deprecation notices to registered listeners.
   # config.active_support.deprecation = :notify
 
+  config.log_formatter = SimpleJsonLogFormatter.new(progname_key: nil)
+
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
   if ENV['RAILS_LOG_TO_STDOUT'].present?
-    logger           = ActiveSupport::Logger.new($stdout)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::Logger.new($stdout)
+    config.logger = ActiveSupport::Logger.new($stdout)
+    config.logger.formatter = config.log_formatter
   end
 
   # Adds lograge and parametrizes log name. Capture parameters other than `controller` and `action` in lograge. ALso
