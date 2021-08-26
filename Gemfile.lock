@@ -341,6 +341,7 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    simple_json_log_formatter (0.3.0)
     simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -430,6 +431,7 @@ DEPENDENCIES
   rspec-rails (~> 5.0.0)
   selenium-webdriver
   sidekiq
+  simple_json_log_formatter
   simplecov (< 0.18)
   sinatra
   spring
