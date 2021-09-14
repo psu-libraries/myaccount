@@ -21,6 +21,13 @@ class SymphonyClient
                          login: user_id,
                          password: password
                        })
+
+    if response.status > 400
+      Rails.logger.error(
+        "Received #{response.status} when attempting to login to #{Settings.symws.url}"
+      )
+    end
+
     resp = JSON.parse(response.body)
     session_token = resp['sessionToken']
     get_patron_record(remote_user, session_token)
