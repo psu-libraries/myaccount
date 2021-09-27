@@ -60,6 +60,6 @@ class Hold
     end
 
     def pickup_library_code
-      fields.dig('pickupLibrary', 'key') || fields.dig('library', 'key')
+      fields.dig('pickupLibrary', 'key') || fields.dig('library', 'key') || 'NOTFOUND'
     end
 end

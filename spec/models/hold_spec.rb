@@ -42,6 +42,12 @@ RSpec.describe Hold, type: :model do
     expect(hold.pickup_library_human).to eq 'Pattee and Paterno Library - Commons Services Desk'
   end
 
+  it 'has a nil pickup library set that can be understood by humans' do
+    hold.record['fields']['pickupLibrary']['key'] = nil
+    expect(hold.pickup_library_human).to eq 'The system is experiencing difficulty displaying '\
+                                              "this item's pickup location"
+  end
+
   it 'has a queue position' do
     hold.record['fields']['queuePosition'] = 27
     expect(hold.queue_position).to eq 27

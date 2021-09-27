@@ -38,7 +38,7 @@ pickup_locations:
   UP-OFFICE: 'University Park Faculty/Staff/Graduate Student Office Delivery'
   ABINGTON: 'Penn State Abington'
   ALTOONA: 'Altoona Campus Library Pickup - Library Circulation Desk'
-  LOCKER-AA: 'Penn State Altoona-Downtown'
+  AA-DOWNTWN: 'Penn State Altoona-Downtown'
   BEAVER: 'Penn State Beaver'
   BEHREND: 'Penn State Erie'
   BERKS: 'Berks Campus Library'
@@ -63,7 +63,7 @@ pickup_locations_actual:
   ACQ_DSL: 'Acquisitions (Law Schools)'
   ACQUISTNS: 'Acquisitions (UP)'
   ALTOONA: 'Altoona Campus Library - Library Circulation Desk'
-  LOCKER-AA: 'Penn State Altoona-Downtown'
+  AA-DOWNTWN: 'Penn State Altoona-Downtown'
   BEAVER: 'Penn State Beaver'
   BEHREND: 'Penn State Erie'
   BERKS: 'Berks Campus Library'
@@ -106,3 +106,4 @@ pickup_locations_actual:
   WSCRANTON: 'Penn State Scranton'
   XTERNAL: 'Associated Libraries'
   YORK: 'Penn State York'
+  NOTFOUND: "The system is experiencing difficulty displaying this item's pickup location"
