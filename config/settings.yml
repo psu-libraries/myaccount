@@ -106,3 +106,4 @@ pickup_locations_actual:
   WSCRANTON: 'Penn State Scranton'
   XTERNAL: 'Associated Libraries'
   YORK: 'Penn State York'
+  NOTFOUND: "The system is experiencing difficulty displaying this item's pickup location"
