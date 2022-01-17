@@ -23,6 +23,11 @@ class SymphonyClient
                        })
     resp = JSON.parse(response.body)
     session_token = resp['sessionToken']
+
+    if response.status > 200
+      Rails.logger.error("Error Logging In to symphony with message #{resp}")
+    end
+
     get_patron_record(remote_user, session_token)
   end
 
@@ -205,7 +210,11 @@ class SymphonyClient
                                          q: "ALT_ID:#{remote_user.upcase}",
                                          includeFields: '*'
                                        })
-      return nil unless response.status == 200
+
+      if response.status > 200
+        Rails.logger.error("Error Getting Patron record with message #{JSON.parse(response.body)}")
+        return nil
+      end
 
       parsed_response = JSON.parse(response.body)['result'].first
       return nil unless parsed_response
