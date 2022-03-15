@@ -15,6 +15,10 @@ AllCops:
     - 'vendor/**/*'
     - 'spec/support/data/**/*'
 
+Metrics/ClassLength:
+  Exclude:
+  - 'app/services/symphony_client.rb'
+
 Metrics/BlockLength:
   Exclude:
   - 'config/environments/production.rb'
