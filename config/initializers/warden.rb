@@ -17,8 +17,8 @@ Warden::Strategies.add(:library_id) do
   end
 
   def authenticate!
-    response = SymphonyClient.new.login(Settings.symws.username, Settings.symws.pin, remote_user) || {}
-
+    _status, session_token = SymphonyClient.new.login(Settings.symws.username, Settings.symws.pin)
+    response = SymphonyClient.new.get_patron_record(remote_user, session_token) || {}
     if response.fetch('patronKey', nil)
       user = {
         username: remote_user,

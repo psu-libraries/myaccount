@@ -32,7 +32,21 @@ RSpec.describe SymphonyClient do
     end
 
     it 'logs the user in to symphony' do
-      expect(client.login('fake_user', 'some_password', 'remote_user')).to include 'patronKey' => 'some_patron_key'
+      expect(client.login('fake_user', 'some_password')[1]).to eq('e0b5e1a3e86a399112b9eb893daeacfd')
+    end
+  end
+
+  describe '#get_patron_record' do
+    before do
+      stub_request(:get, "#{Settings.symws.url}/user/patron/search")
+        .with(headers: Settings.symws.headers.to_h.merge('X-Sirs-Sessiontoken': 'token'),
+              query: hash_including(includeFields: '*'))
+        .to_return(status: 200,
+                   body: { result: [{ key: Settings.symws.patron_key, fields: '' }] }.to_json)
+    end
+
+    it 'returns the user' do
+      expect(client.get_patron_record('user', 'token')).to include 'patronKey' => 'some_patron_key'
     end
   end
 
