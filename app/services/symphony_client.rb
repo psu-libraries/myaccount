@@ -16,7 +16,7 @@ class SymphonyClient
   MAX_WAIT_TIME = 30
   SAFE_PATRON_ADDRESS_FIELDS = [:email, :street1, :street2, :zip].freeze
 
-  def login(user_id, password, remote_user = nil)
+  def login(user_id, password)
     response = request('/user/staff/login', method: :post, json: {
                          login: user_id,
                          password: password
@@ -26,9 +26,10 @@ class SymphonyClient
 
     if response.status > 200
       Rails.logger.error("Error logging into symphony with message #{resp}")
+      return response.status, resp
     end
 
-    get_patron_record(remote_user, session_token)
+    [response.status, session_token]
   end
 
   # This method is for validating user session_token
@@ -199,30 +200,30 @@ class SymphonyClient
             })
   end
 
-  private
+  def get_patron_record(remote_user, session_token)
+    user = Hash.new
 
-    def get_patron_record(remote_user, session_token)
-      user = Hash.new
-
-      response = authenticated_request('/user/patron/search',
-                                       headers: { 'x-sirs-sessionToken': session_token },
-                                       params: {
-                                         q: "ALT_ID:#{remote_user.upcase}",
-                                         includeFields: '*'
-                                       })
-      if response.status > 200
-        Rails.logger.error("Error getting patron record with message #{JSON.parse(response.body)}")
-        return nil
-      end
-
-      parsed_response = JSON.parse(response.body)['result'].first
-      return nil unless parsed_response
-
-      user['patronKey'] = parsed_response['key']
-      user['fields'] = parsed_response['fields']
-      user['sessionToken'] = session_token
-      user
+    response = authenticated_request('/user/patron/search',
+                                     headers: { 'x-sirs-sessionToken': session_token },
+                                     params: {
+                                       q: "ALT_ID:#{remote_user.upcase}",
+                                       includeFields: '*'
+                                     })
+    if response.status > 200
+      Rails.logger.error("Error getting patron record with message #{JSON.parse(response.body)}")
+      return nil
     end
+
+    parsed_response = JSON.parse(response.body)['result'].first
+    return nil unless parsed_response
+
+    user['patronKey'] = parsed_response['key']
+    user['fields'] = parsed_response['fields']
+    user['sessionToken'] = session_token
+    user
+  end
+
+  private
 
     def patron_address(params)
       params.permit(SAFE_PATRON_ADDRESS_FIELDS)
