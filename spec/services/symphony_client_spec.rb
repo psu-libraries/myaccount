@@ -21,11 +21,14 @@ RSpec.describe SymphonyClient do
     before do
       stub_request(:post, "#{Settings.symws.url}/user/staff/login")
         .with(body: Settings.symws.login_params.to_h,
-              headers: Settings.symws.headers)
+              headers: Settings.symws.default_headers)
         .to_return(body: { sessionToken: user.session_token }.to_json)
 
+      search_headers = Settings.symws.default_headers
+        .to_h.merge('X-Sirs-Sessiontoken': 'e0b5e1a3e86a399112b9eb893daeacfd')
+
       stub_request(:get, "#{Settings.symws.url}/user/patron/search")
-        .with(headers: Settings.symws.headers.to_h.merge('X-Sirs-Sessiontoken': 'e0b5e1a3e86a399112b9eb893daeacfd'),
+        .with(headers: search_headers,
               query: hash_including(includeFields: '*'))
         .to_return(status: 200,
                    body: { result: [{ key: Settings.symws.patron_key, fields: '' }] }.to_json)
@@ -39,7 +42,7 @@ RSpec.describe SymphonyClient do
   describe '#get_patron_record' do
     before do
       stub_request(:get, "#{Settings.symws.url}/user/patron/search")
-        .with(headers: Settings.symws.headers.to_h.merge('X-Sirs-Sessiontoken': 'token'),
+        .with(headers: Settings.symws.default_headers.to_h.merge('X-Sirs-Sessiontoken': 'token'),
               query: hash_including(includeFields: '*'))
         .to_return(status: 200,
                    body: { result: [{ key: Settings.symws.patron_key, fields: '' }] }.to_json)
@@ -123,6 +126,90 @@ RSpec.describe SymphonyClient do
         expect(WebMock).to have_requested(:get, "#{Settings.symws.url}/user/patron/key/1234567")
           .with(query: hash_excluding(includeFields: match(/holdRecordList/)))
       end
+    end
+  end
+
+  describe '#accept_lending_policy' do
+    let(:mock_patron) { instance_double(Patron,
+                                        barcode: '1234',
+                                        library: 'UP-PAT',
+                                        key: user.patron_key,
+                                        custom_information: [
+                                          {
+                                            resource: '/user/patron/customInformation',
+                                            key: '1',
+                                            fields: {
+                                              code: {
+                                                resource: '/policy/patronExtendedInformation',
+                                                key: 'PSUACCOUNT'
+                                              }.with_indifferent_access,
+                                              data: '20050801'
+                                            }.with_indifferent_access
+                                          }.with_indifferent_access,
+                                          {
+                                            resource: '/user/patron/customInformation',
+                                            key: '19',
+                                            fields: {
+                                              code: {
+                                                resource: '/policy/patronExtendedInformation',
+                                                key: 'GARNISH-DT'
+                                              }.with_indifferent_access,
+                                              data: '00000000'
+                                            }.with_indifferent_access
+                                          }.with_indifferent_access
+                                        ],
+                                        garnish_date: '00000000') }
+
+    let(:new_garnish_date) { DateTime.now.strftime('%Y%m%d') }
+
+    let(:new_custom_information) { [
+      {
+        resource: '/user/patron/customInformation',
+        key: '1',
+        fields: {
+          code: {
+            resource: '/policy/patronExtendedInformation',
+            key: 'PSUACCOUNT'
+          }.with_indifferent_access,
+          data: '20050801'
+        }.with_indifferent_access
+      }.with_indifferent_access,
+      {
+        resource: '/user/patron/customInformation',
+        key: '19',
+        fields: {
+          code: {
+            resource: '/policy/patronExtendedInformation',
+            key: 'GARNISH-DT'
+          }.with_indifferent_access,
+          data: new_garnish_date
+        }.with_indifferent_access
+      }.with_indifferent_access
+    ] }
+
+    let(:request_body) {
+      {
+        resource: '/user/patron',
+        key: '1234567',
+        fields: {
+          standing: {
+            resource: '/policy/patronStanding',
+            key: 'OK'
+          },
+          customInformation: new_custom_information
+        }
+      }
+    }
+
+    before do
+      stub_request(:put, "#{Settings.symws.url}/user/patron/key/1234567")
+        .with(body: request_body)
+    end
+
+    it 'sends a request to update the garnish date and patron standing' do
+      client.accept_lending_policy(patron: mock_patron, session_token: user.session_token)
+      expect(WebMock).to have_requested(:put, "#{Settings.symws.url}/user/patron/key/1234567")
+        .with(body: request_body)
     end
   end
 
