@@ -26,6 +26,9 @@ RSpec.describe Patron do
       library: {
         key: 'UP-PAT'
       },
+      profile: {
+        key: 'STAFF'
+      },
       address1: [{ resource: '/user/patron/address1',
                    fields: { code: {
                      resource: '/policy/patronAddress1',
@@ -60,7 +63,31 @@ RSpec.describe Patron do
                    fields: { code: {
                      resource: '/policy/patronAddress1',
                      key: 'CITY/STATE'
-                   }, data: 'Jersey Shore, PA' } }]
+                   }, data: 'Jersey Shore, PA' } }],
+      customInformation: [
+        {
+          resource: '/user/patron/customInformation',
+          key: '1',
+          fields: {
+            code: {
+              resource: '/policy/patronExtendedInformation',
+              key: 'PSUACCOUNT'
+            },
+            data: '20050801'
+          }
+        },
+        {
+          resource: '/user/patron/customInformation',
+          key: '19',
+          fields: {
+            code: {
+              resource: '/policy/patronExtendedInformation',
+              key: 'GARNISH-DT'
+            },
+            data: '00000000'
+          }
+        }
+      ]
     }
   end
 
@@ -78,6 +105,10 @@ RSpec.describe Patron do
 
   it 'has a last name' do
     expect(patron.last_name).to eq 'Borrower'
+  end
+
+  it 'has a suffix' do
+    expect(patron.suffix).to eq 'Jr'
   end
 
   it 'has a display name' do
@@ -107,6 +138,18 @@ RSpec.describe Patron do
   it 'has a address' do
     expect(patron.address).to eq({ city_state: 'Jersey Shore, PA', street1: '123 Fake Street', street2: '',
                                    zip: '00000' })
+  end
+
+  it 'has a garnish date' do
+    expect(patron.garnish_date).to eq '00000000'
+  end
+
+  it 'has the correct faculty/staff status' do
+    expect(patron.faculty_or_staff?).to be true
+  end
+
+  it 'has the correct wage garnishment eligibility status' do
+    expect(patron.eligible_for_wage_garnishment?).to be true
   end
 
   context 'with checkouts' do

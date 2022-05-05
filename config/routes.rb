@@ -18,6 +18,10 @@ Rails.application.routes.draw do
   delete '/holds/batch', to: 'holds#batch_destroy', as: :holds_batch_destroy
   patch '/checkouts/batch', to: 'checkouts#batch_update', as: :renewals_batch_update
 
+  get 'accept-lending-policy', to: 'lending_policy#show', as: :lending_policy_show
+  post 'accept-lending-policy', to: 'lending_policy#accept', as: :lending_policy_accept
+  get 'accept-lending-policy/thank-you', to: 'lending_policy#thank_you', as: :lending_policy_thank_you
+
   get 'holds/all', to: 'holds#all', as: :holds_all
   get 'holds/result', to: 'holds#result', as: :result
   get 'checkouts/all', to: 'checkouts#all', as: :checkouts_all

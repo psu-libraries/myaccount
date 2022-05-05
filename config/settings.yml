@@ -14,11 +14,13 @@ symws:
   url: <%= ENV.fetch("SYMWS_URL") { nil } %>
   username: <%= ENV.fetch("SYMWS_USERNAME") { nil } %>
   pin: "<%= ENV.fetch("SYMWS_PIN") { nil } %>"
-  headers:
+  default_headers:
     sd_originating_app_id: cs
     x_sirs_clientID: <%= ENV.fetch("X_SIRS_CLIENTID") { "PSUCATALOG" } %>
     content_type: 'application/json'
     accept: 'application/json'
+  additional_headers:
+    sd_prompt_return: <%= ENV.fetch("SYMWS_EDIT_OVERRIDE") { nil } %>
 redis:
   sidekiq:
     uri: <%= ENV.fetch("REDIS_SIDEKIQ_URI") { "redis://127.0.0.1:6379/1" } %>

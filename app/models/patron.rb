@@ -40,6 +40,12 @@ class Patron
     COLLECTION: 'The user has been sent to collection agency.'
   }.with_indifferent_access
 
+  WAGE_GARNISHMENT_EXEMPT_LIBRARIES = [
+    'DSL-CARL',
+    'DSL-UP',
+    'HERSHEY'
+  ].freeze
+
   validates_presence_of :key
 
   def initialize(record)
@@ -125,6 +131,24 @@ class Patron
     }
   end
 
+  def custom_information
+    fields['customInformation']
+  end
+
+  def eligible_for_wage_garnishment?
+    faculty_or_staff? && garnish_date == '00000000' && WAGE_GARNISHMENT_EXEMPT_LIBRARIES.exclude?(library)
+  end
+
+  def faculty_or_staff?
+    profile = fields.dig('profile', 'key')
+
+    ['FACULTY', 'STAFF'].include?(profile)
+  end
+
+  def garnish_date
+    custom_field('GARNISH-DT')
+  end
+
   private
 
     def fields
@@ -141,5 +165,10 @@ class Patron
 
     def standing_code
       fields.dig('standing', 'key')
+    end
+
+    def custom_field(field_name)
+      field = custom_information.select { |k| k.dig('fields', 'code', 'key') == field_name }
+      field.first&.dig('fields', 'data')
     end
 end

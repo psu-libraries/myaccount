@@ -17,6 +17,7 @@ import 'bootstrap/dist/js/bootstrap'
 import './styles'
 
 // Application javascript
+import acceptLendingPolicy from '../accept_lending_policy'
 import checkouts from "../view_checkouts"
 import holds from "../view_holds"
 import selectAll from "../select_all";
@@ -31,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
     holds();
     checkouts();
     viewRequestedHolds();
+    acceptLendingPolicy();
 });
 
 

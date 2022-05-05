@@ -47,6 +47,7 @@ class SymphonyClient
                                      params: {
                                        includeFields: [
                                          '*',
+                                         'customInformation{patronExtendedInformation{*}}',
                                          *patron_linked_resources_fields(item_details)
                                        ].join(',')
                                      })
@@ -142,6 +143,37 @@ class SymphonyClient
     authenticated_request "/user/patron/key/#{patron.key}",
                           headers: {
                             'x-sirs-sessionToken': session_token
+                          },
+                          method: :put,
+                          json: body
+  end
+
+  # Accepts the Libraries' lending policy/opts the user into wage garnishment.
+  # Changes the patron's standing from BARRED to OK and sets the garnish date to today's date.
+  def accept_lending_policy(patron:, session_token:)
+    new_garnish_date = DateTime.now.strftime('%Y%m%d')
+
+    custom_information = patron.custom_information
+
+    custom_information.select { |k| k.dig('fields', 'code', 'key') == 'GARNISH-DT' }
+      .map! { |k| k['fields']['data'] = new_garnish_date }
+
+    body = {
+      "resource": '/user/patron',
+      "key": patron.key,
+      "fields": {
+        "standing": {
+          "resource": '/policy/patronStanding',
+          "key": 'OK'
+        },
+        "customInformation": custom_information
+      }
+    }
+
+    authenticated_request "/user/patron/key/#{patron.key}",
+                          headers: {
+                            'x-sirs-sessionToken': session_token,
+                            'SD-Prompt-Return': Settings.symws.additional_headers.sd_prompt_return
                           },
                           method: :put,
                           json: body
@@ -337,6 +369,6 @@ class SymphonyClient
     end
 
     def default_headers
-      DEFAULT_HEADERS.merge(Settings.symws.headers || {})
+      DEFAULT_HEADERS.merge(Settings.symws.default_headers || {})
     end
 end
