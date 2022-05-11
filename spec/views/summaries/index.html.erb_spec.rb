@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'summaries/index', type: :view do
   let(:fines) { [build(:fine)] }
   let(:patron_standing) { {} }
+  let(:eligible_for_wage_garnishment) { false }
   let(:patron) do
     instance_double(
       Patron,
@@ -12,6 +13,7 @@ RSpec.describe 'summaries/index', type: :view do
       checkouts: [],
       holds: [],
       fines: fines,
+      eligible_for_wage_garnishment?: eligible_for_wage_garnishment,
       **patron_standing
     )
   end
@@ -48,6 +50,25 @@ RSpec.describe 'summaries/index', type: :view do
       render
 
       expect(rendered).to have_css('h3', text: 'Alerts:')
+    end
+
+    context 'when the user is eligible for wage garnishment' do
+      let(:eligible_for_wage_garnishment) { true }
+
+      it 'shows a link to the accept lending policy page' do
+        render
+
+        expect(rendered).to have_link('accept the University Libraries lending policy',
+                                      href: lending_policy_accept_path)
+      end
+    end
+
+    context 'when the user is not eligible for wage garnishment' do
+      it 'does not show a link to the accept lending policy page' do
+        render
+
+        expect(rendered).not_to have_link('accept the University Libraries lending policy')
+      end
     end
   end
 
