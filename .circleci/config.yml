@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   docker: circleci/docker@1.5.0
+  browser-tools: circleci/browser-tools@1.4.0
 
 jobs:
   release:
@@ -60,11 +61,13 @@ jobs:
             ./bin/generate_app
   test:
     docker:
-      - image: circleci/ruby:2.6.5-buster-node-browsers
+      - image: cimg/ruby:2.7.6-browsers
       - image: redis:5.0.7
     environment:
       RAILS_ENV: test
     steps:
+    - browser-tools/install-chrome
+    - browser-tools/install-chromedriver
     - checkout
     - restore_cache:
         keys:
