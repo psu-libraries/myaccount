@@ -25,7 +25,7 @@ RUN RAILS_ENV=production \
 CMD ["/app/bin/start"]
 
 
-FROM base as test
+FROM base as ci
 
 USER root
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -42,6 +42,8 @@ RUN apt-get update && apt-get install -y x11vnc \
     google-chrome-stable
 
 USER app
+
+FROM ci as test
 
 RUN bundle
 
