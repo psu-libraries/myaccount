@@ -27,4 +27,4 @@ jobs:
 
       - name: Test built container 
         run: |
-          docker run --rm --net=host harbor.k8s.libraries.psu.edu/myaccount/${{ github.sha }} yarn test
+          docker run --rm --net=host harbor.k8s.libraries.psu.edu/myaccount:${{ github.sha }} yarn test
