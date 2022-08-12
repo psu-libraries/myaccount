@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ "actions" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: self-hosted
+    
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Container
+        run: |
+          docker build -t harbor.k8s.libraries.psu.edu/library/myaccount/${{ github.sha }} --target=ci
+
+      - name: Test built container 
+        run: |
+          docker run --rm --net=host harbor.k8s.libraries.psu.edu/myaccount/${{ github.sha }} yarn test
