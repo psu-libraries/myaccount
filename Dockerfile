@@ -1,9 +1,10 @@
-FROM harbor.k8s.libraries.psu.edu/library/ruby-2.7.6-node-12:20220725 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-2.7.6-node-18:20220811 as base
 ARG UID=2000
 WORKDIR /app
 RUN useradd -u $UID app -d /app
 RUN mkdir /app/tmp
 RUN chown -R app /app
+RUN apt-get update && apt-get install -y python
 USER app
 COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler:2.1.4
