@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build Container
         run: |
-          docker build -t harbor.k8s.libraries.psu.edu/library/myaccount/${{ github.sha }} --target=ci .
+          docker build -t harbor.k8s.libraries.psu.edu/library/myaccount/${{ github.sha }} --target=test .
 
       - name: Test built container 
         run: |
