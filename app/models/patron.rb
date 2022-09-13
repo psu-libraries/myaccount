@@ -110,27 +110,6 @@ class Patron
     fields.dig('library', 'key')
   end
 
-  def email
-    extract_address_data('EMAIL')
-  end
-
-  def state
-    address[:city_state]&.chomp&.last 2
-  end
-
-  def city
-    address[:city_state]&.split(',')&.first
-  end
-
-  def address
-    {
-      street1: extract_address_data('STREET1'),
-      street2: extract_address_data('STREET2'),
-      city_state: extract_address_data('CITY/STATE'),
-      zip: extract_address_data('ZIP')
-    }
-  end
-
   def custom_information
     fields['customInformation']
   end
@@ -153,14 +132,6 @@ class Patron
 
     def fields
       record['fields']
-    end
-
-    def address_fields
-      fields['address1']
-    end
-
-    def extract_address_data(address_field)
-      address_fields.find { |a| a&.dig('fields', 'code', 'key') == address_field }&.dig('fields', 'data') || nil
     end
 
     def standing_code
