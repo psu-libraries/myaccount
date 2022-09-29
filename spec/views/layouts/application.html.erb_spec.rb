@@ -62,14 +62,4 @@ RSpec.describe 'layouts/application', type: :view do
       end
     end
   end
-
-  context 'with an unauthenticated request' do
-    let(:mock_patron) { nil }
-
-    it 'does not display Update Address menu' do
-      render
-
-      expect(rendered).not_to have_text 'Update Address'
-    end
-  end
 end

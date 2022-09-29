@@ -31,6 +31,7 @@
 
 en:
   user_util_links:
+    update_address: 'Update your address and other information at accounts.psu.edu'
     borrowing: 'Borrowing privileges: information about loan periods, check out limits, and more'
     questions: 'Frequently asked questions: borrowing and renewing'
     user_privacy: 'Information about library user privacy'
