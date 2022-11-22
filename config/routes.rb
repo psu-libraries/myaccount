@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :summaries, :fines, :checkouts, only: [:index]
   resources :holds, only: [:index, :new, :create]
+  resources :ill, only: [:new, :create]
   resources :redis_jobs, only: [:show, :destroy]
 
   patch '/holds/batch', to: 'holds#batch_update', as: :holds_batch_update
