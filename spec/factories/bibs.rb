@@ -869,6 +869,441 @@ FactoryBot.define do
       }
     end
 
+    factory :bib_with_isbn do
+      initialize_with {
+        new(body)
+      }
+
+      body {
+        {
+          'resource' => '/catalog/bib',
+          'key' => '12747187',
+          'fields' => {
+            'shadowed' => false,
+            'author' => 'Hill Street blues (Television program)',
+            'titleControlNumber' => 'ocn880677198',
+            'catalogDate' => nil,
+            'catalogFormat' => {
+              'resource' => '/policy/catalogFormat', 'key' => 'VM'
+            },
+            'modifiedDate' => '2018-08-04',
+            'systemModifiedDate' => '2020-02-04T15:46:00-05:00',
+            'title' => 'Hill Street blues. The complete series',
+            'bib' =>
+              { 'standard' => 'MARC21',
+                'type' => 'BIB',
+                'leader' => '     cam a22     4a 4500',
+                'fields' =>
+                  [{ 'tag' => '001', 'subfields' => [{ 'code' => '_', 'data' => 'a2972255' }] },
+                   { 'tag' => '003', 'subfields' => [{ 'code' => '_', 'data' => 'SIRSI' }] },
+                   { 'tag' => '264', 'subfields' => [{ 'code' => 'a', 'data' => 'Tree House Inc' }] },
+                   { 'tag' => '264', 'subfields' => [{ 'code' => 'c', 'data' => '1983' }] },
+                   { 'tag' => '264', 'subfields' => [{ 'code' => 'b', 'data' => 'ThingsBox' }] },
+                   { 'tag' => '005', 'subfields' => [{ 'code' => '_', 'data' => '20151215142910.0' }] },
+                   { 'tag' => '008', 'subfields' => [{ 'code' => '_', 'data' => '050701m20059999vaua     b    001 0 eng' }] },
+                   { 'tag' => '010', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '  2005018770' }] },
+                   { 'tag' => '019', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '176914768' }] },
+                   { 'tag' => '019', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => 'MARS' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '0873552555 (v. 1)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '9780873552554 (v. 1)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '9780873552738 (v. 2)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '0873552733 (v. 2)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '9781933531243 (v. 3)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '193353124X (v. 3)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '9781935155010 (v. 4)' }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '1935155016 (v. 4)' }] },
+                   { 'tag' => '250', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => 'Sixth edition.' }] },
+                   { 'tag' => '250', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => 'Seventh edition.' }] }] },
+            'callList' => [{
+              'resource' => '/catalog/call',
+              'key' => '12747187:8',
+              'fields' => {
+                'library' => {
+                  'resource' => '/policy/library', 'key' => 'BEHREND'
+                },
+                'callNumber' => 'PN1992.77.H485 2014 DVD',
+                'shadowed' => false,
+                'volumetric' => 'bklet.',
+                'dispCallNumber' => 'PN1992.77.H485 2014 DVD bklet.',
+                'bib' => {
+                  'resource' => '/catalog/bib', 'key' => '12747187'
+                },
+                'itemList' => [{
+                  'resource' => '/catalog/item',
+                  'key' => '12747187:8:1',
+                  'fields' => {
+                    'call' => {
+                      'resource' => '/catalog/call', 'key' => '12747187:8'
+                    },
+                    'mediaDesk' => nil,
+                    'itemType' => {
+                      'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                    },
+                    'library' => {
+                      'resource' => '/policy/library', 'key' => 'BEHREND'
+                    },
+                    'shadowed' => false,
+                    'homeLocation' => {
+                      'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                    },
+                    'copyNumber' => 1,
+                    'bib' => {
+                      'resource' => '/catalog/bib', 'key' => '12747187'
+                    },
+                    'barcode' => '000077108494',
+                    'circulate' => false,
+                    'currentLocation' => {
+                      'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                    }
+                  }
+                }],
+                'classification' => {
+                  'resource' => '/policy/classification', 'key' => 'LC'
+                }
+              }
+            },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:1',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.1',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.1',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:1:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:1'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000075504342',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:2',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.2',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.2',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:2:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:2'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000077108531',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:3',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.3',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.3',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:3:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:3'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000077108562',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:4',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.4',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.4',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:4:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:4'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000077108555',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:5',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.5',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.5',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:5:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:5'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000077108548',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:6',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.6',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.6',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:6:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:6'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000077108524',
+                                   'circulate' => false,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'CHECKEDOUT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           },
+                           {
+                             'resource' => '/catalog/call',
+                             'key' => '12747187:7',
+                             'fields' => {
+                               'library' => {
+                                 'resource' => '/policy/library', 'key' => 'BEHREND'
+                               },
+                               'callNumber' => 'PN1992.77.H485 2014 DVD',
+                               'shadowed' => false,
+                               'volumetric' => 'v.7',
+                               'dispCallNumber' => 'PN1992.77.H485 2014 DVD v.7',
+                               'bib' => {
+                                 'resource' => '/catalog/bib', 'key' => '12747187'
+                               },
+                               'itemList' => [{
+                                 'resource' => '/catalog/item',
+                                 'key' => '12747187:7:1',
+                                 'fields' => {
+                                   'call' => {
+                                     'resource' => '/catalog/call', 'key' => '12747187:7'
+                                   },
+                                   'mediaDesk' => nil,
+                                   'itemType' => {
+                                     'resource' => '/policy/itemType', 'key' => 'VIDEO'
+                                   },
+                                   'library' => {
+                                     'resource' => '/policy/library', 'key' => 'BEHREND'
+                                   },
+                                   'shadowed' => false,
+                                   'homeLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'MEDIA-BD'
+                                   },
+                                   'copyNumber' => 1,
+                                   'bib' => {
+                                     'resource' => '/catalog/bib', 'key' => '12747187'
+                                   },
+                                   'barcode' => '000077108500',
+                                   'circulate' => true,
+                                   'currentLocation' => {
+                                     'resource' => '/policy/location', 'key' => 'INTRANSIT'
+                                   }
+                                 }
+                               }],
+                               'classification' => {
+                                 'resource' => '/policy/classification', 'key' => 'LC'
+                               }
+                             }
+                           }],
+            'createDate' => '2014-07-16'
+          }
+        }
+      }
+    end
+
     factory :bib_with_dupe_call_number_volumetrics_one_unique do
       initialize_with {
         new(body)

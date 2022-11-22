@@ -56,6 +56,7 @@ Lint/MissingSuper:
 
 RSpec/MultipleMemoizedHelpers:
   Exclude:
+    - 'spec/controllers/ill_controller_spec.rb'
     - 'spec/services/**/*'
 
 Rails/I18nLocaleTexts:

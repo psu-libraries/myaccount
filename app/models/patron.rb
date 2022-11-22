@@ -46,6 +46,18 @@ class Patron
     'HERSHEY'
   ].freeze
 
+  ILL_ELIGIBLE_PROFILES = [
+    'ALUMNI',
+    'EXTERNALHY',
+    'EXTERNDSL',
+    'HIGHSCHOOL',
+    'RESIDENTPA',
+    'RESIDENTOT',
+    'SUMMERPROG',
+    'TEMP',
+    'UNENROLLED'
+  ].freeze
+
   validates_presence_of :key
 
   def initialize(record)
@@ -119,8 +131,6 @@ class Patron
   end
 
   def faculty_or_staff?
-    profile = fields.dig('profile', 'key')
-
     ['FACULTY', 'STAFF'].include?(profile)
   end
 
@@ -128,7 +138,15 @@ class Patron
     custom_field('GARNISH-DT')
   end
 
+  def ill_ineligible?
+    ILL_ELIGIBLE_PROFILES.include?(profile)
+  end
+
   private
+
+    def profile
+      fields.dig('profile', 'key')
+    end
 
     def fields
       record['fields']
