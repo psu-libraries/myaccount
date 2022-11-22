@@ -896,6 +896,9 @@ FactoryBot.define do
                 'fields' =>
                   [{ 'tag' => '001', 'subfields' => [{ 'code' => '_', 'data' => 'a2972255' }] },
                    { 'tag' => '003', 'subfields' => [{ 'code' => '_', 'data' => 'SIRSI' }] },
+                   { 'tag' => '264', 'subfields' => [{ 'code' => 'a', 'data' => 'Tree House Inc' }] },
+                   { 'tag' => '264', 'subfields' => [{ 'code' => 'c', 'data' => '1983' }] },
+                   { 'tag' => '264', 'subfields' => [{ 'code' => 'b', 'data' => 'ThingsBox' }] },
                    { 'tag' => '005', 'subfields' => [{ 'code' => '_', 'data' => '20151215142910.0' }] },
                    { 'tag' => '008', 'subfields' => [{ 'code' => '_', 'data' => '050701m20059999vaua     b    001 0 eng' }] },
                    { 'tag' => '010', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '  2005018770' }] },
