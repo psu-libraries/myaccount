@@ -17,6 +17,18 @@ RSpec.describe IllTransaction, type: :model do
     expect(ill_transaction.loan_author).to be 'Hill Street blues (Television program)'
   end
 
+  it 'has an publisher' do
+    expect(ill_transaction.loan_publisher).to be 'ThingsBox'
+  end
+
+  it 'has a date' do
+    expect(ill_transaction.loan_date).to be '1983'
+  end
+
+  it 'has a place' do
+    expect(ill_transaction.loan_place).to be 'Tree House Inc'
+  end
+
   it 'has a title' do
     expect(ill_transaction.loan_title).to be 'Hill Street blues. The complete series'
   end

@@ -19,6 +19,27 @@ class IllTransaction
     bib&.dig 'author'
   end
 
+  def loan_date
+    tag('264')
+      &.select { |t| t['code'] == 'c' }
+      &.first
+      &.dig('data')
+  end
+
+  def loan_place
+    tag('264')
+      &.select { |t| t['code'] == 'a' }
+      &.first
+      &.dig('data')
+  end
+
+  def loan_publisher
+    tag('264')
+      &.select { |t| t['code'] == 'b' }
+      &.first
+      &.dig('data')
+  end
+
   def loan_title
     bib&.dig 'title'
   end
