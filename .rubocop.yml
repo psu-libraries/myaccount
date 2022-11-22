@@ -45,3 +45,7 @@ RSpec/MultipleExpectations:
 Lint/MissingSuper:
   Exclude:
     - 'app/components/**/*'
+
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - 'spec/controllers/ill_controller_spec.rb'

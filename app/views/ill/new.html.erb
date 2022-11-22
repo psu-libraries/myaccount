@@ -1,0 +1,32 @@
+<h1>A Hold Will Be Placed For You</h1>
+
+<p>
+  <%= render GenericValueWithLabelComponent.new label: 'Title', value: @place_loan_form_params[:title] %> <br>
+  <%= render GenericValueWithLabelComponent.new label: 'Author', value: @place_loan_form_params[:author] %>
+</p>
+
+<%= form_with url: '/ill', local: true, method: :post do %>
+  <%= hidden_field_tag :catkey, params[:catkey] %>
+
+    <%= label_tag :pickup_by_date, 'Not needed after:' %>
+    <%= date_field_tag :pickup_by_date,
+                       # TODO: refactor as component
+                       DateTime.now.+(14.days).strftime('%Y-%m-%d'),
+                       placeholder: 'yyyy-mm-dd',
+                       required: true,
+                       min: DateTime.now.strftime('%Y-%m-%d') %>
+    <p class="card-text">
+      <em>
+        The date you enter is not a guaranteed delivery date.
+        You will be notified by email if your request cannot be filled.
+      </em>
+    </p>
+
+    <p class="card-text">
+      <%= check_box_tag :accept_alternate_edition, true, true %>
+      <%= label_tag :accept_alternate_edition, t('myaccount.hold.illiad.accept_alternate_edition') %>
+    </p>
+
+    <%= submit_tag('Place Hold', class: 'btn btn-info') %>
+  <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_loan_form_params[:catkey], class: 'btn btn-danger' %>
+<% end %>
