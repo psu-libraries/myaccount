@@ -1,6 +1,5 @@
 const { environment } = require('@rails/webpacker')
 
-module.exports = environment
 const webpack = require('webpack')
 
 // Set nested object prop using path notation
@@ -19,5 +18,4 @@ environment.plugins.prepend(
         Popper: ['popper.js', 'default']
     })
 )
-
 module.exports = environment
