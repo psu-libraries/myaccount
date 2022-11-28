@@ -12,6 +12,7 @@ class IlliadClient
       'LoanPlace': transaction_info.loan_place,
       'LoanDate': transaction_info.loan_date,
       'LoanTitle': transaction_info.loan_title,
+      'LoanEdition': transaction_info.loan_edition,
       'ProcessType': transaction_info.process_type,
       'NotWantedAfter': params[:pickup_by_date],
       'AcceptAlternateEdition': params[:accept_alternate_edition] ? true : false

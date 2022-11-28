@@ -33,6 +33,10 @@ RSpec.describe IllTransaction, type: :model do
     expect(ill_transaction.loan_title).to be 'Hill Street blues. The complete series'
   end
 
+  it 'has a edition' do
+    expect(ill_transaction.loan_edition).to be 'Sixth edition.'
+  end
+
   context 'without isbn' do
     let(:ill_transaction) { build(:ill_transaction_without_isbn) }
 

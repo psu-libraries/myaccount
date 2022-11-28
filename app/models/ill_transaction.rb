@@ -51,6 +51,13 @@ class IllTransaction
       &.dig('data')
   end
 
+  def loan_edition
+    tag('250')
+      &.select { |t| t['code'] == 'a' }
+      &.first
+      &.dig('data')
+  end
+
   def username
     @patron.id
   end
