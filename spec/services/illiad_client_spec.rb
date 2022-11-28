@@ -19,7 +19,12 @@ RSpec.describe IlliadClient do
         'Username': 'xyz12',
         'RequestType': 'Loan',
         'LoanAuthor': 'Great Author',
+        'ISSN': '1234567',
+        'LoanPublisher': 'Great Publisher',
+        'LoanPlace': 'The Great Place',
+        'LoanDate': '2022-11-01',
         'LoanTitle': 'Some Great Book',
+        'LoanEdition': 'Test Edition',
         'ProcessType': 'Borrowing',
         'NotWantedAfter': '2022-12-02',
         'AcceptAlternateEdition': true
@@ -33,7 +38,11 @@ RSpec.describe IlliadClient do
                       process_type: 'Borrowing',
                       loan_title: 'Some Great Book',
                       loan_author: 'Great Author',
-                      isbn: '1234567')
+                      isbn: '1234567',
+                      loan_publisher: 'Great Publisher',
+                      loan_place: 'The Great Place',
+                      loan_date: '2022-11-01',
+                      loan_edition: 'Test Edition')
     end
 
     let(:place_loan_response) { client.place_loan(ill_transaction, params) }

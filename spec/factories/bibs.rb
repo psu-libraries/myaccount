@@ -911,7 +911,9 @@ FactoryBot.define do
                    { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '9781933531243 (v. 3)' }] },
                    { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '193353124X (v. 3)' }] },
                    { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '9781935155010 (v. 4)' }] },
-                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '1935155016 (v. 4)' }] }] },
+                   { 'tag' => '020', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => '1935155016 (v. 4)' }] },
+                   { 'tag' => '250', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => 'Sixth edition.' }] },
+                   { 'tag' => '250', 'inds' => '  ', 'subfields' => [{ 'code' => 'a', 'data' => 'Seventh edition.' }] }] },
             'callList' => [{
               'resource' => '/catalog/call',
               'key' => '12747187:8',
