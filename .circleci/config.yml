@@ -34,24 +34,22 @@ jobs:
       - docker/check:
           registry: harbor.k8s.libraries.psu.edu
       - docker/build:
-          cache_from: harbor.k8s.libraries.psu.edu/library/myaccount:cache
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
           use-buildkit: true
           tag: "cache,$CIRCLE_SHA1"
           extra_build_args: "--target production"
       - docker/build:
-          cache_from: harbor.k8s.libraries.psu.edu/library/myaccount:ci
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
           use-buildkit: true
-          tag: ci
+          tag: circle
           extra_build_args: "--target ci"
       - docker/push:
           digest-path: /tmp/digest.txt
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
-          tag: "$CIRCLE_SHA1,ci,cache"
+          tag: "$CIRCLE_SHA1,circle,cache"
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
@@ -71,7 +69,7 @@ jobs:
             ./bin/generate_app
   test:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/myaccount:ci
+      - image: harbor.k8s.libraries.psu.edu/library/myaccount:circle
       - image: redis:7.0.4-alpine3.16
     environment:
       RAILS_ENV: test
