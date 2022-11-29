@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   get 'holds/all', to: 'holds#all', as: :holds_all
   get 'holds/result', to: 'holds#result', as: :result
+  get 'ill/result', to: 'ill#result', as: :ill_result
   get 'checkouts/all', to: 'checkouts#all', as: :checkouts_all
   get '/logout', to: 'sessions#destroy', as: :logout
 

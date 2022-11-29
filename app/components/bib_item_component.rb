@@ -28,6 +28,10 @@ class BibItemComponent < ViewComponent::Base
     CATALOG_URL + catkey
   end
 
+  def display_call_number_type?
+    !(@type_code.nil? || @call_number.nil?)
+  end
+
   def render?
     catkey
   end

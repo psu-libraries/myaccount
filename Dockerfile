@@ -1,4 +1,3 @@
-
 FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20230320 as base
 ARG UID=2000
 WORKDIR /app
