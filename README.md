@@ -4,14 +4,14 @@
 
 ## Mac
 
-* Get `homebrew` installed and configured using [these instructions from DSRD until step 12](https://github.com/psu-stewardship/scholarsphere/wiki/How-to-Install-on-a-fresh-Mac)
+* Get `homebrew` installed and configured using [these instructions](https://brew.sh)
 * `ruby` via `rbenv` ([Upgrading Ruby Version Using rbenv](https://github.com/psu-libraries/psulib_blacklight/wiki/Upgrading-Ruby-Version-Using-rbenv))
 
 # Dependencies 
 
 | Software |  Version |
 |----------|------|
-| `ruby`    |  2.6.5 <br> (_ruby 2.6.5p114 (2019-10-01 revision 67812) [x86_64-darwin18]_) |
+| `ruby`    |  2.7.6 |
 | `rails`   |  6.0.3 |
 | `redis`   | 5.0.7 |
 
@@ -22,21 +22,24 @@
     ``` 
     git clone git@github.com:psu-libraries/myaccount.git
     cd myaccount
-    bundle install --without production test
+    bundle install --without production
     ```
-1.  The application authenticates via [WebAccess](https://webaccess.psu.edu/services/) which provides the `user_id` and `password` required for symphony web services access. Then uses `Warden` to login the user and retrieve a patron key and a session token from 
-    symphony.
-    
-    For running the application in development mode, we use a development environment specific settings file provided by the `config` gem. Make sure that your [`config/settings.local.yml`](https://psu.app.box.com/file/558113824635) file sets `webaccess_url`, symphony web services `url` and `headers`:  
-    
+1.  Set local environment variables with values from [vault](https://vault.dsrd.libraries.psu.edu:8200/ui/vault/auth?with=oidc%2F)
+1.  Run `yarn`
+1.  Use [Modify Header Value](https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/) browser extension to set the following headers: 
     ```
-    symws:
-      webaccess_url: 
-      url: 
-      headers: {}
-    ```
+    URL: localhost
+    Header Name: X_AUTH_REQUEST_EMAIL
+    Header Value: [access id]@psu.edu
     
-## Redis locally
+    URL: localhost
+    Header Name: REMOTE_USER
+    Header Value: [access id]
+    ```
+1.  Use one of the following options to run myaccount
+
+    
+## Option 1: Redis locally
 
 Use the [redis docker image](https://hub.docker.com/_/redis/).
 
@@ -66,18 +69,17 @@ Monitor the behavior by tailing the logs:
  
  We have also decided to not allow Sidekiq jobs to retry due to failure. This is because we have already built in retries due to expected problems that could occur when attempting to interact with the web service. A retry could potentially be harmful given the immediate response needed by the user. 
 
-## Putting it all together
+### Putting it all together
 
 Locally you'll need to run these commands:
 
 ```
 bundle exec rails s
 docker start redis-the-new-black
-bin/webpack-dev-server
 bundle exec sidekiq
 ```
 
-## Docker-compose (experimental)
+## Option 2: Docker-compose 
 You can run the whole myaccount stack via docker-compose. This will build a container for myaccount, sidekiq, and run web, sidekiq, and redis services. You will need a SYMWS_PIN to run locally. 
 
 1.) copy example .envrc file 
@@ -123,8 +125,7 @@ docker-compose run test bundle exec rspec <path to file>
 ```
 
 
-Volumes
-sometimes you may want to remove a volume you can easily remove all volumes with the follwowing commmand, they will get re-created when you do an up
+Volumes: Sometimes you may want to remove a volume you can easily remove all volumes with the follwowing commmand, they will get re-created when you do an up
 ```
 docker-compose down -v
 ```
