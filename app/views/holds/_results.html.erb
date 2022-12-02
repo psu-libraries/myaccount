@@ -9,6 +9,10 @@
         <% end %>
       </ul>
       <div class="card-footer bg-transparent">
+        <% if place_hold_results[:error].first[:error_message] == 'User BARRED' %>
+          <p class="text-secondary">To unbar your account, please
+          <a href="<%= lending_policy_accept_path %>">accept the University Libraries lending policy</a>.</p>
+        <% end %>
         <p class="text-secondary"><%= t('myaccount.hold.place_hold.error_html') %></p>
       </div>
     </div>
