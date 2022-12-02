@@ -72,5 +72,6 @@ en:
         catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
         error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
       illiad:
+        notes: "Notes"
         accept_alternate_edition: Will you accept an alternate edition of this item?
     loading_html: Items are loading. Longer lists of items will take a few moments to load.

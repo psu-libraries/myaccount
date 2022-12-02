@@ -2,7 +2,7 @@
 
 # HTTP client wrapper for making requests to ILLiad Web Platform API
 class IlliadClient
-  def place_loan(transaction_info, params)
+  def add_loan_transaction(transaction_info, params)
     body = {
       'Username': transaction_info.username,
       'RequestType': transaction_info.request_type,
@@ -19,6 +19,35 @@ class IlliadClient
     }
 
     request('/IlliadWebPlatform/Transaction/', method: :post, json: body)
+  end
+
+  def add_loan_note(transaction_id, note)
+    body = {
+      "Note": note
+    }
+    request("/IlliadWebPlatform/transaction/#{transaction_id}/notes", method: :post, json: body)
+  end
+
+  def place_loan(transaction_info, params)
+    note = params&.dig(:note)&.dig(:body)
+    result = {}
+    result[:message] = []
+    response = add_loan_transaction(transaction_info, params)
+
+    if response.status == 200
+      result[:message].append('Loan Placed Successufly')
+    else
+      result[:error] = 'Failed to Place Loan'
+      return result
+    end
+
+    if note.present?
+      transaction_id = JSON.parse(response.body)['TransactionNumber']
+      response = add_loan_note(transaction_id, note)
+      result[:message].append('Failed to add note to transaction') unless response.status == 201
+    end
+
+    result
   end
 
   private

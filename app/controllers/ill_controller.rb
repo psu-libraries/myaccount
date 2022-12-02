@@ -28,15 +28,12 @@ class IllController < ApplicationController
     transaction_info = IllTransaction.new(patron, bib_info)
     result = IlliadClient.new.place_loan(transaction_info, params)
 
-    if result.status == 200
-      # TODO: alert text from Ruth
-      flash[:alert] = t('myaccount.hold.place_hold.success_html')
-
-      redirect_to summaries_path
-    else
-      flash[:error] = t 'myaccount.hold.new_hold.error_html'
-
+    if result[:error]
+      flash[:error] = result[:error]
       redirect_to new_ill_path
+    else
+      flash[:alert] = result[:message].join(' ')
+      redirect_to summaries_path
     end
   end
 

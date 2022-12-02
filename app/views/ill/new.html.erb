@@ -27,6 +27,11 @@
       <%= label_tag :accept_alternate_edition, t('myaccount.hold.illiad.accept_alternate_edition') %>
     </p>
 
+    <p class="card-text">
+      <%= label_tag :note, t('myaccount.hold.illiad.note') %>
+      <%= text_area :note, :body, cols: 100, rows: 5 %>
+    </p>
+
     <%= submit_tag('Place Hold', class: 'btn btn-info') %>
   <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_loan_form_params[:catkey], class: 'btn btn-danger' %>
 <% end %>
