@@ -30,7 +30,9 @@ class PlaceHoldsJob < ApplicationJob
 
       ApplicationController.render partial: 'holds/results',
                                    layout: false,
-                                   locals: { place_hold_catkey: @catkey, place_hold_results: results_builder.generate, patron: @patron }
+                                   locals: { place_hold_catkey: @catkey,
+                                             place_hold_results: results_builder.generate,
+                                             patron: @patron }
     end
 
     def fetch_patron(patron_key)
