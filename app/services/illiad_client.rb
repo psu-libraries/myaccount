@@ -26,7 +26,7 @@ class IlliadClient
       request(
         "/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + checkouts_query
       )
-    ).collect{ |record| IllLoan.new(record) }
+    ).map { |record| IllLoan.new(record) }
   end
 
   def get_loan_holds(webaccess_id)
@@ -34,7 +34,7 @@ class IlliadClient
       request(
         "/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + holds_query
       )
-    ).collect{ |record| IllLoan.new(record) }
+    ).map { |record| IllLoan.new(record) }
   end
 
   private
@@ -46,9 +46,9 @@ class IlliadClient
     end
 
     def holds_query
-      query_str = (+"(RequestType eq 'Loan') and (")
+      query_str = +"(RequestType eq 'Loan') and ("
       holds_statuses.each_with_index do |status, i|
-        query_str << ' or ' unless i == 0
+        query_str << ' or ' unless i.zero?
         query_str << "TransactionStatus eq '#{status}'"
       end
       query_str << ')'
