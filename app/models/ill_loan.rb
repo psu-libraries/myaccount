@@ -10,7 +10,7 @@ class IllLoan
   end
 
   def author
-    record['LoanAuthor'].split(',').reverse.map(&:strip).join(' ')
+    record['LoanAuthor']
   end
 
   def status
