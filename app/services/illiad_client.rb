@@ -40,15 +40,18 @@ class IlliadClient
   private
 
     def checkouts_query
-      CGI.escape("(TransactionStatus eq 'Checked Out to Customer') or (startswith( TransactionStatus, 'Renewed by'))")
+      CGI.escape("(RequestType eq 'Loan') and " \
+                 "((TransactionStatus eq 'Checked Out to Customer') or " \
+                 "(startswith( TransactionStatus, 'Renewed by')))")
     end
 
     def holds_query
-      query_str = (+"")
+      query_str = (+"(RequestType eq 'Loan') and (")
       holds_statuses.each_with_index do |status, i|
         query_str << ' or ' unless i == 0
         query_str << "TransactionStatus eq '#{status}'"
       end
+      query_str << ')'
       CGI.escape(query_str)
     end
 

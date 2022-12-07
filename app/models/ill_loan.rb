@@ -6,11 +6,11 @@ class IllLoan
   end
 
   def title
-    record['LoanTitle'] || record['PhotoArticleTitle']
+    record['LoanTitle']
   end
 
   def author
-    (record['LoanAuthor'] || record['PhotoArticleAuthor']).split(',').reverse.collect(&:strip).join(' ')
+    record['LoanAuthor'].split(',').reverse.collect(&:strip).join(' ')
   end
 
   def status
@@ -19,6 +19,10 @@ class IllLoan
 
   def due_date
     record['DueDate']
+  end
+
+  def creation_date
+    record['CreationDate']
   end
 
   private
