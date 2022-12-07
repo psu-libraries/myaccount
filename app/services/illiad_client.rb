@@ -22,22 +22,22 @@ class IlliadClient
   end
 
   def get_loan_checkouts(webaccess_id)
-    JSON.parse(
-      request(
-        "/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + checkouts_query
-      )
-    ).map { |record| IllLoan.new(record) }
+    ill_get_request(webaccess_id, checkouts_query)
   end
 
   def get_loan_holds(webaccess_id)
-    JSON.parse(
-      request(
-        "/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + holds_query
-      )
-    ).map { |record| IllLoan.new(record) }
+    ill_get_request(webaccess_id, holds_query)
   end
 
   private
+
+    def ill_get_request(webaccess_id, query)
+      JSON.parse(
+        request(
+          "/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + query
+        )
+      ).map { |record| IllLoan.new(record) }
+    end
 
     def checkouts_query
       CGI.escape("(RequestType eq 'Loan') and " \
