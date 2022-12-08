@@ -36,7 +36,7 @@ class IlliadClient
       if ill_response.status == 200
         JSON.parse(ill_response).map { |record| IllLoan.new(record) }
       else
-        raise RuntimeError, ill_response.to_s
+        raise ill_response.to_s
       end
     end
 
