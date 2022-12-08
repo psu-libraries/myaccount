@@ -73,4 +73,48 @@ RSpec.describe IlliadClient do
       end
     end
   end
+
+  describe "#get_loan_checkouts" do
+    let(:get_loan_checkouts_response) { client.get_loan_checkouts('test123') }
+
+    context 'when getting loan checkouts is successful' do
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "Username":"test123", "RequestType":"Loan", "LoanAuthor":"Author, Test", 
+          "LoanTitle":"The Book Title", "LoanPublisher":null, "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"},
+          {"TransactionNumber":123457, "Username":"test123", "RequestType":"Loan", "LoanAuthor":"Author, Test", 
+            "LoanTitle":"The Book Title", "LoanPublisher":null, "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"}]'
+      end
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
+                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
+                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(startswith" \
+                            "(%20TransactionStatus,%20'Renewed%20by')))")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 200, body: return_body)
+      end
+
+      it 'returns an array of loan checkouts' do
+        expect(get_loan_checkouts_response.count).to eq 2
+        expect(get_loan_checkouts_response.first.title).to eq 'The Book Title'
+      end
+    end
+
+    context 'when getting loan checkouts is unsuccessful' do
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
+                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
+                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(startswith" \
+                            "(%20TransactionStatus,%20'Renewed%20by')))")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 400, body: '400 Error')
+      end
+
+      it 'returns an error' do
+        expect{ get_loan_checkouts_response }.to raise_error(RuntimeError, '400 Error')
+      end
+    end
+  end
 end

@@ -32,11 +32,12 @@ class IlliadClient
   private
 
     def ill_get_request(webaccess_id, query)
-      JSON.parse(
-        request(
-          "/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + query
-        )
-      ).map { |record| IllLoan.new(record) }
+      ill_response = request("/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + query)
+      if ill_response.status == 200
+        JSON.parse(ill_response).map { |record| IllLoan.new(record) }
+      else
+        raise RuntimeError, ill_response.to_s
+      end
     end
 
     def checkouts_query
