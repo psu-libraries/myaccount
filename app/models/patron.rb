@@ -143,7 +143,7 @@ class Patron
   end
 
   def barred_by_accept_policy?
-    standing_human == 'The user is BARRED.' && (garnish_date == '00000000' || garnish_date.nil?) 
+    standing_human == 'The user is BARRED.' && (garnish_date == '00000000' || garnish_date.nil?)
   end
 
   private

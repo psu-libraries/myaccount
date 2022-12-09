@@ -158,7 +158,7 @@ RSpec.describe 'Holds', type: :feature do
     end
   end
 
-  context 'when a patron attempts to place a hold but has not accepted the lending policy', js: :true do
+  context 'when a patron attempts to place a hold but has not accepted the lending policy', js: true do
     let(:mock_user3) { 'patron3' }
 
     before do
@@ -166,7 +166,7 @@ RSpec.describe 'Holds', type: :feature do
       visit '/holds/new?catkey=24053587'
     end
 
-    it 'displays a link for the patron to accept lending policy and unbar themselves', js: :true do
+    it 'displays a link for the patron to accept lending policy and unbar themselves', js: true do
       select 'Pattee and Paterno Library - Commons Services Desk', from: 'pickup_library'
       fill_in 'pickup_by_date', with: '10-10-2050'
 
