@@ -9,7 +9,7 @@
         <% end %>
       </ul>
       <div class="card-footer bg-transparent">
-        <% if patron.standing_human == 'The user is BARRED.' && (patron.garnish_date == '00000000' || patron.garnish_date.nil?) %>
+        <% if patron.barred_by_accept_policy? %>
           <p class="text-secondary">To unbar your account, please
           <a href="<%= lending_policy_accept_path %>">accept the University Libraries lending policy</a>.</p>
         <% end %>

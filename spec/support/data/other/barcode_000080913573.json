@@ -1,0 +1,75 @@
+{
+    "resource": "/catalog/item",
+    "key": "24053587",
+    "fields": {
+      "itemCategory4": null,
+      "itemCategory3": null,
+      "itemCategory2": null,
+      "itemType": {
+        "resource": "/policy/itemType",
+        "key": "BOOK"
+      },
+      "itemCategory1": null,
+      "itemCategory5": null,
+      "systemModifiedDate": "2020-07-01T15:35:00-04:00",
+      "circulate": true,
+      "currentLocation": {
+        "resource": "/policy/location",
+        "key": "STACKS-EM"
+      },
+      "call": {
+        "resource": "/catalog/call",
+        "key": "24053587",
+        "fields": {
+          "library": {
+            "resource": "/policy/library",
+            "key": "UP-EMS"
+          },
+          "callNumber": "TN805.A1C63",
+          "shadowed": false,
+          "volumetric": " v.39 2017",
+          "sortCallNumber": "TN 000805 .A1C63  V.000039 002017",
+          "dispCallNumber": "TN805.A1C63 v.39 2017",
+          "bib": {
+            "resource": "/catalog/bib",
+            "key": "24053587"
+          },
+          "classification": {
+            "resource": "/policy/classification",
+            "key": "LCPER"
+          },
+          "systemModifiedDate": "2018-07-10T14:47:00-04:00"
+        }
+      },
+      "mediaDesk": null,
+      "pieces": 1,
+      "createdDate": "2018-07-10",
+      "library": {
+        "resource": "/policy/library",
+        "key": "UP-EMS"
+      },
+      "shadowed": false,
+      "permanent": true,
+      "price": {
+        "currencyCode": "USD",
+        "amount": "0.00"
+      },
+      "homeLocation": {
+        "resource": "/policy/location",
+        "key": "STACKS-EM"
+      },
+      "copyNumber": 1,
+      "timesInventoried": 0,
+      "lastInvDate": null,
+      "bib": {
+        "resource": "/catalog/bib",
+        "key": "24053587",
+        "fields": {
+          "shadowed": false,
+          "author": "",
+          "title": "Becoming"
+        }
+      },
+      "barcode": "000080913573"
+    }
+  }

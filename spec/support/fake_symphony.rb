@@ -48,7 +48,13 @@ class FakeSymphony < FakeWebservice
   end
 
   post '/symwsbc/circulation/holdRecord/placeHold' do
-    json_response 200, 'other/place_hold.json'
+    request.body.rewind
+    patron_barcode = json_body(request)['patronBarcode']
+    if patron_barcode == '999982276'
+      json_response 500, 'other/symphony_error.json'
+    else
+      json_response 200, 'other/place_hold.json'
+    end
   end
 
   post '/symwsbc/circulation/holdRecord/cancelHold' do
