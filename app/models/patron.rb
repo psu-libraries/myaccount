@@ -142,6 +142,10 @@ class Patron
     ILL_ELIGIBLE_PROFILES.include?(profile)
   end
 
+  def barred_by_accept_policy?
+    standing_human == 'The user is BARRED.' && (garnish_date == '00000000' || garnish_date.nil?)
+  end
+
   private
 
     def profile
