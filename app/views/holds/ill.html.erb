@@ -1,0 +1,26 @@
+<% if ill_holds.present? %>
+  <table class="table table-responsive-sm">
+    <caption><h2>Illiad Holds</h2></caption>
+    <thead>
+
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Author</th>
+      <th scope="col">Creation Date</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% ill_holds.each_with_index do |hold, i| %>
+      <tr id="hold<%= i %>">
+        <td id="title"><span><%= hold.title %></span></td>
+        <td id="author"><span><%= hold.author %></span></td>
+        <td id="creation-date"><span><%= render_hold_date hold, date_field: 'creation_date' %></span></td>
+        <td id="status"><span><%= hold.status %></span></td>
+      </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+<% end %>

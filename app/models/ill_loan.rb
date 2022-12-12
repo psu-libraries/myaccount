@@ -18,11 +18,11 @@ class IllLoan
   end
 
   def due_date
-    record['DueDate']
+    record['DueDate']&.to_datetime
   end
 
   def creation_date
-    record['CreationDate']
+    record['CreationDate']&.to_datetime
   end
 
   private

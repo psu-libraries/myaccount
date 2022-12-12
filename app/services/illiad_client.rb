@@ -43,6 +43,7 @@ class IlliadClient
     def checkouts_query
       CGI.escape("(RequestType eq 'Loan') and " \
                  "((TransactionStatus eq 'Checked Out to Customer') or " \
+                 "((TransactionStatus eq 'LST TESTING') or " \
                  "(startswith( TransactionStatus, 'Renewed by')))")
     end
 
@@ -72,7 +73,8 @@ class IlliadClient
         'Customer Notified via E-mail',
         'Cancelled by Customer',
         'Duplicate Request Review',
-        'Request Available Locally'
+        'Request Available Locally',
+        'LST TESTING'
       ]
     end
 
