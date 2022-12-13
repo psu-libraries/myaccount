@@ -90,9 +90,9 @@ RSpec.describe IlliadClient do
       before do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
                             "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
-                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20((Transacti" \
-                            "onStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transactio" \
-                            "nStatus,%20'Renewed%20by')))")
+                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
+                            "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
+                            "Status,%20'Renewed%20by')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
@@ -109,9 +109,9 @@ RSpec.describe IlliadClient do
       before do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
                             "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
-                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20((Transacti" \
-                            "onStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transactio" \
-                            "nStatus,%20'Renewed%20by')))")
+                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
+                            "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
+                            "Status,%20'Renewed%20by')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
           .to_return(status: 400, body: '400 Error')
@@ -152,7 +152,8 @@ RSpec.describe IlliadClient do
                            "ed%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by%20Cust" \
                            "omer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Review'%20or" \
                            "%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%20Transa" \
-                           "ctionStatus%20eq%20'LST%20TESTING')")
+                           "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
+                           "20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
@@ -182,7 +183,8 @@ RSpec.describe IlliadClient do
                            "ed%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by%20Cust" \
                            "omer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Review'%20or" \
                            "%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%20Transa" \
-                           "ctionStatus%20eq%20'LST%20TESTING')")
+                           "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
+                           "20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
           .to_return(status: 400, body: '400 Error')
