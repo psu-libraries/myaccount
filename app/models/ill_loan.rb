@@ -30,11 +30,12 @@ class IllLoan
     attr_accessor :record
 
     def status_display(status)
-      if status == 'Customer Notified via E-mail'
+      case status
+      when 'Customer Notified via E-mail'
         'Available for Pickup'
-      elsif status == 'Checked Out to Customer'
+      when 'Checked Out to Customer'
         status
-      elsif status.match(/Renewed by/)
+      when /Renewed by/
         status
       else
         'Processing'
