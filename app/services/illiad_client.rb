@@ -53,7 +53,7 @@ class IlliadClient
         query_str << ' or ' unless i.zero?
         query_str << "TransactionStatus eq '#{status}'"
       end
-      query_str << ')'
+      query_str << "or (startswith( TransactionStatus, 'STAFF')))"
       CGI.escape(query_str)
     end
 

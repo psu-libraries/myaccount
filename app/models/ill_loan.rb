@@ -14,7 +14,7 @@ class IllLoan
   end
 
   def status
-    record['TransactionStatus']
+    status_display(record['TransactionStatus'])
   end
 
   def due_date
@@ -28,4 +28,16 @@ class IllLoan
   private
 
     attr_accessor :record
+
+    def status_display(status)
+      if status == 'Customer Notified via E-mail'
+        'Available for Pickup'
+      elsif status == 'Checked Out to Customer'
+        status
+      elsif status.match(/Renewed by/)
+        status
+      else
+        'Processing'
+      end
+    end
 end
