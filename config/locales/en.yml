@@ -47,7 +47,7 @@ en:
       label_html: <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Notice
       message: Returned materials may be quarantined for four days and will remain on your account during the quarantine period.
     checkouts_info_html: >
-      <p>Materials borrowed through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be renewed separately.</p>
+      <p>Materials borrowed through <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be renewed separately.</p>
       <p>If you are finished with any items, please consider returning them to any Penn State library.</p>
     holds_info_html: Materials requested through <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be managed separately.
     hold:

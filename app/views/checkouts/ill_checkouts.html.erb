@@ -1,0 +1,26 @@
+<% if ill_loans.present? %>
+  <table class="table table-responsive-sm">
+    <caption><h2>Illiad Checkouts</h2></caption>
+    <thead>
+
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Author</th>
+      <th scope="col">Due Date</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% ill_loans.each_with_index do |checkout, i| %>
+      <tr id="checkout<%= i %>">
+        <td id="title"><span><%= checkout.title %></span></td>
+        <td id="author"><span><%= checkout.author %></span></td>
+        <td id="due-date"><span><%= render_hold_date checkout, date_field: 'due_date' %></span></td>
+        <td id="status"><span><%= checkout.status %></span></td>
+      </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+<% end %>

@@ -17,7 +17,6 @@ const showHolds = (data) => {
 
 const showIllHolds = (data) => {
     illHoldsContainer.innerHTML = data.html;
-    cancelHold();
 };
 
 const holds = () => {

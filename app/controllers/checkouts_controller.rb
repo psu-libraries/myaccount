@@ -9,8 +9,10 @@ class CheckoutsController < ApplicationController
   #
   # GET /checkouts
   def index
+    @username = current_user.username
     ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
     ViewCheckoutsJob.perform_later **ws_args
+    ViewIllLoansJob.perform_later(@username, :checkouts)
 
     @patron_key = current_user.patron_key
     render
