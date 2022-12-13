@@ -1,4 +1,4 @@
-<% if ill_loans.present? %>
+<% if illiad_loans.present? %>
   <table class="table table-responsive-sm">
     <div class='row pl-3 pt-2 pb-3'>
       <h1>Illiad Checkouts</h1>
@@ -19,7 +19,7 @@
     </thead>
 
     <tbody>
-    <% ill_loans.each_with_index do |checkout, i| %>
+    <% illiad_loans.each_with_index do |checkout, i| %>
       <tr id="checkout<%= i %>">
         <td id="title"><span><%= checkout.title %></span></td>
         <td id="author"><span><%= checkout.author %></span></td>
