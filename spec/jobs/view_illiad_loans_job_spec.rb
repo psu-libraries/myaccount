@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ViewIlliadLoansJob, type: :job do
   let(:ill_args) { { webaccess_id: 'abc123',
-                    type: type } }
+                     type: type } }
 
   after do
     Redis.current.flushall
@@ -15,16 +15,16 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
 
     before do
       stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
-          .with(
-            headers: {
-              'Apikey' => '1234',
-              'Connection' => 'close',
-              'Content-Type' => 'application/json',
-              'Host' => 'illiad.illiad',
-              'User-Agent' => 'http.rb/4.4.1'
-            }
-          )
-          .to_return(status: 200, body: '[{"LoanTitle":"Unique Title"}]', headers: {})
+        .with(
+          headers: {
+            'Apikey' => '1234',
+            'Connection' => 'close',
+            'Content-Type' => 'application/json',
+            'Host' => 'illiad.illiad',
+            'User-Agent' => 'http.rb/4.4.1'
+          }
+        )
+        .to_return(status: 200, body: '[{"LoanTitle":"Unique Title"}]', headers: {})
     end
 
     it 'sets a Redis record containing success denoted by user\'s webaccess_id' do
@@ -45,32 +45,6 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
     context 'when IlliadClient does not respond with 200/OK' do
       before do
         stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
-            .with(
-              headers: {
-                'Apikey' => '1234',
-                'Connection' => 'close',
-                'Content-Type' => 'application/json',
-                'Host' => 'illiad.illiad',
-                'User-Agent' => 'http.rb/4.4.1'
-              }
-            )
-            .to_return(status: 400, body: '{"Message":"400 Error"}', headers: {})
-      end
-
-      it 'sets a Redis record containing failure denoted by user\'s webaccess_id' do
-        described_class.perform_now(**ill_args)
-        results = Redis.current.get 'view_ill_holds_abc123'
-
-        expect(results).to eq "{\"result\":\"failure\",\"response\":\"400 Error\"}"
-      end
-    end
-  end
-
-  context 'when type: is :checkouts' do
-    let(:type) { :checkouts }
-
-    before do
-      stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
           .with(
             headers: {
               'Apikey' => '1234',
@@ -80,7 +54,33 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
               'User-Agent' => 'http.rb/4.4.1'
             }
           )
-          .to_return(status: 200, body: '[{"LoanTitle":"Unique Title"}]', headers: {})
+          .to_return(status: 400, body: '{"Message":"400 Error"}', headers: {})
+      end
+
+      it 'sets a Redis record containing failure denoted by user\'s webaccess_id' do
+        described_class.perform_now(**ill_args)
+        results = Redis.current.get 'view_ill_holds_abc123'
+
+        expect(results).to eq '{"result":"failure","response":"400 Error"}'
+      end
+    end
+  end
+
+  context 'when type: is :checkouts' do
+    let(:type) { :checkouts }
+
+    before do
+      stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+        .with(
+          headers: {
+            'Apikey' => '1234',
+            'Connection' => 'close',
+            'Content-Type' => 'application/json',
+            'Host' => 'illiad.illiad',
+            'User-Agent' => 'http.rb/4.4.1'
+          }
+        )
+        .to_return(status: 200, body: '[{"LoanTitle":"Unique Title"}]', headers: {})
     end
 
     it 'sets a Redis record containing success denoted by user\'s webaccess_id' do
@@ -101,23 +101,23 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
     context 'when IlliadClient does not respond with 200/OK' do
       before do
         stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
-            .with(
-              headers: {
-                'Apikey' => '1234',
-                'Connection' => 'close',
-                'Content-Type' => 'application/json',
-                'Host' => 'illiad.illiad',
-                'User-Agent' => 'http.rb/4.4.1'
-              }
-            )
-            .to_return(status: 400, body: '{"Message":"400 Error"}', headers: {})
+          .with(
+            headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            }
+          )
+          .to_return(status: 400, body: '{"Message":"400 Error"}', headers: {})
       end
 
       it 'sets a Redis record containing failure denoted by user\'s webaccess_id' do
         described_class.perform_now(**ill_args)
         results = Redis.current.get 'view_ill_checkouts_abc123'
 
-        expect(results).to eq "{\"result\":\"failure\",\"response\":\"400 Error\"}"
+        expect(results).to eq '{"result":"failure","response":"400 Error"}'
       end
     end
   end
@@ -126,7 +126,7 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
     let(:type) { :bogus }
 
     it 'raises StandardError' do
-      expect{ described_class.perform_now(**ill_args) }.to raise_error(StandardError)
+      expect { described_class.perform_now(**ill_args) }.to raise_error(StandardError)
     end
   end
 end

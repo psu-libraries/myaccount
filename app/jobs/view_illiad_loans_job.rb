@@ -4,8 +4,8 @@ class ViewIlliadLoansJob < ApplicationJob
   include ActionController::Rendering
 
   queue_as :default
-  
-  LOAN_TYPES = %i{holds checkouts}
+
+  LOAN_TYPES = %i{holds checkouts}.freeze
 
   def perform(webaccess_id:, type:)
     raise StandardError, "Invalid Loan Type '#{type}'.  Must be :holds or :checkouts." unless LOAN_TYPES.include?(type)
