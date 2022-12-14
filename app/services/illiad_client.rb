@@ -15,39 +15,32 @@ class IlliadClient
       'LoanEdition': transaction_info.loan_edition,
       'ProcessType': transaction_info.process_type,
       'NotWantedAfter': params[:pickup_by_date],
-      'AcceptAlternateEdition': params[:accept_alternate_edition] ? true : false
+      'AcceptAlternateEdition': params[:accept_alternate_edition] ? true : false,
+      'ItemInfo1': params[:accept_ebook] ? true : false,
+      'ItemInfo2': barcodes(params)
     }
 
     request('/IlliadWebPlatform/Transaction/', method: :post, json: body)
   end
 
   def add_loan_note(transaction_id, note)
-    body = {
-      "Note": note
-    }
-    request("/IlliadWebPlatform/transaction/#{transaction_id}/notes", method: :post, json: body)
+    request("/IlliadWebPlatform/transaction/#{transaction_id}/notes",
+            method: :post,
+            json: { "Note": note })
   end
 
   def place_loan(transaction_info, params)
-    note = params&.dig(:note)&.dig(:body)
-    result = {}
-    result[:message] = []
     response = add_loan_transaction(transaction_info, params)
 
-    if response.status == 200
-      result[:message].append('Loan Placed Successufly')
-    else
-      result[:error] = 'Failed to Place Loan'
-      return result
-    end
-
-    if note.present?
+    note = params&.dig(:note)&.dig(:body)
+    if note.present? && response.status == 200
       transaction_id = JSON.parse(response.body)['TransactionNumber']
-      response = add_loan_note(transaction_id, note)
-      result[:message].append('Failed to add note to transaction') unless response.status == 201
+      # If add note fails, we will not inform
+      # See https://github.com/psu-libraries/myaccount/issues/143#issuecomment-1347495833
+      add_loan_note(transaction_id, note)
     end
 
-    result
+    response
   end
 
   private
@@ -62,5 +55,9 @@ class IlliadClient
 
     def headers
       { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key }
+    end
+
+    def barcodes(params)
+      [params['barcodes']].flatten.compact.join(', ')
     end
 end

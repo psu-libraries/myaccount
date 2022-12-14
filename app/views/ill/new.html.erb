@@ -1,4 +1,8 @@
-<h1>A Hold Will Be Placed For You</h1>
+<h1>An Interlibrary Loan Request Will Be Placed For You</h1>
+
+<p>
+  This item is not currently available in our local collections, so an interlibrary loan (ILL) request will be placed for you.
+</p>
 
 <p>
   <%= render GenericValueWithLabelComponent.new label: 'Title', value: @place_loan_form_params[:title] %> <br>
@@ -6,20 +10,27 @@
 </p>
 
 <%= form_with url: '/ill', local: true, method: :post do %>
-  <%= hidden_field_tag :catkey, params[:catkey] %>
+    <%= hidden_field_tag :catkey, params[:catkey] %>
 
     <%= render PlaceHoldDateComponent.new %>
 
-    <p class="card-text">
+    <p class="form-group">
       <%= check_box_tag :accept_alternate_edition, true, true %>
-      <%= label_tag :accept_alternate_edition, t('myaccount.hold.illiad.accept_alternate_edition') %>
+      <%= label_tag :accept_alternate_edition, t('myaccount.ill.new_loan.accept_alternate_edition') %>
     </p>
 
-    <p class="card-text">
-      <%= label_tag :note, t('myaccount.hold.illiad.note') %>
-      <%= text_area :note, :body, cols: 100, rows: 5 %>
+    <p class="form-group">
+      <%= check_box_tag :accept_ebook, true, true %>
+      <%= label_tag :accept_ebook, t('myaccount.ill.new_loan.accept_ebook') %>
     </p>
 
-    <%= submit_tag('Place Hold', class: 'btn btn-info') %>
+    <%= render PlaceHoldCheckboxWrapperComponent.new volumetric_calls: @place_loan_form_params[:volumetric_calls] %>
+
+    <div class="form-group">
+      <%= label_tag :note, t('myaccount.ill.new_loan.notes') %>
+      <%= text_area :note, :body, cols: 100, rows: 5, class: 'form-control' %>
+    </div>
+
+    <%= submit_tag('Place ILL Request', class: 'btn btn-info') %>
   <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_loan_form_params[:catkey], class: 'btn btn-danger' %>
 <% end %>

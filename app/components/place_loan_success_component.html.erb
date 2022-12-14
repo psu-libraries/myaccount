@@ -1,0 +1,11 @@
+<li class="list-group-item py-3">
+  <p class="card-text">
+    <%= render BibItemComponent.new bibitem: bib_item %>
+    <small class="text-secondary">
+      <% if issn.present? %><strong>ISSN</strong>: <%= issn %><br><% end %>
+      <strong>Not Needed After</strong>: <%= not_wanted_after %><br>
+      <strong>Accept Alternate Edition</strong>: <%= accept_alternate_edition %><br>
+      <strong>Accept ebook if available</strong>: <%= accept_ebook %><br>
+    </small>
+  </p>
+</li>

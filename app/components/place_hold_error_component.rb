@@ -2,7 +2,7 @@
 
 class PlaceHoldErrorComponent < ViewComponent::Base
   def initialize(result:)
-    @bib = result[:failed_hold]
+    @bib = result[:failed_hold] || OpenStruct.new(result[:bib])
     @error_message = result[:error_message]
   end
 
