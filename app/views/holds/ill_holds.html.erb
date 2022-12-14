@@ -20,11 +20,11 @@
 
     <tbody>
     <% illiad_loans.each_with_index do |hold, i| %>
-      <tr id="hold<%= i %>">
-        <td id="title"><span><%= hold.title %></span></td>
-        <td id="author"><span><%= hold.author %></span></td>
-        <td id="creation-date"><span><%= render_hold_date hold, date_field: 'creation_date' %></span></td>
-        <td id="status"><span><%= hold.status %></span></td>
+      <tr id="hold-<%= i %>">
+        <td id="title-<%= i %>"><span><%= hold.title %></span></td>
+        <td id="author-<%= i %>"><span><%= hold.author %></span></td>
+        <td id="creation-date-<%= i %>"><span><%= render_hold_date hold, date_field: 'creation_date' %></span></td>
+        <td id="status-<%= i %>"><span><%= hold.status %></span></td>
       </tr>
     <% end %>
     </tbody>

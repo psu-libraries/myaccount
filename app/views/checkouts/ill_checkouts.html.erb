@@ -20,11 +20,11 @@
 
     <tbody>
     <% illiad_loans.each_with_index do |checkout, i| %>
-      <tr id="checkout<%= i %>">
-        <td id="title"><span><%= checkout.title %></span></td>
-        <td id="author"><span><%= checkout.author %></span></td>
-        <td id="due-date"><span><%= render_hold_date checkout, date_field: 'due_date' %></span></td>
-        <td id="status"><span><%= checkout.status %></span></td>
+      <tr id="checkout-<%= i %>">
+        <td id="title-<%= i %>"><span><%= checkout.title %></span></td>
+        <td id="author-<%= i %>"><span><%= checkout.author %></span></td>
+        <td id="due-date-<%= i %>"><span><%= render_hold_date checkout, date_field: 'due_date' %></span></td>
+        <td id="status-<%= i %>"><span><%= checkout.status %></span></td>
       </tr>
     <% end %>
     </tbody>

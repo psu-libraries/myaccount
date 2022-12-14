@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Checkouts', type: :feature do
   let(:mock_user) { 'patron2' }
+
   after do
     Warden::Manager._on_request.clear
     Redis.current.flushall
@@ -27,7 +28,7 @@ RSpec.describe 'Checkouts', type: :feature do
     end
 
     context 'when visiting the checkouts page', js: true do
-      it 'displays checkouts section' do
+      it 'displays accessible checkouts section' do
         expect(page).to be_accessible
         expect(page).to have_content 'Checkouts/Renewals'
         expect(page).not_to have_content 'Illiad Checkouts'
@@ -121,11 +122,12 @@ RSpec.describe 'Checkouts', type: :feature do
     end
 
     context 'when visiting the checkouts page', js: true do
-      it 'displays illiad checkouts section' do
+      it 'displays accessible illiad checkouts section' do
+        expect(page).to be_accessible
         expect(page).to have_content 'Illiad Checkouts'
         expect(page).to have_content 'The Book Title 1'
         expect(page).to have_content 'The Book Title 2'
-        expect(page).to have_link 'Manage your Interlibrary Loans', 
+        expect(page).to have_link 'Manage your Interlibrary Loans',
                                   href: 'https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll?Action=10&Form=10'
         expect(page).to have_content 'Author'
         expect(page).to have_content 'Due Date'
