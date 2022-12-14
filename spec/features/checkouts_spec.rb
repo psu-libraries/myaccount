@@ -3,9 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Checkouts', type: :feature do
-  context 'when patron2 below has 2 checkouts and not illiad checkouts' do
-    let(:mock_user) { 'patron2' }
+  let(:mock_user) { 'patron2' }
+  after do
+    Warden::Manager._on_request.clear
+    Redis.current.flushall
+  end
 
+  context 'when patron2 has 2 checkouts and no illiad checkouts' do
     before do
       stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
         .with(
@@ -22,14 +26,11 @@ RSpec.describe 'Checkouts', type: :feature do
       visit checkouts_path
     end
 
-    after do
-      Warden::Manager._on_request.clear
-      Redis.current.flushall
-    end
-
     context 'when visiting the checkouts page', js: true do
-      it 'displays checkouts' do
+      it 'displays checkouts section' do
         expect(page).to be_accessible
+        expect(page).to have_content 'Checkouts/Renewals'
+        expect(page).not_to have_content 'Illiad Checkouts'
       end
     end
 
@@ -89,6 +90,46 @@ RSpec.describe 'Checkouts', type: :feature do
         visit summaries_path
         page.go_back
         expect(page).to have_css '[id="checkout2145643:5:1"]'
+      end
+    end
+  end
+
+  context 'when patron2 has 2 checkouts and 2 illiad checkouts' do
+    let(:return_body) do
+      '[{"TransactionNumber":123456, "Username":"test123", "RequestType":"Loan",
+         "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title 1",
+         "LoanPublisher":null, "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"},
+        {"TransactionNumber":123457, "Username":"test123", "RequestType":"Loan",
+          "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title 2", "LoanPublisher":null,
+          "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"}]'
+    end
+
+    before do
+      stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+        .with(
+          headers: {
+            'Apikey' => '1234',
+            'Connection' => 'close',
+            'Content-Type' => 'application/json',
+            'Host' => 'illiad.illiad',
+            'User-Agent' => 'http.rb/4.4.1'
+          }
+        )
+        .to_return(status: 200, body: return_body, headers: {})
+      login_permanently_as username: 'PATRON2', patron_key: mock_user
+      visit checkouts_path
+    end
+
+    context 'when visiting the checkouts page', js: true do
+      it 'displays illiad checkouts section' do
+        expect(page).to have_content 'Illiad Checkouts'
+        expect(page).to have_content 'The Book Title 1'
+        expect(page).to have_content 'The Book Title 2'
+        expect(page).to have_link 'Manage your Interlibrary Loans', 
+                                  href: 'https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll?Action=10&Form=10'
+        expect(page).to have_content 'Author'
+        expect(page).to have_content 'Due Date'
+        expect(page).to have_content 'Status'
       end
     end
   end
