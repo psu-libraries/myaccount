@@ -1,5 +1,5 @@
 <h1>Results of Interlibrary Loan Request for <%= patron.display_name %></h1>
 
 <div class="requested-loan" data-patron-key="<%= patron.key %>">
-  <%= render partial: 'results', locals: { place_loan_result: @result } %>
+  <%= render partial: 'results', locals: { place_loan_result: @place_loan_result } %>
 </div>

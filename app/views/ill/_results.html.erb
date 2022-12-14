@@ -4,7 +4,7 @@
         <h3>Interlibrary Loan Request Failed</h3>
       </div>
       <ul class="list-group list-group-flush">
-         <%= render PlaceHoldErrorComponent.new result: place_loan_result[:error] %>
+         <%= render PlaceHoldErrorComponent.new result: place_loan_result[:error], bib: @bib %>
       </ul>
       <div class="card-footer bg-transparent">
         <p class="text-secondary"><%= t('myaccount.ill.place_loan.error_html') %></p>

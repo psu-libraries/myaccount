@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class PlaceHoldErrorComponent < ViewComponent::Base
-  def initialize(result:)
-    @bib = result[:failed_hold] || OpenStruct.new(result[:bib])
+  def initialize(bib:, result:)
+    @bib = bib
     @error_message = result[:error_message]
   end
 

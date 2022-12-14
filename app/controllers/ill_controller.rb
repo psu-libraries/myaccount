@@ -73,7 +73,8 @@ class IllController < ApplicationController
   #
   # GET /ill/result
   def result
-    @result = read_from_redis['result'].with_indifferent_access
+    @place_loan_result = read_from_redis['result'].with_indifferent_access
+    @bib = OpenStruct.new(@place_loan_result.dig('success', 'bib') || @place_loan_result.dig('error', 'bib'))
 
     if request.referer && URI(request.referer).path == '/ill/new'
       render

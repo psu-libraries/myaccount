@@ -5,7 +5,7 @@
       </div>
       <ul class="list-group list-group-flush">
         <% place_hold_results[:error].each do |result| %>
-            <%= render PlaceHoldErrorComponent.new result: result %>
+            <%= render PlaceHoldErrorComponent.new result: result, bib: result[:failed_hold] %>
         <% end %>
       </ul>
       <div class="card-footer bg-transparent">
