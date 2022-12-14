@@ -114,7 +114,7 @@ RSpec.describe IlliadClient do
                             "Status,%20'Renewed%20by')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
-          .to_return(status: 400, body: '400 Error')
+          .to_return(status: 400, body: '{"Message":"400 Error"}')
       end
 
       it 'returns an error' do
@@ -187,7 +187,7 @@ RSpec.describe IlliadClient do
                            "20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
-          .to_return(status: 400, body: '400 Error')
+          .to_return(status: 400, body: '{"Message":"400 Error"}')
       end
 
       it 'returns an error' do

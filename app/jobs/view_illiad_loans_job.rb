@@ -4,9 +4,12 @@ class ViewIlliadLoansJob < ApplicationJob
   include ActionController::Rendering
 
   queue_as :default
+  
+  LOAN_TYPES = %i{holds checkouts}
 
-  # 'type' can be either :holds or :checkouts
-  def perform(webaccess_id, type)
+  def perform(webaccess_id:, type:)
+    raise StandardError, "Invalid Loan Type '#{type}'.  Must be :holds or :checkouts." unless LOAN_TYPES.include?(type)
+
     illiad_loans = IlliadClient.new.send("get_loan_#{type}", webaccess_id)
 
     html = HoldsController.render template: "#{type}/ill_#{type}", layout: false, locals: { illiad_loans: illiad_loans }
@@ -17,7 +20,7 @@ class ViewIlliadLoansJob < ApplicationJob
     }.to_json)
     nil
   rescue RuntimeError => e
-    process_failure(e.message, webaccess_id, type)
+    process_failure({ error_message: e.message, webaccess_id: webaccess_id, type: type })
   end
 
   private

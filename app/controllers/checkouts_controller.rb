@@ -12,7 +12,8 @@ class CheckoutsController < ApplicationController
     @username = current_user.username
     ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
     ViewCheckoutsJob.perform_later **ws_args
-    ViewIlliadLoansJob.perform_later(@username, :checkouts)
+    ill_args = { webaccess_id: @username, type: :checkouts }
+    ViewIlliadLoansJob.perform_later(**ill_args)
 
     @patron_key = current_user.patron_key
     render
