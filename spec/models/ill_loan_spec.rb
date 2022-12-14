@@ -56,32 +56,32 @@ RSpec.describe IllLoan, type: :model do
     expect(ill_loan.creation_date).to eq datetime_now.to_s
   end
 
-  describe "#status" do
+  describe '#status' do
     context 'when TransactionStatus is "Customer Notified via E-mail"' do
       it 'returns' do
-        record['TransactionStatus'] = "Customer Notified via E-mail"
-        expect(ill_loan.status).to eq "Available for Pickup"
+        record['TransactionStatus'] = 'Customer Notified via E-mail'
+        expect(ill_loan.status).to eq 'Available for Pickup'
       end
     end
 
     context 'when TransactionStatus is "Checked Out to Customer"' do
       it 'returns' do
-        record['TransactionStatus'] = "Checked Out to Customer"
-        expect(ill_loan.status).to eq "Checked Out to Customer"
+        record['TransactionStatus'] = 'Checked Out to Customer'
+        expect(ill_loan.status).to eq 'Checked Out to Customer'
       end
     end
 
     context 'when TransactionStatus starts with "Renewed by"' do
       it 'returns' do
-        record['TransactionStatus'] = "Renewed by Customer ABC123"
-        expect(ill_loan.status).to eq "Renewed by Customer ABC123"
+        record['TransactionStatus'] = 'Renewed by Customer ABC123'
+        expect(ill_loan.status).to eq 'Renewed by Customer ABC123'
       end
     end
 
     context 'when TransactionStatus anything else' do
       it 'returns' do
-        record['TransactionStatus'] = "Something else"
-        expect(ill_loan.status).to eq "Processing"
+        record['TransactionStatus'] = 'Something else'
+        expect(ill_loan.status).to eq 'Processing'
       end
     end
   end
