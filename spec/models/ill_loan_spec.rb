@@ -48,16 +48,42 @@ RSpec.describe IllLoan, type: :model do
     expect(ill_loan.author).to eq 'Author, Test'
   end
 
-  it 'has a status' do
-    expect(ill_loan.status).to eq 'Checked Out to Customer'
-  end
-
   it 'has a due_date' do
     expect(ill_loan.due_date).to eq (datetime_now + 1.year).to_s
   end
 
   it 'has a creation_date' do
     expect(ill_loan.creation_date).to eq datetime_now.to_s
+  end
+
+  describe "#status" do
+    context 'when TransactionStatus is "Customer Notified via E-mail"' do
+      it 'returns' do
+        record['TransactionStatus'] = "Customer Notified via E-mail"
+        expect(ill_loan.status).to eq "Available for Pickup"
+      end
+    end
+
+    context 'when TransactionStatus is "Checked Out to Customer"' do
+      it 'returns' do
+        record['TransactionStatus'] = "Checked Out to Customer"
+        expect(ill_loan.status).to eq "Checked Out to Customer"
+      end
+    end
+
+    context 'when TransactionStatus starts with "Renewed by"' do
+      it 'returns' do
+        record['TransactionStatus'] = "Renewed by Customer ABC123"
+        expect(ill_loan.status).to eq "Renewed by Customer ABC123"
+      end
+    end
+
+    context 'when TransactionStatus anything else' do
+      it 'returns' do
+        record['TransactionStatus'] = "Something else"
+        expect(ill_loan.status).to eq "Processing"
+      end
+    end
   end
 
   context 'when an element does not exist' do
