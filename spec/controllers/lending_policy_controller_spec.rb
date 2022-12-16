@@ -45,7 +45,7 @@ RSpec.describe LendingPolicyController do
 
       context 'when the patron is eligible for wage garnishment' do
         let(:mock_patron) { instance_double(Patron, eligible_for_wage_garnishment?: true) }
-        
+
         context 'when the request is successful' do
           it 'accepts the lending policy' do
             post(:accept)
