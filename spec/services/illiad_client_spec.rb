@@ -38,7 +38,9 @@ RSpec.describe IlliadClient do
         'LoanEdition': 'Test Edition',
         'ProcessType': 'Borrowing',
         'NotWantedAfter': '2022-12-02',
-        'AcceptAlternateEdition': true
+        'AcceptAlternateEdition': true,
+        'ItemInfo1': false,
+        'ItemInfo2': ''
       }
     end
 
@@ -71,10 +73,6 @@ RSpec.describe IlliadClient do
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
           .to_return(status: 201)
       end
-
-      it 'adds a note' do
-        expect(place_loan_response_with_note[:message].length).to be 1
-      end
     end
 
     context 'when place hold is successful' do
@@ -86,7 +84,7 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns status success' do
-        expect(place_loan_response[:message].first).to eq('Loan Placed Successufly')
+        expect(place_loan_response.status).to eq(200)
       end
     end
 
@@ -99,7 +97,7 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns an error' do
-        expect(place_loan_response[:error]).to eq 'Failed to Place Loan'
+        expect(place_loan_response.status).to eq (400)
       end
     end
   end
