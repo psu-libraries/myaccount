@@ -38,7 +38,7 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
       described_class.perform_now(**ill_args)
       results = Redis.current.get 'view_ill_holds_abc123'
 
-      expect(results).to include 'Illiad Holds'
+      expect(results).to include 'Interlibrary Loan Requests'
       expect(results).to include 'Unique Title'
     end
 
@@ -94,7 +94,7 @@ RSpec.describe ViewIlliadLoansJob, type: :job do
       described_class.perform_now(**ill_args)
       results = Redis.current.get 'view_ill_checkouts_abc123'
 
-      expect(results).to include 'Illiad Checkouts'
+      expect(results).to include 'Interlibrary Loan Checkouts'
       expect(results).to include 'Unique Title'
     end
 

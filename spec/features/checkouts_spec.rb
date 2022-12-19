@@ -10,7 +10,7 @@ RSpec.describe 'Checkouts', type: :feature do
     Redis.current.flushall
   end
 
-  context 'when patron2 has 2 checkouts and no illiad checkouts' do
+  context 'when patron2 has 2 checkouts and no Interlibrary Loan Checkouts' do
     before do
       stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
         .with(
@@ -31,7 +31,7 @@ RSpec.describe 'Checkouts', type: :feature do
       it 'displays accessible checkouts section' do
         expect(page).to be_accessible
         expect(page).to have_content 'Checkouts/Renewals'
-        expect(page).not_to have_content 'Illiad Checkouts'
+        expect(page).not_to have_content 'Interlibrary Loan Checkouts'
       end
     end
 
@@ -95,7 +95,7 @@ RSpec.describe 'Checkouts', type: :feature do
     end
   end
 
-  context 'when patron2 has 2 checkouts and 2 illiad checkouts' do
+  context 'when patron2 has 2 checkouts and 2 Interlibrary Loan Checkouts' do
     let(:return_body) do
       '[{"TransactionNumber":123456, "Username":"test123", "RequestType":"Loan",
          "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title 1",
@@ -122,9 +122,9 @@ RSpec.describe 'Checkouts', type: :feature do
     end
 
     context 'when visiting the checkouts page', js: true do
-      it 'displays accessible illiad checkouts section' do
+      it 'displays accessible Interlibrary Loan Checkouts section' do
         expect(page).to be_accessible
-        expect(page).to have_content 'Illiad Checkouts'
+        expect(page).to have_content 'Interlibrary Loan Checkouts'
         expect(page).to have_content 'The Book Title 1'
         expect(page).to have_content 'The Book Title 2'
         expect(page).to have_link 'Manage your Interlibrary Loans',

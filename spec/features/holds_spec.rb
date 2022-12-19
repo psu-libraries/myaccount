@@ -32,7 +32,7 @@ RSpec.describe 'Holds', type: :feature do
         it 'displays accessible holds section' do
           expect(page).to be_accessible
           expect(page).to have_selector 'h1', text: 'Holds'
-          expect(page).not_to have_content 'Illiad Holds'
+          expect(page).not_to have_content 'Interlibrary Loan Requests'
         end
       end
 
@@ -171,7 +171,7 @@ RSpec.describe 'Holds', type: :feature do
     end
   end
 
-  context 'when patron1 has 2 Illiad Holds' do
+  context 'when patron1 has 2 Interlibrary Loan Requests' do
     let(:return_body) do
       '[{"TransactionNumber":123456, "Username":"test123", "RequestType":"Loan",
          "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title 1",
@@ -198,9 +198,9 @@ RSpec.describe 'Holds', type: :feature do
     end
 
     context 'when visiting the holds page', js: true do
-      it 'displays accessible illiad holds section' do
+      it 'displays accessible Interlibrary Loan Requests section' do
         expect(page).to be_accessible
-        expect(page).to have_content 'Illiad Holds'
+        expect(page).to have_content 'Interlibrary Loan Requests'
         expect(page).to have_content 'The Book Title 1'
         expect(page).to have_content 'The Book Title 2'
         expect(page).to have_link 'Manage your Interlibrary Loan Request',
