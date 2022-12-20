@@ -4,6 +4,7 @@
 export SYMWS_PIN='some-password'
 export SYMWS_URL='some-url'
 export SYMWS_USERNAME='some-username'
+export SYMWS_EDIT_OVERRIDE="enter-overide-here"
 
 
 ## Ports exposed on the system Change these from the defaults
