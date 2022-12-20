@@ -8,35 +8,78 @@ class IllController < ApplicationController
   rescue_from NewHoldException, with: :deny_new
   rescue_from HoldCreateException, with: :deny_create
 
+  # Prepares the form for creating a new loan
+  #
+  # GET /ill/new
   def new
     raise NewHoldException, 'Error' if params[:catkey].blank?
 
     if patron.ill_ineligible?
       redirect_to new_hold_path(catkey: params[:catkey])
     else
-      @place_loan_form_params = {
-        catkey: params[:catkey],
-        title: bib_info.title,
-        author: bib_info.author
-      }
+      form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
+                                                user_token: current_user.session_token,
+                                                client: symphony_client,
+                                                library: patron.library)
+
+      @place_loan_form_params = form_builder.generate
 
       raise NewHoldException, 'Error' if @place_loan_form_params.blank?
     end
   end
 
+  # Handles placing loan
+  #
+  # POST /ill
   def create
     transaction_info = IllTransaction.new(patron, bib_info)
-    result = IlliadClient.new.place_loan(transaction_info, params)
+    response = IlliadClient.new.place_loan(transaction_info, params)
 
-    if result.status == 200
-      # TODO: alert text from Ruth
-      flash[:alert] = t('myaccount.hold.place_hold.success_html')
+    bib = {
+      catkey: params[:catkey],
+      title: bib_info.title,
+      # type_human: bib_info.item_type_human,
+      # type_code: bib_info.item_type_code,
+      author: bib_info.author,
+      # call_number: bib_info.call_number,
+      shadowed: bib_info.shadowed?
+    }
 
-      redirect_to summaries_path
+    place_loan_result = {
+      catkey: params[:catkey]
+    }
+
+    if response.status == 200
+      place_loan_result[:success] = {
+        bib: bib,
+        ISSN: transaction_info.isbn,
+        not_wanted_after: params[:pickup_by_date],
+        accept_alternate_edition: params[:accept_alternate_edition],
+        accept_ebook: params[:accept_ebook]
+      }
     else
-      flash[:error] = t 'myaccount.hold.new_hold.error_html'
+      place_loan_result[:error] = {
+        bib: bib,
+        error_message: 'Interlibrary Loan Request Failed'
+      }
+    end
 
-      redirect_to new_ill_path
+    write_to_redis(place_loan_result)
+
+    redirect_to ill_result_path
+  end
+
+  # Handles place loan response
+  #
+  # GET /ill/result
+  def result
+    @place_loan_result = read_from_redis['result'].with_indifferent_access
+    @bib = OpenStruct.new(@place_loan_result.dig('success', 'bib') || @place_loan_result.dig('error', 'bib'))
+
+    if request.referer && URI(request.referer).path == '/ill/new'
+      render
+    else
+      redirect_to '/not_found'
     end
   end
 
@@ -51,9 +94,16 @@ class IllController < ApplicationController
                             ))
     end
 
-    # def record
-    #   bib_info.record
-    # end
+    def write_to_redis(result)
+      Redis.current.set("place_loan_results_#{patron.key}", {
+        id: @patron.barcode.to_s,
+        result: result
+      }.to_json)
+    end
+
+    def read_from_redis
+      JSON.parse(Redis.current.get("place_loan_results_#{patron.key}"))
+    end
 
     def check_for_blanks!
       return if params['pickup_by_date'].present?

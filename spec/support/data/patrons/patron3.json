@@ -1,0 +1,58 @@
+
+    {
+      "resource": "/user/patron",
+      "key": "patron3",
+      "fields": {
+        "lastName": "LASTNAME",
+        "privilegeExpiresDate": null,
+        "displayName": "SMITH, JANE",
+        "profile": {
+          "resource": "/policy/userProfile",
+          "key": "STAFF"
+        },
+        "groupId": "",
+        "suffix": "",
+        "title": "",
+        "claimsReturnedCount": 0,
+        "alternateID": "ZZZ55555",
+        "firstName": "FIRSTNAME",
+        "standing": {
+          "resource": "/policy/patronStanding",
+          "key": "BARRED"
+        },
+        "library": {
+          "resource": "/policy/library",
+          "key": "UP-PAT"
+        },
+        "usePreferredName": false,
+        "keepCircHistory": "CIRCRULE",
+        "middleName": "H",
+        "preferredName": "",
+        "department": "",
+        "barcode": "999982276",
+        "customInformation": [
+          {
+            "resource": "/user/patron/customInformation",
+            "key": "12",
+            "fields": {
+              "code": {
+                "resource": "/policy/patronExtendedInformation",
+                "key": "PSUACCOUNT"
+              },
+              "data": "STANDARD"
+            }
+          },
+          {
+            "resource": "/user/patron/customInformation",
+            "key": "25",
+            "fields": {
+              "code": {
+                "resource": "/policy/patronExtendedInformation",
+                "key": "GARNISH-DT"
+              },
+              "data": "00000000"
+            }
+          }
+        ]
+      }
+    }

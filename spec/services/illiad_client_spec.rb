@@ -6,6 +6,17 @@ RSpec.describe IlliadClient do
   subject(:client) { described_class.new }
 
   describe '#place_loan' do
+    let(:params_with_note) do
+      {
+        catkey: '1',
+        pickup_by_date: '2022-12-02',
+        accept_alternate_edition: true,
+        "note": {
+          "body": 'this is a note'
+        }
+      }
+    end
+
     let(:params) do
       {
         catkey: '1',
@@ -27,7 +38,9 @@ RSpec.describe IlliadClient do
         'LoanEdition': 'Test Edition',
         'ProcessType': 'Borrowing',
         'NotWantedAfter': '2022-12-02',
-        'AcceptAlternateEdition': true
+        'AcceptAlternateEdition': true,
+        'ItemInfo1': false,
+        'ItemInfo2': ''
       }
     end
 
@@ -46,6 +59,21 @@ RSpec.describe IlliadClient do
     end
 
     let(:place_loan_response) { client.place_loan(ill_transaction, params) }
+    let(:place_loan_response_with_note) { client.place_loan(ill_transaction, params_with_note) }
+
+    context 'when notes are added' do
+      before do
+        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+          .with(body: request_body,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 200, body: { "TransactionNumber": 1234 }.to_json)
+
+        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/transaction/1234/notes")
+          .with(body: { "Note": params_with_note[:note][:body] }.to_json,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 201)
+      end
+    end
 
     context 'when place hold is successful' do
       before do
@@ -55,8 +83,8 @@ RSpec.describe IlliadClient do
           .to_return(status: 200)
       end
 
-      it 'returns status 200' do
-        expect(place_loan_response.status).to eq 200
+      it 'returns status success' do
+        expect(place_loan_response.status).to eq(200)
       end
     end
 
@@ -69,7 +97,7 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns an error' do
-        expect(place_loan_response.status).to eq 400
+        expect(place_loan_response.status).to eq (400)
       end
     end
   end

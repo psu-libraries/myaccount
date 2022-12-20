@@ -1,0 +1,78 @@
+{
+  "resource": "/catalog/bib",
+  "key": "24053587",
+  "fields": {
+    "shadowed": false,
+    "author": "Obama, Michelle, 1964-",
+    "titleControlNumber": "l2010000168",
+    "catalogDate": "2018-05-25",
+    "catalogFormat": {
+      "resource": "/policy/catalogFormat",
+      "key": "MARC"
+    },
+    "modifiedDate": "2018-10-03",
+    "systemModifiedDate": "2020-07-01T15:35:00-04:00",
+    "title": "Becoming",
+    "callList": [
+        {
+          "resource": "/catalog/call",
+          "key": "24053587:1",
+          "fields": {
+            "library": {
+              "resource": "/policy/library",
+              "key": "UP-PAT"
+            },
+            "callNumber": "HG2491.J646 2010",
+            "shadowed": false,
+            "volumetric": null,
+            "dispCallNumber": "HG2491.J646 2010",
+            "bib": {
+              "resource": "/catalog/bib",
+              "key": "24053587"
+            },
+            "itemList": [
+              {
+                "resource": "/catalog/item",
+                "key": "24053587:1:1",
+                "fields": {
+                  "call": {
+                    "resource": "/catalog/call",
+                    "key": "24053587:1"
+                  },
+                  "mediaDesk": null,
+                  "itemType": {
+                    "resource": "/policy/itemType",
+                    "key": "BOOK"
+                  },
+                  "library": {
+                    "resource": "/policy/library",
+                    "key": "UP-PAT"
+                  },
+                  "shadowed": false,
+                  "homeLocation": {
+                    "resource": "/policy/location",
+                    "key": "PATERNO-3"
+                  },
+                  "copyNumber": 1,
+                  "bib": {
+                    "resource": "/catalog/bib",
+                    "key": "24053587"
+                  },
+                  "barcode": "000080913573",
+                  "circulate": false,
+                  "currentLocation": {
+                    "resource": "/policy/location",
+                    "key": "CHECKEDOUT"
+                  }
+                }
+              }
+            ],
+            "classification": {
+              "resource": "/policy/classification",
+              "key": "LC"
+            }
+          }
+        }
+    ]
+  }
+}

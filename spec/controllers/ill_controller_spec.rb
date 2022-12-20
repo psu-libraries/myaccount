@@ -98,7 +98,7 @@ RSpec.describe IllController, type: :controller do
                                               isbn: '1234567') }
 
       let(:mock_illiad_client) { instance_double(IlliadClient) }
-      let(:place_loan_response) { instance_double(HTTP::Response) }
+      let(:place_loan_response) { { message: ['Loan Placed Successufly'] } }
 
       before do
         allow(IllTransaction).to receive(:new).and_return(ill_transaction)
@@ -108,8 +108,6 @@ RSpec.describe IllController, type: :controller do
 
       context 'when provided needed params' do
         before do
-          allow(place_loan_response).to receive(:status).and_return 200
-
           post :create, params: place_loan_form_params
         end
 
@@ -118,7 +116,7 @@ RSpec.describe IllController, type: :controller do
         end
 
         it 'sets a flash message' do
-          expect(flash[:alert]).to eq I18n.t('myaccount.hold.place_hold.success_html')
+          expect(flash[:alert]).to eq 'Loan Placed Successufly'
         end
       end
 

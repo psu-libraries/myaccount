@@ -53,3 +53,5 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Exclude:
     - 'spec/features/holds_spec.rb'
+    - 'spec/services/illiad_client_spec.rb'
+
