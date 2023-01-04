@@ -11,7 +11,7 @@ class PlaceLoanSuccessComponent < ViewComponent::Base
   end
 
   def not_wanted_after
-    l(Time.new(result&.dig('not_wanted_after')), format: :short)
+    l(Date.parse(result&.dig('not_wanted_after'), '%Y-%m-%d'), format: :long)
   end
 
   def accept_alternate_edition
