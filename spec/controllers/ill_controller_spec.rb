@@ -57,6 +57,22 @@ RSpec.describe IllController, type: :controller do
         end
       end
 
+      context 'when user tries with a non holdable record' do
+        form_params = {}
+
+        it 'sets a flash error message' do
+          get :new, params: { catkey: 1 }
+
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.error_html')
+        end
+
+        it 'redirects to the summaries' do
+          get :new, params: { catkey: 1 }
+
+          expect(response).to redirect_to summaries_path
+        end
+      end
+
       context 'when the site is in maintenance mode' do
         after do
           Settings.maintenance_mode = false
