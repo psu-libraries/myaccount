@@ -6,7 +6,7 @@ class LendingPolicyController < ApplicationController
   def accept
     # even if the patron is not eligible for wage garnishment (already opted in or some other reason),
     # just redirect them to the thank you path to avoid further user confusion
-    redirect_to lending_policy_thank_you_path unless patron.eligible_for_wage_garnishment?
+    return redirect_to lending_policy_thank_you_path unless patron.eligible_for_wage_garnishment?
 
     client = SymphonyClient.new
     response = client.accept_lending_policy(patron: patron, session_token: current_user.session_token)
