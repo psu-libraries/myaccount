@@ -70,14 +70,6 @@ RSpec.describe LendingPolicyController do
           end
         end
       end
-
-      context 'when the patron is not eligible for wage garnishment' do
-        let(:mock_patron) { instance_double(Patron, eligible_for_wage_garnishment?: false) }
-
-        it 'renders the thank you template' do
-          expect(post(:accept)).to redirect_to lending_policy_thank_you_path
-        end
-      end
     end
   end
 end

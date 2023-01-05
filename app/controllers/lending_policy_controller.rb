@@ -14,6 +14,6 @@ class LendingPolicyController < ApplicationController
       redirect_to lending_policy_thank_you_path
     else
       redirect_to lending_policy_error_path
-    end    
+    end
   end
 end
