@@ -59,6 +59,11 @@ RSpec/MultipleMemoizedHelpers:
     - 'spec/controllers/ill_controller_spec.rb'
     - 'spec/services/**/*'
 
+RSpec/NestedGroups:
+  Exclude:
+    - 'spec/features/holds_spec.rb'
+    - 'spec/services/illiad_client_spec.rb'
+
 Rails/I18nLocaleTexts:
   Exclude:
     - 'spec/views/shared/flash_msg.html.erb_spec.rb'

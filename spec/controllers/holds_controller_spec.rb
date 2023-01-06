@@ -44,12 +44,30 @@ RSpec.describe HoldsController do
     describe '#index' do
       before do
         allow(ViewHoldsJob).to receive(:perform_later)
+        allow(ViewIlliadLoansJob).to receive(:perform_later)
+        stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+          .with(
+            headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            }
+          )
+          .to_return(status: 200, body: '[]', headers: {})
       end
 
       it 'sends a job to ViewHoldsJob' do
         get :index
 
         expect(ViewHoldsJob).to have_received(:perform_later)
+      end
+
+      it 'sends a job to ViewIlliadLoansJob' do
+        get :index
+
+        expect(ViewIlliadLoansJob).to have_received(:perform_later)
       end
 
       it 'renders the index template' do

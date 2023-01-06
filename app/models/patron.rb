@@ -46,7 +46,7 @@ class Patron
     'HERSHEY'
   ].freeze
 
-  ILL_ELIGIBLE_PROFILES = [
+  ILL_INELIGIBLE_PROFILES = [
     'ALUMNI',
     'EXTERNALHY',
     'EXTERNDSL',
@@ -139,7 +139,7 @@ class Patron
   end
 
   def ill_ineligible?
-    ILL_ELIGIBLE_PROFILES.include?(profile)
+    ILL_INELIGIBLE_PROFILES.include?(profile)
   end
 
   private
