@@ -1,4 +1,14 @@
+<div class="load-ill-holds" data-username="<%= @username %>">
+  <p class="m-5 text-center">
+    <span class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </span>
+    <%= t('myaccount.loading_html') %>
+  </p>
+</div>
+
 <h1>Holds</h1>
+<p><%= t('myaccount.holds_info_html') %></p>
 
 <div class="load-holds" data-patron-key="<%= @patron_key %>">
   <p class="m-5 text-center">

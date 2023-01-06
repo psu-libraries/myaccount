@@ -5,6 +5,7 @@ import { renderData } from "./submission_handling/polling";
 import selectAll from "./select_all";
 
 const holdsContainer = document.querySelector('.load-holds');
+const illHoldsContainer = document.querySelector('.load-ill-holds');
 
 const showHolds = (data) => {
     holdsContainer.innerHTML = data.html;
@@ -14,7 +15,14 @@ const showHolds = (data) => {
     selectAll.start();
 };
 
+const showIllHolds = (data) => {
+    illHoldsContainer.innerHTML = data.html;
+};
+
 const holds = () => {
+    if (illHoldsContainer) {
+        renderData(`view_ill_holds_${illHoldsContainer.dataset.username}`, showIllHolds);
+    }
     if (holdsContainer) {
         renderData(`view_holds_${holdsContainer.dataset.patronKey}`, showHolds);
     }

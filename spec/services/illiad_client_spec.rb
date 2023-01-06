@@ -125,4 +125,126 @@ RSpec.describe IlliadClient do
       end
     end
   end
+
+  describe '#get_loan_checkouts' do
+    let(:get_loan_checkouts_response) { client.get_loan_checkouts('test123') }
+
+    context 'when getting loan checkouts is successful' do
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "Username":"test123", "RequestType":"Loan",
+           "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title",
+           "LoanPublisher":null, "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"},
+          {"TransactionNumber":123457, "Username":"test123", "RequestType":"Loan",
+            "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title", "LoanPublisher":null,
+            "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"}]'
+      end
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
+                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
+                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
+                            "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
+                            "Status,%20'Renewed%20by')))")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 200, body: return_body)
+      end
+
+      it 'returns an array of loan checkouts' do
+        expect(get_loan_checkouts_response.count).to eq 2
+        expect(get_loan_checkouts_response.first.title).to eq 'The Book Title'
+        expect(get_loan_checkouts_response.first.class).to eq IllLoan
+      end
+    end
+
+    context 'when getting loan checkouts is unsuccessful' do
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
+                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
+                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
+                            "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
+                            "Status,%20'Renewed%20by')))")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 400, body: '{"Message":"400 Error"}')
+      end
+
+      it 'returns an error' do
+        expect { get_loan_checkouts_response }.to raise_error(RuntimeError, '400 Error')
+      end
+    end
+  end
+
+  describe '#get_loan_holds' do
+    let(:get_loan_holds_response) { client.get_loan_holds('test123') }
+
+    context 'when getting loan holds is successful' do
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "Username":"test123", "RequestType":"Loan",
+           "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title",
+           "LoanPublisher":null, "LoanPlace":null, "TransactionStatus":"Awaiting Request Processing"},
+          {"TransactionNumber":123457, "Username":"test123", "RequestType":"Loan",
+           "LoanAuthor":"Author, Test", "LoanTitle":"The Book Title", "LoanPublisher":null,
+           "LoanPlace":null, "TransactionStatus":"Request Sent"}]'
+      end
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/test123" \
+                           "?$filter=(RequestType%20eq%20'Loan')%20and%20(TransactionStatus%20eq%20'A" \
+                           "waiting%20Copyright%20Clearance'%20or%20TransactionStatus%20eq%20'Awaitin" \
+                           "g%20Request%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Req" \
+                           "uest%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Account%20" \
+                           "Validation'%20or%20TransactionStatus%20eq%20'In%20Depth%20Searching'%20or" \
+                           "%20TransactionStatus%20eq%20'Awaiting%20Reshare%20Search'%20or%20Transact" \
+                           "ionStatus%20eq%20'UBorrow%20Find%20Item%20Search'%20or%20TransactionStatu" \
+                           "s%20eq%20'Awaiting%20RAPID%20Request%20Sending'%20or%20TransactionStatus%" \
+                           "20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20TransactionStatus%" \
+                           "20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Transit%20t" \
+                           "o%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%20Notifi" \
+                           "ed%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by%20Cust" \
+                           "omer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Review'%20or" \
+                           "%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%20Transa" \
+                           "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
+                           "20'STAFF')))")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 200, body: return_body)
+      end
+
+      it 'returns an array of loan holds' do
+        expect(get_loan_holds_response.count).to eq 2
+        expect(get_loan_holds_response.first.title).to eq 'The Book Title'
+        expect(get_loan_holds_response.first.class).to eq IllLoan
+      end
+    end
+
+    context 'when getting loan holds is unsuccessful' do
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/test123" \
+                           "?$filter=(RequestType%20eq%20'Loan')%20and%20(TransactionStatus%20eq%20'A" \
+                           "waiting%20Copyright%20Clearance'%20or%20TransactionStatus%20eq%20'Awaitin" \
+                           "g%20Request%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Req" \
+                           "uest%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Account%20" \
+                           "Validation'%20or%20TransactionStatus%20eq%20'In%20Depth%20Searching'%20or" \
+                           "%20TransactionStatus%20eq%20'Awaiting%20Reshare%20Search'%20or%20Transact" \
+                           "ionStatus%20eq%20'UBorrow%20Find%20Item%20Search'%20or%20TransactionStatu" \
+                           "s%20eq%20'Awaiting%20RAPID%20Request%20Sending'%20or%20TransactionStatus%" \
+                           "20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20TransactionStatus%" \
+                           "20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Transit%20t" \
+                           "o%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%20Notifi" \
+                           "ed%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by%20Cust" \
+                           "omer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Review'%20or" \
+                           "%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%20Transa" \
+                           "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
+                           "20'STAFF')))")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 400, body: '{"Message":"400 Error"}')
+      end
+
+      it 'returns an error' do
+        expect { get_loan_holds_response }.to raise_error(RuntimeError, '400 Error')
+      end
+    end
+  end
 end

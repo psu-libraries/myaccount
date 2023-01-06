@@ -43,7 +43,62 @@ class IlliadClient
     response
   end
 
+  def get_loan_checkouts(webaccess_id)
+    ill_get_request(webaccess_id, checkouts_query)
+  end
+
+  def get_loan_holds(webaccess_id)
+    ill_get_request(webaccess_id, holds_query)
+  end
+
   private
+
+    def ill_get_request(webaccess_id, query)
+      ill_response = request("/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + query)
+      if ill_response.status == 200
+        JSON.parse(ill_response).map { |record| IllLoan.new(record) }
+      else
+        raise JSON.parse(ill_response)['Message']
+      end
+    end
+
+    def checkouts_query
+      CGI.escape("(RequestType eq 'Loan') and " \
+                 "((TransactionStatus eq 'Checked Out to Customer') or " \
+                 "(TransactionStatus eq 'LST TESTING') or " \
+                 "(startswith( TransactionStatus, 'Renewed by')))")
+    end
+
+    def holds_query
+      query_str = +"(RequestType eq 'Loan') and ("
+      holds_statuses.each_with_index do |status, i|
+        query_str << ' or ' unless i.zero?
+        query_str << "TransactionStatus eq '#{status}'"
+      end
+      query_str << "or (startswith( TransactionStatus, 'STAFF')))"
+      CGI.escape(query_str)
+    end
+
+    def holds_statuses
+      [
+        'Awaiting Copyright Clearance',
+        'Awaiting Request Processing',
+        'Awaiting Request Processing',
+        'Awaiting Account Validation',
+        'In Depth Searching',
+        'Awaiting Reshare Search',
+        'UBorrow Find Item Search',
+        'Awaiting RAPID Request Sending',
+        'Awaiting Post Receipt Processing',
+        'Request Sent',
+        'In Transit to Pickup Location',
+        'Customer Notified via E-mail',
+        'Cancelled by Customer',
+        'Duplicate Request Review',
+        'Request Available Locally',
+        'LST TESTING'
+      ]
+    end
 
     def request(path, method: :get, **other)
       HTTP.headers(headers).request(method, base_url + path, **other)

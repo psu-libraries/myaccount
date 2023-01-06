@@ -1,0 +1,33 @@
+<% if illiad_loans.present? %>
+  <table class="table table-responsive-sm">
+    <div class='row pl-3 pt-2 pb-3'>
+      <h1>Interlibrary Loan Requests</h1>
+      <p class='pl-2 pt-2'>
+        (<a href='https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll?Action=10&Form=10'>
+          Manage your Interlibrary Loan Requests
+        </a>)
+      </p>
+    </div>
+    <thead>
+
+    <tr>
+      <th scope="col">Item</th>
+      <th scope="col">Author</th>
+      <th scope="col">Creation Date</th>
+      <th scope="col">Status</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% illiad_loans.each_with_index do |hold, i| %>
+      <tr id="hold-<%= i %>">
+        <td id="title-<%= i %>"><span><%= hold.title %></span></td>
+        <td id="author-<%= i %>"><span><%= hold.author %></span></td>
+        <td id="creation-date-<%= i %>"><span><%= render_hold_date hold, date_field: 'creation_date' %></span></td>
+        <td id="status-<%= i %>"><span><%= hold.status %></span></td>
+      </tr>
+    <% end %>
+    </tbody>
+
+  </table>
+<% end %>
