@@ -15,14 +15,14 @@ RSpec.describe PlaceHoldErrorComponent, type: :component do
 
   it 'renders when there is a failed hold' do
     result = { failed_hold: bib, error_message: error_message }.with_indifferent_access
-    component = render_inline(described_class.new(result: result)).to_html
+    component = render_inline(described_class.new(bib: bib, result: result)).to_html
     expect(component).to include('Some Title / Somebody', 'a_call_number', 'Book',
                                  'User already has a hold on this material')
   end
 
   it 'does not render when there is not an failed hold' do
     result = { failed_hold: bib, error_message: nil }.with_indifferent_access
-    component = render_inline(described_class.new(result: result)).to_html
+    component = render_inline(described_class.new(bib: bib, result: result)).to_html
     expect(component).to be_empty
   end
 end

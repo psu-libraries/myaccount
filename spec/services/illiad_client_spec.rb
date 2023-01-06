@@ -21,9 +21,13 @@ RSpec.describe IlliadClient do
       {
         catkey: '1',
         pickup_by_date: '2022-12-02',
-        accept_alternate_edition: true
-      }
+        accept_alternate_edition: true,
+        barcodes: params_barcodes
+      }.with_indifferent_access
     end
+
+    let(:params_barcodes) { '' }
+    let(:request_barcodes) { '' }
 
     let(:request_body) do
       {
@@ -40,7 +44,7 @@ RSpec.describe IlliadClient do
         'NotWantedAfter': '2022-12-02',
         'AcceptAlternateEdition': true,
         'ItemInfo1': false,
-        'ItemInfo2': ''
+        'ItemInfo2': request_barcodes
       }
     end
 
@@ -73,6 +77,10 @@ RSpec.describe IlliadClient do
                 headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
           .to_return(status: 201)
       end
+
+      it 'adds a note' do
+        expect(place_loan_response_with_note.status).to eq 200
+      end
     end
 
     context 'when place hold is successful' do
@@ -84,7 +92,7 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns status success' do
-        expect(place_loan_response.status).to eq(200)
+        expect(place_loan_response.status).to eq 200
       end
     end
 
@@ -97,7 +105,23 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns an error' do
-        expect(place_loan_response.status).to eq (400)
+        expect(place_loan_response.status).to eq 400
+      end
+    end
+
+    context 'when loan item has volumetrics' do
+      let(:params_barcodes) { ['barcode1', 'barcode2'] }
+      let(:request_barcodes) { 'barcode1, barcode2' }
+
+      before do
+        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+          .with(body: request_body,
+                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .to_return(status: 200)
+      end
+
+      it 'returns status success' do
+        expect(place_loan_response.status).to eq 200
       end
     end
   end

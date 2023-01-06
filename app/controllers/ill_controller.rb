@@ -38,10 +38,7 @@ class IllController < ApplicationController
     bib = {
       catkey: params[:catkey],
       title: bib_info.title,
-      # type_human: bib_info.item_type_human,
-      # type_code: bib_info.item_type_code,
       author: bib_info.author,
-      # call_number: bib_info.call_number,
       shadowed: bib_info.shadowed?
     }
 
@@ -52,7 +49,7 @@ class IllController < ApplicationController
     if response.status == 200
       place_loan_result[:success] = {
         bib: bib,
-        ISSN: transaction_info.isbn,
+        issn: transaction_info.isbn,
         not_wanted_after: params[:pickup_by_date],
         accept_alternate_edition: params[:accept_alternate_edition],
         accept_ebook: params[:accept_ebook]
@@ -73,7 +70,9 @@ class IllController < ApplicationController
   #
   # GET /ill/result
   def result
-    @place_loan_result = read_from_redis['result'].with_indifferent_access
+    @place_loan_result = read_from_redis.fetch('result', {}).with_indifferent_access
+    redirect_to '/not_found' if @place_loan_result.nil?
+
     @bib = OpenStruct.new(@place_loan_result.dig('success', 'bib') || @place_loan_result.dig('error', 'bib'))
 
     if request.referer && URI(request.referer).path == '/ill/new'
@@ -96,13 +95,16 @@ class IllController < ApplicationController
 
     def write_to_redis(result)
       Redis.current.set("place_loan_results_#{patron.key}", {
-        id: @patron.barcode.to_s,
+        id: patron.barcode.to_s,
         result: result
       }.to_json)
     end
 
     def read_from_redis
-      JSON.parse(Redis.current.get("place_loan_results_#{patron.key}"))
+      result = Redis.current.get("place_loan_results_#{patron.key}")
+      return {} if result.nil?
+
+      JSON.parse(result)
     end
 
     def check_for_blanks!
