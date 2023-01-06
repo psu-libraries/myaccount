@@ -50,7 +50,7 @@ class IlliadClient
   def get_loan_holds(webaccess_id)
     ill_get_request(webaccess_id, holds_query)
   end
-  
+
   private
 
     def ill_get_request(webaccess_id, query)

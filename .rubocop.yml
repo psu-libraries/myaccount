@@ -49,6 +49,7 @@ Lint/MissingSuper:
 RSpec/MultipleMemoizedHelpers:
   Exclude:
     - 'spec/controllers/ill_controller_spec.rb'
+    - 'spec/services/illiad_client_spec.rb'
 
 RSpec/NestedGroups:
   Exclude:
