@@ -110,12 +110,10 @@ GEM
       rexml
     crass (1.0.6)
     date (3.3.3)
-    ddtrace (1.8.0)
-      debase-ruby_core_source (>= 0.10.16, <= 0.10.18)
-      libdatadog (~> 0.9.0.1.0)
-      libddwaf (~> 1.5.1.0.0)
+    ddtrace (0.54.2)
+      debase-ruby_core_source (<= 0.10.14)
       msgpack
-    debase-ruby_core_source (0.10.18)
+    debase-ruby_core_source (0.10.14)
     debug_inspector (1.1.0)
     deep_merge (1.2.2)
     descendants_tracker (0.0.4)
@@ -195,9 +193,6 @@ GEM
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     json (2.6.3)
-    libdatadog (0.9.0.1.0)
-    libddwaf (1.5.1.0.0)
-      ffi (~> 1.0)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -440,7 +435,7 @@ DEPENDENCIES
   byebug
   capybara
   config (~> 2.0)
-  ddtrace
+  ddtrace (~> 0.45)
   factory_bot_rails
   hiredis
   http (~> 4.0)

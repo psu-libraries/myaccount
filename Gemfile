@@ -52,5 +52,5 @@ group :development, :test do
 end
 
 group :production do
-  gem 'ddtrace'
+  gem 'ddtrace', '~> 0.45'
 end
