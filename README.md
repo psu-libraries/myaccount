@@ -11,8 +11,8 @@
 
 | Software |  Version |
 |----------|------|
-| `ruby`    |  2.7.6 |
-| `rails`   |  6.0.3 |
+| `ruby`    |  3.1.3 |
+| `rails`   |  6.1.7 |
 | `redis`   | 5.0.7 |
 
 # Development Setup
