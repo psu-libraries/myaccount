@@ -27,10 +27,10 @@ if Settings&.datadog&.enabled
   Datadog.configure do |c|
     c.service = 'myaccount'
     c.env = Settings.datadog.environment
-    c.use :rails
-    c.use :httprb, service_name: 'myaccount-httprb'
-    c.use :sidekiq, service_name: 'myaccount-sidekiq'
-    c.use :redis, service_name: 'myaccount-redis'
+    c.tracing.instrument :rails
+    c.tracing.instrument :httprb, service_name: 'myaccount-httprb'
+    c.tracing.instrument :sidekiq, service_name: 'myaccount-sidekiq'
+    c.tracing.instrument :redis, service_name: 'myaccount-redis'
   end
 
   # Monkey patching Datadog
