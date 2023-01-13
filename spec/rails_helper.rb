@@ -38,7 +38,7 @@ require 'view_component/test_helpers'
 require 'axe/rspec'
 
 ## Below picks up our mock objects as well as factory_bot config
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(
@@ -73,7 +73,7 @@ WebMock.disable_net_connect!(
 # end
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = Rails.root.join '/spec/fixtures'
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -110,7 +110,7 @@ RSpec.configure do |config|
   config.include Capybara::RSpecMatchers, type: :component
 end
 
-Capybara.register_driver :chrome_headless do |app|\
+Capybara.register_driver :chrome_headless do |app| \
   Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,

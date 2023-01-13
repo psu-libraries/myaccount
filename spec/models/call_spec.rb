@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Call, type: :model do
+RSpec.describe Call do
   subject(:call) { build(:call) }
 
   it 'has a item list' do

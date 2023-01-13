@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'holds/_form_inputs.html.erb', type: :view do
+RSpec.describe 'holds/_form_inputs.html.erb' do
   let(:bib) { build(:bib_with_holdables) }
   let(:page) { Capybara.string(rendered) }
 

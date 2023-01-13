@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ChangePickupByDateJob, type: :job do
+RSpec.describe ChangePickupByDateJob do
   describe '#perform_later' do
     let(:ws_args) { { hold_key: 1, session_token: '1s2fa21465', pickup_by_date: '20201212' } }
 

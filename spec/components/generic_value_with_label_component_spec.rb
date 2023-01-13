@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe GenericValueWithLabelComponent, type: :component do
   let(:value) { 'Eleventy Billion' }
   let(:label) { 'Number of Insects' }
-  let(:rendered_component) { render_inline(described_class.new(label: label, value: value)) }
+  let(:rendered_component) { render_inline(described_class.new(label:, value:)) }
 
   context 'when given an arbitrary simple field and value' do
     it 'produces a label to go along with the value' do

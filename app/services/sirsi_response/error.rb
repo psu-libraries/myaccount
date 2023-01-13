@@ -4,16 +4,16 @@ class SirsiResponse::Error
   attr_reader :html, :log
 
   SIRSI_RESPONSE_TRANSLATIONS = {
-    "hatErrorResponse.141": 'Denied: Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.7703": 'Denied: Renewal limit reached, cannot be renewed.',
-    "hatErrorResponse.105": 'Denied: Item has been recalled, cannot be renewed.',
-    "hatErrorResponse.252": 'Denied: Item has holds, cannot be renewed.',
-    "hatErrorResponse.46": 'Denied: Item on reserve, cannot be renewed.',
-    "hatErrorResponse.238": ActionController::Base.helpers.sanitize(
-      'This item cannot be automatically renewed. Please contact '\
+    'hatErrorResponse.141': 'Denied: Renewal limit reached, cannot be renewed.',
+    'hatErrorResponse.7703': 'Denied: Renewal limit reached, cannot be renewed.',
+    'hatErrorResponse.105': 'Denied: Item has been recalled, cannot be renewed.',
+    'hatErrorResponse.252': 'Denied: Item has holds, cannot be renewed.',
+    'hatErrorResponse.46': 'Denied: Item on reserve, cannot be renewed.',
+    'hatErrorResponse.238': ActionController::Base.helpers.sanitize(
+      'This item cannot be automatically renewed. Please contact ' \
       "#{ApplicationController.helpers.mail_to 'ul-lending@lists.psu.edu'} for assistance in renewing the item."
     ),
-    "unhandledException": 'Denied: Item cannot be renewed.'
+    unhandledException: 'Denied: Item cannot be renewed.'
   }.with_indifferent_access
 
   def initialize(error_message_raw:, symphony_client:, key:, session_token:, bib_type:)
@@ -28,7 +28,7 @@ class SirsiResponse::Error
                                        layout: false,
                                        locals: { id: key,
                                                  title: bib_record.title,
-                                                 display_error: display_error }
+                                                 display_error: }
   end
 
   private
@@ -43,9 +43,11 @@ class SirsiResponse::Error
       if bib_type == :checkout
         return SymphonyClientParser::parsed_response(symphony_client,
                                                      :get_item_info,
-                                                     session_token: session_token, key: key)
+                                                     session_token:, key:)
       end
 
-      SymphonyClientParser::parsed_response(symphony_client, :get_hold_info, key, session_token)
+      SymphonyClientParser::parsed_response(symphony_client,
+                                            :get_hold_info,
+                                            hold_key: key, session_token:)
     end
 end

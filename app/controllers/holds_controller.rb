@@ -25,7 +25,7 @@ class HoldsController < ApplicationController
   # PUT /holds
   def batch_update
     params['hold_list']&.each do |hold_key|
-      ws_args = { hold_key: hold_key, session_token: current_user.session_token }
+      ws_args = { hold_key:, session_token: current_user.session_token }
 
       if params[:pickup_library].present?
         ChangePickupLibraryJob.perform_later **ws_args, pickup_library: params[:pickup_library]
@@ -58,7 +58,7 @@ class HoldsController < ApplicationController
   #
   # POST /holds
   def create
-    PlaceHoldsJob.perform_later barcodes: barcodes,
+    PlaceHoldsJob.perform_later barcodes:,
                                 session_token: current_user.session_token,
                                 patron_key: current_user.patron_key,
                                 catkey: params['catkey'],
@@ -84,7 +84,7 @@ class HoldsController < ApplicationController
   # DELETE /holds
   def batch_destroy
     params['hold_list']&.each do |hold_key|
-      ws_args = { hold_key: hold_key, session_token: current_user.session_token }
+      ws_args = { hold_key:, session_token: current_user.session_token }
 
       CancelHoldJob.perform_later(**ws_args)
     end

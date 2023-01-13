@@ -5,9 +5,9 @@ class ChangePickupLibraryJob < ApplicationJob
 
   def perform(hold_key:, session_token:, pickup_library:)
     response = symphony_client.change_pickup_library(
-      hold_key: hold_key,
-      pickup_library: pickup_library,
-      session_token: session_token
+      hold_key:,
+      pickup_library:,
+      session_token:
     )
 
     case response.status
@@ -25,9 +25,9 @@ class ChangePickupLibraryJob < ApplicationJob
       }.to_json)
     else
       processed_error = SirsiResponse::Error.new(error_message_raw: response,
-                                                 symphony_client: symphony_client,
+                                                 symphony_client:,
                                                  key: hold_key,
-                                                 session_token: session_token,
+                                                 session_token:,
                                                  bib_type: :hold)
 
       Sidekiq.logger.error("pickup_library_#{hold_key}: #{processed_error.log}")

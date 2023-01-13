@@ -11,13 +11,15 @@ class PlaceHoldForm::Builder
   end
 
   def generate
-    bib_info = Bib.new(SymphonyClientParser::parsed_response(@client, :get_bib_info, catkey, @user_token))
+    bib_info = Bib.new(SymphonyClientParser::parsed_response(@client,
+                                                             :get_bib_info,
+                                                             catkey:, session_token: @user_token))
     return {} unless holdables_present?(bib_info)
 
     process_volumetric_calls
 
     {
-      catkey: catkey,
+      catkey:,
       title: bib_info.title,
       author: bib_info.author,
       volumetric_calls: @volumetric_calls,

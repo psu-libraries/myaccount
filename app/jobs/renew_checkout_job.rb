@@ -4,9 +4,9 @@ class RenewCheckoutJob < ApplicationJob
   queue_as :default
 
   def perform(resource:, item_key:, session_token:)
-    response = symphony_client.renew resource: resource,
-                                     item_key: item_key,
-                                     session_token: session_token
+    response = symphony_client.renew(resource:,
+                                     item_key:,
+                                     session_token:)
 
     case response.status
     when 200
@@ -14,7 +14,7 @@ class RenewCheckoutJob < ApplicationJob
 
       due_date = ApplicationController.renderer.render(
         partial: 'checkouts/due_date',
-        locals: { checkout: checkout }
+        locals: { checkout: }
       )
 
       Redis.current.set("renewal_#{item_key}", {
@@ -22,16 +22,16 @@ class RenewCheckoutJob < ApplicationJob
         result: :success,
         response: {
           renewal_count: checkout.renewal_count,
-          due_date: due_date,
+          due_date:,
           status: checkout.status_human,
           badge: badge(message: 'Successfully renewed')
         }
       }.to_json)
     else
       processed_error = SirsiResponse::Error.new(error_message_raw: response,
-                                                 symphony_client: symphony_client,
+                                                 symphony_client:,
                                                  key: item_key,
-                                                 session_token: session_token,
+                                                 session_token:,
                                                  bib_type: :checkout)
 
       Sidekiq.logger.error("renewal_#{item_key}: #{processed_error.log}")

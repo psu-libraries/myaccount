@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe PlaceHoldResults::Builder, type: :service do
   subject(:builder) { described_class.new(user_token: 'a-cool-token',
                                           client: real_client,
-                                          place_hold_results: place_hold_results) }
+                                          place_hold_results:) }
 
   let(:place_hold_results) { {
     success: [{ barcode: 'holdable_barcode', hold_key: '3912325' }],

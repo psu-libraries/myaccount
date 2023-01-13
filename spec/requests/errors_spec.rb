@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Errors', type: :request do
+RSpec.describe 'Errors' do
   context 'with unauthenticated user' do
     it 'goes to the application root' do
       get '/bad_route'

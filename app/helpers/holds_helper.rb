@@ -33,10 +33,10 @@ module HoldsHelper
     if selected.blank? || !pickup_libraries.value?(selected.to_sym)
       selected = ''
       default_choice = t('myaccount.hold.update_pickup.pickup_choose_text')
-      pickup_libraries = Hash[default_choice, ''].merge(Hold::PICKUP_LOCATION_REQUESTED)
+      pickup_libraries = { default_choice => '' }.merge(Hold::PICKUP_LOCATION_REQUESTED)
     end
 
-    options_for_select(pickup_libraries, disabled: '', selected: selected)
+    options_for_select(pickup_libraries, disabled: '', selected:)
   end
 
   def default_pickup_by_date(make_default: false)

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'checkouts/index.html.erb', type: :view do
+RSpec.describe 'checkouts/index.html.erb' do
   let(:checkout) { build(:checkout) }
 
   before do

@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldForm::Builder do
-  subject(:builder) { described_class.new(catkey: catkey, user_token: 'fake-token', client: client, library: 'UP-PAT') }
+  subject(:builder) { described_class.new(catkey:, user_token: 'fake-token', client:, library: 'UP-PAT') }
 
   let(:catkey) { '1' }
+  let(:bib_info_params) { { catkey:, session_token: 'fake-token' } }
   let(:client) { instance_double(SymphonyClient) }
   let(:bib_info) { build(:bib_with_holdables) }
   let(:get_bib_info_response) { instance_double(HTTP::Response) }
@@ -13,7 +14,7 @@ RSpec.describe PlaceHoldForm::Builder do
 
   before do
     allow(Bib).to receive(:new).and_return(bib_info)
-    allow(client).to receive(:get_bib_info).with(catkey, 'fake-token').and_return(get_bib_info_response)
+    allow(client).to receive(:get_bib_info).with(bib_info_params).and_return(get_bib_info_response)
     allow(get_bib_info_response).to receive(:body).and_return ''.to_json
 
     allow(client).to receive(:get_all_locations).and_return(get_all_locations_response)
@@ -35,10 +36,7 @@ RSpec.describe PlaceHoldForm::Builder do
 
     context 'when catkey has a prefix "a"' do
       let(:catkey) { 'a1' }
-
-      before do
-        allow(client).to receive(:get_bib_info).with('1', 'fake-token').and_return(get_bib_info_response)
-      end
+      let(:bib_info_params) { { catkey: '1', session_token: 'fake-token' } }
 
       it 'will pass along the catkey after deleting the prefix' do
         expect(builder.generate[:catkey]).to eq '1'
@@ -103,7 +101,7 @@ RSpec.describe PlaceHoldForm::Builder do
         end
       end
 
-      context 'when multiple volumetric calls of the same call number are mixed in but there is only one unique call '\
+      context 'when multiple volumetric calls of the same call number are mixed in but there is only one unique call ' \
               'number' do
         let(:bib_info) { build(:bib_with_dupe_call_number_volumetrics_one_unique) }
 

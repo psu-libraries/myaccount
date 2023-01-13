@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'holds/result.html.erb', type: :view do
+RSpec.describe 'holds/result.html.erb' do
   let(:mock_patron) { instance_double(Patron) }
 
   before do
@@ -17,7 +17,9 @@ RSpec.describe 'holds/result.html.erb', type: :view do
         helper_method :patron
     end
 
-    allow(view).to receive(:patron).and_return(mock_patron)
+    without_partial_double_verification {
+      allow(view).to receive(:patron).and_return(mock_patron)
+    }
   end
 
   it 'shows the patron\'s name' do

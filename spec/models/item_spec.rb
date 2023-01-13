@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Item, type: :model do
+RSpec.describe Item do
   subject(:item) { build(:item) }
 
   let(:redis_instance) { instance_double(Redis) }

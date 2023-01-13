@@ -6,21 +6,21 @@ class ViewCheckoutsJob < ApplicationJob
   queue_as :default
 
   def perform(patron_key:, session_token:)
-    response = symphony_client.patron_info(patron_key: patron_key,
-                                           session_token: session_token,
+    response = symphony_client.patron_info(patron_key:,
+                                           session_token:,
                                            item_details: { circRecordList: true })
     patron = Patron.new(response)
 
-    return process_failure(error_message: response, patron_key: patron_key) if patron.key.blank?
+    return process_failure(error_message: response, patron_key:) if patron.key.blank?
 
     checkouts = patron.checkouts.sort_by(&:due_date)
 
-    html = CheckoutsController.render template: 'checkouts/all', layout: false, locals: { checkouts: checkouts }
+    html = CheckoutsController.render template: 'checkouts/all', layout: false, locals: { checkouts: }
 
     if response.present?
       Redis.current.set("view_checkouts_#{patron_key}", {
         result: :success,
-        html: html
+        html:
       }.to_json)
       nil
     end

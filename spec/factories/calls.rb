@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :call do
-    initialize_with { new(record: record) }
+    initialize_with { new(record:) }
 
     record {
       { 'resource' => '/catalog/call',

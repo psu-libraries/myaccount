@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe HoldsController, type: :controller do
+RSpec.describe HoldsController do
   let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
   let(:holds) do
     [

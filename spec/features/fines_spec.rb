@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Fines', type: :feature do
+RSpec.describe 'Fines' do
   # patron1 below has 1 hold ready for pick and 4 holds not yet ready for pickup
   let(:mock_user) { 'patron1' }
 

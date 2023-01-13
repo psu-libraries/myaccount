@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'fines/index.html.erb', type: :view do
+RSpec.describe 'fines/index.html.erb' do
   context 'when there are no fines' do
     it 'displays the "no fines" text' do
       render

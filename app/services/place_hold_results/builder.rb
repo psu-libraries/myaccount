@@ -21,10 +21,10 @@ class PlaceHoldResults::Builder
   private
 
     def hold_lookup(hold_key)
-      SirsiResponse.new(@client.get_hold_info(hold_key, @user_token)).hold
+      SirsiResponse.new(@client.get_hold_info(session_token: @user_token, hold_key:)).hold
     end
 
     def item_lookup(barcode)
-      SirsiResponse.new(@client.get_item_info(session_token: @user_token, barcode: barcode)).item
+      SirsiResponse.new(@client.get_item_info(session_token: @user_token, barcode:)).item
     end
 end
