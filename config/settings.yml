@@ -1,14 +1,14 @@
 maintenance_mode: false
 # Maintenance until text for date/time
 maintenance_until:
-show_announcement: false
+show_announcement: true
 remote_user_header: <%= ENV.fetch("REMOTE_USER_HEADER") { "HTTP_REMOTE_USER"} %>
 # list of users that can masquerade as other users
 admin_users: []
-announcement:
-  icon:
-  message:
-  html_class:
+announcement: 
+  icon: fa-exclamation-circle
+  message: 'Planned maintenance: My Account will be unavailable between 6 and 7am on Thursday February 23, 2023'
+  html_class: bg-warning
 symws:
   webaccess_url:
   url: <%= ENV.fetch("SYMWS_URL") { nil } %>
