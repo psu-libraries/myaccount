@@ -1,4 +1,4 @@
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20230103 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20230306 as base
 ARG UID=2000
 WORKDIR /app
 RUN useradd -u $UID app -d /app
