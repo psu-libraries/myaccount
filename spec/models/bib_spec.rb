@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Bib, type: :model do
+RSpec.describe Bib do
   let(:bib_with_holdables) { build(:bib_with_holdables) }
 
   it 'has an author' do

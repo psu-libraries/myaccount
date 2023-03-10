@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe RedisJobsController, type: :controller do
+RSpec.describe RedisJobsController do
   before do
-    Redis.current.set 3911148, "hold_id": '3911148',
-                               "result": 'success',
-                               "new_value": 'Brandywine',
-                               "new_value_id": 'BRANDYWINE'
+    Redis.current.set 3911148, { hold_id: '3911148',
+                                 result: 'success',
+                                 new_value: 'Brandywine',
+                                 new_value_id: 'BRANDYWINE' }
   end
 
   after do

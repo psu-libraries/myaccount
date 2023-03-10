@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'summaries/index', type: :view do
+RSpec.describe 'summaries/index' do
   let(:fines) { [build(:fine)] }
   let(:patron_standing) { {} }
   let(:eligible_for_wage_garnishment) { false }
@@ -12,7 +12,7 @@ RSpec.describe 'summaries/index', type: :view do
       display_name: 'Test First Last',
       checkouts: [],
       holds: [],
-      fines: fines,
+      fines:,
       eligible_for_wage_garnishment?: eligible_for_wage_garnishment,
       **patron_standing
     )
@@ -29,8 +29,10 @@ RSpec.describe 'summaries/index', type: :view do
         helper_method :patron, :current_user?
     end
 
-    allow(view).to receive(:patron).and_return(patron)
-    allow(view).to receive(:current_user?).and_return(true)
+    without_partial_double_verification {
+      allow(view).to receive(:patron).and_return(patron)
+      allow(view).to receive(:current_user?).and_return(true)
+    }
   end
 
   context 'when the patron standing is OK' do

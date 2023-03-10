@@ -34,7 +34,7 @@ class PlaceHoldsJob < ApplicationJob
     end
 
     def fetch_patron(patron_key)
-      patron_response = symphony_client.patron_info patron_key: patron_key,
+      patron_response = symphony_client.patron_info patron_key:,
                                                     session_token: @session_token
       Patron.new patron_response
     end
@@ -46,11 +46,11 @@ class PlaceHoldsJob < ApplicationJob
         sirsi_response = SirsiResponse.new response
 
         if response.status == 200
-          status[:success] << { barcode: barcode,
+          status[:success] << { barcode:,
                                 hold_key: sirsi_response.hold.key }
         else
           Sidekiq.logger.error("place_holds_results_#{@patron_key} #{barcode}: #{sirsi_response.response_raw}")
-          status[:error] << { barcode: barcode,
+          status[:error] << { barcode:,
                               result: :failure,
                               error_message: sirsi_response.messages.first[:message] }
         end

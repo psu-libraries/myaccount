@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Checkout, type: :model do
+RSpec.describe Checkout do
   subject(:checkout) { build(:checkout) }
 
   it 'has a key' do

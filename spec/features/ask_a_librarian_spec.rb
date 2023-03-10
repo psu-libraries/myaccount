@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Ask a librarian', type: :feature do
+RSpec.describe 'Ask a librarian' do
   let(:mock_user) { 'patron2' }
 
   before do

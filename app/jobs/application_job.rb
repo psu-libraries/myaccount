@@ -16,7 +16,7 @@ class ApplicationJob < ActiveJob::Base
     def badge(message:, badge_class: 'success')
       ApplicationController.renderer.render(
         partial: 'shared/badge',
-        locals: { message: message, badge_class: badge_class }
+        locals: { message:, badge_class: }
       )
     end
 end

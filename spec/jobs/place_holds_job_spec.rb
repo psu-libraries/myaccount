@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PlaceHoldsJob, type: :job do
+RSpec.describe PlaceHoldsJob do
   let(:ws_args) { {
     patron_key: 'patron1',
     barcodes: ['1'],

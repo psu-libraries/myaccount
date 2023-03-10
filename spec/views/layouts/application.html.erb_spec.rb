@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'layouts/application', type: :view do
+RSpec.describe 'layouts/application' do
   before do
     without_partial_double_verification do
       allow(view).to receive(:patron).and_return(mock_patron)

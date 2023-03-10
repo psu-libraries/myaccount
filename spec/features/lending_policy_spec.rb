@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Lending Policy', type: :feature do
+RSpec.describe 'Lending Policy' do
   let(:mock_user) { 'patron1' }
 
   before do

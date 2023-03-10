@@ -18,7 +18,7 @@ class SymphonyClient
   def login(user_id, password)
     response = request('/user/staff/login', method: :post, json: {
                          login: user_id,
-                         password: password
+                         password:
                        })
     resp = JSON.parse(response.body)
     session_token = resp['sessionToken']
@@ -85,7 +85,7 @@ class SymphonyClient
                           headers: { 'x-sirs-sessionToken': session_token },
                           method: :post, json: {
                             item: {
-                              resource: resource,
+                              resource:,
                               key: item_key
                             }
                           }, params: {
@@ -106,15 +106,15 @@ class SymphonyClient
 
   def place_hold(patron, session_token, item_barcode, hold_args)
     body = {
-      'itemBarcode': item_barcode,
-      'patronBarcode': patron.barcode,
-      'pickupLibrary': {
-        'resource': '/policy/library',
-        'key': hold_args[:pickup_library]
+      itemBarcode: item_barcode,
+      patronBarcode: patron.barcode,
+      pickupLibrary: {
+        resource: '/policy/library',
+        key: hold_args[:pickup_library]
       },
-      'holdType': 'TITLE',
-      'holdRange': 'SYSTEM',
-      'fillByDate': hold_args[:pickup_by_date]
+      holdType: 'TITLE',
+      holdRange: 'SYSTEM',
+      fillByDate: hold_args[:pickup_by_date]
     }.compact
 
     authenticated_request '/circulation/holdRecord/placeHold',
@@ -137,14 +137,14 @@ class SymphonyClient
       .map! { |k| k['fields']['data'] = new_garnish_date }
 
     body = {
-      "resource": '/user/patron',
-      "key": patron.key,
-      "fields": {
-        "standing": {
-          "resource": '/policy/patronStanding',
-          "key": 'OK'
+      resource: '/user/patron',
+      key: patron.key,
+      fields: {
+        standing: {
+          resource: '/policy/patronStanding',
+          key: 'OK'
         },
-        "customInformation": custom_information
+        customInformation: custom_information
       }
     }
 
@@ -157,7 +157,7 @@ class SymphonyClient
                           json: body
   end
 
-  def get_hold_info(hold_key, session_token)
+  def get_hold_info(hold_key:, session_token:)
     response_raw = hold_request hold_key, session_token
 
     start = DateTime.now
@@ -192,7 +192,7 @@ class SymphonyClient
     JSON.parse(response.body)
   end
 
-  def get_bib_info(catkey, session_token)
+  def get_bib_info(catkey:, session_token:)
     authenticated_request "/catalog/bib/key/#{catkey}",
                           headers: { 'x-sirs-sessionToken': session_token },
                           params: {
@@ -301,12 +301,12 @@ class SymphonyClient
     end
 
     def authenticated_request(path, headers: {}, **other)
-      response = request(path, headers: headers, **other)
+      response = request(path, headers:, **other)
       start = DateTime.now
 
       while records_in_use?(response) && time_left_to_request_again?(start)
         sleep DELAY
-        response = request(path, headers: headers, **other)
+        response = request(path, headers:, **other)
       end
 
       response

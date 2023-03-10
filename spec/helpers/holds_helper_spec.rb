@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe HoldsHelper, type: :helper do
+RSpec.describe HoldsHelper do
   let(:hold) do
     instance_double(
       Hold,
@@ -125,7 +125,7 @@ RSpec.describe HoldsHelper, type: :helper do
       # Instantiate two instances of DateTime before it is doubled.
       arbitrary_datetime
       arbitrary_datetime_plus
-      date_time = class_double('DateTime')
+      date_time = class_double(DateTime)
         .as_stubbed_const(transfer_nested_constants: true)
       allow(date_time).to receive(:now).and_return arbitrary_datetime
       allow(date_time).to receive(:civil).with(2001, 2, 17, 0, 0, (0 / 1), (0 / 1), 2299161.0)
@@ -155,18 +155,20 @@ RSpec.describe HoldsHelper, type: :helper do
 
   describe '#render_pickup_library' do
     it 'returns an html select list with the patron\s default library selected' do
-      expect(helper.render_pickup_libraries('UP-PAT')).to include '<option selected="selected" value="UP-PAT">'\
-                                            'Pattee and Paterno Library - Commons Services Desk</option>'
+      expect(helper.render_pickup_libraries('UP-PAT')).to include '<option selected="selected" value="UP-PAT">' \
+                                                                  'Pattee and Paterno Library - Commons Services Desk' \
+                                                                  '</option>'
     end
 
     it 'returns an html select list with a blank option as selected when selected is not a pickup location' do
-      expect(helper.render_pickup_libraries('not-a-pickup-location')).to include '<option selected="selected" '\
-                                            'disabled="disabled" value="">Please choose a pickup location</option>'
+      expect(helper.render_pickup_libraries('not-a-pickup-loc')).to include '<option selected="selected" ' \
+                                                                            'disabled="disabled" value="">' \
+                                                                            'Please choose a pickup location</option>'
     end
 
     it 'returns an html select list with a blank option as selected when selected is empty' do
-      expect(helper.render_pickup_libraries('')).to include '<option selected="selected" '\
-                                            'disabled="disabled" value="">Please choose a pickup location</option>'
+      expect(helper.render_pickup_libraries('')).to include '<option selected="selected" disabled="disabled" ' \
+                                                            'value="">Please choose a pickup location</option>'
     end
   end
 end

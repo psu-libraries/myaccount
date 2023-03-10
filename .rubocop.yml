@@ -6,7 +6,7 @@ inherit_from:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 2.7.6
+  TargetRubyVersion: 3.1.3
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
@@ -48,7 +48,27 @@ RSpec/VerifiedDoubles:
 
 RSpec/NestedGroups:
   Exclude:
-    - 'spec/controllers/lending_policy_controller_spec.rb'    
+    - 'spec/controllers/lending_policy_controller_spec.rb'
+
 Lint/MissingSuper:
   Exclude:
     - 'app/components/**/*'
+
+RSpec/MultipleMemoizedHelpers:
+  Exclude:
+    - 'spec/services/**/*'
+
+Rails/I18nLocaleTexts:
+  Exclude:
+    - 'spec/views/shared/flash_msg.html.erb_spec.rb'
+    - 'app/controllers/checkouts_controller.rb'
+
+Style/HashSyntax:
+  Exclude:
+    - 'spec/helpers/holds_helper_spec.rb'
+    - 'app/controllers/checkouts_controller.rb'
+
+RSpec/Capybara/SpecificMatcher:
+  Exclude:
+    - 'spec/features/holds_spec.rb'
+    - 'spec/views/holds/new.html.erb_spec.rb'

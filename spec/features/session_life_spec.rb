@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Session cookies', type: :feature do
+RSpec.describe 'Session cookies' do
   let(:mock_user) { 'patron1' }
 
   before do
@@ -25,14 +25,12 @@ RSpec.describe 'Session cookies', type: :feature do
       end
     end
 
-    xcontext 'when a user has not done anything in the application for a duration greater than the last_active value' do
-      xit 'sends the user back through authentication and makes new session life cookies' do
-      end
+    context 'when a user has not done anything in the application for a duration greater than the last_active value' do
+      pending 'sends the user back through authentication and makes new session life cookies'
     end
 
-    xcontext 'when the user started the session a duration greater than the max session life ago' do
-      it 'sends the user back through authentication and makes new session life cookies' do
-      end
+    context 'when the user started the session a duration greater than the max session life ago' do
+      pending 'sends the user back through authentication and makes new session life cookies'
     end
   end
 end

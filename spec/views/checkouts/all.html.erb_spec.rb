@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'checkouts/all.html.erb', type: :view do
+RSpec.describe 'checkouts/all.html.erb' do
   context 'when patron has checkouts to display' do
     let(:checkout) { build(:checkout) }
 

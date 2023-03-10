@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe SelectAllChildComponent, type: :component do
   let(:select_all_child_args) { { target_keyword: 'renewal', key: '1111111:1:1' } }
 
-  let(:component) { render_inline(described_class.new(select_all_child_args)).to_html }
+  let(:component) { render_inline(described_class.new(**select_all_child_args)).to_html }
 
   context 'when site is in maintenance mode' do
     after do

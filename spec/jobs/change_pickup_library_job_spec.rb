@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ChangePickupLibraryJob, type: :job do
+RSpec.describe ChangePickupLibraryJob do
   describe '#perform_later' do
     let(:ws_args) { { hold_key: 1, session_token: '1s2fa21465', pickup_library: 'UP-PAT' } }
 

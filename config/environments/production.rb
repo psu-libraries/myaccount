@@ -88,7 +88,7 @@ Rails.application.configure do
   config.lograge.custom_options = lambda do |event|
     params = event.payload[:params].reject { |k| params_to_include.include?(k) }
     {
-      params: params,
+      params:,
       time: Time.now
     }
   end

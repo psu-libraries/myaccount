@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Hold, type: :model do
+RSpec.describe Hold do
   subject(:hold) { build(:hold) }
 
   it 'has a key' do
@@ -44,8 +44,8 @@ RSpec.describe Hold, type: :model do
 
   it 'has a nil pickup library set that can be understood by humans' do
     hold.record['fields']['pickupLibrary']['key'] = nil
-    expect(hold.pickup_library_human).to eq 'The system is experiencing difficulty displaying '\
-                                              "this item's pickup location"
+    expect(hold.pickup_library_human).to eq 'The system is experiencing difficulty displaying ' \
+                                            "this item's pickup location"
   end
 
   it 'has a queue position' do

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'holds/index.html.erb', type: :view do
+RSpec.describe 'holds/index.html.erb' do
   let(:hold) { build(:hold) }
 
   before do

@@ -4,7 +4,7 @@ class CancelHoldJob < ApplicationJob
   queue_as :default
 
   def perform(hold_key:, session_token:)
-    response = symphony_client.cancel_hold(hold_key: hold_key, session_token: session_token)
+    response = symphony_client.cancel_hold(hold_key:, session_token:)
 
     case response.status
     when 200
@@ -16,9 +16,9 @@ class CancelHoldJob < ApplicationJob
       }.to_json)
     else
       processed_error = SirsiResponse::Error.new(error_message_raw: response,
-                                                 symphony_client: symphony_client,
+                                                 symphony_client:,
                                                  key: hold_key,
-                                                 session_token: session_token,
+                                                 session_token:,
                                                  bib_type: :hold)
 
       Sidekiq.logger.error "cancel_hold_#{hold_key}: #{processed_error.log}"

@@ -18,13 +18,13 @@ RSpec.describe PlaceHoldSuccessComponent, type: :component do
 
   it 'renders when there is a hold placed' do
     result = { placed_hold: hold }.with_indifferent_access
-    component = render_inline(described_class.new(result: result)).to_html
+    component = render_inline(described_class.new(result:)).to_html
     expect(component).to include('Some Title / Somebody', 'Book', 'a_call_number', 'UP-PAT', 'February 20, 2020')
   end
 
   it 'does not render when there is not a hold placed' do
     result = {}
-    component = render_inline(described_class.new(result: result)).to_html
+    component = render_inline(described_class.new(result:)).to_html
     expect(component).to be_empty
   end
 end

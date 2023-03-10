@@ -2,19 +2,26 @@
 
 require 'rails_helper'
 
-RSpec.describe ApplicationHelper, type: :helper do
+RSpec.describe ApplicationHelper do
+  before do
+    allow(controller).to receive(:controller_name).and_return('test')
+  end
+
   describe '#nav_link_attributes' do
     context 'when the current page matches the active controller' do
       it 'produces user-friendly features indicating current location' do
-        expect(helper.nav_link_attributes('/test')).to eq({ aria: { current: 'page' }, class: 'nav-link '\
-                                                                'hover-change rounded-0 py-3 active-nav-link' })
+        attributes = {
+          aria: { current: 'page' },
+          class: 'nav-link hover-change rounded-0 py-3 active-nav-link'
+        }
+        expect(helper.nav_link_attributes('/test')).to eq attributes
       end
     end
 
     context 'when the current page does not match the active controller' do
       it 'produces user-friendly features indicating current location' do
-        expect(helper.nav_link_attributes('/blah')).to eq({ aria: { current: nil }, class: 'nav-link hover-change'\
-                                                              ' rounded-0 py-3' })
+        expect(helper.nav_link_attributes('/blah')).to eq({ aria: { current: nil }, class: 'nav-link hover-change ' \
+                                                                                           'rounded-0 py-3' })
       end
     end
   end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe PlaceHoldCheckboxWrapperComponent, type: :component do
-  let(:component) { render_inline(described_class.new(volumetric_calls: volumetric_calls)).to_html }
+  let(:component) { render_inline(described_class.new(volumetric_calls:)).to_html }
 
   context 'when volumetric calls are not present' do
     let(:volumetric_calls) { [] }
@@ -30,7 +30,7 @@ RSpec.describe PlaceHoldCheckboxWrapperComponent, type: :component do
     end
 
     it 'renders an input with a unique id attribute by barcode' do
-      expect(component).to have_css('input#barcodes_000080793182')
+      expect(component).to have_css('#barcodes_000080793182')
     end
 
     it 'renders a label with a matching unique for attribute based on barcode' do

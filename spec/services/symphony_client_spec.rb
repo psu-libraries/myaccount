@@ -221,13 +221,13 @@ RSpec.describe SymphonyClient do
 
     before do
       stub_request(:post, 'https://example.com/symwsbc/circulation/holdRecord/changePickupLibrary')
-        .with(body: { "holdRecord": {
-                "resource": '/circulation/holdRecord',
-                "key": 'a_hold_key'
-              },
-                      "pickupLibrary": {
-                        "resource": '/policy/library',
-                        "key": 'UP-PAT'
+        .with(body: { holdRecord: {
+                        resource: '/circulation/holdRecord',
+                        key: 'a_hold_key'
+                      },
+                      pickupLibrary: {
+                        resource: '/policy/library',
+                        key: 'UP-PAT'
                       } })
         .to_return(symphony_response)
     end
@@ -262,10 +262,10 @@ RSpec.describe SymphonyClient do
 
     before do
       stub_request(:put, 'https://example.com/symwsbc/circulation/holdRecord/key/a_hold_key')
-        .with(body: { "resource": '/circulation/holdRecord',
-                      "key": 'a_hold_key',
-                      "fields": {
-                        "fillByDate": '2021-03-17'
+        .with(body: { resource: '/circulation/holdRecord',
+                      key: 'a_hold_key',
+                      fields: {
+                        fillByDate: '2021-03-17'
                       } })
         .to_return(symphony_response)
     end
@@ -373,7 +373,7 @@ RSpec.describe SymphonyClient do
     end
 
     it 'returns the Symphony Client "catalog bib" resource type' do
-      bib_response = client.get_bib_info '12345', user.session_token
+      bib_response = client.get_bib_info catkey: '12345', session_token: user.session_token
 
       expect(bib_response.body.to_str).to include '/catalog/bib'
     end
@@ -382,50 +382,50 @@ RSpec.describe SymphonyClient do
   describe '#place_hold' do
     before do
       stub_request(:post, uri)
-        .with(body: { "itemBarcode": 'success_item_barcode',
-                      "patronBarcode": '1234',
-                      "pickupLibrary": {
-                        "resource": '/policy/library',
-                        "key": 'UP-PAT'
+        .with(body: { itemBarcode: 'success_item_barcode',
+                      patronBarcode: '1234',
+                      pickupLibrary: {
+                        resource: '/policy/library',
+                        key: 'UP-PAT'
                       },
-                      "holdType": 'TITLE',
-                      "holdRange": 'SYSTEM',
-                      "fillByDate": '2021-03-17' })
+                      holdType: 'TITLE',
+                      holdRange: 'SYSTEM',
+                      fillByDate: '2021-03-17' })
         .to_return(status: 200, body: { key: 'some_hold_key' }.to_json)
 
       stub_request(:post, uri)
-        .with(body: { "itemBarcode": 'fail_item_barcode',
-                      "patronBarcode": '1234',
-                      "pickupLibrary": {
-                        "resource": '/policy/library',
-                        "key": 'UP-PAT'
+        .with(body: { itemBarcode: 'fail_item_barcode',
+                      patronBarcode: '1234',
+                      pickupLibrary: {
+                        resource: '/policy/library',
+                        key: 'UP-PAT'
                       },
-                      "holdType": 'TITLE',
-                      "holdRange": 'SYSTEM',
-                      "fillByDate": '2021-03-17' })
+                      holdType: 'TITLE',
+                      holdRange: 'SYSTEM',
+                      fillByDate: '2021-03-17' })
         .to_return(status: 500, body: error_prompt)
 
       stub_request(:post, uri)
-        .with(body: { "itemBarcode": 'no_date_item_barcode',
-                      "patronBarcode": '1234',
-                      "pickupLibrary": {
-                        "resource": '/policy/library',
-                        "key": 'UP-PAT'
+        .with(body: { itemBarcode: 'no_date_item_barcode',
+                      patronBarcode: '1234',
+                      pickupLibrary: {
+                        resource: '/policy/library',
+                        key: 'UP-PAT'
                       },
-                      "holdType": 'TITLE',
-                      "holdRange": 'SYSTEM' })
+                      holdType: 'TITLE',
+                      holdRange: 'SYSTEM' })
         .to_return(status: 200, body: { key: 'other_hold_key' }.to_json)
 
       stub_request(:post, uri)
-        .with(body: { "itemBarcode": 'records_in_use_barcode',
-                      "patronBarcode": '1234',
-                      "pickupLibrary": {
-                        "resource": '/policy/library',
-                        "key": 'UP-PAT'
+        .with(body: { itemBarcode: 'records_in_use_barcode',
+                      patronBarcode: '1234',
+                      pickupLibrary: {
+                        resource: '/policy/library',
+                        key: 'UP-PAT'
                       },
-                      "holdType": 'TITLE',
-                      "holdRange": 'SYSTEM',
-                      "fillByDate": '2021-03-17' })
+                      holdType: 'TITLE',
+                      holdRange: 'SYSTEM',
+                      fillByDate: '2021-03-17' })
         .to_return({ status: 500, body: error_prompt }, status: 200, body: { key: 'some_hold_key' }.to_json)
     end
 
@@ -485,7 +485,7 @@ RSpec.describe SymphonyClient do
       end
 
       it 'returns the hold info' do
-        response = client.get_hold_info('3912343', user.session_token)
+        response = client.get_hold_info(hold_key: '3912343', session_token: user.session_token)
         parsed_response = JSON.parse response.body
         expect(parsed_response&.dig('fields', 'pickupLibrary')).to be_truthy
       end
@@ -501,8 +501,8 @@ RSpec.describe SymphonyClient do
       end
 
       it 'retries' do
-        client.get_hold_info(hold_key, user.session_token)
-        expect { client.get_hold_info(hold_key, user.session_token) }
+        client.get_hold_info(hold_key:, session_token: user.session_token)
+        expect { client.get_hold_info(hold_key:, session_token: user.session_token) }
           .to output(/title missing/).to_stdout_from_any_process
       end
     end
@@ -520,7 +520,7 @@ RSpec.describe SymphonyClient do
     let(:include_fields) { '*,bib{shadowed,title,author},call{*}' }
 
     it 'returns the resource item record' do
-      item_response = client.get_item_info(barcode: barcode, session_token: user.session_token)
+      item_response = client.get_item_info(barcode:, session_token: user.session_token)
 
       expect(JSON.parse(item_response)).to include 'resource' => '/catalog/item'
     end

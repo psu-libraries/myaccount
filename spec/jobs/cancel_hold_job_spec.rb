@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe CancelHoldJob, type: :job do
+RSpec.describe CancelHoldJob do
   describe '#perform_later' do
     let(:ws_args) { { hold_key: 1, session_token: '1s2fa21465' } }
 
