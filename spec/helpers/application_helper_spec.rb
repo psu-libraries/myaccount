@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper do
+  before do
+    allow(controller).to receive(:controller_name).and_return("test")
+  end
+
   describe '#nav_link_attributes' do
     context 'when the current page matches the active controller' do
       it 'produces user-friendly features indicating current location' do
