@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ApplicationHelper do
   before do
-    allow(controller).to receive(:controller_name).and_return("test")
+    allow(controller).to receive(:controller_name).and_return('test')
   end
 
   describe '#nav_link_attributes' do
