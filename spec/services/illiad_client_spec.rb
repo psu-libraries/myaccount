@@ -11,8 +11,8 @@ RSpec.describe IlliadClient do
         catkey: '1',
         pickup_by_date: '2022-12-02',
         accept_alternate_edition: true,
-        "note": {
-          "body": 'this is a note'
+        note: {
+          body: 'this is a note'
         }
       }
     end
@@ -31,20 +31,20 @@ RSpec.describe IlliadClient do
 
     let(:request_body) do
       {
-        'Username': 'xyz12',
-        'RequestType': 'Loan',
-        'LoanAuthor': 'Great Author',
-        'ISSN': '1234567',
-        'LoanPublisher': 'Great Publisher',
-        'LoanPlace': 'The Great Place',
-        'LoanDate': '2022-11-01',
-        'LoanTitle': 'Some Great Book',
-        'LoanEdition': 'Test Edition',
-        'ProcessType': 'Borrowing',
-        'NotWantedAfter': '2022-12-02',
-        'AcceptAlternateEdition': true,
-        'ItemInfo1': false,
-        'ItemInfo2': request_barcodes
+        Username: 'xyz12',
+        RequestType: 'Loan',
+        LoanAuthor: 'Great Author',
+        ISSN: '1234567',
+        LoanPublisher: 'Great Publisher',
+        LoanPlace: 'The Great Place',
+        LoanDate: '2022-11-01',
+        LoanTitle: 'Some Great Book',
+        LoanEdition: 'Test Edition',
+        ProcessType: 'Borrowing',
+        NotWantedAfter: '2022-12-02',
+        AcceptAlternateEdition: true,
+        ItemInfo1: false,
+        ItemInfo2: request_barcodes
       }
     end
 
@@ -69,12 +69,12 @@ RSpec.describe IlliadClient do
       before do
         stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
           .with(body: request_body,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
-          .to_return(status: 200, body: { "TransactionNumber": 1234 }.to_json)
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 200, body: { TransactionNumber: 1234 }.to_json)
 
         stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/transaction/1234/notes")
-          .with(body: { "Note": params_with_note[:note][:body] }.to_json,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+          .with(body: { Note: params_with_note[:note][:body] }.to_json,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 201)
       end
 
@@ -87,7 +87,7 @@ RSpec.describe IlliadClient do
       before do
         stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
           .with(body: request_body,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200)
       end
 
@@ -100,7 +100,7 @@ RSpec.describe IlliadClient do
       before do
         stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
           .with(body: request_body,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400)
       end
 
@@ -116,7 +116,7 @@ RSpec.describe IlliadClient do
       before do
         stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
           .with(body: request_body,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200)
       end
 
@@ -141,12 +141,12 @@ RSpec.describe IlliadClient do
 
       before do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
-                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
-                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
-                            "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
-                            "Status,%20'Renewed%20by')))")
+                           "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
+                           "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
+                           "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
+                           "Status,%20'Renewed%20by')))")
           .with(body: nil,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
       end
 
@@ -160,12 +160,12 @@ RSpec.describe IlliadClient do
     context 'when getting loan checkouts is unsuccessful' do
       before do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
-                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
-                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
-                            "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
-                            "Status,%20'Renewed%20by')))")
+                           "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
+                           "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
+                           "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
+                           "Status,%20'Renewed%20by')))")
           .with(body: nil,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400, body: '{"Message":"400 Error"}')
       end
 
@@ -207,7 +207,7 @@ RSpec.describe IlliadClient do
                            "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
                            "20'STAFF')))")
           .with(body: nil,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
       end
 
@@ -238,7 +238,7 @@ RSpec.describe IlliadClient do
                            "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
                            "20'STAFF')))")
           .with(body: nil,
-                headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400, body: '{"Message":"400 Error"}')
       end
 

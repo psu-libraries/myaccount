@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe ViewIlliadLoansJob, type: :job do
+RSpec.describe ViewIlliadLoansJob do
   let(:ill_args) { { webaccess_id: 'abc123',
-                     type: type } }
+                     type: } }
 
   after do
     Redis.current.flushall

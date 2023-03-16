@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IllController, type: :controller do
+RSpec.describe IllController do
   let(:mock_patron) do
     instance_double(Patron, barcode: '12345678', library: 'UP_PAT', key: '1234567', ill_ineligible?: ill_ineligible)
   end
@@ -129,20 +129,20 @@ RSpec.describe IllController, type: :controller do
 
       let(:request_body) do
         {
-          'Username': 'xyz12',
-          'RequestType': 'Loan',
-          'LoanAuthor': 'Great Author',
-          'ISSN': '1234567',
-          'LoanPublisher': 'Great Publisher',
-          'LoanPlace': 'The Great Place',
-          'LoanDate': '2022-11-01',
-          'LoanTitle': 'Some Great Book',
-          'LoanEdition': 'Test Edition',
-          'ProcessType': 'Borrowing',
-          'NotWantedAfter': '2022-12-02',
-          'AcceptAlternateEdition': true,
-          'ItemInfo1': false,
-          'ItemInfo2': ''
+          Username: 'xyz12',
+          RequestType: 'Loan',
+          LoanAuthor: 'Great Author',
+          ISSN: '1234567',
+          LoanPublisher: 'Great Publisher',
+          LoanPlace: 'The Great Place',
+          LoanDate: '2022-11-01',
+          LoanTitle: 'Some Great Book',
+          LoanEdition: 'Test Edition',
+          ProcessType: 'Borrowing',
+          NotWantedAfter: '2022-12-02',
+          AcceptAlternateEdition: true,
+          ItemInfo1: false,
+          ItemInfo2: ''
         }
       end
 
@@ -158,8 +158,8 @@ RSpec.describe IllController, type: :controller do
         before do
           stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
             .with(body: request_body,
-                  headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
-            .to_return(status: 200, body: { "TransactionNumber": 1234 }.to_json)
+                  headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 200, body: { TransactionNumber: 1234 }.to_json)
 
           post :create, params: place_loan_form_params
         end
@@ -179,8 +179,8 @@ RSpec.describe IllController, type: :controller do
         before do
           stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
             .with(body: request_body,
-                  headers: { 'Content-Type': 'application/json', 'ApiKey': Settings.illiad.api_key })
-            .to_return(status: 400, body: { "TransactionNumber": 1234 }.to_json)
+                  headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 400, body: { TransactionNumber: 1234 }.to_json)
 
           post :create, params: place_loan_form_params
         end
@@ -217,10 +217,10 @@ RSpec.describe IllController, type: :controller do
         before do
           request.env['HTTP_REFERER'] = 'http://example.com/ill/new'
 
-          Redis.current.set 'place_loan_results_1234567', { "id": '12345678',
-                                                            "result": {
-                                                              "catkey": 1,
-                                                              "success": {}
+          Redis.current.set 'place_loan_results_1234567', { id: '12345678',
+                                                            result: {
+                                                              catkey: 1,
+                                                              success: {}
                                                             } }.to_json
         end
 
@@ -239,10 +239,10 @@ RSpec.describe IllController, type: :controller do
         before do
           request.env['HTTP_REFERER'] = 'http://example.com/other/path'
 
-          Redis.current.set 'place_loan_results_1234567', { "id": '12345678',
-                                                            "result": {
-                                                              "catkey": 1,
-                                                              "success": {}
+          Redis.current.set 'place_loan_results_1234567', { id: '12345678',
+                                                            result: {
+                                                              catkey: 1,
+                                                              success: {}
                                                             } }.to_json
         end
 

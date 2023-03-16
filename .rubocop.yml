@@ -18,6 +18,7 @@ AllCops:
 Metrics/ClassLength:
   Exclude:
   - 'app/services/symphony_client.rb'
+  - 'app/models/patron.rb'
 
 Metrics/BlockLength:
   Exclude:
@@ -49,6 +50,8 @@ RSpec/VerifiedDoubles:
 RSpec/NestedGroups:
   Exclude:
     - 'spec/controllers/lending_policy_controller_spec.rb'
+    - 'spec/features/holds_spec.rb'
+    - 'spec/services/illiad_client_spec.rb' 
 
 Lint/MissingSuper:
   Exclude:
@@ -58,11 +61,6 @@ RSpec/MultipleMemoizedHelpers:
   Exclude:
     - 'spec/controllers/ill_controller_spec.rb'
     - 'spec/services/**/*'
-
-RSpec/NestedGroups:
-  Exclude:
-    - 'spec/features/holds_spec.rb'
-    - 'spec/services/illiad_client_spec.rb'
 
 Rails/I18nLocaleTexts:
   Exclude:

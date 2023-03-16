@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Holds', type: :feature do
+RSpec.describe 'Holds' do
   let(:mock_user) { 'patron1' }
 
   after do

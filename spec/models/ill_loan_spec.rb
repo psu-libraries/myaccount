@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IllLoan, type: :model do
+RSpec.describe IllLoan do
   let(:ill_loan) { described_class.new(record) }
   let(:record) do
     {
@@ -89,7 +89,7 @@ RSpec.describe IllLoan, type: :model do
   context 'when an element does not exist' do
     it 'returns nil' do
       record.except!('DueDate')
-      expect(ill_loan.due_date).to eq nil
+      expect(ill_loan.due_date).to be_nil
     end
   end
 end

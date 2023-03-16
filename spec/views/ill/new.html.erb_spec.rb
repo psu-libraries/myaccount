@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ill/new.html.erb', type: :view do
+RSpec.describe 'ill/new.html.erb' do
   let(:form_params) { {
     catkey: '1',
     title: 'How to Eat More Pizza',

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'ill/result.html.erb', type: :view do
+RSpec.describe 'ill/result.html.erb' do
   let(:mock_patron) { instance_double(Patron) }
   let(:place_loan_result) { { catkey: '1' } }
   let(:bib_result) do
@@ -26,7 +26,9 @@ RSpec.describe 'ill/result.html.erb', type: :view do
         helper_method :patron
     end
 
-    allow(view).to receive(:patron).and_return(mock_patron)
+    without_partial_double_verification {
+      allow(view).to receive(:patron).and_return(mock_patron)
+    }
 
     assign(:place_loan_result, place_loan_result)
     assign(:bib, OpenStruct.new(bib_result))
@@ -46,7 +48,7 @@ RSpec.describe 'ill/result.html.erb', type: :view do
     expect(rendered).to have_link 'Back to Catalog', href: 'https://catalog.libraries.psu.edu/catalog/1'
   end
 
-  it 'renders a link to   Illiad requests' do
+  it 'renders a link to Illiad requests' do
     expect(rendered).to have_link 'See all Interlibrary loan requests', href: holds_path
   end
 

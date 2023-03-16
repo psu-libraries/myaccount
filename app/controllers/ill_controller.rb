@@ -48,7 +48,7 @@ class IllController < ApplicationController
 
     if response.status == 200
       place_loan_result[:success] = {
-        bib: bib,
+        bib:,
         issn: transaction_info.isbn,
         not_wanted_after: params[:pickup_by_date],
         accept_alternate_edition: params[:accept_alternate_edition],
@@ -56,7 +56,7 @@ class IllController < ApplicationController
       }
     else
       place_loan_result[:error] = {
-        bib: bib,
+        bib:,
         error_message: 'Interlibrary Loan Request Failed'
       }
     end
@@ -96,7 +96,7 @@ class IllController < ApplicationController
     def write_to_redis(result)
       Redis.current.set("place_loan_results_#{patron.key}", {
         id: patron.barcode.to_s,
-        result: result
+        result:
       }.to_json)
     end
 

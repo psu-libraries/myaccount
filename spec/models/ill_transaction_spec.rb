@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IllTransaction, type: :model do
+RSpec.describe IllTransaction do
   let(:ill_transaction) { build(:ill_transaction_with_isbn) }
 
   it 'has a request type' do

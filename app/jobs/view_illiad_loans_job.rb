@@ -12,15 +12,15 @@ class ViewIlliadLoansJob < ApplicationJob
 
     illiad_loans = IlliadClient.new.send("get_loan_#{type}", webaccess_id)
 
-    html = HoldsController.render template: "#{type}/ill_#{type}", layout: false, locals: { illiad_loans: illiad_loans }
+    html = HoldsController.render template: "#{type}/ill_#{type}", layout: false, locals: { illiad_loans: }
 
     Redis.current.set("view_ill_#{type}_#{webaccess_id}", {
       result: :success,
-      html: html
+      html:
     }.to_json)
     nil
   rescue RuntimeError => e
-    process_failure({ error_message: e.message, webaccess_id: webaccess_id, type: type })
+    process_failure(error_message: e.message, webaccess_id:, type:)
   end
 
   private

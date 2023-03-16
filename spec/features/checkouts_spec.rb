@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Checkouts', type: :feature do
+RSpec.describe 'Checkouts' do
   let(:mock_user) { 'patron2' }
 
   after do
