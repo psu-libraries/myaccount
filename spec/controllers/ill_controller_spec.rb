@@ -4,10 +4,12 @@ require 'rails_helper'
 
 RSpec.describe IllController do
   let(:mock_patron) do
-    instance_double(Patron, barcode: '12345678', library: 'UP_PAT', key: '1234567', ill_ineligible?: ill_ineligible)
+    instance_double(Patron, barcode: '12345678', library: 'UP_PAT', key: '1234567', ill_ineligible?: ill_ineligible,
+                            standing_human:)
   end
   let(:bib) { instance_double(Bib, title: 'Some Great Book', author: 'Great Author', shadowed?: false) }
   let(:ill_ineligible) { false }
+  let(:standing_human) { '' }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
@@ -41,6 +43,22 @@ RSpec.describe IllController do
       before do
         allow(PlaceHoldForm::Builder).to receive(:new).and_return(form_builder)
         allow(form_builder).to receive(:generate).and_return(form_params)
+      end
+
+      context 'when patron is barred' do
+        let(:standing_human) { 'The user is barred.' }
+
+        it 'sets a flash error message' do
+          get :new, params: {}
+
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.patron_barred')
+        end
+
+        it 'redirects to the summaries' do
+          get :new, params: {}
+
+          expect(response).to redirect_to summaries_path
+        end
       end
 
       context 'when catkey param is missing' do
