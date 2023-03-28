@@ -67,7 +67,7 @@ RSpec.describe IllLoan do
     context 'when TransactionStatus is "Awaiting Recalled Processing"' do
       context 'when due_date is before today' do
         before do
-          record['DueDate'] = (DateTime.now.yesterday).to_s
+          record['DueDate'] = DateTime.now.yesterday.to_s
         end
 
         it 'returns "Overdue"' do
@@ -87,7 +87,7 @@ RSpec.describe IllLoan do
     context 'when TransactionStatus is "Checked Out to Customer"' do
       context 'when due_date is before today' do
         before do
-          record['DueDate'] = (DateTime.now.yesterday).to_s
+          record['DueDate'] = DateTime.now.yesterday.to_s
         end
 
         it 'returns "Overdue"' do
@@ -107,7 +107,7 @@ RSpec.describe IllLoan do
     context 'when TransactionStatus starts with "Renewed by"' do
       context 'when due_date is before today' do
         before do
-          record['DueDate'] = (DateTime.now.yesterday).to_s
+          record['DueDate'] = DateTime.now.yesterday.to_s
         end
 
         it 'returns "Overdue"' do
