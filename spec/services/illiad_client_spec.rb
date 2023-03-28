@@ -143,8 +143,9 @@ RSpec.describe IlliadClient do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
-                           "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
-                           "Status,%20'Renewed%20by')))")
+                           "nStatus%20eq%20'Awaiting%20Recalled%20Processing')%20or%20(Transa" \
+                           "ctionStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transac" \
+                           "tionStatus,%20'Renewed%20by')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
@@ -162,8 +163,9 @@ RSpec.describe IlliadClient do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/" \
                            "test123?$filter=(RequestType%20eq%20'Loan')%20and%20((Transaction" \
                            "Status%20eq%20'Checked%20Out%20to%20Customer')%20or%20(Transactio" \
-                           "nStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transaction" \
-                           "Status,%20'Renewed%20by')))")
+                           "nStatus%20eq%20'Awaiting%20Recalled%20Processing')%20or%20(Transa" \
+                           "ctionStatus%20eq%20'LST%20TESTING')%20or%20(startswith(%20Transac" \
+                           "tionStatus,%20'Renewed%20by')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400, body: '{"Message":"400 Error"}')
@@ -192,20 +194,19 @@ RSpec.describe IlliadClient do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/test123" \
                            "?$filter=(RequestType%20eq%20'Loan')%20and%20(TransactionStatus%20eq%20'A" \
                            "waiting%20Copyright%20Clearance'%20or%20TransactionStatus%20eq%20'Awaitin" \
-                           "g%20Request%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Req" \
-                           "uest%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Account%20" \
-                           "Validation'%20or%20TransactionStatus%20eq%20'In%20Depth%20Searching'%20or" \
-                           "%20TransactionStatus%20eq%20'Awaiting%20Reshare%20Search'%20or%20Transact" \
-                           "ionStatus%20eq%20'UBorrow%20Find%20Item%20Search'%20or%20TransactionStatu" \
-                           "s%20eq%20'Awaiting%20RAPID%20Request%20Sending'%20or%20TransactionStatus%" \
-                           "20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20TransactionStatus%" \
-                           "20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Transit%20t" \
-                           "o%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%20Notifi" \
-                           "ed%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by%20Cust" \
-                           "omer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Review'%20or" \
-                           "%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%20Transa" \
-                           "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
-                           "20'STAFF')))")
+                           "g%20Request%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Acc" \
+                           "ount%20Validation'%20or%20TransactionStatus%20eq%20'In%20Depth%20Searchin" \
+                           "g'%20or%20TransactionStatus%20eq%20'Awaiting%20Reshare%20Search'%20or%20T" \
+                           "ransactionStatus%20eq%20'UBorrow%20Find%20Item%20Search'%20or%20Transacti" \
+                           "onStatus%20eq%20'Awaiting%20RAPID%20Request%20Sending'%20or%20Transaction" \
+                           "Status%20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20Transaction" \
+                           "Status%20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Tran" \
+                           "sit%20to%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%2" \
+                           "0Notified%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
+                           "%20Customer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Revie" \
+                           "w'%20or%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%2" \
+                           "0TransactionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionS" \
+                           "tatus,%20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
@@ -223,20 +224,19 @@ RSpec.describe IlliadClient do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/UserRequests/test123" \
                            "?$filter=(RequestType%20eq%20'Loan')%20and%20(TransactionStatus%20eq%20'A" \
                            "waiting%20Copyright%20Clearance'%20or%20TransactionStatus%20eq%20'Awaitin" \
-                           "g%20Request%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Req" \
-                           "uest%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Account%20" \
-                           "Validation'%20or%20TransactionStatus%20eq%20'In%20Depth%20Searching'%20or" \
-                           "%20TransactionStatus%20eq%20'Awaiting%20Reshare%20Search'%20or%20Transact" \
-                           "ionStatus%20eq%20'UBorrow%20Find%20Item%20Search'%20or%20TransactionStatu" \
-                           "s%20eq%20'Awaiting%20RAPID%20Request%20Sending'%20or%20TransactionStatus%" \
-                           "20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20TransactionStatus%" \
-                           "20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Transit%20t" \
-                           "o%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%20Notifi" \
-                           "ed%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by%20Cust" \
-                           "omer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Review'%20or" \
-                           "%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%20Transa" \
-                           "ctionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%" \
-                           "20'STAFF')))")
+                           "g%20Request%20Processing'%20or%20TransactionStatus%20eq%20'Awaiting%20Acc" \
+                           "ount%20Validation'%20or%20TransactionStatus%20eq%20'In%20Depth%20Searchin" \
+                           "g'%20or%20TransactionStatus%20eq%20'Awaiting%20Reshare%20Search'%20or%20T" \
+                           "ransactionStatus%20eq%20'UBorrow%20Find%20Item%20Search'%20or%20Transacti" \
+                           "onStatus%20eq%20'Awaiting%20RAPID%20Request%20Sending'%20or%20Transaction" \
+                           "Status%20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20Transaction" \
+                           "Status%20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Tran" \
+                           "sit%20to%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%2" \
+                           "0Notified%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
+                           "%20Customer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Revie" \
+                           "w'%20or%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%2" \
+                           "0TransactionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionS" \
+                           "tatus,%20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400, body: '{"Message":"400 Error"}')
