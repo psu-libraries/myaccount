@@ -10,7 +10,8 @@
   <%= hidden_field_tag :catkey, params[:catkey] %>
   <%= render partial: 'holds/form_inputs', locals: { selected: @place_hold_form_params[:pickup_library],
                                                      validate_pickup_info: true,
-                                                     make_default: true } %>
+                                                     make_default: true,
+                                                     is_ill: false } %>
   <%= render PlaceHoldCheckboxWrapperComponent.new volumetric_calls: @place_hold_form_params[:volumetric_calls] %>
   <%= submit_tag('Place Hold', class: 'btn btn-info') %>
   <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_hold_form_params[:catkey], class: 'btn btn-danger' %>

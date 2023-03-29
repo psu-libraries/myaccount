@@ -2,4 +2,4 @@
 <%= select_tag 'pickup_library', render_pickup_libraries(selected),
                class: 'custom-select', data: 'pickup-location', required: validate_pickup_info %>
 
-<%= render PlaceHoldDateComponent.new make_default: make_default, validate_pickup_info: validate_pickup_info %>
+<%= render PlaceHoldDateComponent.new make_default: make_default, validate_pickup_info: validate_pickup_info, is_ill: is_ill %>
