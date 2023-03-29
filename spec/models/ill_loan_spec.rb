@@ -65,22 +65,9 @@ RSpec.describe IllLoan do
     end
 
     context 'when TransactionStatus is "Awaiting Recalled Processing"' do
-      context 'when due_date is before today' do
-        before do
-          record['DueDate'] = DateTime.now.yesterday.to_s
-        end
-
-        it 'returns "Overdue"' do
-          record['TransactionStatus'] = 'Awaiting Recalled Processing'
-          expect(ill_loan.status).to eq 'Overdue'
-        end
-      end
-
-      context 'when due_date is after today' do
-        it 'returns "Recalled"' do
-          record['TransactionStatus'] = 'Awaiting Recalled Processing'
-          expect(ill_loan.status).to eq 'Recalled'
-        end
+      it 'returns "Recalled, Please Return ASAP"' do
+        record['TransactionStatus'] = 'Awaiting Recalled Processing'
+        expect(ill_loan.status).to eq 'Recalled, Please Return ASAP'
       end
     end
 

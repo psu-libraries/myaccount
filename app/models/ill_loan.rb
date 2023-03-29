@@ -34,7 +34,7 @@ class IllLoan
       when 'Customer Notified via E-mail'
         'Available for Pickup'
       when 'Awaiting Recalled Processing'
-        overdue_display('Recalled')
+        'Recalled, Please Return ASAP'
       when 'Checked Out to Customer'
         overdue_display(status)
       when /Renewed by/
