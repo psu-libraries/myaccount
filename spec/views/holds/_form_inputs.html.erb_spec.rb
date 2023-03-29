@@ -14,6 +14,7 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
     before do
       render partial: 'holds/form_inputs.html.erb', locals: { validate_pickup_info: true,
                                                               make_default: true,
+                                                              is_ill: false,
                                                               selected: 'UP-PAT' }
     end
 
@@ -26,6 +27,7 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
       input = page.find('input#pickup_by_date')
 
       expect(input['required']).not_to be_nil
+      expect(input['value']).to eq DateTime.now.+(14.days).strftime('%Y-%m-%d')
     end
 
     it 'will mark pickup library as required' do
@@ -39,6 +41,7 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
     before do
       render partial: 'holds/form_inputs.html.erb', locals: { validate_pickup_info: false,
                                                               make_default: false,
+                                                              is_ill: false,
                                                               selected: 'UP-PAT' }
     end
 

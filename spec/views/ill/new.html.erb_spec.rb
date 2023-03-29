@@ -8,6 +8,7 @@ RSpec.describe 'ill/new.html.erb' do
     title: 'How to Eat More Pizza',
     author: 'Samantha Smith'
   } }
+  let(:page) { Capybara.string(rendered) }
 
   before do
     assign(:place_loan_form_params, form_params)
@@ -23,9 +24,22 @@ RSpec.describe 'ill/new.html.erb' do
     expect(rendered).to have_content('Author: Samantha Smith')
   end
 
-  xit 'renders not needed after date'
-  xit 'renders alternate edition checkbox'
-  xit 'renders ebook checkbox'
+  it 'renders not needed after date' do
+    expect(rendered).to include DateTime.now.+(45.days).strftime('%Y-%m-%d')
+  end
+
+  it 'renders alternate edition checkbox' do
+    input = page.find('input#accept_alternate_edition')
+
+    expect(input['type']).to eq 'checkbox'
+  end
+
+  it 'renders ebook checkbox' do
+    input = page.find('input#accept_ebook')
+
+    expect(input['type']).to eq 'checkbox'
+  end
+
   xit 'renders notes checkbox'
 
   it 'provides a way to Cancel and go back to the catalog' do
