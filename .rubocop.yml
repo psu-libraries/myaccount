@@ -59,6 +59,7 @@ Lint/MissingSuper:
 
 RSpec/MultipleMemoizedHelpers:
   Exclude:
+    - 'spec/controllers/holds_controller_spec.rb'
     - 'spec/controllers/ill_controller_spec.rb'
     - 'spec/services/**/*'
 
