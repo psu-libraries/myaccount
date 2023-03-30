@@ -92,7 +92,7 @@ class IlliadClient
         'Awaiting Post Receipt Processing',
         'Request Sent',
         'In Transit to Pickup Location',
-        'Customer Notified via E-mail',
+        'Customer Notified via E-Mail',
         'Cancelled by Customer',
         'Duplicate Request Review',
         'Request Available Locally',

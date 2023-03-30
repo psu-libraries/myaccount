@@ -202,7 +202,7 @@ RSpec.describe IlliadClient do
                            "Status%20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20Transaction" \
                            "Status%20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Tran" \
                            "sit%20to%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%2" \
-                           "0Notified%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
+                           "0Notified%20via%20E-Mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
                            "%20Customer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Revie" \
                            "w'%20or%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%2" \
                            "0TransactionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionS" \
@@ -232,7 +232,7 @@ RSpec.describe IlliadClient do
                            "Status%20eq%20'Awaiting%20Post%20Receipt%20Processing'%20or%20Transaction" \
                            "Status%20eq%20'Request%20Sent'%20or%20TransactionStatus%20eq%20'In%20Tran" \
                            "sit%20to%20Pickup%20Location'%20or%20TransactionStatus%20eq%20'Customer%2" \
-                           "0Notified%20via%20E-mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
+                           "0Notified%20via%20E-Mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
                            "%20Customer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Revie" \
                            "w'%20or%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%2" \
                            "0TransactionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionS" \

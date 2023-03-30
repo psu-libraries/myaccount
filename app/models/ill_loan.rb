@@ -31,7 +31,7 @@ class IllLoan
 
     def status_display(status)
       case status
-      when 'Customer Notified via E-mail'
+      when 'Customer Notified via E-Mail'
         'Available for Pickup'
       when 'Awaiting Recalled Processing'
         'Recalled, Please Return ASAP'

@@ -57,9 +57,9 @@ RSpec.describe IllLoan do
   end
 
   describe '#status' do
-    context 'when TransactionStatus is "Customer Notified via E-mail"' do
+    context 'when TransactionStatus is "Customer Notified via E-Mail"' do
       it 'returns "Available for Pickup"' do
-        record['TransactionStatus'] = 'Customer Notified via E-mail'
+        record['TransactionStatus'] = 'Customer Notified via E-Mail'
         expect(ill_loan.status).to eq 'Available for Pickup'
       end
     end
