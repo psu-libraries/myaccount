@@ -88,8 +88,8 @@ class IllController < ApplicationController
       @bib_info ||= Bib.new(SymphonyClientParser::parsed_response(
                               symphony_client,
                               :get_bib_info,
-                              params[:catkey],
-                              current_user.session_token
+                              catkey: params[:catkey],
+                              session_token: current_user.session_token
                             ))
     end
 
