@@ -58,28 +58,61 @@ RSpec.describe IllLoan do
 
   describe '#status' do
     context 'when TransactionStatus is "Customer Notified via E-mail"' do
-      it 'returns' do
+      it 'returns "Available for Pickup"' do
         record['TransactionStatus'] = 'Customer Notified via E-mail'
         expect(ill_loan.status).to eq 'Available for Pickup'
       end
     end
 
+    context 'when TransactionStatus is "Awaiting Recalled Processing"' do
+      it 'returns "Recalled, Please Return ASAP"' do
+        record['TransactionStatus'] = 'Awaiting Recalled Processing'
+        expect(ill_loan.status).to eq 'Recalled, Please Return ASAP'
+      end
+    end
+
     context 'when TransactionStatus is "Checked Out to Customer"' do
-      it 'returns' do
-        record['TransactionStatus'] = 'Checked Out to Customer'
-        expect(ill_loan.status).to eq 'Checked Out to Customer'
+      context 'when due_date is before today' do
+        before do
+          record['DueDate'] = DateTime.now.yesterday.to_s
+        end
+
+        it 'returns "Overdue"' do
+          record['TransactionStatus'] = 'Checked Out to Customer'
+          expect(ill_loan.status).to eq 'Overdue'
+        end
+      end
+
+      context 'when due_date is after today' do
+        it 'returns "Checked Out to Customer' do
+          record['TransactionStatus'] = 'Checked Out to Customer'
+          expect(ill_loan.status).to eq 'Checked Out to Customer'
+        end
       end
     end
 
     context 'when TransactionStatus starts with "Renewed by"' do
-      it 'returns' do
-        record['TransactionStatus'] = 'Renewed by Customer ABC123'
-        expect(ill_loan.status).to eq 'Renewed by Customer ABC123'
+      context 'when due_date is before today' do
+        before do
+          record['DueDate'] = DateTime.now.yesterday.to_s
+        end
+
+        it 'returns "Overdue"' do
+          record['TransactionStatus'] = 'Renewed by Customer ABC123'
+          expect(ill_loan.status).to eq 'Overdue'
+        end
+      end
+
+      context 'when due_date is after today' do
+        it 'returns the original status' do
+          record['TransactionStatus'] = 'Renewed by Customer ABC123'
+          expect(ill_loan.status).to eq 'Renewed by Customer ABC123'
+        end
       end
     end
 
     context 'when TransactionStatus anything else' do
-      it 'returns' do
+      it 'returns "Processing"' do
         record['TransactionStatus'] = 'Something else'
         expect(ill_loan.status).to eq 'Processing'
       end
