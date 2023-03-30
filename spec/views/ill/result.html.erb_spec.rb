@@ -49,7 +49,7 @@ RSpec.describe 'ill/result.html.erb' do
   end
 
   it 'renders a link to Illiad requests' do
-    expect(rendered).to have_link 'See all Interlibrary loan requests', href: holds_path
+    expect(rendered).to have_link 'See all holds', href: holds_path
   end
 
   context 'when there is a successful loan result' do

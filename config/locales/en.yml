@@ -50,6 +50,7 @@ en:
       <p>Materials borrowed through <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be renewed separately.</p>
       <p>If you are finished with any items, please consider returning them to any Penn State library.</p>
     holds_info_html: Materials requested through <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be managed separately.
+    see_all_holds_button_text: See all holds 
     hold:
       cancel:
         success_html: <span class="font-weight-bold">Success!</span> %{bib_summary} was canceled.<br>
