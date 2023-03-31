@@ -65,6 +65,7 @@ class IlliadClient
     def checkouts_query
       CGI.escape("(RequestType eq 'Loan') and " \
                  "((TransactionStatus eq 'Checked Out to Customer') or " \
+                 "(TransactionStatus eq 'Awaiting Recalled Processing') or " \
                  "(TransactionStatus eq 'LST TESTING') or " \
                  "(startswith( TransactionStatus, 'Renewed by')))")
     end
@@ -83,7 +84,6 @@ class IlliadClient
       [
         'Awaiting Copyright Clearance',
         'Awaiting Request Processing',
-        'Awaiting Request Processing',
         'Awaiting Account Validation',
         'In Depth Searching',
         'Awaiting Reshare Search',
@@ -92,7 +92,7 @@ class IlliadClient
         'Awaiting Post Receipt Processing',
         'Request Sent',
         'In Transit to Pickup Location',
-        'Customer Notified via E-mail',
+        'Customer Notified via E-Mail',
         'Cancelled by Customer',
         'Duplicate Request Review',
         'Request Available Locally',

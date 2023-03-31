@@ -12,15 +12,15 @@
 <%= form_with url: '/ill', local: true, method: :post do %>
     <%= hidden_field_tag :catkey, params[:catkey] %>
 
-    <%= render PlaceHoldDateComponent.new %>
+    <%= render PlaceHoldDateComponent.new is_ill: true %>
 
     <p class="form-group">
-      <%= check_box_tag :accept_alternate_edition, true, true %>
+      <%= check_box_tag :accept_alternate_edition, true, false %>
       <%= label_tag :accept_alternate_edition, t('myaccount.ill.new_loan.accept_alternate_edition') %>
     </p>
 
     <p class="form-group">
-      <%= check_box_tag :accept_ebook, true, true %>
+      <%= check_box_tag :accept_ebook, true, false %>
       <%= label_tag :accept_ebook, t('myaccount.ill.new_loan.accept_ebook') %>
     </p>
 

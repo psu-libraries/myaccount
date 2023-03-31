@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe HoldsController do
-  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
+  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT', standing_human:) }
+  let(:standing_human) { '' }
   let(:holds) do
     [
       instance_double(Hold, key: '1', ready_for_pickup?: true, title: 'Some Great Book', call_number: 'ABC123',
@@ -97,6 +98,22 @@ RSpec.describe HoldsController do
         get :new, params: { catkey: 1 }
 
         expect(assigns(:place_hold_form_params)).to eq(form_params)
+      end
+
+      context 'when patron is barred' do
+        let(:standing_human) { 'The user is barred.' }
+
+        it 'sets a flash error message' do
+          get :new, params: {}
+
+          expect(flash[:error]).to eq I18n.t('myaccount.hold.new_hold.patron_barred')
+        end
+
+        it 'redirects to the summaries' do
+          get :new, params: {}
+
+          expect(response).to redirect_to summaries_path
+        end
       end
 
       context 'when catkey param is missing' do

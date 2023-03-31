@@ -31,14 +31,24 @@ class IllLoan
 
     def status_display(status)
       case status
-      when 'Customer Notified via E-mail'
+      when 'Customer Notified via E-Mail'
         'Available for Pickup'
+      when 'Awaiting Recalled Processing'
+        'Recalled, Please Return ASAP'
       when 'Checked Out to Customer'
-        status
+        overdue_display(status)
       when /Renewed by/
-        status
+        overdue_display(status)
       else
         'Processing'
+      end
+    end
+
+    def overdue_display(status_to_display)
+      if due_date.present? && (due_date < Date.today)
+        'Overdue'
+      else
+        status_to_display
       end
     end
 end
