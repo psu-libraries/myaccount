@@ -126,6 +126,38 @@ RSpec.describe IlliadClient do
     end
   end
 
+  describe '#user_exists?' do
+    context 'when the user exists' do
+      let (:resp) { client.user_exists?('abc123') }
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 200)
+      end
+
+      it 'returns true' do
+        expect(resp).to be true
+      end
+    end
+
+    context 'when the user does not exist' do
+      let (:resp) { client.user_exists?('abc123') }
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 404)
+      end
+
+      it 'returns false' do
+        expect(resp).to be false
+      end
+    end
+  end
+
   describe '#get_loan_checkouts' do
     let(:get_loan_checkouts_response) { client.get_loan_checkouts('test123') }
 

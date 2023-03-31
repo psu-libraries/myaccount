@@ -31,6 +31,8 @@ redis:
   database:
     uri: <%= ENV.fetch("REDIS_DATABASE_URI") { "redis://127.0.0.1:6379/2" } %>
 matomo_id: 11
+illiad_locations:
+  UP-PAT: 'Pattee Commons Services Desk'
 pickup_locations:
   UP-PAT: 'Pattee and Paterno Library - Commons Services Desk'
   UP-ARCHIT: 'Architecture & Landscape Architecture Library, 111 Stuckeman'

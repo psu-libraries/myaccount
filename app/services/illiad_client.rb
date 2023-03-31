@@ -29,6 +29,31 @@ class IlliadClient
             json: { Note: note })
   end
 
+  def user_exists?(webaccess_id)
+    response = request("/ILLiadWebPlatform/Users/#{webaccess_id}")
+    return true if response.status == 200
+
+    false
+  end
+
+  def create_user(patron)
+    body = {
+      UserName: patron.id,
+      ExternalUserId: patron.id,
+      LastName: patron.last_name,
+      FirstName: patron.first_name,
+      EmailAddress: patron.email_address,
+      Site: Settings.illiad_locations[patron.library] || 'Patee Commons Services Desk',
+      DeliveryMethod: 'Hold for Pickup',
+      LoanDeliveryMethod: 'Hold for Pickup',
+      NotificationMethod: 'Electronic'
+    }
+
+    return true if user_exists?(patron.id)
+
+    request('/IlliadWebPlatform/Users', method: :post, json: body)
+  end
+
   def place_loan(transaction_info, params)
     response = add_loan_transaction(transaction_info, params)
 

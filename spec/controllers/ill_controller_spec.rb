@@ -4,7 +4,9 @@ require 'rails_helper'
 
 RSpec.describe IllController do
   let(:mock_patron) do
-    instance_double(Patron, barcode: '12345678', library: 'UP_PAT', key: '1234567', ill_ineligible?: ill_ineligible,
+    instance_double(Patron, id: 'abc123', last_name: 'smith', first_name: 'fred',
+                            email_address: 'abc123@psu.edu', barcode: '12345678', library: 'UP_PAT',
+                            key: '1234567', ill_ineligible?: ill_ineligible,
                             standing_human:)
   end
   let(:bib) { instance_double(Bib, title: 'Some Great Book', author: 'Great Author', shadowed?: false) }
@@ -174,6 +176,9 @@ RSpec.describe IllController do
 
       context 'when place loan successful' do
         before do
+          stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+            .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 200)
           stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
             .with(body: request_body,
                   headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
@@ -195,6 +200,9 @@ RSpec.describe IllController do
 
       context 'when place loan fails' do
         before do
+          stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+            .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 200)
           stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
             .with(body: request_body,
                   headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })

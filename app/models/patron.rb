@@ -142,6 +142,10 @@ class Patron
     ILL_INELIGIBLE_PROFILES.include?(profile)
   end
 
+  def email_address
+    fields['address1'].select { |k| k.dig('fields', 'code', 'key') == 'EMAIL' }.first&.dig('fields', 'data')
+  end
+
   private
 
     def profile
