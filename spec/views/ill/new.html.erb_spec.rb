@@ -47,6 +47,6 @@ RSpec.describe 'ill/new.html.erb' do
   end
 
   it 'provides a link to the new non-ill hold form for this item' do
-    expect(rendered).to include "href=#{new_hold_path}?catkey=#{form_params[:catkey]}>Request a local copy"
+    expect(rendered).to include "href='#{new_hold_path}?catkey=#{form_params[:catkey]}'>\n        Request a local copy"
   end
 end
