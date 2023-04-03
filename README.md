@@ -45,7 +45,7 @@ Use the [redis docker image](https://hub.docker.com/_/redis/).
 
 Should be able to just run it with a command listed in the docker hub page:
 
-`docker run -d -p 6379:6379 --name redis-the-new-black redis:5.0.7`
+`docker run -d -p <REDIS_PORT>:6379 --name redis-the-new-black redis:5.0.7`
 
 Then boot up the rails server with caching turned on and you'll be all set.
  
