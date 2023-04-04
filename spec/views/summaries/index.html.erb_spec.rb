@@ -6,6 +6,7 @@ RSpec.describe 'summaries/index' do
   let(:fines) { [build(:fine)] }
   let(:patron_standing) { {} }
   let(:eligible_for_wage_garnishment) { false }
+  let(:illiad_response) { instance_double(IlliadResponse) }
   let(:patron) do
     instance_double(
       Patron,
@@ -29,9 +30,16 @@ RSpec.describe 'summaries/index' do
         helper_method :patron, :current_user?
     end
 
+    assign(:illiad_response, illiad_response)
+
     without_partial_double_verification {
       allow(view).to receive(:patron).and_return(patron)
       allow(view).to receive(:current_user?).and_return(true)
+      allow(illiad_response).to receive(:illiad_checkouts).and_return([])
+      allow(illiad_response).to receive(:illiad_holds).and_return([])
+      allow(illiad_response).to receive(:ill_recalled).and_return(0)
+      allow(illiad_response).to receive(:ill_overdue).and_return(0)
+      allow(illiad_response).to receive(:ill_ready_for_pickup).and_return(0)
     }
   end
 

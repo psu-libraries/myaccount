@@ -6,6 +6,15 @@ RSpec.describe 'Session cookies' do
   let(:mock_user) { 'patron1' }
 
   before do
+    stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+      .with(headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            })
+      .to_return(status: 200, body: '[]', headers: {})
     login_permanently_as username: 'PATRON1', patron_key: mock_user
     visit root_path
   end
