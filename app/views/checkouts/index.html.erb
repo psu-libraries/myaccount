@@ -1,4 +1,14 @@
+<div class="load-ill-checkouts" data-username="<%= @username %>">
+  <p class="m-5 text-center">
+    <span class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </span>
+    <%= t('myaccount.loading_html') %>
+  </p>
+</div>
+
 <h1>Checkouts/Renewals</h1>
+<p><%= t('myaccount.checkouts_info_html') %></p>
 
 <div class="load-checkouts" data-patron-key="<%= @patron_key %>">
   <p class="m-5 text-center">

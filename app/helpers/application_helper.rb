@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  ACTIVE_LINK_CLASS = ' active-nav-link'
+  ACTIVE_LINK_CLASS = ' active'
 
   def nav_link_attributes(path)
     controller = path.split('/')[1]

@@ -47,9 +47,10 @@ en:
       label_html: <i class="fa fa-exclamation-circle" aria-hidden="true"></i> Notice
       message: Returned materials may be quarantined for four days and will remain on your account during the quarantine period.
     checkouts_info_html: >
-      <p>Materials borrowed through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be renewed separately.</p>
+      <p>Materials borrowed through <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be renewed separately.</p>
       <p>If you are finished with any items, please consider returning them to any Penn State library.</p>
-    holds_info_html: Materials requested through <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">Illiad</a> or <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be managed separately.
+    holds_info_html: Materials requested through <a href="http://www.libraries.psu.edu/mtss">MTSS</a> do not appear on this list and must be managed separately.
+    see_all_holds_button_text: See all holds 
     hold:
       cancel:
         success_html: <span class="font-weight-bold">Success!</span> %{bib_summary} was canceled.<br>
@@ -70,5 +71,14 @@ en:
         error_html: We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a>
       new_hold:
         catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
+        patron_barred: Sorry, you cannot request items while your account is barred. If you have not accepted our lending policy, please use the link below and retry your request. Otherwise, please contact your library for assistance.
         error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
+    ill:
+      new_loan:
+        notes: Notes
+        accept_alternate_edition: Will you accept an alternate edition of this item?
+        accept_ebook: If the item is found to be available digitally within Penn State's subscriptions, will you use the e-book?
+      place_loan:
+        success_html: For interlibrary loan requests, you will receive a notice once items are available for pick up.
+        error_html: <strong>Sorry!</strong> there was an error in requesting this item. Please <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">request it directly through our Interlibrary Loan form</a> or contact our ILL department at <a href="mailto:UL-ILLIAD-SUPPORT@psu.edu">UL-ILLIAD-SUPPORT@psu.edu</a>.
     loading_html: Items are loading. Longer lists of items will take a few moments to load.

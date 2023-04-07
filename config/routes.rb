@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   resources :summaries, :fines, :checkouts, only: [:index]
   resources :holds, only: [:index, :new, :create]
+  resources :ill, only: [:new, :create]
   resources :redis_jobs, only: [:show, :destroy]
 
   patch '/holds/batch', to: 'holds#batch_update', as: :holds_batch_update
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
 
   get 'holds/all', to: 'holds#all', as: :holds_all
   get 'holds/result', to: 'holds#result', as: :result
+  get 'ill/result', to: 'ill#result', as: :ill_result
   get 'checkouts/all', to: 'checkouts#all', as: :checkouts_all
   get '/logout', to: 'sessions#destroy', as: :logout
 

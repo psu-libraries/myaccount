@@ -8,6 +8,15 @@ RSpec.describe SummariesController do
 
   before do
     allow(SymphonyClient).to receive(:new).and_return(mock_client)
+    stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+      .with(headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            })
+      .to_return(status: 200, body: '[]', headers: {})
   end
 
   context 'with an unauthenticated request' do

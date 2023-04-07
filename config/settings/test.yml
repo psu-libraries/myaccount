@@ -1,3 +1,6 @@
+illiad:
+  url: https://illiad.illiad/illiad
+  api_key: 1234
 symws:
   webaccess_url: https://example.com/webaccess
   url: https://example.com/symwsbc

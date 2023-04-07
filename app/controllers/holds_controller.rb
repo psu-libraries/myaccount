@@ -3,6 +3,7 @@
 class HoldsController < ApplicationController
   before_action :set_cache_headers
   before_action :authenticate_user!
+  before_action :patron_barred
   before_action :check_for_blanks!, only: :create
   before_action :unless_maintenance_mode, only: :new
   rescue_from NewHoldException, with: :deny_new
@@ -13,8 +14,11 @@ class HoldsController < ApplicationController
   # GET /holds
   def index
     @patron_key = current_user.patron_key
+    @username = current_user.username
     ws_args = { patron_key: @patron_key, session_token: current_user.session_token }
     ViewHoldsJob.perform_later **ws_args
+    ill_args = { webaccess_id: @username, type: :holds }
+    ViewIlliadLoansJob.perform_later(**ill_args)
 
     render
   end

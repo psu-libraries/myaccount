@@ -9,6 +9,7 @@ class SummariesController < ApplicationController
   # GET /summaries.json
   def index
     @patron = patron
+    @illiad_response = IlliadResponse.new(current_user.username)
   end
 
   private

@@ -5,6 +5,7 @@
 ## Mac
 
 * Get `homebrew` installed and configured using [these instructions](https://brew.sh)
+* Get `homebrew` installed and configured using [these instructions](https://brew.sh)
 * `ruby` via `rbenv` ([Upgrading Ruby Version Using rbenv](https://github.com/psu-libraries/psulib_blacklight/wiki/Upgrading-Ruby-Version-Using-rbenv))
 
 # Dependencies 

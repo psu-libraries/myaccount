@@ -12,7 +12,7 @@ RSpec.describe ApplicationHelper do
       it 'produces user-friendly features indicating current location' do
         attributes = {
           aria: { current: 'page' },
-          class: 'nav-link hover-change rounded-0 py-3 active-nav-link'
+          class: 'nav-link hover-change rounded-0 py-3 active'
         }
         expect(helper.nav_link_attributes('/test')).to eq attributes
       end

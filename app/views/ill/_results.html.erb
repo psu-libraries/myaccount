@@ -1,0 +1,36 @@
+<% if place_loan_result&.dig(:error).present? %>
+    <div class="card bg-transparent my-3">
+      <div class="card-header bg-transparent">
+        <h3>Interlibrary Loan Request Failed</h3>
+      </div>
+      <ul class="list-group list-group-flush">
+         <%= render PlaceHoldErrorComponent.new result: place_loan_result[:error], bib: @bib %>
+      </ul>
+      <div class="card-footer bg-transparent">
+        <p class="text-secondary"><%= t('myaccount.ill.place_loan.error_html') %></p>
+      </div>
+    </div>
+<% end %>
+
+<br>
+
+<% if place_loan_result&.dig(:success).present? %>
+    <div class="card bg-transparent my-3">
+      <div class="card-header bg-transparent">
+        <h3>1 Interlibrary Loan Request Placed</h3>
+      </div>
+      <ul class="list-group list-group-flush">
+          <%= render PlaceLoanSuccessComponent.new result: place_loan_result[:success] %>
+      </ul>
+      <div class="card-footer bg-transparent">
+        <p class="text-secondary"><%= t('myaccount.ill.place_loan.success_html') %></p>
+      </div>
+    </div>
+<% end %>
+
+<br>
+
+<%= link_to 'Back to Catalog',
+            "https://catalog.libraries.psu.edu/catalog/#{place_loan_result&.dig(:catkey)}",
+            class: 'btn btn-info' %>
+<%= link_to t('myaccount.see_all_holds_button_text'), holds_path, class: 'btn btn-info' %>

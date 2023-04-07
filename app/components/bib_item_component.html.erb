@@ -1,2 +1,4 @@
 <%= final_title %><br>
-<small class="text-secondary"><strong><%= type_human %></strong>: <%= call_number %></small><br>
+<% if display_call_number_type? %>
+  <small class="text-secondary"><strong><%= type_human %></strong>: <%= call_number %></small><br>
+<% end %>

@@ -108,4 +108,12 @@ class ApplicationController < ActionController::Base
       response.headers['Pragma'] = 'no-cache'
       response.headers['Expires'] = 'Fri, 01 Jan 1990 00:00:00 GMT'
     end
+
+    def patron_barred
+      if patron.standing_human.present?
+        flash[:error] = t 'myaccount.hold.new_hold.patron_barred'
+
+        redirect_to summaries_path
+      end
+    end
 end
