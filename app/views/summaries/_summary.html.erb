@@ -19,7 +19,7 @@
 
   <p>Library account record for <strong><%= patron.display_name %></strong></p>
 
-  <% if patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? %>
+  <% if patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? && illiad_response.illiad_checkouts.blank? && illiad_response.illiad_holds.blank? %>
       <p>You do not have any outstanding materials or bills.</p>
   <% else %>
     <div class="row">
