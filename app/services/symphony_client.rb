@@ -287,8 +287,6 @@ class SymphonyClient
         ["circRecordList{*,#{ITEM_RESOURCES}}"]
       when ->(h) { h[:holdRecordList] }
         ["holdRecordList{*,#{ITEM_RESOURCES}}"]
-      when ->(h) { h[:address1] }
-        ['address1']
       when ->(h) { h[:all] }
         [
           'blockList{*}',
