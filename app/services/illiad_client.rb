@@ -36,22 +36,34 @@ class IlliadClient
     false
   end
 
+  # Create User will return true if a user is created, else it will
+  # return false
   def create_user(patron)
     body = {
-      UserName: patron.id,
+      Username: patron.id,
       ExternalUserId: patron.id,
       LastName: patron.last_name,
       FirstName: patron.first_name,
-      EmailAddress: patron.email_address,
-      Site: Settings.illiad_locations[patron.library] || 'Patee Commons Services Desk',
+      AuthType: 'Default',
+      Status: patron.profile,
+      Cleared: 'No',
+      NVTGC: 'UPILL',
+      EMailAddress: patron.email_address,
+      Site: Settings.illiad_locations[patron.library],
+      Organization: patron.library,
       DeliveryMethod: 'Hold for Pickup',
       LoanDeliveryMethod: 'Hold for Pickup',
       NotificationMethod: 'Electronic'
     }
 
-    return true if user_exists?(patron.id)
+    return false if user_exists?(patron.id)
 
-    request('/IlliadWebPlatform/Users', method: :post, json: body)
+    resp = request('/IlliadWebPlatform/Users', method: :post, json: body)
+    if resp.status == 200
+      return true
+    else
+      raise(StandardError, JSON.parse(resp))
+    end
   end
 
   def place_loan(transaction_info, params)
@@ -83,7 +95,7 @@ class IlliadClient
       if ill_response.status == 200
         JSON.parse(ill_response).map { |record| IllLoan.new(record) }
       else
-        raise JSON.parse(ill_response)['Message']
+        raise(StandardError, JSON.parse(ill_response)['Message'])
       end
     end
 
