@@ -45,4 +45,7 @@ RSpec.describe 'ill/new.html.erb' do
   it 'provides a way to Cancel and go back to the catalog' do
     expect(rendered).to include 'href="https://catalog.libraries.psu.edu/catalog/1">Cancel'
   end
+  it 'provides a link to the new non-ill hold form for this item' do
+    expect(rendered).to include "href='#{new_hold_path}?catkey=#{form_params[:catkey]}'>\n        Request a local copy"
+  end
 end

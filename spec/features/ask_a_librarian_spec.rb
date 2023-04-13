@@ -6,6 +6,15 @@ RSpec.describe 'Ask a librarian' do
   let(:mock_user) { 'patron2' }
 
   before do
+    stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+      .with(headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            })
+      .to_return(status: 200, body: '[]', headers: {})
     login_as username: 'PATRON2', patron_key: mock_user
   end
 

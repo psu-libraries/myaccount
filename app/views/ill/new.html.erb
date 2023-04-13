@@ -34,3 +34,14 @@
     <%= submit_tag('Place ILL Request', class: 'btn btn-info') %>
   <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_loan_form_params[:catkey], class: 'btn btn-danger' %>
 <% end %>
+
+<div class='pt-3'>
+  <p class='card-text'>
+    <i>
+      Not in a hurry? Don't want to place an ILL request?
+      <a href='<%= new_hold_path + "?catkey=#{@place_loan_form_params[:catkey]}" %>'>
+        Request a local copy.
+      </a>
+    </i>
+  </p>
+</div>

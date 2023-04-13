@@ -151,7 +151,6 @@ class Patron
   end
 
   private
-
     def fields
       record['fields']
     end
