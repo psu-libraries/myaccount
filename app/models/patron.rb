@@ -146,11 +146,11 @@ class Patron
     fields['address1'].select { |k| k.dig('fields', 'code', 'key') == 'EMAIL' }.first&.dig('fields', 'data')
   end
 
-  private
+  def profile
+    fields.dig('profile', 'key')
+  end
 
-    def profile
-      fields.dig('profile', 'key')
-    end
+  private
 
     def fields
       record['fields']
