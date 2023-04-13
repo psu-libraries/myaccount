@@ -33,6 +33,7 @@ class IllController < ApplicationController
   #
   # POST /ill
   def create
+    flash[:succes] = 'this is a message'
     IlliadClient.new.create_user(patron)
     transaction_info = IllTransaction.new(patron, bib_info)
     response = IlliadClient.new.place_loan(transaction_info, params)

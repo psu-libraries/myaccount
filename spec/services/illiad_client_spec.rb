@@ -126,9 +126,31 @@ RSpec.describe IlliadClient do
     end
   end
 
+  describe '#create_user' do 
+    context 'when the user does not exist' do 
+      let (:resp) { client.create_user('abc123') }
+      let (:resp_body) { {}}
+      before do 
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 404)
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Users")
+          .with(body: resp_body,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          to_return(status: 200)
+      end
+      it 'returns 200' do 
+        bidning.pry
+        expect(resp).to be true
+      end
+    end
+  end
+
   describe '#user_exists?' do
     context 'when the user exists' do
       let (:resp) { client.user_exists?('abc123') }
+
 
       before do
         stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
