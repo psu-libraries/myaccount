@@ -22,12 +22,12 @@ RSpec.describe IlliadClient do
         catkey: '1',
         pickup_by_date: '2022-12-02',
         accept_alternate_edition: true,
-        barcodes: params_barcodes
+        call_numbers: params_call_numbers
       }.with_indifferent_access
     end
 
-    let(:params_barcodes) { '' }
-    let(:request_barcodes) { '' }
+    let(:params_call_numbers) { '' }
+    let(:request_call_numbers) { '' }
 
     let(:request_body) do
       {
@@ -44,7 +44,7 @@ RSpec.describe IlliadClient do
         NotWantedAfter: '2022-12-02',
         AcceptAlternateEdition: true,
         ItemInfo1: false,
-        ItemInfo2: request_barcodes
+        ItemInfo2: request_call_numbers
       }
     end
 
@@ -110,8 +110,8 @@ RSpec.describe IlliadClient do
     end
 
     context 'when loan item has volumetrics' do
-      let(:params_barcodes) { ['barcode1', 'barcode2'] }
-      let(:request_barcodes) { 'barcode1, barcode2' }
+      let(:params_call_numbers) { ['call_number1', 'call_number2'] }
+      let(:request_call_numbers) { 'call_number1, call_number2' }
 
       before do
         stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
