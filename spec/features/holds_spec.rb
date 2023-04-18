@@ -65,6 +65,7 @@ RSpec.describe 'Holds' do
           page.check 'hold_list__3911148'
           page.fill_in 'pickup_by_date', with: '01-01-9999'
           page.click_button 'Update Selected Holds'
+          page.find('#hold3911148 .pickup-by', text: 'January 1, 9999')
         end
 
         it 'lets the user change the pickup by date of a hold', js: true do
@@ -79,7 +80,7 @@ RSpec.describe 'Holds' do
             page.fill_in 'pickup_by_date', with: '01-01-2020'
             page.click_button 'Update Selected Holds'
 
-            expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date', count: 1
+            expect(page.find('.badge-success')).to have_text 'Successfully updated pickup by date', count: 1
           end
         end
       end
