@@ -17,7 +17,7 @@ class IlliadClient
       NotWantedAfter: params[:pickup_by_date],
       AcceptAlternateEdition: params[:accept_alternate_edition] ? true : false,
       ItemInfo1: params[:accept_ebook] ? true : false,
-      ItemInfo2: barcodes(params)
+      ItemInfo2: call_numbers(params)
     }
 
     request('/IlliadWebPlatform/Transaction/', method: :post, json: body)
@@ -109,6 +109,7 @@ class IlliadClient
         'Cancelled by Customer',
         'Duplicate Request Review',
         'Request Available Locally',
+        'Pattee Notices',
         'LST TESTING'
       ]
     end
@@ -125,7 +126,7 @@ class IlliadClient
       { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key }
     end
 
-    def barcodes(params)
-      [params['barcodes']].flatten.compact.join(', ')
+    def call_numbers(params)
+      [params['call_numbers']].flatten.compact.join(', ')
     end
 end
