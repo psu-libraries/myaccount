@@ -19,6 +19,7 @@ Metrics/ClassLength:
   Exclude:
   - 'app/services/symphony_client.rb'
   - 'app/services/illiad_client.rb'
+  - 'app/controllers/ill_controller.rb'
   - 'app/models/patron.rb'
 
 Metrics/BlockLength:
