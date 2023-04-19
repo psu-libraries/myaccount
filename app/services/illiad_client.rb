@@ -96,6 +96,7 @@ class IlliadClient
         'Cancelled by Customer',
         'Duplicate Request Review',
         'Request Available Locally',
+        'Pattee Notices',
         'LST TESTING'
       ]
     end

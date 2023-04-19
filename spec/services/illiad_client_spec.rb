@@ -205,8 +205,8 @@ RSpec.describe IlliadClient do
                            "0Notified%20via%20E-Mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
                            "%20Customer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Revie" \
                            "w'%20or%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%2" \
-                           "0TransactionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionS" \
-                           "tatus,%20'STAFF')))")
+                           "0TransactionStatus%20eq%20'Pattee%20Notices'%20or%20TransactionStatus%20e" \
+                           "q%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200, body: return_body)
@@ -235,8 +235,8 @@ RSpec.describe IlliadClient do
                            "0Notified%20via%20E-Mail'%20or%20TransactionStatus%20eq%20'Cancelled%20by" \
                            "%20Customer'%20or%20TransactionStatus%20eq%20'Duplicate%20Request%20Revie" \
                            "w'%20or%20TransactionStatus%20eq%20'Request%20Available%20Locally'%20or%2" \
-                           "0TransactionStatus%20eq%20'LST%20TESTING'or%20(startswith(%20TransactionS" \
-                           "tatus,%20'STAFF')))")
+                           "0TransactionStatus%20eq%20'Pattee%20Notices'%20or%20TransactionStatus%20e" \
+                           "q%20'LST%20TESTING'or%20(startswith(%20TransactionStatus,%20'STAFF')))")
           .with(body: nil,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400, body: '{"Message":"400 Error"}')
