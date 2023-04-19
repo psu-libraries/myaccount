@@ -93,7 +93,7 @@ class IlliadClient
       if ill_response.status == 200
         JSON.parse(ill_response).map { |record| IllLoan.new(record) }
       else
-        raise(StandardError, JSON.parse(ill_response)['Message'])
+        raise JSON.parse(ill_response)['Message']
       end
     end
 
