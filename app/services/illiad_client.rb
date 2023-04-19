@@ -34,7 +34,7 @@ class IlliadClient
   end
 
   def patron_bad_standing?(patron)
-    bad_standings = ['BO', 'DIS']
+    bad_standings = ['BO', 'DIS', 'B', 'BX']
     user_record = illiad_user(patron.id)
 
     JSON.parse(user_record.body)&.dig('Cleared').in?(bad_standings)
