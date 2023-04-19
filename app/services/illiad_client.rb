@@ -20,25 +20,27 @@ class IlliadClient
       ItemInfo2: barcodes(params)
     }
 
-    request('/IlliadWebPlatform/Transaction/', method: :post, json: body)
+    request('/ILLiadWebPlatform/Transaction/', method: :post, json: body)
   end
 
   def add_loan_note(transaction_id, note)
-    request("/IlliadWebPlatform/transaction/#{transaction_id}/notes",
+    request("/ILLiadWebPlatform/transaction/#{transaction_id}/notes",
             method: :post,
             json: { Note: note })
   end
 
-  def user_exists?(webaccess_id)
-    response = request("/ILLiadWebPlatform/Users/#{webaccess_id}")
-    return true if response.status == 200
-
-    false
+  def illiad_user(webaccess_id)
+    request("/ILLiadWebPlatform/Users/#{webaccess_id}")
   end
 
-  # Create User will return true if a user is created, else it will
-  # return false
-  def create_user(patron)
+  def patron_bad_standing?(patron)
+    bad_standings = ['BO', 'DIS']
+    user_record = illiad_user(patron.id)
+
+    JSON.parse(user_record.body)&.dig('Cleared').in?(bad_standings)
+  end
+
+  def find_or_create_user(patron)
     body = {
       Username: patron.id,
       ExternalUserId: patron.id,
@@ -56,14 +58,10 @@ class IlliadClient
       NotificationMethod: 'Electronic'
     }
 
-    return false if user_exists?(patron.id)
+    illiad_user = illiad_user(patron.id)
+    return illiad_user if illiad_user.status == 200
 
-    resp = request('/IlliadWebPlatform/Users', method: :post, json: body)
-    if resp.status == 200
-      return true
-    else
-      raise(StandardError, JSON.parse(resp))
-    end
+    request('/ILLiadWebPlatform/Users', method: :post, json: body)
   end
 
   def place_loan(transaction_info, params)
