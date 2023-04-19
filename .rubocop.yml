@@ -40,6 +40,10 @@ RSpec/ExampleLength:
     - 'spec/services/symphony_client_spec.rb'
     - 'spec/features/**/*'
 
+RSpec/MessageChain:
+  Exclude:
+    - 'spec/models/patron_spec.rb'
+
 RSpec/MultipleExpectations:
   Exclude:
     - 'spec/services/symphony_client_spec.rb'
