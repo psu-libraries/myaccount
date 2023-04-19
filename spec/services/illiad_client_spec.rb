@@ -247,4 +247,39 @@ RSpec.describe IlliadClient do
       end
     end
   end
+
+  describe '#get_user_info' do
+    let(:get_user_info_response) { client.get_user_info('test123') }
+    let(:status) { 200 }
+    let(:return_body) do
+      '{"UserName":"test123", "ExternalUserId":"test123", "LastName":"User", "FirstName":"Test",
+      "Status":"Staff", "EMailAddress":"test123@psu.edu", "Department":"Libraries", "NVTGC":"UPILL",
+      "NotificationMethod":"Electronic", "DeliveryMethod":"Hold for Pickup",
+      "LoanDeliveryMethod":"Hold for Pickup", "LastChangedDate":"2022-10-24T11:43:39",
+      "Cleared":"Yes", "Web":true, "Site":"Pattee Commons Services Desk",
+      "ExpirationDate":"2030-10-22T11:43:39", "Organization":"University Park", "AuthType":"Default"}'
+    end
+
+    before do
+      stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/test123")
+        .with(body: nil,
+              headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+        .to_return(status: status, body: return_body)
+    end
+
+    context 'when getting user info is successful' do
+      it 'returns ILLiad user data' do
+        expect(get_user_info_response['Cleared']).to eq 'Yes'
+      end
+    end 
+
+    context 'when getting user info is unsuccessful' do
+      let(:return_body) { '{"Message":"400 Error"}' }
+      let(:status) { 400 }
+
+      it 'returns an error' do
+        expect { get_user_info_response }.to raise_error(RuntimeError, '400 Error')
+      end
+    end
+  end
 end

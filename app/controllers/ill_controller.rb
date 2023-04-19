@@ -15,7 +15,7 @@ class IllController < ApplicationController
   def new
     raise NewHoldException, 'Error' if params[:catkey].blank?
 
-    if patron.ill_ineligible?
+    if patron.ill_ineligible? || patron.ill_blocked?
       redirect_to new_hold_path(catkey: params[:catkey])
     else
       form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],

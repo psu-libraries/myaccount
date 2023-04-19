@@ -51,12 +51,25 @@ class IlliadClient
     ill_get_request(webaccess_id, holds_query)
   end
 
+  def get_user_info(webaccess_id)
+    ill_get_user_request(webaccess_id)
+  end
+
   private
 
     def ill_get_request(webaccess_id, query)
       ill_response = request("/ILLiadWebPlatform/Transaction/UserRequests/#{webaccess_id}?$filter=" + query)
       if ill_response.status == 200
         JSON.parse(ill_response).map { |record| IllLoan.new(record) }
+      else
+        raise JSON.parse(ill_response)['Message']
+      end
+    end
+
+    def ill_get_user_request(webaccess_id)
+      ill_response = request("/ILLiadWebPlatform/Users/#{webaccess_id}")
+      if ill_response.status == 200
+        JSON.parse(ill_response)
       else
         raise JSON.parse(ill_response)['Message']
       end

@@ -58,6 +58,13 @@ class Patron
     'UNENROLLED'
   ].freeze
 
+  ILL_BLOCKED_CLEARANCES = [
+    'DIS',
+    'B',
+    'BO',
+    'BX'
+  ].freeze
+
   validates_presence_of :key
 
   def initialize(record)
@@ -140,6 +147,11 @@ class Patron
 
   def ill_ineligible?
     ILL_INELIGIBLE_PROFILES.include?(profile)
+  end
+
+  def ill_blocked?
+    json = IlliadClient.new.get_user_info(id)
+    ILL_BLOCKED_CLEARANCES.include?(json['Cleared'])
   end
 
   private

@@ -5,10 +5,11 @@ require 'rails_helper'
 RSpec.describe IllController do
   let(:mock_patron) do
     instance_double(Patron, barcode: '12345678', library: 'UP_PAT', key: '1234567', ill_ineligible?: ill_ineligible,
-                            standing_human:)
+                            ill_blocked?: ill_blocked, standing_human:)
   end
   let(:bib) { instance_double(Bib, title: 'Some Great Book', author: 'Great Author', shadowed?: false) }
   let(:ill_ineligible) { false }
+  let(:ill_blocked) { false }
   let(:standing_human) { '' }
 
   before do
@@ -110,6 +111,15 @@ RSpec.describe IllController do
           get :new, params: { catkey: 1 }
 
           expect(assigns(:place_loan_form_params)).to eq(form_params)
+        end
+      end
+
+      context 'when patron is blocked or disavowed by ILLiad' do
+        let(:ill_blocked) { true }
+
+        it 'redirects to holds/new' do
+          get :new, params: { catkey: 1 }
+          expect(response).to redirect_to new_hold_path(catkey: 1)
         end
       end
 
