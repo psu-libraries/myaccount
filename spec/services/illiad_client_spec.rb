@@ -264,14 +264,14 @@ RSpec.describe IlliadClient do
       stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/test123")
         .with(body: nil,
               headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
-        .to_return(status: status, body: return_body)
+        .to_return(status:, body: return_body)
     end
 
     context 'when getting user info is successful' do
       it 'returns ILLiad user data' do
         expect(get_user_info_response['Cleared']).to eq 'Yes'
       end
-    end 
+    end
 
     context 'when getting user info is unsuccessful' do
       let(:return_body) { '{"Message":"400 Error"}' }
