@@ -65,8 +65,9 @@ RSpec.describe 'Summaries' do
           'TransactionStatus+eq+%27Awaiting+Post+Receipt+Processing%27+or+TransactionStatus+eq+%27Request+Sent' \
           '%27+or+TransactionStatus+eq+%27In+Transit+to+Pickup+Location%27+or+TransactionStatus+eq+%27Customer+' \
           'Notified+via+E-Mail%27+or+TransactionStatus+eq+%27Cancelled+by+Customer%27+or+TransactionStatus+eq+' \
-          '%27Duplicate+Request+Review%27+or+TransactionStatus+eq+%27Request+Available+Locally%27+or+' \
-          'TransactionStatus+eq+%27LST+TESTING%27or+%28startswith%28+TransactionStatus%2C+%27STAFF%27%29%29%29' }
+          '%27Duplicate+Request+Review%27+or+TransactionStatus+eq+%27Request+Available+Locally%27+or+Transacti' \
+          'onStatus+eq+%27Pattee+Notices%27+or+TransactionStatus+eq+%27LST+TESTING%27or+%28startswith%28+Transacti' \
+          'onStatus%2C+%27STAFF%27%29%29%29' }
       let(:checkout) {
         'ILLiadWebPlatform/Transaction/UserRequests/PATRON2?$filter=%28RequestType+eq+%27Loan%27%29+and+%28%28' \
           'TransactionStatus+eq+%27Checked+Out+to+Customer%27%29+or+%28TransactionStatus+eq+%27Awaiting+Recalled' \

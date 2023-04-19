@@ -24,7 +24,7 @@
       <%= label_tag :accept_ebook, t('myaccount.ill.new_loan.accept_ebook') %>
     </p>
 
-    <%= render PlaceHoldCheckboxWrapperComponent.new volumetric_calls: @place_loan_form_params[:volumetric_calls] %>
+    <%= render IllPlaceHoldCheckboxWrapperComponent.new volumetric_calls: @place_loan_form_params[:volumetric_calls] %>
 
     <div class="form-group">
       <%= label_tag :note, t('myaccount.ill.new_loan.notes') %>

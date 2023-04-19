@@ -13,6 +13,10 @@
                                                      make_default: true,
                                                      is_ill: false } %>
   <%= render PlaceHoldCheckboxWrapperComponent.new volumetric_calls: @place_hold_form_params[:volumetric_calls] %>
+  <% if @patron.ill_ineligible? %>
+    <p> A local copy isn't available. You can select 'Place Hold' to join the holds list for when one is returned.
+    <br>Also consider checking at your local library or asking if they can get a copy for you through Interlibrary Loan. </p>
+<% end %>
   <%= submit_tag('Place Hold', class: 'btn btn-info') %>
   <%= link_to 'Cancel', Rails.application.config.catalog_url + @place_hold_form_params[:catkey], class: 'btn btn-danger' %>
 <% end %>
