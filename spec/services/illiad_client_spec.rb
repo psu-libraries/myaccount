@@ -5,6 +5,13 @@ require 'rails_helper'
 RSpec.describe IlliadClient do
   subject(:client) { described_class.new }
 
+  let(:mock_patron) do
+    instance_double(Patron, barcode: '12345678', email_address: 'abc123@psu.edu', profile: 'profile',
+                            last_name: 'smith', first_name: 'bob', id: 'abc123', library: 'UP_PAT',
+                            key: '1234567', ill_ineligible?: false,
+                            standing_human: '')
+  end
+
   describe '#place_loan' do
     let(:params_with_note) do
       {
@@ -67,12 +74,12 @@ RSpec.describe IlliadClient do
 
     context 'when notes are added' do
       before do
-        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/")
           .with(body: request_body,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200, body: { TransactionNumber: 1234 }.to_json)
 
-        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/transaction/1234/notes")
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/transaction/1234/notes")
           .with(body: { Note: params_with_note[:note][:body] }.to_json,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 201)
@@ -85,7 +92,7 @@ RSpec.describe IlliadClient do
 
     context 'when place hold is successful' do
       before do
-        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/")
           .with(body: request_body,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200)
@@ -98,7 +105,7 @@ RSpec.describe IlliadClient do
 
     context 'when place hold is unsuccessful' do
       before do
-        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/")
           .with(body: request_body,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 400)
@@ -114,7 +121,7 @@ RSpec.describe IlliadClient do
       let(:request_call_numbers) { 'call_number1, call_number2' }
 
       before do
-        stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/")
           .with(body: request_body,
                 headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
           .to_return(status: 200)
@@ -122,6 +129,41 @@ RSpec.describe IlliadClient do
 
       it 'returns status success' do
         expect(place_loan_response.status).to eq 200
+      end
+    end
+  end
+
+  describe '#find_or_create_user' do
+    context 'when the user does exist' do
+      let (:resp) { client.find_or_create_user(mock_patron) }
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 200)
+      end
+
+      it 'returns 200' do
+        expect(resp.status).to eq(200)
+      end
+    end
+
+    context 'when the user does not exist' do
+      let (:resp) { client.find_or_create_user(mock_patron) }
+
+      before do
+        stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+          .with(body: nil,
+                headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 404)
+        stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Users")
+          .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+          .to_return(status: 200)
+      end
+
+      it 'returns 200' do
+        expect(resp.status).to eq(200)
       end
     end
   end
@@ -172,7 +214,7 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns an error' do
-        expect { get_loan_checkouts_response }.to raise_error(RuntimeError, '400 Error')
+        expect { get_loan_checkouts_response }.to raise_error(StandardError, '400 Error')
       end
     end
   end
@@ -243,7 +285,7 @@ RSpec.describe IlliadClient do
       end
 
       it 'returns an error' do
-        expect { get_loan_holds_response }.to raise_error(RuntimeError, '400 Error')
+        expect { get_loan_holds_response }.to raise_error(StandardError, '400 Error')
       end
     end
   end

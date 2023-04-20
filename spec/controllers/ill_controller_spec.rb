@@ -4,7 +4,9 @@ require 'rails_helper'
 
 RSpec.describe IllController do
   let(:mock_patron) do
-    instance_double(Patron, barcode: '12345678', library: 'UP_PAT', key: '1234567', ill_ineligible?: ill_ineligible,
+    instance_double(Patron, barcode: '12345678', email_address: 'abc123@psu.edu', profile: 'profile',
+                            last_name: 'smith', first_name: 'bob', id: 'abc123', library: 'UP_PAT',
+                            key: '1234567', ill_ineligible?: ill_ineligible,
                             standing_human:)
   end
   let(:bib) { instance_double(Bib, title: 'Some Great Book', author: 'Great Author', shadowed?: false) }
@@ -13,6 +15,11 @@ RSpec.describe IllController do
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)
+    stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+      .with(
+        headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key }
+      )
+      .to_return(status: 200, body: {}.to_json, headers: {})
   end
 
   context 'with an authenticated request' do
@@ -43,6 +50,34 @@ RSpec.describe IllController do
       before do
         allow(PlaceHoldForm::Builder).to receive(:new).and_return(form_builder)
         allow(form_builder).to receive(:generate).and_return(form_params)
+      end
+
+      context 'when a user needs created' do
+        before do
+          stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+            .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 404, body: {}.to_json, headers: {})
+          stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Users")
+            .to_return(status: 200)
+        end
+
+        it 'creates a user and places a hold' do
+          get :new, params: { catkey: 1 }
+          expect(response).to redirect_to summaries_path
+        end
+      end
+
+      context 'when patron is in bad standing' do
+        before do
+          stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+            .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 200, body: { Cleared: 'BO' }.to_json, headers: {})
+        end
+
+        it 'redirects to holds' do
+          get :new, params: { catkey: 1 }
+          expect(response).to redirect_to new_hold_path(catkey: 1)
+        end
       end
 
       context 'when patron is barred' do
@@ -174,7 +209,10 @@ RSpec.describe IllController do
 
       context 'when place loan successful' do
         before do
-          stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+          stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+            .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 200, body: {}.to_json)
+          stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/")
             .with(body: request_body,
                   headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
             .to_return(status: 200, body: { TransactionNumber: 1234 }.to_json)
@@ -195,7 +233,10 @@ RSpec.describe IllController do
 
       context 'when place loan fails' do
         before do
-          stub_request(:post, "#{Settings.illiad.url}/IlliadWebPlatform/Transaction/")
+          stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
+            .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
+            .to_return(status: 200, body: {}.to_json)
+          stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Transaction/")
             .with(body: request_body,
                   headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
             .to_return(status: 400, body: { TransactionNumber: 1234 }.to_json)

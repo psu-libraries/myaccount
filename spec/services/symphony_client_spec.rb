@@ -43,7 +43,7 @@ RSpec.describe SymphonyClient do
     before do
       stub_request(:get, "#{Settings.symws.url}/user/patron/search")
         .with(headers: Settings.symws.default_headers.to_h.merge('X-Sirs-Sessiontoken': 'token'),
-              query: hash_including(includeFields: '*'))
+              query: hash_including(includeFields: '*,address1'))
         .to_return(status: 200,
                    body: { result: [{ key: Settings.symws.patron_key, fields: '' }] }.to_json)
     end

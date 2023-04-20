@@ -20,13 +20,48 @@ class IlliadClient
       ItemInfo2: call_numbers(params)
     }
 
-    request('/IlliadWebPlatform/Transaction/', method: :post, json: body)
+    request('/ILLiadWebPlatform/Transaction/', method: :post, json: body)
   end
 
   def add_loan_note(transaction_id, note)
-    request("/IlliadWebPlatform/transaction/#{transaction_id}/notes",
+    request("/ILLiadWebPlatform/transaction/#{transaction_id}/notes",
             method: :post,
             json: { Note: note })
+  end
+
+  def illiad_user(webaccess_id)
+    request("/ILLiadWebPlatform/Users/#{webaccess_id}")
+  end
+
+  def patron_bad_standing?(patron)
+    bad_standings = ['BO', 'DIS', 'B', 'BX']
+    user_record = illiad_user(patron.id)
+
+    JSON.parse(user_record.body)&.dig('Cleared').in?(bad_standings)
+  end
+
+  def find_or_create_user(patron)
+    body = {
+      Username: patron.id,
+      ExternalUserId: patron.id,
+      LastName: patron.last_name,
+      FirstName: patron.first_name,
+      AuthType: 'Default',
+      Status: patron.profile,
+      Cleared: 'No',
+      NVTGC: 'UPILL',
+      EMailAddress: patron.email_address,
+      Site: Settings.illiad_locations[patron.library],
+      Organization: patron.library,
+      DeliveryMethod: 'Hold for Pickup',
+      LoanDeliveryMethod: 'Hold for Pickup',
+      NotificationMethod: 'Electronic'
+    }
+
+    illiad_user = illiad_user(patron.id)
+    return illiad_user if illiad_user.status == 200
+
+    request('/ILLiadWebPlatform/Users', method: :post, json: body)
   end
 
   def place_loan(transaction_info, params)

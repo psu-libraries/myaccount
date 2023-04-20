@@ -47,6 +47,7 @@ class SymphonyClient
                                        includeFields: [
                                          '*',
                                          'customInformation{patronExtendedInformation{*}}',
+                                         'address1',
                                          *patron_linked_resources_fields(item_details)
                                        ].join(',')
                                      })
@@ -217,7 +218,7 @@ class SymphonyClient
                                      headers: { 'x-sirs-sessionToken': session_token },
                                      params: {
                                        q: "ALT_ID:#{remote_user.upcase}",
-                                       includeFields: '*'
+                                       includeFields: '*,address1'
                                      })
     if response.status > 200
       Rails.logger.error("Error getting patron record with message #{JSON.parse(response.body)}")

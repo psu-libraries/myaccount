@@ -31,6 +31,45 @@ redis:
   database:
     uri: <%= ENV.fetch("REDIS_DATABASE_URI") { "redis://127.0.0.1:6379/2" } %>
 matomo_id: 11
+illiad_locations:
+  ABINGTON: Abington
+  ALTOONA: Altoona
+  BEAVER: Beaver
+  BEHREND: Behrend
+  BERKS: Berks
+  BRANDYWINE: Brandywine
+  DUBOIS: DuBois
+  DSL-UP: Pattee Commons Services Desk
+  FAYETTE: Fayette
+  GALLEGHENY: Greater Allegheny
+  GREATVLY: Great Valley
+  HARRISBURG: Harrisburg
+  HAZLETON: Hazleton
+  LEHIGHVLY: Lehigh Valley
+  MONTALTO: Mont Alto
+  NEWKEN: New Kensington
+  SCHUYLKILL: Schuylkill
+  WSCRANTON: Scranton
+  SHENANGO: Shenango
+  WILKESBAR: Wilkes-Barre
+  WORLD: World
+  YORK: York
+  DSL-CARL: Dickinson Law - Carlisle
+  UP-ARCHIT: Pattee Commons Services Desk
+  UP-ARTSHUM: Pattee Commons Services Desk
+  UP-BUSINES: Pattee Commons Services Desk
+  UP-EDUBEHV: Pattee Commons Services Desk
+  UP-EMS: Pattee Commons Services Desk
+  UP-ENGIN: Pattee Commons Services Desk
+  UP-LIFESCI: Pattee Commons Services Desk
+  UP-MAPS: Pattee Commons Services Desk
+  UP-MEDICAL: Pattee Commons Services Desk
+  UP-MICRO: Pattee Commons Services Desk
+  UP-OFFICE: Pattee Commons Services Desk
+  UP-PAMS: Pattee Commons Services Desk
+  UP-PAT: Pattee Commons Services Desk
+  UP-SOCSCI: Pattee Commons Services Desk
+  UP-SPECCOL: Pattee Commons Services Desk
 pickup_locations:
   UP-PAT: 'Pattee and Paterno Library - Commons Services Desk'
   UP-ARCHIT: 'Architecture & Landscape Architecture Library, 111 Stuckeman'

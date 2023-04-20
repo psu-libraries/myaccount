@@ -4,6 +4,7 @@ class IllController < ApplicationController
   before_action :set_cache_headers
   before_action :authenticate_user!
   before_action :patron_barred
+  before_action :validate_or_create_illiad_user
   before_action :check_for_blanks!, only: :create
   before_action :unless_maintenance_mode, only: :new
   rescue_from NewHoldException, with: :deny_new
@@ -15,18 +16,14 @@ class IllController < ApplicationController
   def new
     raise NewHoldException, 'Error' if params[:catkey].blank?
 
-    if patron.ill_ineligible?
-      redirect_to new_hold_path(catkey: params[:catkey])
-    else
-      form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
-                                                user_token: current_user.session_token,
-                                                client: symphony_client,
-                                                library: patron.library)
+    form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
+                                              user_token: current_user.session_token,
+                                              client: symphony_client,
+                                              library: patron.library)
 
-      @place_loan_form_params = form_builder.generate
+    @place_loan_form_params = form_builder.generate
 
-      raise NewHoldException, 'Error' if @place_loan_form_params.blank?
-    end
+    raise NewHoldException, 'Error' if @place_loan_form_params.blank?
   end
 
   # Handles placing loan
@@ -106,6 +103,16 @@ class IllController < ApplicationController
       return {} if result.nil?
 
       JSON.parse(result)
+    end
+
+    def validate_or_create_illiad_user
+      illiad_client = IlliadClient.new
+
+      if patron.ill_ineligible? ||
+          illiad_client.patron_bad_standing?(patron) ||
+          !illiad_client.find_or_create_user(patron).status.ok?
+        redirect_to new_hold_path(catkey: params[:catkey])
+      end
     end
 
     def check_for_blanks!
