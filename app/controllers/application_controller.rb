@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
     end
 
     def patron_barred
-      if patron.standing_human.present?
+      if patron.standing_human.present? && patron.standing_human == 'The user is BARRED.'
         flash[:error] = t 'myaccount.hold.new_hold.patron_barred'
 
         redirect_to summaries_path
