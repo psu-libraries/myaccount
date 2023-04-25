@@ -105,7 +105,7 @@ GEM
     config (2.2.3)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
-    connection_pool (2.4.0)
+    connection_pool (2.3.0)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -297,8 +297,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redis (4.2.5)
-    redis-client (0.14.1)
-      connection_pool
     regexp_parser (2.6.1)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -356,11 +354,10 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     semantic_range (3.0.0)
-    sidekiq (7.0.8)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.11.0)
+    sidekiq (6.4.2)
+      connection_pool (>= 2.2.2)
+      rack (~> 2.0)
+      redis (>= 4.2.0)
     simple_json_log_formatter (0.3.0)
     simplecov (0.17.1)
       docile (~> 1.1)
@@ -459,7 +456,7 @@ DEPENDENCIES
   rexml
   rspec-rails (~> 6.0.1)
   selenium-webdriver
-  sidekiq (~> 7.0.8)
+  sidekiq (~> 6.4.0)
   simple_json_log_formatter
   simplecov (< 0.18)
   sinatra
