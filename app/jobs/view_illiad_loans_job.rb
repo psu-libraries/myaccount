@@ -7,10 +7,10 @@ class ViewIlliadLoansJob < ApplicationJob
 
   LOAN_TYPES = %i{holds checkouts}.freeze
 
-  def perform(webaccess_id:, type:)
+  def perform(webaccess_id:, library:, type:)
     raise StandardError, "Invalid Loan Type '#{type}'.  Must be :holds or :checkouts." unless LOAN_TYPES.include?(type)
 
-    illiad_loans = IlliadClient.new.send("get_loan_#{type}", webaccess_id)
+    illiad_loans = IlliadClient.new.send("get_loan_#{type}", webaccess_id, library)
 
     html = HoldsController.render template: "#{type}/ill_#{type}", layout: false, locals: { illiad_loans: }
 

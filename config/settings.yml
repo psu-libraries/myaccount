@@ -23,6 +23,7 @@ symws:
     sd_prompt_return: <%= ENV.fetch("SYMWS_EDIT_OVERRIDE") { nil } %>
 illiad:
   url: <%= ENV.fetch("ILL_URL") { nil } %>
+  hershey_url: 
   api_key: <%= ENV.fetch("ILL_API_KEY") { nil } %>
   manage_url: https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll?Action=10&Form=10
 redis:

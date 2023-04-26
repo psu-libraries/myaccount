@@ -24,7 +24,8 @@ Warden::Strategies.add(:library_id) do
         username: remote_user,
         name: response['fields']['displayName'],
         patron_key: response['patronKey'],
-        session_token: response['sessionToken']
+        session_token: response['sessionToken'],
+        library_key: response['fields']['library']['key']
       }
 
       success!(user)
