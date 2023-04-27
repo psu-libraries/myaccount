@@ -10,6 +10,6 @@ class User
   end
 
   def library_ill_path_key
-    library == "HERSHEY" ? "mhy" : "upm"
+    library == 'HERSHEY' ? 'mhy' : 'upm'
   end
 end
