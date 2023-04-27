@@ -17,6 +17,7 @@ RSpec.describe 'ill/result.html.erb' do
   before do
     allow(mock_patron).to receive(:display_name).and_return('Jane Doe')
     allow(mock_patron).to receive(:key).and_return('12345')
+    allow(mock_patron).to receive(:library).and_return('UP-PAT')
 
     controller.singleton_class.class_eval do
       protected

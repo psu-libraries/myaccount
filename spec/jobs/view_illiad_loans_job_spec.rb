@@ -4,7 +4,8 @@ require 'rails_helper'
 
 RSpec.describe ViewIlliadLoansJob do
   let(:ill_args) { { webaccess_id: 'abc123',
-                     type: } }
+                     type:,
+                     library: 'UP-PAT' } }
 
   after do
     Redis.current.flushall
