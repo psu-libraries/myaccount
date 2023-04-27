@@ -25,7 +25,7 @@ Warden::Strategies.add(:library_id) do
         name: response['fields']['displayName'],
         patron_key: response['patronKey'],
         session_token: response['sessionToken'],
-        library_key: response['fields']['library']['key']
+        library: response['fields']['library']['key']
       }
 
       success!(user)

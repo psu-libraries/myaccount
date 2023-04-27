@@ -7,7 +7,7 @@
          <%= render PlaceHoldErrorComponent.new result: place_loan_result[:error], bib: @bib %>
       </ul>
       <div class="card-footer bg-transparent">
-        <p class="text-secondary"><%= t('myaccount.ill.place_loan.error_html') %></p>
+        <p class="text-secondary"><%= t('myaccount.ill.place_loan.error_html', current_user.library_ill_path_key) %></p>
       </div>
     </div>
 <% end %>

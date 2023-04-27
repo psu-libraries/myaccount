@@ -125,7 +125,7 @@ class IllController < ApplicationController
       flash[:error] = if params['catkey'].blank?
                         t 'myaccount.hold.new_hold.catkey_missing'
                       else
-                        t 'myaccount.hold.new_hold.error_html'
+                        t 'myaccount.hold.new_hold.error_html', current_user.library_ill_path_key
                       end
 
       redirect_to summaries_path

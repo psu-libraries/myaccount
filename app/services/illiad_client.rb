@@ -2,12 +2,6 @@
 
 # HTTP client wrapper for making requests to ILLiad Web Platform API
 class IlliadClient
-  attr_accessor :library
-
-  def initialize(library)
-    @library = library
-  end
-
   def add_loan_transaction(transaction_info, params)
     body = {
       Username: transaction_info.username,
@@ -55,7 +49,7 @@ class IlliadClient
       AuthType: 'Default',
       Status: patron.profile,
       Cleared: 'No',
-      NVTGC: 'UPILL',
+      NVTGC: (patron.library == 'HERSHEY' ? 'MHY' : 'UPILL'),
       EMailAddress: patron.email_address,
       Site: Settings.illiad_locations[patron.library],
       Organization: patron.library,
@@ -147,11 +141,7 @@ class IlliadClient
     end
 
     def base_url
-      if library == "HERSHEY"
-        Settings.illiad.hershey_url
-      else
-        Settings.illiad.url
-      end
+      Settings.illiad.url
     end
 
     def headers

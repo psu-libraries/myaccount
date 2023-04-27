@@ -17,7 +17,7 @@ class HoldsController < ApplicationController
     @username = current_user.username
     ws_args = { patron_key: @patron_key, session_token: current_user.session_token }
     ViewHoldsJob.perform_later **ws_args
-    ill_args = { webaccess_id: @username, library: current_user.library_key, type: :holds }
+    ill_args = { webaccess_id: @username, type: :holds, library: current_user.library }
     ViewIlliadLoansJob.perform_later(**ill_args)
 
     render
@@ -108,7 +108,7 @@ class HoldsController < ApplicationController
       flash[:error] = if params['catkey'].blank?
                         t 'myaccount.hold.new_hold.catkey_missing'
                       else
-                        t 'myaccount.hold.new_hold.error_html'
+                        t 'myaccount.hold.new_hold.error_html', library: current_user.library_ill_path_key
                       end
 
       redirect_to summaries_path
