@@ -3,7 +3,7 @@
     <div class='row pl-3 pt-2 pb-3'>
       <h1>Interlibrary Loan Requests</h1>
       <p class='pl-2 pt-2'>
-        (<a href="<%= library == "HERSHEY" ? Settings.illiad.manage_hershey_url : Settings.illiad.manage_url %>">Manage your Interlibrary Loan Requests</a>)
+        (<a href="<%= ill_manage_link(library) %>">Manage your Interlibrary Loan Requests</a>)
       </p>
     </div>
     <thead>
