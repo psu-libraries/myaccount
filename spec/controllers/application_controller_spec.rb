@@ -10,8 +10,7 @@ RSpec.describe ApplicationController do
                     username: 'zzz123',
                     name: 'Zeke',
                     patron_key: '1234567',
-                    session_token: 'e0b5e1a3e86a399112b9eb893daeacfd',
-                    library: 'UP-PAT')
+                    session_token: 'e0b5e1a3e86a399112b9eb893daeacfd')
   }
 
   before do
@@ -28,8 +27,7 @@ RSpec.describe ApplicationController do
       expect(controller.current_user).to have_attributes username: 'zzz123',
                                                          name: 'Zeke',
                                                          patron_key: '1234567',
-                                                         session_token: 'e0b5e1a3e86a399112b9eb893daeacfd',
-                                                         library: 'UP-PAT'
+                                                         session_token: 'e0b5e1a3e86a399112b9eb893daeacfd'
     end
   end
 

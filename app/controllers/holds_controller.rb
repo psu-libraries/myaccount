@@ -17,7 +17,7 @@ class HoldsController < ApplicationController
     @username = current_user.username
     ws_args = { patron_key: @patron_key, session_token: current_user.session_token }
     ViewHoldsJob.perform_later **ws_args
-    ill_args = { webaccess_id: @username, type: :holds, library: current_user.library }
+    ill_args = { webaccess_id: @username, type: :holds, library: patron.library }
     ViewIlliadLoansJob.perform_later(**ill_args)
 
     render

@@ -9,10 +9,11 @@ class CheckoutsController < ApplicationController
   #
   # GET /checkouts
   def index
+    byebug
     @username = current_user.username
     ws_args = { patron_key: current_user.patron_key, session_token: current_user.session_token }
     ViewCheckoutsJob.perform_later **ws_args
-    ill_args = { webaccess_id: @username, type: :checkouts, library: current_user.library }
+    ill_args = { webaccess_id: @username, type: :checkouts, library: patron.library }
     ViewIlliadLoansJob.perform_later(**ill_args)
 
     @patron_key = current_user.patron_key
