@@ -24,7 +24,6 @@ symws:
 illiad:
   url: <%= ENV.fetch("ILL_URL") { nil } %>
   api_key: <%= ENV.fetch("ILL_API_KEY") { nil } %>
-
 redis:
   sidekiq:
     uri: <%= ENV.fetch("REDIS_SIDEKIQ_URI") { "redis://127.0.0.1:6379/1" } %>
