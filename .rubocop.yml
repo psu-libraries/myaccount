@@ -54,6 +54,7 @@ RSpec/NestedGroups:
     - 'spec/controllers/lending_policy_controller_spec.rb'
     - 'spec/features/holds_spec.rb'
     - 'spec/services/illiad_client_spec.rb' 
+    - 'spec/controllers/ill_controller_spec.rb'
 
 Lint/MissingSuper:
   Exclude:

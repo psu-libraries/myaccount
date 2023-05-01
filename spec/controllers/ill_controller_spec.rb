@@ -57,13 +57,45 @@ RSpec.describe IllController do
           stub_request(:get, "#{Settings.illiad.url}/ILLiadWebPlatform/Users/abc123")
             .with(headers: { 'Content-Type': 'application/json', ApiKey: Settings.illiad.api_key })
             .to_return(status: 404, body: {}.to_json, headers: {})
-          stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Users")
-            .to_return(status: 200)
         end
 
-        it 'creates a user and places a hold' do
-          get :new, params: { catkey: 1 }
-          expect(response).to redirect_to summaries_path
+        context 'when user is not a "HERSHEY" user' do
+          before do
+            stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Users")
+              .with(
+                body: '{"Username":"abc123","ExternalUserId":"abc123","LastName":"smith",' \
+                      '"FirstName":"bob","AuthType":"Default","Status":"profile","Cleared":' \
+                      '"No","NVTGC":"UPILL","EMailAddress":"abc123@psu.edu","Site":"Pattee C' \
+                      'ommons Services Desk","Organization":"UP-PAT","DeliveryMethod":"Hold for P' \
+                      'ickup","LoanDeliveryMethod":"Hold for Pickup","NotificationMethod":"Electronic"}'
+              )
+              .to_return(status: 200)
+          end
+
+          it 'creates a user and places a hold' do
+            get :new, params: { catkey: 1 }
+            expect(response).to redirect_to summaries_path
+          end
+        end
+
+        context 'when user is a "HERSHEY" user' do
+          before do
+            allow(mock_patron).to receive(:library).and_return 'HERSHEY'
+            stub_request(:post, "#{Settings.illiad.url}/ILLiadWebPlatform/Users")
+              .with(
+                body: '{"Username":"abc123","ExternalUserId":"abc123","LastName":"smit' \
+                      'h","FirstName":"bob","AuthType":"Default","Status":"profile","Cleare' \
+                      'd":"No","NVTGC":"MHY","EMailAddress":"abc123@psu.edu","Site":null,"O' \
+                      'rganization":"HERSHEY","DeliveryMethod":"Hold for Pickup","LoanDeliveryMet' \
+                      'hod":"Hold for Pickup","NotificationMethod":"Electronic"}'
+              )
+              .to_return(status: 200)
+          end
+
+          it 'creates a user with Hershey info and places a hold' do
+            get :new, params: { catkey: 1 }
+            expect(response).to redirect_to summaries_path
+          end
         end
       end
 
