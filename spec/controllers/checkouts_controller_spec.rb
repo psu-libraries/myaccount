@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe CheckoutsController do
-  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT') }
+  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP-PAT') }
 
   before do
     allow(controller).to receive(:patron).and_return(mock_patron)

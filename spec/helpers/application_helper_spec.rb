@@ -37,4 +37,18 @@ RSpec.describe ApplicationHelper do
       expect(helper.current_year).to eq 2100
     end
   end
+
+  describe '#ill_manage_link' do
+    context 'when passed a "library" argument of "HERSHEY"' do
+      it 'returns the link to manage Illiad data for Hershey' do
+        expect(helper.ill_manage_link('HERSHEY')).to eq Settings.illiad.manage_hershey_url
+      end
+    end
+
+    context 'when passed a "library" argument of "UP-PAT"' do
+      it 'returns the link to manage Illiad data for Hershey' do
+        expect(helper.ill_manage_link('UP-PAT')).to eq Settings.illiad.manage_url
+      end
+    end
+  end
 end

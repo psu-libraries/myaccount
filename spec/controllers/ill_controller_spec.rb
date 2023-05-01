@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe IllController do
   let(:mock_patron) do
     instance_double(Patron, barcode: '12345678', email_address: 'abc123@psu.edu', profile: 'profile',
-                            last_name: 'smith', first_name: 'bob', id: 'abc123', library: 'UP_PAT',
+                            last_name: 'smith', first_name: 'bob', id: 'abc123', library: 'UP-PAT',
                             key: '1234567', ill_ineligible?: ill_ineligible,
                             standing_human:)
   end

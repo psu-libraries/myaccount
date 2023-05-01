@@ -8,8 +8,4 @@ class User
   def initialize(attributes)
     super(attributes.with_indifferent_access.slice(:username, :name, :patron_key, :session_token, :library))
   end
-
-  def library_ill_path_key
-    library == 'HERSHEY' ? 'mhy' : 'upm'
-  end
 end
