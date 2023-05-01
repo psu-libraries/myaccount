@@ -108,12 +108,13 @@ RSpec.describe IllController do
 
         it 'redirects to holds' do
           get :new, params: { catkey: 1 }
+
           expect(response).to redirect_to new_hold_path(catkey: 1)
         end
       end
 
       context 'when patron is barred' do
-        let(:standing_human) { 'The user is barred.' }
+        let(:standing_human) { 'The user is BARRED.' }
 
         it 'sets a flash error message' do
           get :new, params: {}
@@ -125,6 +126,16 @@ RSpec.describe IllController do
           get :new, params: {}
 
           expect(response).to redirect_to summaries_path
+        end
+      end
+
+      context 'when patron is delinquent' do
+        let(:standing_human) { 'The user is DELINQUENT.' }
+
+        it 'sends the form parameters to the view' do
+          get :new, params: { catkey: 1 }
+
+          expect(assigns(:place_loan_form_params)).to eq(form_params)
         end
       end
 
