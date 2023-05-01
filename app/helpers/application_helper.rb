@@ -17,8 +17,8 @@ module ApplicationHelper
     Date.today.year
   end
 
-  def ill_manage_link(library)
-    library == 'HERSHEY' ? Settings.illiad.manage_hershey_url : Settings.illiad.manage_url
+  def ill_manage_link(library_key)
+    t('myaccount.ill.manage_url', library: library_key)
   end
 
   private

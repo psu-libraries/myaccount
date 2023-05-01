@@ -41,13 +41,13 @@ RSpec.describe ApplicationHelper do
   describe '#ill_manage_link' do
     context 'when passed a "library" argument of "HERSHEY"' do
       it 'returns the link to manage Illiad data for Hershey' do
-        expect(helper.ill_manage_link('HERSHEY')).to eq Settings.illiad.manage_hershey_url
+        expect(helper.ill_manage_link('mhy')).to eq I18n.t('myaccount.ill.manage_url', library: 'mhy')
       end
     end
 
     context 'when passed a "library" argument of "UP-PAT"' do
       it 'returns the link to manage Illiad data for Hershey' do
-        expect(helper.ill_manage_link('UP-PAT')).to eq Settings.illiad.manage_url
+        expect(helper.ill_manage_link('upm')).to eq I18n.t('myaccount.ill.manage_url', library: 'upm')
       end
     end
   end
