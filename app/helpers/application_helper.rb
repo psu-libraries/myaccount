@@ -18,7 +18,7 @@ module ApplicationHelper
   end
 
   def ill_manage_link(library)
-    library == "HERSHEY" ? Settings.illiad.manage_hershey_url : Settings.illiad.manage_url
+    library == 'HERSHEY' ? Settings.illiad.manage_hershey_url : Settings.illiad.manage_url
   end
 
   private
