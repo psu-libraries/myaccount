@@ -150,6 +150,10 @@ class Patron
     fields.dig('profile', 'key')
   end
 
+  def library_ill_path_key
+    library == 'HERSHEY' ? 'mhy' : 'upm'
+  end
+
   private
 
     def fields

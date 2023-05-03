@@ -80,5 +80,6 @@ en:
         accept_ebook: If the item is found to be available digitally within Penn State's subscriptions, will you use the e-book?
       place_loan:
         success_html: For interlibrary loan requests, you will receive a notice once items are available for pick up.
-        error_html: <strong>Sorry!</strong> there was an error in requesting this item. Please <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll">request it directly through our Interlibrary Loan form</a> or contact our ILL department at <a href="mailto:UL-ILLIAD-SUPPORT@psu.edu">UL-ILLIAD-SUPPORT@psu.edu</a>.
+        error_html: <strong>Sorry!</strong> there was an error in requesting this item. Please <a href="https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/%{library}/illiad.dll">request it directly through our Interlibrary Loan form</a> or contact our ILL department at <a href="mailto:UL-ILLIAD-SUPPORT@psu.edu">UL-ILLIAD-SUPPORT@psu.edu</a>.
+      manage_url: https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/%{library}/illiad.dll?Action=10&Form=10
     loading_html: Items are loading. Longer lists of items will take a few moments to load.

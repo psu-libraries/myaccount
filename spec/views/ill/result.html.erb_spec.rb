@@ -17,6 +17,7 @@ RSpec.describe 'ill/result.html.erb' do
   before do
     allow(mock_patron).to receive(:display_name).and_return('Jane Doe')
     allow(mock_patron).to receive(:key).and_return('12345')
+    allow(mock_patron).to receive(:library_ill_path_key).and_return('upm')
 
     controller.singleton_class.class_eval do
       protected
@@ -85,12 +86,28 @@ RSpec.describe 'ill/result.html.erb' do
       }.with_indifferent_access
     end
 
-    it 'renders success results' do
-      expect(rendered).to have_css 'h3', text: 'Interlibrary Loan Request Failed'
-      expect(rendered).to have_link 'Some Great Book / Great Author',
-                                    href: 'https://catalog.libraries.psu.edu/catalog/1'
-      expect(rendered).to have_content 'Failed loan'
-      expect(rendered).to have_content strip_tags(I18n.t('myaccount.ill.place_loan.error_html'))
+    context 'when user is not a "HERSHEY" user' do
+      it 'renders success results' do
+        expect(rendered).to have_css 'h3', text: 'Interlibrary Loan Request Failed'
+        expect(rendered).to have_link 'Some Great Book / Great Author',
+                                      href: 'https://catalog.libraries.psu.edu/catalog/1'
+        expect(rendered).to have_content 'Failed loan'
+        expect(rendered).to have_content strip_tags(I18n.t('myaccount.ill.place_loan.error_html', library: 'upm'))
+      end
+    end
+
+    context 'when user is a "HERSHEY" user' do
+      before do
+        allow(mock_patron).to receive(:library_ill_path_key).and_return('mhy')
+      end
+
+      it 'renders success results' do
+        expect(rendered).to have_css 'h3', text: 'Interlibrary Loan Request Failed'
+        expect(rendered).to have_link 'Some Great Book / Great Author',
+                                      href: 'https://catalog.libraries.psu.edu/catalog/1'
+        expect(rendered).to have_content 'Failed loan'
+        expect(rendered).to have_content strip_tags(I18n.t('myaccount.ill.place_loan.error_html', library: 'mhy'))
+      end
     end
   end
 end

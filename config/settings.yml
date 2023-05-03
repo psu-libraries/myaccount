@@ -24,7 +24,6 @@ symws:
 illiad:
   url: <%= ENV.fetch("ILL_URL") { nil } %>
   api_key: <%= ENV.fetch("ILL_API_KEY") { nil } %>
-  manage_url: https://psu-illiad-oclc-org.ezaccess.libraries.psu.edu/illiad/upm/illiad.dll?Action=10&Form=10
 redis:
   sidekiq:
     uri: <%= ENV.fetch("REDIS_SIDEKIQ_URI") { "redis://127.0.0.1:6379/1" } %>

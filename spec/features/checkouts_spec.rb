@@ -127,7 +127,8 @@ RSpec.describe 'Checkouts' do
         expect(page).to have_content 'Interlibrary Loan Checkouts'
         expect(page).to have_content 'The Book Title 1'
         expect(page).to have_content 'The Book Title 2'
-        expect(page).to have_link 'Manage your Interlibrary Loans', href: Settings.illiad.manage_url
+        expect(page).to have_link 'Manage your Interlibrary Loans',
+                                  href: I18n.t('myaccount.ill.manage_url', library: 'upm')
         expect(page).to have_content 'Author'
         expect(page).to have_content 'Due Date'
         expect(page).to have_content 'Status'

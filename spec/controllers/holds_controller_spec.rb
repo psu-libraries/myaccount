@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe HoldsController do
-  let(:mock_patron) { instance_double(Patron, barcode: '123456789', library: 'UP_PAT', standing_human:) }
+  let(:mock_patron) {
+ instance_double(Patron, barcode: '123456789', library: 'UP-PAT', library_ill_path_key: 'upm', standing_human:) }
   let(:standing_human) { '' }
   let(:holds) do
     [
