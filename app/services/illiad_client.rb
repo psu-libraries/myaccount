@@ -49,7 +49,7 @@ class IlliadClient
       AuthType: 'Default',
       Status: patron.profile,
       Cleared: 'No',
-      NVTGC: 'UPILL',
+      NVTGC: (patron.library == 'HERSHEY' ? 'MHY' : 'UPILL'),
       EMailAddress: patron.email_address,
       Site: Settings.illiad_locations[patron.library],
       Organization: patron.library,

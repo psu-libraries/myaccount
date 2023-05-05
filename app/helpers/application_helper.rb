@@ -17,6 +17,10 @@ module ApplicationHelper
     Date.today.year
   end
 
+  def ill_manage_link(library_key)
+    t('myaccount.ill.manage_url', library: library_key)
+  end
+
   private
 
     def active_controller?(name)

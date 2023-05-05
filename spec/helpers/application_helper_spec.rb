@@ -37,4 +37,18 @@ RSpec.describe ApplicationHelper do
       expect(helper.current_year).to eq 2100
     end
   end
+
+  describe '#ill_manage_link' do
+    context 'when passed a "library" argument of "mhy"' do
+      it 'returns the link to manage Illiad data for Hershey' do
+        expect(helper.ill_manage_link('mhy')).to eq I18n.t('myaccount.ill.manage_url', library: 'mhy')
+      end
+    end
+
+    context 'when passed a "library" argument of "upm"' do
+      it 'returns the link to manage Illiad data for Hershey' do
+        expect(helper.ill_manage_link('upm')).to eq I18n.t('myaccount.ill.manage_url', library: 'upm')
+      end
+    end
+  end
 end
