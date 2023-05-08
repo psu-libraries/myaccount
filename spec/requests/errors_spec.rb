@@ -58,6 +58,21 @@ RSpec.describe 'Errors' do
           expect(response.body).to include '<h4>We\'re sorry, but something went wrong.</h4>'
         end
       end
+
+      describe 'user not found' do
+        before { get '/user_not_found', headers: { Settings.remote_user_header => 'abc123@psu.edu' } }
+
+        it 'has http status 500' do
+          expect(response).to have_http_status('500')
+        end
+
+        it 'redirects to customized user_not_found error page' do
+          response_body = response.body
+          expect(response_body).to include '<h4>No account was found for abc123.</h4>'
+          expect(response_body).to include '<p>Contact your library or <a href="https' \
+                                           '://libraries.psu.edu/ask/">Ask a Librarian</a> for further assistance.</p>'
+        end
+      end
     end
 
     context 'when POST to errors route' do
