@@ -3,18 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe SessionsController do
-  let(:mock_client) { instance_double(SymphonyClient) }
-
-  before do
-    allow(SymphonyClient).to receive(:new).and_return(mock_client)
-  end
-
   context 'with an authenticated request' do
+    let(:mock_client) { instance_double(SymphonyClient) }
     let(:user) do
       { username: 'zzz123', patron_key: 1234567 }
     end
 
     before do
+      allow(SymphonyClient).to receive(:new).and_return(mock_client)
       warden.set_user(user)
     end
 
@@ -44,6 +40,17 @@ RSpec.describe SessionsController do
       it 'redirects to the root' do
         expect(get(:destroy)).to render_template 'destroy'
       end
+    end
+  end
+
+  context 'with an unauthenticated request due to no user in Symphony' do
+    before do
+      allow(SymphonyClient).to receive(:new).and_return(nil)
+      allow(controller).to receive(:authenticate_webaccess).and_return(nil)
+    end
+
+    it 'redirects to the user not found page' do
+      expect(get(:index)).to redirect_to '/user_not_found'
     end
   end
 end

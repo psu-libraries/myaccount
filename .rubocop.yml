@@ -27,6 +27,7 @@ Metrics/BlockLength:
   - 'config/environments/production.rb'
   - 'config/initializers/warden.rb'
   - 'spec/**/*'
+  - 'config/routes.rb'
 
 Layout/LineLength:
   Exclude:

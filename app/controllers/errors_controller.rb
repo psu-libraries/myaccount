@@ -15,4 +15,11 @@ class ErrorsController < ApplicationController
   def internal_server_error
     render status: :internal_server_error
   end
+
+  def user_not_found
+    render status: '500',
+           locals: {
+             user: request.env.fetch(Settings.remote_user_header, nil)&.split('@')&.first
+           }
+  end
 end
