@@ -60,5 +60,21 @@ RSpec.describe SirsiResponse::Error, type: :service do
                                                          'message' => 'Some error message' }]
       end
     end
+
+    context 'when an error for a checkout occurs that has a translation with a helper' do
+      let(:error_code) { 'acknowledgeRenewalFeeCircPrompt' }
+
+      it 'returns a generic error response in HTML' do
+        expect(error.html).to include '<p>This item cannot be automatically renewed. ' \
+                                      'Please contact <a href="mailto:ul-lending@lists.psu.edu">' \
+                                      'ul-lending@lists.psu.edu</a> for assistance in renewing the item. ' \
+                                      'Contact your campus library if you need assistance.'
+      end
+
+      it 'logs the server response from Sirsi' do
+        expect(error.log).to include 'messageList' => [{ 'code' => 'acknowledgeRenewalFeeCircPrompt',
+                                                         'message' => 'Some error message' }]
+      end
+    end
   end
 end

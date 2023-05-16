@@ -13,6 +13,10 @@ class SirsiResponse::Error
       'This item cannot be automatically renewed. Please contact ' \
       "#{ApplicationController.helpers.mail_to 'ul-lending@lists.psu.edu'} for assistance in renewing the item."
     ),
+    acknowledgeRenewalFeeCircPrompt: ActionController::Base.helpers.sanitize(
+      'This item cannot be automatically renewed. Please contact ' \
+      "#{ApplicationController.helpers.mail_to 'ul-lending@lists.psu.edu'} for assistance in renewing the item."
+    ),
     unhandledException: 'Denied: Item cannot be renewed.'
   }.with_indifferent_access
 
