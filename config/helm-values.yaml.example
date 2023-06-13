@@ -18,6 +18,12 @@ settings_local_yml:
 
 replicaCount: 1
 
+githubDeployment:
+  enabled: false
+
+vault:
+  enabled: false
+
 redis:
   storageClass: local-path
 
