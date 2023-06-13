@@ -1,0 +1,23 @@
+# Tilt setup for MyAccount
+
+## preqrequsites
+1.) kubernetes cluster with ingress-nginx installed
+
+## Configure MyAccount
+```
+cp config/helm-values.yaml.example config/helm-values.yaml
+
+# fill in the settings_local_yml.illiad.api_key, and settings_local_yml.symws.pin
+# make sure redis.storageClass is set properly for your environment
+```
+
+## Deploy MyAccount
+```
+tilt up
+```
+
+## Start Up MyAccount
+```
+./bin/k8s-exec
+
+```

@@ -55,3 +55,5 @@ coverage/
 .webdrivers/*
 vendor/*
 .cache/*
+.repos
+config/helm-values.yaml

@@ -1,0 +1,41 @@
+# Default values for myaccount.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+settings_local_yml:
+  illiad:
+    url: https://psu.illiad.oclc.org
+    # vault kv get -field=ILL_API_KEY secret/app/myaccount/dev
+    api_key: 
+  remote_user_header: HTTP_X_AUTH_REQUEST_EMAIL
+  symws:
+    additional_headers:
+      sd_prompt_return: "USER_EDIT_OVRCD/PRIVOVER"
+    url: https://cat-stage.libraries.psu.edu:28443/symwsbc
+    username: myaccount
+    # vault kv get -field=SYMWS_PIN secret/app/myaccount/dev
+    pin:
+
+replicaCount: 1
+
+fqdn: "myaccount.localdev.libraries.psu.edu"
+
+rails:
+  env: development
+
+command:
+- sleep
+- infinity
+
+liveness:
+  enabled: false
+  path: /
+readiness:
+  enabled: false
+  path: /health
+
+resources:
+  limits:
+    memory: 8Gi
+  requests:
+    memory: 1Gi
