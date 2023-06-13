@@ -20,4 +20,8 @@ tilt up
 ```
 ./bin/k8s-exec
 
+/app/bin/startup
+
+# your app should be available on https://myaccount.localdev.libraries.psu.edu
+
 ```
