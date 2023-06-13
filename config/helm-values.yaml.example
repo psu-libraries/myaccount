@@ -18,6 +18,9 @@ settings_local_yml:
 
 replicaCount: 1
 
+redis:
+  storageClass: local-path
+
 fqdn: "myaccount.localdev.libraries.psu.edu"
 
 rails:
