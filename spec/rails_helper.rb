@@ -36,7 +36,11 @@ require 'capybara/rspec'
 require 'webmock/rspec'
 require 'view_component/test_helpers'
 require 'axe/rspec'
+require 'webdrivers'
 
+# TODO remove this when webdrivers updates
+# https://github.com/titusfortner/webdrivers/issues/247
+Webdrivers::Chromedriver.required_version = '114.0.5735.90'
 ## Below picks up our mock objects as well as factory_bot config
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
