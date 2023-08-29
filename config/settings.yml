@@ -54,7 +54,6 @@ illiad_locations:
   WORLD: World
   YORK: York
   DSL-CARL: Dickinson Law - Carlisle
-  UP-ARCHIT: Pattee Commons Services Desk
   UP-ARTSHUM: Pattee Commons Services Desk
   UP-BUSINES: Pattee Commons Services Desk
   UP-EDUBEHV: Pattee Commons Services Desk
@@ -71,7 +70,6 @@ illiad_locations:
   UP-SPECCOL: Pattee Commons Services Desk
 pickup_locations:
   UP-PAT: 'Pattee and Paterno Library - Commons Services Desk'
-  UP-ARCHIT: 'Architecture & Landscape Architecture Library, 111 Stuckeman'
   UP-MEDICAL: 'College of Medicine (University Park)'
   HERSHEY: 'College of Medicine (Hershey)'
   DSL-CARL: 'Dickinson Law (Carlisle)'
@@ -129,7 +127,6 @@ pickup_locations_actual:
   SERIAL-SRV: 'Acquisitions (UP)'
   SHENANGO: 'Penn State Shenango'
   UP-ANNEX: 'Library Storage'
-  UP-ARCHIT: 'Architecture & Landscape Architecture Library, 111 Stuckeman'
   UP-ARTSHUM: 'Arts & Humanities Library (Pattee)'
   UP-BUSINES: 'Business Library (Paterno)'
   UP-EMS: 'Earth & Mineral Science Library, 105 Deike'
