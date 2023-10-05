@@ -20,7 +20,7 @@ gem 'puma', '~> 5.6'
 gem 'rails', '~> 6.1.0'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
-gem 'sidekiq', '~> 6.4.0'
+gem 'sidekiq', '~> 7.1.5'
 gem 'simplecov', '< 0.18', require: false, group: :test
 gem 'simple_json_log_formatter'
 gem 'view_component'
