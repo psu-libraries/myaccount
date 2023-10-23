@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   root to: 'sessions#index'
 
   require 'sidekiq/web'
-  Sidekiq::Web.set :sessions, false
   mount Sidekiq::Web => '/sidekiq'
 
   mount OkComputer::Engine, at: '/health'
