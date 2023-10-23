@@ -110,10 +110,7 @@ jobs:
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
           yarn test
-          bundle exec rspec --format doc
-          ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.rails.json coverage/.resultset.json
-          ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.jest.json coverage/lcov.info
-          ./cc-test-reporter sum-coverage  coverage/codeclimate.*.json -p 2 
+          bundle exec rspec
           ./cc-test-reporter upload-coverage
     - store_artifacts:
         path: coverage
