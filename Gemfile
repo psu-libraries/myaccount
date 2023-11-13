@@ -25,7 +25,7 @@ gem 'simplecov', '~> 0.22', require: false, group: :test
 gem 'simple_json_log_formatter'
 gem 'view_component'
 gem 'warden', '~> 1.2'
-gem 'webpacker'
+gem 'shakapacker', '~> 7.1'
 
 group :development do
   gem 'better_errors'
