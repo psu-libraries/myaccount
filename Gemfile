@@ -20,12 +20,12 @@ gem 'puma', '~> 5.6'
 gem 'rails', '~> 6.1.0'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
+gem 'shakapacker', '~> 7.1'
 gem 'sidekiq', '~> 7.1.5'
 gem 'simplecov', '~> 0.22', require: false, group: :test
 gem 'simple_json_log_formatter'
 gem 'view_component'
 gem 'warden', '~> 1.2'
-gem 'shakapacker', '~> 7.1'
 
 group :development do
   gem 'better_errors'
