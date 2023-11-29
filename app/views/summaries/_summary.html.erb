@@ -20,7 +20,7 @@
   <p>Library account record for <strong><%= patron.display_name %></strong></p>
 
   <% if illiad_response.illiad_checkouts.blank? && illiad_response.illiad_holds.blank? %>
-    <p>See and manage your <a href="<%= Settings.illiad.url %>">Interlibrary loans</a></p>
+    <p>See and manage your <a href="<%= ill_manage_link(patron.library_ill_path_key) %>">Interlibrary loans</a></p>
     <% if patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? %>
       <p>You do not have any outstanding materials or bills.</p>
     <% end %>

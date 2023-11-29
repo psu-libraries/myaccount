@@ -15,6 +15,7 @@ RSpec.describe 'summaries/index' do
       holds: [],
       fines:,
       eligible_for_wage_garnishment?: eligible_for_wage_garnishment,
+      library_ill_path_key: 'upm',
       **patron_standing
     )
   end
@@ -96,7 +97,8 @@ RSpec.describe 'summaries/index' do
         render
 
         expect(rendered).to include(
-          '<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>'
+          'See and manage your <a href="https://psu.illiad.oclc.org/illiad/upm/illiad.' \
+          'dll?Action=10&amp;Form=10">Interlibrary loans</a>'
         )
         expect(rendered).to include('You do not have any outstanding materials or bills.')
       end
@@ -111,7 +113,8 @@ RSpec.describe 'summaries/index' do
         render
 
         expect(rendered).not_to include(
-          '<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>'
+          'See and manage your <a href="https://psu.illiad.oclc.org/illiad/upm/illiad.' \
+          'dll?Action=10&amp;Form=10">Interlibrary loans</a>'
         )
         expect(rendered).not_to include('You do not have any outstanding materials or bills.')
       end
@@ -132,7 +135,8 @@ RSpec.describe 'summaries/index' do
         render
 
         expect(rendered).to include(
-          '<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>'
+          'See and manage your <a href="https://psu.illiad.oclc.org/illiad/upm/illiad.' \
+          'dll?Action=10&amp;Form=10">Interlibrary loans</a>'
         )
         expect(rendered).not_to include('You do not have any outstanding materials or bills.')
       end
@@ -147,7 +151,8 @@ RSpec.describe 'summaries/index' do
         render
 
         expect(rendered).not_to include(
-          '<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>'
+          'See and manage your <a href="https://psu.illiad.oclc.org/illiad/upm/illiad.' \
+          'dll?Action=10&amp;Form=10">Interlibrary loans</a>'
         )
         expect(rendered).not_to include('You do not have any outstanding materials or bills.')
       end
