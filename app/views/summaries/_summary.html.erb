@@ -19,9 +19,14 @@
 
   <p>Library account record for <strong><%= patron.display_name %></strong></p>
 
-  <% if patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? && illiad_response.illiad_checkouts.blank? && illiad_response.illiad_holds.blank? %>
+  <% if illiad_response.illiad_checkouts.blank? && illiad_response.illiad_holds.blank? %>
+    <p>See and manage your <a href="<%= Settings.illiad.url %>">Interlibrary loans</a></p>
+    <% if patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? %>
       <p>You do not have any outstanding materials or bills.</p>
-  <% else %>
+    <% end %>
+  <% end %>
+
+  <% unless illiad_response.illiad_checkouts.blank? && illiad_response.illiad_holds.blank? && patron.checkouts.blank? && patron.holds.blank? && patron.fines.blank? %>
     <div class="row">
       <%= render DashboardItemComponent.new(model: 'Fines',
                                             count: patron.fines&.sum(&:owed_amount),

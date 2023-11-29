@@ -18,6 +18,7 @@ RSpec.describe 'summaries/index' do
       **patron_standing
     )
   end
+  let(:patron_checkout) { instance_double(Checkout, recalled?: false, overdue?: false) }
 
   before do
     controller.singleton_class.class_eval do
@@ -82,14 +83,66 @@ RSpec.describe 'summaries/index' do
     end
   end
 
-  context 'when the patron does not have any checkouts, holds or bills' do
+  context 'when the patron does not have any symphony checkouts, holds or bills' do
     let(:patron_standing) { { standing_human: '' } }
     let(:fines) { [] }
 
-    it 'renders text for no materials and no bills' do
-      render
+    before do
+      allow(DashboardItemComponent).to receive(:new).and_return({ plain: 'OK' })
+    end
 
-      expect(rendered).to include('You do not have any outstanding materials or bills.')
+    context 'when the patron does not have any ILLiad holds or checkouts' do
+      it 'renders text for no materials and no bills and link to ILLiad' do
+        render
+
+        expect(rendered).to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).to include('You do not have any outstanding materials or bills.')
+      end
+    end
+
+    context 'when the patron does have an illiad hold or checkout' do
+      before do
+        allow(illiad_response).to receive(:illiad_holds).and_return [Object.new]
+      end
+      
+      it 'does not render text for no materials and no bills nor the link to ILLiad' do
+        render
+
+        expect(rendered).not_to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).not_to include('You do not have any outstanding materials or bills.')
+      end
+    end
+  end
+
+  context 'when the patron has symphony checkouts, holds or bills' do
+    let(:patron_standing) { { standing_human: '' } }
+    let(:fines) { [] }
+
+    before do
+      allow(patron).to receive(:checkouts).and_return([patron_checkout])
+      allow(DashboardItemComponent).to receive(:new).and_return({ plain: 'OK' })
+    end
+
+    context 'when the patron does not have any ILLiad holds or checkouts' do
+      it 'renders text for no materials and no bills and link to ILLiad' do
+        render
+
+        expect(rendered).to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).not_to include('You do not have any outstanding materials or bills.')
+      end
+    end
+
+    context 'when the patron does have an illiad hold or checkout' do
+      before do
+        allow(illiad_response).to receive(:illiad_holds).and_return [Object.new]
+      end
+      
+      it 'does not render text for no materials and no bills nor the link to ILLiad' do
+        render
+
+        expect(rendered).not_to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).not_to include('You do not have any outstanding materials or bills.')
+      end
     end
   end
 end
