@@ -95,7 +95,8 @@ RSpec.describe 'summaries/index' do
       it 'renders text for no materials and no bills and link to ILLiad' do
         render
 
-        expect(rendered).to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).to
+        include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
         expect(rendered).to include('You do not have any outstanding materials or bills.')
       end
     end
@@ -104,11 +105,12 @@ RSpec.describe 'summaries/index' do
       before do
         allow(illiad_response).to receive(:illiad_holds).and_return [Object.new]
       end
-      
+
       it 'does not render text for no materials and no bills nor the link to ILLiad' do
         render
 
-        expect(rendered).not_to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).not_to
+        include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
         expect(rendered).not_to include('You do not have any outstanding materials or bills.')
       end
     end
@@ -127,7 +129,8 @@ RSpec.describe 'summaries/index' do
       it 'renders text for no materials and no bills and link to ILLiad' do
         render
 
-        expect(rendered).to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).to
+        include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
         expect(rendered).not_to include('You do not have any outstanding materials or bills.')
       end
     end
@@ -136,11 +139,12 @@ RSpec.describe 'summaries/index' do
       before do
         allow(illiad_response).to receive(:illiad_holds).and_return [Object.new]
       end
-      
+
       it 'does not render text for no materials and no bills nor the link to ILLiad' do
         render
 
-        expect(rendered).not_to include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
+        expect(rendered).not_to
+        include('<p>See and manage your <a href="https://illiad.illiad/illiad">Interlibrary loans</a></p>')
         expect(rendered).not_to include('You do not have any outstanding materials or bills.')
       end
     end
