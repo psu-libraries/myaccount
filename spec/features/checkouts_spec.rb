@@ -31,6 +31,7 @@ RSpec.describe 'Checkouts' do
       it 'displays accessible checkouts section' do
         expect(page).to be_accessible
         expect(page).to have_content 'Checkouts/Renewals'
+        expect(page).to have_link 'Download all as RIS', href: 'https://catalog.k8s.libraries.psu.edu/bookmarks/bulk_ris/2145643,3591032'
         expect(page).not_to have_content 'Interlibrary Loan Checkouts'
       end
     end
