@@ -1,6 +1,9 @@
 <%= form_with url: renewals_batch_update_path, method: :patch, id: 'checkouts' do %>
     <table id="checkouts-table" class="table table-responsive-sm" role="table" aria-live="polite">
-      <caption><h2>Checkouts</h2></caption>
+      <caption>
+        <%= link_to "Download all as RIS", "#{Settings.catalog.bulk_ris_url}#{(checkouts.map { |c| c.catkey.to_s }).join(',')}", class: 'btn btn-primary float-right deflatten' %>
+        <h2>Checkouts</h2>
+      </caption>
       <thead>
       <tr>
         <th scope="col">
