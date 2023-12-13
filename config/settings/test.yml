@@ -11,3 +11,5 @@ symws:
     password: 'some_password'
   patron_key: 'some_patron_key'
   remote_user: 'remote_user'
+catalog:
+  bulk_ris_url: 'https://catalog.k8s.libraries.psu.edu/bookmarks/bulk_ris/'
