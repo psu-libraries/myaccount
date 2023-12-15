@@ -35,9 +35,9 @@ class CheckoutsController < ApplicationController
 
   def export_ill_ris
     ris_string = ''
-    ill_checkouts = IlliadClient.new.send("get_loan_checkouts", current_user.username)
-    
-    ill_checkouts.each_with_index do |checkout, i|
+    ill_checkouts = IlliadClient.new.send(:get_loan_checkouts, current_user.username)
+
+    ill_checkouts.each_with_index do |checkout, _i|
       ris_string += tag_format('TY', checkout.type)
       ris_string += tag_format('TI', checkout.title)
       ris_string += tag_format('A1', checkout.author)
@@ -47,7 +47,7 @@ class CheckoutsController < ApplicationController
       ris_string += tag_format('ET', checkout.edition)
       ris_string += 'ER  -\r\n'
     end
-    
+
     send_data ris_string, filename: 'document.ris', type: :ris
   end
 
