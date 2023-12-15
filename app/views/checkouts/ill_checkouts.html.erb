@@ -5,6 +5,9 @@
       <p class='pl-2 pt-2'>
         (<a href="<%= ill_manage_link(library_key) %>">Manage your Interlibrary Loans</a>)
       </p>
+      <p class="ml-auto">
+        <%= link_to 'Download all as RIS', export_ill_ris_path, class: 'btn btn-primary deflatten' %>
+      </p>
     </div>
     <thead>
 

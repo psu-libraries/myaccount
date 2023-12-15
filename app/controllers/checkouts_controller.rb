@@ -33,6 +33,24 @@ class CheckoutsController < ApplicationController
     render plain: 'Renew', status: :ok
   end
 
+  def export_ill_ris
+    ris_string = ''
+    ill_checkouts = IlliadClient.new.send("get_loan_checkouts", current_user.username)
+    
+    ill_checkouts.each_with_index do |checkout, i|
+      ris_string += tag_format('TY', checkout.type)
+      ris_string += tag_format('TI', checkout.title)
+      ris_string += tag_format('A1', checkout.author)
+      ris_string += tag_format('PY', checkout.date)
+      ris_string += tag_format('SN', checkout.identifier)
+      ris_string += tag_format('Y2', Time.now.strftime('%Y-%m-%d'))
+      ris_string += tag_format('ET', checkout.edition)
+      ris_string += 'ER  -\r\n'
+    end
+    
+    send_data ris_string, filename: 'document.ris', type: :ris
+  end
+
   private
 
     def checkouts_to_renew
@@ -43,5 +61,11 @@ class CheckoutsController < ApplicationController
       flash[:error] = 'An unexpected error has occurred'
 
       redirect_to checkouts_path
+    end
+
+    def tag_format(tag, value)
+      return '' unless value
+
+      "#{tag}  - #{value}\r\n"
     end
 end
