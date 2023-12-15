@@ -88,5 +88,46 @@ RSpec.describe CheckoutsController do
         expect(RenewCheckoutJob).to have_received(:perform_later).twice
       end
     end
+
+    describe '#export_ill_ris' do
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "DocumentType":"Book", "LoanDate":"2016",
+           "LoanAuthor":"Author1, Test", "LoanTitle":"The Book Title 1",
+           "ISSN":"1234567890", "LoanPlace":null, "LoanEdition":"edition"},
+          {"TransactionNumber":123457, "Username":"test123", "RequestType":"Loan",
+            "LoanAuthor":"Author2, Test", "LoanTitle":"The Book Title 2", "LoanPublisher":null,
+            "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"}]'
+      end
+      let(:expected_content_type) { 'application/x-research-info-systems' }
+      let(:expected_file_name) { 'document.ris' }
+
+      before do
+        stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+          .with(
+            headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            }
+          )
+          .to_return(status: 200, body: return_body, headers: {})
+      end
+
+      it 'exports ILL checkout data as an RIS file' do
+        get :export_ill_ris
+
+        expect(response.headers['Content-Disposition']).to include("attachment; filename=\"#{expected_file_name}\"")
+        expect(response.headers['Content-Type']).to eq(expected_content_type)
+        expect(response.body).to match(/TY  - BOOK/)
+        expect(response.body).to match(/TI  - The Book Title 1/)
+        expect(response.body).to match(/PY  - 2016/)
+        expect(response.body).to match(/SN  - 1234567890/)
+        expect(response.body).to match(/Y2/)
+        expect(response.body).to match(/ET  - edition/)
+        expect(response.body).to match(/TI  - The Book Title 2/)
+      end
+    end
   end
 end

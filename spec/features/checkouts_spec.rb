@@ -130,6 +130,7 @@ RSpec.describe 'Checkouts' do
         expect(page).to have_content 'The Book Title 2'
         expect(page).to have_link 'Manage your Interlibrary Loans',
                                   href: I18n.t('myaccount.ill.manage_url', library: 'upm')
+        expect(page).to have_link 'Download all as RIS', href: export_ill_ris_path
         expect(page).to have_content 'Author'
         expect(page).to have_content 'Due Date'
         expect(page).to have_content 'Status'

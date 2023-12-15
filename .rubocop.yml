@@ -68,6 +68,7 @@ RSpec/MultipleMemoizedHelpers:
     - 'spec/features/summaries_spec.rb'
     - 'spec/services/**/*'
     - 'spec/views/summaries/index.html.erb_spec.rb'
+    - 'spec/controllers/checkouts_controller_spec.rb'
 
 Rails/I18nLocaleTexts:
   Exclude:
