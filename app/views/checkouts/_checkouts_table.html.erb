@@ -1,7 +1,21 @@
 <%= form_with url: renewals_batch_update_path, method: :patch, id: 'checkouts' do %>
     <table id="checkouts-table" class="table table-responsive-sm" role="table" aria-live="polite">
       <caption>
-        <%= link_to 'Download all as RIS', "#{Settings.catalog.bulk_ris_url}#{(checkouts.map { |c| c.catkey.to_s }).join(',')}", class: 'btn btn-primary float-right deflatten' %>
+        <span class="dropdown float-right">
+          <button
+            class="btn btn-primary deflatten dropdown-toggle mb-2"
+            type="button"
+            id="export-checkouts-btn"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+            Export All Checkouts
+          </button>
+          <div class="dropdown-menu" aria-labelledby="export-checkout-btn">
+            <p><%= link_to 'RIS File', "#{Settings.catalog.bulk_ris_url}#{(checkouts.map { |c| c.catkey.to_s }).join(',')}" %></p>
+            <%= link_to 'Email', checkouts_all_path %>
+          </div>
+        </span>
         <h2>Checkouts</h2>
       </caption>
       <thead>
