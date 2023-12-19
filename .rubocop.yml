@@ -49,6 +49,7 @@ RSpec/MultipleExpectations:
 RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/controllers/lending_policy_controller_spec.rb'
+    - 'spec/controllers/checkouts_controller_spec.rb'
 
 RSpec/NestedGroups:
   Exclude:

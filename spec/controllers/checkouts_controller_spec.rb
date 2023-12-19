@@ -129,5 +129,64 @@ RSpec.describe CheckoutsController do
         expect(response.body).to match(/TI  - The Book Title 2/)
       end
     end
+
+    describe '#export_ill_checkouts_email' do
+      let(:checkout_params) { [{
+        title: 'Snow country',
+        author: 'Kawabata, Yasunari, 1899-1972.',
+        date: '2016',
+        identifier: '1234567890'
+      }]
+      }
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "DocumentType":"Book", "LoanDate": "2016",
+        "LoanAuthor": "Kawabata, Yasunari, 1899-1972.", "LoanTitle": "Snow country",
+           "ISSN": "1234567890"}]'
+      end
+      let(:mailer_double) { double 'ill_mailer', deliver_later: 'testing' }
+
+      before do
+        stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+          .with(
+            headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            }
+          )
+          .to_return(status: 200, body: return_body, headers: {})
+        allow(CheckoutsMailer).to receive(:export_ill_checkouts).with(username: 'zzz123', checkouts: checkout_params)
+          .and_return(mailer_double)
+      end
+
+      it 'calls the ILL checkouts mailer to export ILL checkouts' do
+        get :export_ill_checkouts_email
+
+        expect(mailer_double).to have_received(:deliver_later)
+      end
+    end
+
+    describe '#export_checkouts_email' do
+      let(:checkout_params) { [{
+        title: 'Becoming',
+        author: 'Obama, Michelle, 1964- author.',
+        catkey: '24053587',
+        call_number: 'E909.O24A3 2018'
+      }] }
+      let(:mailer_double) { double 'mailer', deliver_later: 'test' }
+
+      before do
+        allow(CheckoutsMailer).to receive(:export_checkouts).with(username: 'zzz123', checkouts: checkout_params)
+          .and_return(mailer_double)
+      end
+
+      it 'calls the checkouts mailer to export checkouts' do
+        get :export_checkouts_email, params: { checkouts: checkout_params }
+
+        expect(mailer_double).to have_received(:deliver_later)
+      end
+    end
   end
 end

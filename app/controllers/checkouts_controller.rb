@@ -51,6 +51,42 @@ class CheckoutsController < ApplicationController
     send_data ris_string, filename: 'document.ris', type: :ris
   end
 
+  def export_checkouts_email
+    checkouts = []
+    raw_checkouts = params[:checkouts]
+    raw_checkouts.each do |checkout|
+      checkout_data = {
+        title: checkout[:title],
+        author: checkout[:author],
+        catkey: checkout[:catkey],
+        call_number: checkout[:call_number]
+      }
+      checkouts.push(checkout_data)
+    end
+
+    CheckoutsMailer.export_checkouts(username: current_user.username, checkouts: checkouts).deliver_later
+
+    redirect_to '/checkouts'
+  end
+
+  def export_ill_checkouts_email
+    ill_checkouts = []
+    raw_ill_checkouts = IlliadClient.new.send(:get_loan_checkouts, current_user.username)
+    raw_ill_checkouts.each do |checkout|
+      checkout_data = {
+        title: checkout.title,
+        author: checkout.author,
+        date: checkout.date,
+        identifier: checkout.identifier
+      }
+      ill_checkouts.push(checkout_data)
+    end
+
+    CheckoutsMailer.export_ill_checkouts(username: current_user.username, checkouts: ill_checkouts).deliver_later
+
+    redirect_to '/checkouts'
+  end
+
   private
 
     def checkouts_to_renew

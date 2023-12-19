@@ -28,6 +28,9 @@ Rails.application.routes.draw do
   get 'checkouts/all', to: 'checkouts#all', as: :checkouts_all
   get '/logout', to: 'sessions#destroy', as: :logout
   match 'checkouts/export_ill_ris', to: 'checkouts#export_ill_ris', via: [:get, :post], as: 'export_ill_ris'
+  get 'checkouts/export_ill_checkouts_email', to: 'checkouts#export_ill_checkouts_email',
+                                              as: 'export_ill_checkouts_email'
+  get 'checkouts/export_checkouts_email', to: 'checkouts#export_checkouts_email', as: 'export_checkouts_email'
 
   # error pages
   match 'user_not_found', to: 'errors#user_not_found', via: :all

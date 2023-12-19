@@ -31,8 +31,10 @@ RSpec.describe 'Checkouts' do
       it 'displays accessible checkouts section' do
         expect(page).to be_accessible
         expect(page).to have_content 'Checkouts/Renewals'
-        expect(page).to have_link 'Download all as RIS', href: 'https://catalog.k8s.libraries.psu.edu/bookmarks/bulk_ris/2145643,3591032'
         expect(page).not_to have_content 'Interlibrary Loan Checkouts'
+        click_button 'Export All Checkouts'
+        expect(page).to have_link 'RIS File', href: 'https://catalog.k8s.libraries.psu.edu/bookmarks/bulk_ris/2145643,3591032'
+        expect(page).to have_link 'Email', href: %r{#{Regexp.escape(export_checkouts_email_path)}}
       end
     end
 
@@ -130,10 +132,12 @@ RSpec.describe 'Checkouts' do
         expect(page).to have_content 'The Book Title 2'
         expect(page).to have_link 'Manage your Interlibrary Loans',
                                   href: I18n.t('myaccount.ill.manage_url', library: 'upm')
-        expect(page).to have_link 'Download all as RIS', href: export_ill_ris_path
         expect(page).to have_content 'Author'
         expect(page).to have_content 'Due Date'
         expect(page).to have_content 'Status'
+        click_button 'Export All ILLiad Checkouts'
+        expect(page).to have_link 'RIS File', href: export_ill_ris_path
+        expect(page).to have_link 'Email', href: export_ill_checkouts_email_path
       end
     end
   end
