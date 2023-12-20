@@ -64,7 +64,7 @@ class CheckoutsController < ApplicationController
       checkouts.push(checkout_data)
     end
 
-    CheckoutsMailer.export_checkouts(username: current_user.username, checkouts: checkouts).deliver_later
+    CheckoutsMailer.export_checkouts(current_user.username, checkouts).deliver_now
 
     redirect_to '/checkouts'
   end
@@ -82,7 +82,7 @@ class CheckoutsController < ApplicationController
       ill_checkouts.push(checkout_data)
     end
 
-    CheckoutsMailer.export_ill_checkouts(username: current_user.username, checkouts: ill_checkouts).deliver_later
+    CheckoutsMailer.export_ill_checkouts(current_user.username, ill_checkouts).deliver_now
 
     redirect_to '/checkouts'
   end
