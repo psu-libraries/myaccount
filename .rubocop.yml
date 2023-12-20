@@ -76,6 +76,10 @@ Rails/I18nLocaleTexts:
     - 'spec/views/shared/flash_msg.html.erb_spec.rb'
     - 'app/controllers/checkouts_controller.rb'
 
+Rails/ApplicationMailer:
+  Exclude:
+    - 'app/mailers/checkouts_mailer.rb'
+
 Style/HashSyntax:
   Exclude:
     - 'spec/helpers/holds_helper_spec.rb'
