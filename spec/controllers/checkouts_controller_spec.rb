@@ -143,7 +143,7 @@ RSpec.describe CheckoutsController do
         "LoanAuthor": "Kawabata, Yasunari, 1899-1972.", "LoanTitle": "Snow country",
            "ISSN": "1234567890"}]'
       end
-      let(:mailer_double) { double 'ill_mailer', deliver_later: 'testing' }
+      let(:mailer_double) { double 'ill_mailer', deliver_now: 'testing' }
 
       before do
         stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
@@ -157,14 +157,14 @@ RSpec.describe CheckoutsController do
             }
           )
           .to_return(status: 200, body: return_body, headers: {})
-        allow(CheckoutsMailer).to receive(:export_ill_checkouts).with(username: 'zzz123', checkouts: checkout_params)
+        allow(CheckoutsMailer).to receive(:export_ill_checkouts).with('zzz123', checkout_params)
           .and_return(mailer_double)
       end
 
       it 'calls the ILL checkouts mailer to export ILL checkouts' do
         get :export_ill_checkouts_email
 
-        expect(mailer_double).to have_received(:deliver_later)
+        expect(mailer_double).to have_received(:deliver_now)
       end
     end
 
@@ -175,17 +175,17 @@ RSpec.describe CheckoutsController do
         catkey: '24053587',
         call_number: 'E909.O24A3 2018'
       }] }
-      let(:mailer_double) { double 'mailer', deliver_later: 'test' }
+      let(:mailer_double) { double 'mailer', deliver_now: 'test' }
 
       before do
-        allow(CheckoutsMailer).to receive(:export_checkouts).with(username: 'zzz123', checkouts: checkout_params)
+        allow(CheckoutsMailer).to receive(:export_checkouts).with('zzz123', checkout_params)
           .and_return(mailer_double)
       end
 
       it 'calls the checkouts mailer to export checkouts' do
         get :export_checkouts_email, params: { checkouts: checkout_params }
 
-        expect(mailer_double).to have_received(:deliver_later)
+        expect(mailer_double).to have_received(:deliver_now)
       end
     end
   end
