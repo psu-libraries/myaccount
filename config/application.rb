@@ -39,6 +39,17 @@ module Myaccount
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # Mailer Settings
+    config.action_mailer.perform_deliveries = Settings.action_mailer.perform_deliveries
+    config.action_mailer.delivery_method = Settings.action_mailer.delivery_method.to_sym
+    config.action_mailer.smtp_settings =
+      {
+        address: Settings.action_mailer.smtp_server,
+        port: Settings.action_mailer.smtp_port
+      }
+    config.action_mailer.raise_delivery_errors = Settings.action_mailer.raise_delivery_errors
+    config.action_mailer.preview_path = Rails.root.join('lib/mailer_previews')
+
     # Don't generate system test files.
     config.generators.system_tests = nil
 
@@ -50,12 +61,5 @@ module Myaccount
     end
 
     config.active_job.queue_adapter = :sidekiq
-
-    Config.setup do |config|
-      config.const_name = 'Settings'
-      config.use_env = true
-      config.knockout_prefix = '--'
-      config.overwrite_arrays = false
-    end
   end
 end

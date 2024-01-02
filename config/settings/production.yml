@@ -1,3 +1,5 @@
+action_mailer:
+  perform_deliveries: true
 datadog:
   enabled: <%= ENV.fetch("DD_ENABELD", "true") %>
   environment: <%= ENV.fetch("DD_ENV", "production") %>
