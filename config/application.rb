@@ -29,6 +29,15 @@ module Myaccount
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
+    Config.setup do |config|
+      config.const_name = 'Settings'
+      config.use_env = true
+      config.env_prefix = 'SETTINGS'
+      config.env_separator = '__'
+      config.knockout_prefix = '--'
+      config.overwrite_arrays = false
+    end
+
     config.time_zone = 'Eastern Time (US & Canada)'
     config.catalog_url = 'https://catalog.libraries.psu.edu/catalog/'
     config.unlinked_types = %w[PALCI CARRELKEY EBOOKREADR EQUIP14DAY EQUIP24FEE EQUIP24HR
@@ -61,13 +70,5 @@ module Myaccount
     end
 
     config.active_job.queue_adapter = :sidekiq
-
-    Config.setup do |config|
-      config.const_name = 'Settings'
-      config.use_env = true
-      config.env_prefix = 'SETTINGS'
-      config.knockout_prefix = '--'
-      config.overwrite_arrays = false
-    end
   end
 end
