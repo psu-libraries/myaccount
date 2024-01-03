@@ -166,6 +166,25 @@ RSpec.describe CheckoutsController do
 
         expect(mailer_double).to have_received(:deliver_now)
       end
+
+      it 'displays a success flash message' do
+        get :export_ill_checkouts_email
+
+        expect(flash[:success]).to eq I18n.t('myaccount.email.success')
+      end
+
+      context 'when the email is not successful' do
+        before do
+          allow(CheckoutsMailer).to receive(:export_ill_checkouts).with('zzz123', checkout_params)
+            .and_raise(StandardError.new('Test error message'))
+        end
+
+        it 'displays an error flash message' do
+          get :export_ill_checkouts_email
+
+          expect(flash[:error]).to eq I18n.t('myaccount.email.error')
+        end
+      end
     end
 
     describe '#export_checkouts_email' do
@@ -186,6 +205,25 @@ RSpec.describe CheckoutsController do
         get :export_checkouts_email, params: { checkouts: checkout_params }
 
         expect(mailer_double).to have_received(:deliver_now)
+      end
+
+      it 'displays a success flash message' do
+        get :export_checkouts_email, params: { checkouts: checkout_params }
+
+        expect(flash[:success]).to eq I18n.t('myaccount.email.success')
+      end
+
+      context 'when the email is not successfully sent' do
+        before do
+          allow(CheckoutsMailer).to receive(:export_checkouts).with('zzz123', checkout_params)
+            .and_raise(StandardError.new('Test error message'))
+        end
+
+        it 'displays an error flash message' do
+          get :export_checkouts_email, params: { checkouts: checkout_params }
+
+          expect(flash[:error]).to eq I18n.t('myaccount.email.error')
+        end
       end
     end
   end

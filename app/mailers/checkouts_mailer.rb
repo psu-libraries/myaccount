@@ -5,7 +5,7 @@ class CheckoutsMailer < ActionMailer::Base
     @username = username
     @checkouts = checkouts
     mail to: "#{@username}@psu.edu",
-         subject: t('myaccount.checkout_email_subject'),
+         subject: t('myaccount.email.checkout_subject'),
          from: 'noreply@psu.edu'
   end
 
@@ -13,7 +13,7 @@ class CheckoutsMailer < ActionMailer::Base
     @username = username
     @ill_checkouts = ill_checkouts
     mail to: "#{@username}@psu.edu",
-         subject: t('myaccount.ill_checkout_email_subject'),
+         subject: t('myaccount.email.ill_checkout_subject'),
          from: 'noreply@psu.edu'
   end
 end

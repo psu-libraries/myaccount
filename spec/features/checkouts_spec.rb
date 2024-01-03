@@ -33,7 +33,7 @@ RSpec.describe 'Checkouts' do
         expect(page).to have_content 'Checkouts/Renewals'
         expect(page).not_to have_content 'Interlibrary Loan Checkouts'
         click_button 'Export All Checkouts'
-        expect(page).to have_link 'RIS File', href: 'https://catalog.k8s.libraries.psu.edu/bookmarks/bulk_ris/2145643,3591032'
+        expect(page).to have_link 'RIS File', href: 'https://catalog.qa.k8s.libraries.psu.edu/bookmarks/bulk_ris/2145643,3591032'
         expect(page).to have_link 'Email', href: %r{#{Regexp.escape(export_checkouts_email_path)}}
       end
     end

@@ -64,7 +64,12 @@ class CheckoutsController < ApplicationController
       checkouts.push(checkout_data)
     end
 
-    CheckoutsMailer.export_checkouts(current_user.username, checkouts).deliver_now
+    begin
+      CheckoutsMailer.export_checkouts(current_user.username, checkouts).deliver_now
+      flash[:success] = I18n.t('myaccount.email.success')
+    rescue StandardError
+      flash[:error] = I18n.t('myaccount.email.error')
+    end
 
     redirect_to '/checkouts'
   end
@@ -82,7 +87,12 @@ class CheckoutsController < ApplicationController
       ill_checkouts.push(checkout_data)
     end
 
-    CheckoutsMailer.export_ill_checkouts(current_user.username, ill_checkouts).deliver_now
+    begin
+      CheckoutsMailer.export_ill_checkouts(current_user.username, ill_checkouts).deliver_now
+      flash[:success] = I18n.t('myaccount.email.success')
+    rescue StandardError
+      flash[:error] = I18n.t('myaccount.email.error')
+    end
 
     redirect_to '/checkouts'
   end

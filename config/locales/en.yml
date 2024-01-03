@@ -49,8 +49,11 @@ en:
     checkouts_info_html: >
       <p>Materials borrowed through <a href="https://wco.psu.edu/patron/">MTSS</a> do not appear on this list and must be renewed separately.</p>
       <p>If you are finished with any items, please consider returning them to any Penn State library.</p>
-    checkout_email_subject: Current Checkouts
-    ill_checkout_email_subject: Current ILLiad Checkouts
+    email:
+      checkout_subject: Current Checkouts
+      ill_checkout_subject: Current ILLiad Checkouts
+      success: Email sent successfully
+      error: There was a problem exporting your checkouts. Please try again later or contact support if the problem persists.
     holds_info_html: Materials requested through <a href="https://wco.psu.edu/patron/">MTSS</a> do not appear on this list and must be managed separately.
     see_all_holds_button_text: See all holds 
     hold:
