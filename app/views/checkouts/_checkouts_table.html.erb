@@ -18,8 +18,8 @@
             Export All Checkouts
           </button>
           <div class="dropdown-menu" aria-labelledby="export-checkout-btn">
-            <p><%= link_to 'RIS File', "#{Settings.catalog.bulk_ris_url}#{(checkouts.map { |c| c.catkey.to_s }).join(',')}" %></p>
-            <%= link_to 'Email', export_checkouts_email_path(checkouts: checkouts.map { |c| { catkey: c.catkey, title: c.title, author: c.author, call_number: c.call_number } }) %>
+            <%= link_to 'RIS File', "#{Settings.catalog.bulk_ris_url}#{(checkouts.map { |c| c.catkey.to_s }).join(',')}", class: 'dropdown-item' %>
+            <%= link_to 'Email', export_checkouts_email_path(checkouts: checkouts.map { |c| { catkey: c.catkey, title: c.title, author: c.author, call_number: c.call_number } }), class: 'dropdown-item' %>
           </div>
         </span>
         <h2>Checkouts</h2>

@@ -16,8 +16,8 @@
           Export All ILLiad Checkouts
         </button>
         <div class="dropdown-menu" aria-labelledby="export-ill-checkout-btn">
-          <p><%= link_to 'RIS File', export_ill_ris_path %></p>
-          <%= link_to 'Email', export_ill_checkouts_email_path %>
+          <%= link_to 'RIS File', export_ill_ris_path, class: 'dropdown-item' %>
+          <%= link_to 'Email', export_ill_checkouts_email_path, class: 'dropdown-item' %>
         </div>
       </span>
     </div>
