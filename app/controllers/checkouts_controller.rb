@@ -45,7 +45,7 @@ class CheckoutsController < ApplicationController
       ris_string += tag_format('SN', checkout.identifier)
       ris_string += tag_format('Y2', Time.now.strftime('%Y-%m-%d'))
       ris_string += tag_format('ET', checkout.edition)
-      ris_string += 'ER  -\r\n'
+      ris_string += "ER  -\r\n"
     end
 
     send_data ris_string, filename: 'document.ris', type: :ris
