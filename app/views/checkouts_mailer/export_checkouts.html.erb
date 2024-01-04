@@ -1,0 +1,10 @@
+Penn State University Libraries checkout(s):
+
+<% @checkouts.each do |checkout| %>
+<p>
+  Catalog URL: <%= "#{Rails.application.config.catalog_url}#{checkout[:catkey]}" %><br>
+  Title: <%= checkout[:title] %><br>
+  Author: <%= checkout[:author] %><br>
+  Call Number: <%= checkout[:call_number] %><br>
+</p>
+<% end %>

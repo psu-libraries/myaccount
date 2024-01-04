@@ -33,6 +33,70 @@ class CheckoutsController < ApplicationController
     render plain: 'Renew', status: :ok
   end
 
+  def export_ill_ris
+    ris_string = ''
+    ill_checkouts = IlliadClient.new.send(:get_loan_checkouts, current_user.username)
+
+    ill_checkouts.each_with_index do |checkout, _i|
+      ris_string += tag_format('TY', checkout.type)
+      ris_string += tag_format('TI', checkout.title)
+      ris_string += tag_format('A1', checkout.author)
+      ris_string += tag_format('PY', checkout.date)
+      ris_string += tag_format('SN', checkout.identifier)
+      ris_string += tag_format('Y2', Time.now.strftime('%Y-%m-%d'))
+      ris_string += tag_format('ET', checkout.edition)
+      ris_string += 'ER  -\r\n'
+    end
+
+    send_data ris_string, filename: 'document.ris', type: :ris
+  end
+
+  def export_checkouts_email
+    checkouts = []
+    raw_checkouts = params[:checkouts]
+    raw_checkouts.each do |checkout|
+      checkout_data = {
+        title: checkout[:title],
+        author: checkout[:author],
+        catkey: checkout[:catkey],
+        call_number: checkout[:call_number]
+      }
+      checkouts.push(checkout_data)
+    end
+
+    begin
+      CheckoutsMailer.export_checkouts(current_user.username, checkouts).deliver_now
+      flash[:success] = I18n.t('myaccount.email.success')
+    rescue StandardError
+      flash[:error] = I18n.t('myaccount.email.error')
+    end
+
+    redirect_to '/checkouts'
+  end
+
+  def export_ill_checkouts_email
+    ill_checkouts = []
+    raw_ill_checkouts = IlliadClient.new.send(:get_loan_checkouts, current_user.username)
+    raw_ill_checkouts.each do |checkout|
+      checkout_data = {
+        title: checkout.title,
+        author: checkout.author,
+        date: checkout.date,
+        identifier: checkout.identifier
+      }
+      ill_checkouts.push(checkout_data)
+    end
+
+    begin
+      CheckoutsMailer.export_ill_checkouts(current_user.username, ill_checkouts).deliver_now
+      flash[:success] = I18n.t('myaccount.email.success')
+    rescue StandardError
+      flash[:error] = I18n.t('myaccount.email.error')
+    end
+
+    redirect_to '/checkouts'
+  end
+
   private
 
     def checkouts_to_renew
@@ -43,5 +107,11 @@ class CheckoutsController < ApplicationController
       flash[:error] = 'An unexpected error has occurred'
 
       redirect_to checkouts_path
+    end
+
+    def tag_format(tag, value)
+      return '' unless value
+
+      "#{tag}  - #{value}\r\n"
     end
 end
