@@ -49,6 +49,7 @@ RSpec/MultipleExpectations:
 RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/controllers/lending_policy_controller_spec.rb'
+    - 'spec/controllers/checkouts_controller_spec.rb'
 
 RSpec/NestedGroups:
   Exclude:
@@ -67,11 +68,17 @@ RSpec/MultipleMemoizedHelpers:
     - 'spec/controllers/ill_controller_spec.rb'
     - 'spec/features/summaries_spec.rb'
     - 'spec/services/**/*'
+    - 'spec/views/summaries/index.html.erb_spec.rb'
+    - 'spec/controllers/checkouts_controller_spec.rb'
 
 Rails/I18nLocaleTexts:
   Exclude:
     - 'spec/views/shared/flash_msg.html.erb_spec.rb'
     - 'app/controllers/checkouts_controller.rb'
+
+Rails/ApplicationMailer:
+  Exclude:
+    - 'app/mailers/checkouts_mailer.rb'
 
 Style/HashSyntax:
   Exclude:

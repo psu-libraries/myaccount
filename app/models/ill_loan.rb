@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class IllLoan
+  FIELD_TYPES = {
+    'Book' => 'BOOK',
+    'Conference proceeding' => 'CONF',
+    'Report' => 'RPRT',
+    'Thesis/Dissertation' => 'THES'
+  }.freeze
+
   def initialize(record)
     @record = record
   end
@@ -11,6 +18,23 @@ class IllLoan
 
   def author
     record['LoanAuthor']
+  end
+
+  def date
+    record['LoanDate']
+  end
+
+  def type
+    doc_type = record['DocumentType']
+    FIELD_TYPES.key?(doc_type) ? FIELD_TYPES[doc_type] : 'GEN'
+  end
+
+  def identifier
+    record['ISSN']
+  end
+
+  def edition
+    record['LoanEdition']
   end
 
   def status

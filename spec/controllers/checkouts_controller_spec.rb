@@ -88,5 +88,154 @@ RSpec.describe CheckoutsController do
         expect(RenewCheckoutJob).to have_received(:perform_later).twice
       end
     end
+
+    describe '#export_ill_ris' do
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "DocumentType":"Book", "LoanDate":"2016",
+           "LoanAuthor":"Author1, Test", "LoanTitle":"The Book Title 1",
+           "ISSN":"1234567890", "LoanPlace":null, "LoanEdition":"edition"},
+          {"TransactionNumber":123457, "Username":"test123", "RequestType":"Loan",
+            "LoanAuthor":"Author2, Test", "LoanTitle":"The Book Title 2", "LoanPublisher":null,
+            "LoanPlace":null, "TransactionStatus":"Checked Out to Customer"}]'
+      end
+      let(:expected_content_type) { 'application/x-research-info-systems' }
+      let(:expected_file_name) { 'document.ris' }
+
+      before do
+        stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+          .with(
+            headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            }
+          )
+          .to_return(status: 200, body: return_body, headers: {})
+      end
+
+      it 'exports ILL checkout data as an RIS file' do
+        get :export_ill_ris
+
+        expect(response.headers['Content-Disposition']).to include("attachment; filename=\"#{expected_file_name}\"")
+        expect(response.headers['Content-Type']).to eq(expected_content_type)
+        expect(response.body).to match(/TY  - BOOK/)
+        expect(response.body).to match(/TI  - The Book Title 1/)
+        expect(response.body).to match(/PY  - 2016/)
+        expect(response.body).to match(/SN  - 1234567890/)
+        expect(response.body).to match(/Y2/)
+        expect(response.body).to match(/ET  - edition/)
+        expect(response.body).to match(/TI  - The Book Title 2/)
+      end
+    end
+
+    describe '#export_ill_checkouts_email' do
+      let(:checkout_params) { [{
+        title: 'Snow country',
+        author: 'Kawabata, Yasunari, 1899-1972.',
+        date: '2016',
+        identifier: '1234567890'
+      }]
+      }
+      let(:return_body) do
+        '[{"TransactionNumber":123456, "DocumentType":"Book", "LoanDate": "2016",
+        "LoanAuthor": "Kawabata, Yasunari, 1899-1972.", "LoanTitle": "Snow country",
+           "ISSN": "1234567890"}]'
+      end
+      let(:mailer_double) { double 'ill_mailer', deliver_now: 'testing' }
+
+      before do
+        stub_request(:get, %r{https://illiad.illiad/illiad/ILLiadWebPlatform/Transaction/UserRequests})
+          .with(
+            headers: {
+              'Apikey' => '1234',
+              'Connection' => 'close',
+              'Content-Type' => 'application/json',
+              'Host' => 'illiad.illiad',
+              'User-Agent' => 'http.rb/4.4.1'
+            }
+          )
+          .to_return(status: 200, body: return_body, headers: {})
+        allow(CheckoutsMailer).to receive(:export_ill_checkouts).with('zzz123', checkout_params)
+          .and_return(mailer_double)
+      end
+
+      it 'calls the ILL checkouts mailer to export ILL checkouts' do
+        get :export_ill_checkouts_email
+
+        expect(mailer_double).to have_received(:deliver_now)
+      end
+
+      it 'displays a success flash message' do
+        get :export_ill_checkouts_email
+
+        expect(flash[:success]).to eq I18n.t('myaccount.email.success')
+      end
+
+      context 'when the email is not successful' do
+        before do
+          allow(CheckoutsMailer).to receive(:export_ill_checkouts).with('zzz123', checkout_params)
+            .and_raise(StandardError.new('Test error message'))
+        end
+
+        it 'displays an error flash message' do
+          get :export_ill_checkouts_email
+
+          expect(flash[:error]).to eq I18n.t('myaccount.email.error')
+        end
+      end
+    end
+
+    describe '#export_checkouts_email' do
+      let(:export_checkouts) { [
+        instance_double(Checkout,
+                        title: 'Becoming',
+                        author: 'Obama, Michelle, 1964- author.',
+                        catkey: '24053587',
+                        call_number: 'E909.O24A3 2018')
+      ] }
+      let(:checkout_params) { [{
+        title: 'Becoming',
+        author: 'Obama, Michelle, 1964- author.',
+        catkey: '24053587',
+        call_number: 'E909.O24A3 2018'
+      }] }
+      let(:mailer_double) { double 'mailer', deliver_now: 'test' }
+      let(:mock_response) { 'response' }
+      let(:fake_patron) { instance_double(Patron, checkouts: export_checkouts) }
+
+      before do
+        allow(mock_client).to receive(:patron_info).and_return(mock_response)
+        allow(Patron).to receive(:new).with(mock_response).and_return(fake_patron)
+        allow(CheckoutsMailer).to receive(:export_checkouts).with('zzz123', checkout_params)
+          .and_return(mailer_double)
+      end
+
+      it 'calls the checkouts mailer to export checkouts' do
+        get :export_checkouts_email
+
+        expect(mailer_double).to have_received(:deliver_now)
+      end
+
+      it 'displays a success flash message' do
+        get :export_checkouts_email
+
+        expect(flash[:success]).to eq I18n.t('myaccount.email.success')
+      end
+
+      context 'when the email is not successfully sent' do
+        before do
+          allow(CheckoutsMailer).to receive(:export_checkouts).with('zzz123', checkout_params)
+            .and_raise(StandardError.new('Test error message'))
+        end
+
+        it 'displays an error flash message' do
+          get :export_checkouts_email
+
+          expect(flash[:error]).to eq I18n.t('myaccount.email.error')
+        end
+      end
+    end
   end
 end

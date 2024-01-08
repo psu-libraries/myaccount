@@ -1,0 +1,10 @@
+ILLiad checkout(s):
+
+<% @ill_checkouts.each do |checkout| %>
+<p>
+  Title: <%= checkout[:title] %><br>
+  Author: <%= checkout[:author] %><br>
+  Date: <%= checkout[:date] %><br>
+  Identifier: <%= checkout[:identifier] %><br>
+</p>
+<% end %>
