@@ -188,6 +188,13 @@ RSpec.describe CheckoutsController do
     end
 
     describe '#export_checkouts_email' do
+      let(:export_checkouts) { [
+        instance_double(Checkout,
+                        title: 'Becoming',
+                        author: 'Obama, Michelle, 1964- author.',
+                        catkey: '24053587',
+                        call_number: 'E909.O24A3 2018')
+      ] }
       let(:checkout_params) { [{
         title: 'Becoming',
         author: 'Obama, Michelle, 1964- author.',
@@ -195,20 +202,24 @@ RSpec.describe CheckoutsController do
         call_number: 'E909.O24A3 2018'
       }] }
       let(:mailer_double) { double 'mailer', deliver_now: 'test' }
+      let(:mock_response) { 'response' }
+      let(:fake_patron) { instance_double(Patron, checkouts: export_checkouts) }
 
       before do
+        allow(mock_client).to receive(:patron_info).and_return(mock_response)
+        allow(Patron).to receive(:new).with(mock_response).and_return(fake_patron)
         allow(CheckoutsMailer).to receive(:export_checkouts).with('zzz123', checkout_params)
           .and_return(mailer_double)
       end
 
       it 'calls the checkouts mailer to export checkouts' do
-        get :export_checkouts_email, params: { checkouts: checkout_params }
+        get :export_checkouts_email
 
         expect(mailer_double).to have_received(:deliver_now)
       end
 
       it 'displays a success flash message' do
-        get :export_checkouts_email, params: { checkouts: checkout_params }
+        get :export_checkouts_email
 
         expect(flash[:success]).to eq I18n.t('myaccount.email.success')
       end
@@ -220,7 +231,7 @@ RSpec.describe CheckoutsController do
         end
 
         it 'displays an error flash message' do
-          get :export_checkouts_email, params: { checkouts: checkout_params }
+          get :export_checkouts_email
 
           expect(flash[:error]).to eq I18n.t('myaccount.email.error')
         end

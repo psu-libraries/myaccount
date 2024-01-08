@@ -45,23 +45,26 @@ class CheckoutsController < ApplicationController
       ris_string += tag_format('SN', checkout.identifier)
       ris_string += tag_format('Y2', Time.now.strftime('%Y-%m-%d'))
       ris_string += tag_format('ET', checkout.edition)
-      ris_string += 'ER  -\r\n'
+      ris_string += "ER  -\r\n"
     end
 
     send_data ris_string, filename: 'document.ris', type: :ris
   end
 
   def export_checkouts_email
-    checkouts = []
-    raw_checkouts = params[:checkouts]
-    raw_checkouts.each do |checkout|
-      checkout_data = {
-        title: checkout[:title],
-        author: checkout[:author],
-        catkey: checkout[:catkey],
-        call_number: checkout[:call_number]
+    response = symphony_client.patron_info(patron_key: current_user.patron_key,
+                                           session_token: current_user.session_token,
+                                           item_details: { circRecordList: true })
+
+    patron = Patron.new(response)
+
+    checkouts = patron.checkouts.map do |c|
+      {
+        catkey: c.catkey,
+        title: c.title,
+        author: c.author,
+        call_number: c.call_number
       }
-      checkouts.push(checkout_data)
     end
 
     begin
