@@ -12,10 +12,10 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
 
   context 'when validation is set to be on' do
     before do
-      render partial: 'holds/form_inputs.html.erb', locals: { validate_pickup_info: true,
-                                                              make_default: true,
-                                                              is_ill: false,
-                                                              selected: 'UP-PAT' }
+      render partial: 'holds/form_inputs', locals: { validate_pickup_info: true,
+                                                     make_default: true,
+                                                     is_ill: false,
+                                                     selected: 'UP-PAT' }
     end
 
     it 'will set a min attribute for pickup by date' do
@@ -39,10 +39,10 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
 
   context 'when validation is set to be off' do
     before do
-      render partial: 'holds/form_inputs.html.erb', locals: { validate_pickup_info: false,
-                                                              make_default: false,
-                                                              is_ill: false,
-                                                              selected: 'UP-PAT' }
+      render partial: 'holds/form_inputs', locals: { validate_pickup_info: false,
+                                                     make_default: false,
+                                                     is_ill: false,
+                                                     selected: 'UP-PAT' }
     end
 
     it 'will not mark pickup date as required' do

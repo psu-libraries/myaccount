@@ -9,7 +9,7 @@ RSpec.describe 'checkouts/all.html.erb' do
     before do
       stub_request(:any, /example.com/).to_rack(FakeSymphony)
 
-      render template: 'checkouts/all.html.erb', locals: {
+      render template: 'checkouts/all', locals: {
         checkouts: [checkout]
       }
     end
