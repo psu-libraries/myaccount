@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.1.3'
 
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bugsnag', '~> 6.26'
 gem 'config', '~> 2.0'
 gem 'hiredis'
 gem 'http', '~> 4.0'
@@ -54,4 +55,3 @@ group :production do
   gem 'ddtrace', '~> 0.45'
 end
 
-gem "bugsnag", "~> 6.26"
