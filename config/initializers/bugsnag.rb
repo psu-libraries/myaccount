@@ -1,3 +1,4 @@
 Bugsnag.configure do |config|
-  config.app_version = ENV['APP_VERSION']
+  config.app_version = ENV.fetch('APP_VERSION', nil)
+  config.release_stage = ENV.fetch('APP_ENV', 'development')
 end
