@@ -54,4 +54,3 @@ end
 group :production do
   gem 'ddtrace', '~> 0.45'
 end
-
