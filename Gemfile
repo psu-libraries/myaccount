@@ -20,6 +20,7 @@ gem 'puma', '~> 5.6'
 gem 'rails', '~> 7.1.3'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
+gem 'rollbar', '~> 3.5'
 gem 'shakapacker', '~> 7.1'
 gem 'sidekiq', '~> 7.1.5'
 gem 'simplecov', '~> 0.22', require: false, group: :test
