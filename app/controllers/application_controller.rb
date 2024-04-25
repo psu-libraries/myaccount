@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   def patron
     return unless current_user?
-    Rollbar.info(current_user)
+    Rollbar.info('this is a test')
 
     @patron ||= Patron.new(patron_info_response)
   end
