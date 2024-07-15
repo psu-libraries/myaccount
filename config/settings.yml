@@ -66,6 +66,7 @@ illiad_locations:
   UP-BUSINES: Pattee Commons Services Desk
   UP-EDUBEHV: Pattee Commons Services Desk
   UP-EMS: Pattee Commons Services Desk
+  UP-ENGIN: Pattee Commons Services Desk
   UP-LIFESCI: Pattee Commons Services Desk
   UP-MAPS: Pattee Commons Services Desk
   UP-MEDICAL: Pattee Commons Services Desk
@@ -83,6 +84,7 @@ pickup_locations:
   DSL-CARL: 'Dickinson Law (Carlisle)'
   DSL-UP: 'Penn State Law (University Park)'
   UP-EMS: 'Earth & Mineral Science Library, 105 Deike'
+  UP-ENGIN: 'Engineering Library, 203 ECoRE Building'
   UP-PAMS: 'Physical & Mathematical Science Library, 201 Davey Lab'
   UP-OFFICE: 'University Park Faculty/Staff/Graduate Student Office Delivery'
   ABINGTON: 'Penn State Abington'
@@ -138,6 +140,7 @@ pickup_locations_actual:
   UP-ARTSHUM: 'Arts & Humanities Library (Pattee)'
   UP-BUSINES: 'Business Library (Paterno)'
   UP-EMS: 'Earth & Mineral Science Library, 105 Deike'
+  UP-ENGIN: 'Engineering Library, 203 ECoRE Building'
   UP-LIFESCI: 'Life Sciences Library (Paterno)'
   UP-MAPS: 'Maps and Geospatial Information (Pattee)'
   UP-MEDICAL: 'College of Medicine (UP)'
