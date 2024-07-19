@@ -93,7 +93,7 @@ class IlliadClient
       if ill_response.status == 200
         JSON.parse(ill_response).map { |record| IllLoan.new(record) }
       else
-        raise JSON.parse(ill_response)['Message']
+        return []
       end
     end
 
@@ -137,7 +137,14 @@ class IlliadClient
     end
 
     def request(path, method: :get, **other)
-      HTTP.headers(headers).request(method, base_url + path, **other)
+      begin
+      response = HTTP.timeout(write: 5, connect: 5, read: 10)
+                     .headers(headers)
+                     .request(method, base_url + path, **other)
+      rescue HTTP::TimeoutError => e
+        response = HTTP::Response.new(status: 408, version: '1.1', body: JSON.generate({ 'Message' => 'Request timeout' }))
+      end
+      response
     end
 
     def base_url
