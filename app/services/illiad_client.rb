@@ -141,7 +141,7 @@ class IlliadClient
         response = HTTP.timeout(write: 5, connect: 5, read: 10)
           .headers(headers)
           .request(method, base_url + path, **other)
-      rescue HTTP::TimeoutError => e
+      rescue HTTP::TimeoutError
         response = HTTP::Response.new(status: 408, version: '1.1',
                                       body: JSON.generate({ 'Message' => 'Request timeout' }))
       end
