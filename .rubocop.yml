@@ -80,6 +80,10 @@ Rails/ApplicationMailer:
   Exclude:
     - 'app/mailers/checkouts_mailer.rb'
 
+Style/RescueStandardError:
+  Exclude:
+    - 'app/services/illiad_client.rb'
+
 Style/HashSyntax:
   Exclude:
     - 'spec/helpers/holds_helper_spec.rb'
