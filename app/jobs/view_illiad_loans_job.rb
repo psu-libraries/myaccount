@@ -12,16 +12,22 @@ class ViewIlliadLoansJob < ApplicationJob
 
     illiad_loans = IlliadClient.new.send("get_loan_#{type}", webaccess_id)
 
-    html = HoldsController.render template: "#{type}/ill_#{type}", layout: false,
-                                  locals: { illiad_loans:, library_key: }
+    # IlliadClient usually returns an array, If we don't return an array we send the
+    # result to process_failure. We do this to avoid raising an exception in IlliadClient
+    if illiad_loans.instance_of?(Array)
 
-    Redis.current.set("view_ill_#{type}_#{webaccess_id}", {
-      result: :success,
-      html:
-    }.to_json)
-    nil
-  rescue RuntimeError => e
-    process_failure(error_message: e.message, webaccess_id:, type:)
+      html = HoldsController.render template: "#{type}/ill_#{type}", layout: false,
+                                    locals: { illiad_loans:, library_key: }
+
+      Redis.current.set("view_ill_#{type}_#{webaccess_id}", {
+        result: :success,
+        html:
+      }.to_json)
+      nil
+    else
+      message = JSON.parse(illiad_loans)['Message']
+      process_failure(error_message: message, webaccess_id:, type:)
+    end
   end
 
   private
