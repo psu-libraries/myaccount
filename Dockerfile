@@ -32,6 +32,12 @@ USER root
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list    
 
+# Next two RUNs are a workaround to get google-chrome-stable to install (https://askubuntu.com/a/1524107)
+RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-10/gcc-10-base_10-20200411-0ubuntu1_amd64.deb \
+    && dpkg -i gcc-10-base_10-20200411-0ubuntu1_amd64.deb
+RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-10/libgcc-s1_10-20200411-0ubuntu1_amd64.deb \
+    && dpkg -i libgcc-s1_10-20200411-0ubuntu1_amd64.deb
+
 ENV RAILS_ENV=test
 
 RUN apt-get update && apt-get install -y x11vnc \
