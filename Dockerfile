@@ -1,5 +1,5 @@
 
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20240701 as base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20240827 as base
 ARG UID=2000
 WORKDIR /app
 RUN useradd -u $UID app -d /app
@@ -34,10 +34,6 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 
 ENV RAILS_ENV=test
 
-RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-10/gcc-10-base_10-20200411-0ubuntu1_amd64.deb \
-    && dpkg -i gcc-10-base_10-20200411-0ubuntu1_amd64.deb
-RUN wget https://mirrors.edge.kernel.org/ubuntu/pool/main/g/gcc-10/libgcc-s1_10-20200411-0ubuntu1_amd64.deb \
-    && dpkg -i libgcc-s1_10-20200411-0ubuntu1_amd64.deb
 
 RUN apt-get update && apt-get install -y x11vnc \
     xvfb \
