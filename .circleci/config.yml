@@ -43,7 +43,6 @@ jobs:
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
           use-buildkit: true
-          tag: circle-3.1.6
           extra_build_args: "--target ci"
       - docker/push:
           digest-path: /tmp/digest.txt
