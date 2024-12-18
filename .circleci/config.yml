@@ -29,7 +29,7 @@ jobs:
         user: root
     steps:
       - setup_remote_docker:
-          version: 20.10.14
+          version: default
       - checkout
       - docker/check:
           registry: harbor.k8s.libraries.psu.edu
@@ -43,13 +43,13 @@ jobs:
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
           use-buildkit: true
-          tag: circle-3.1.3
+          tag: circle-3.1.6
           extra_build_args: "--target ci"
       - docker/push:
           digest-path: /tmp/digest.txt
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
-          tag: "$CIRCLE_SHA1,circle-3.1.3,cache"
+          tag: "$CIRCLE_SHA1,circle-3.1.6,cache"
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
@@ -69,7 +69,7 @@ jobs:
             ./bin/generate_app
   test:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/myaccount:circle-3.1.3
+      - image: harbor.k8s.libraries.psu.edu/library/myaccount:circle-3.1.6
       - image: redis:7.2.2-alpine
     environment:
       RAILS_ENV: test
