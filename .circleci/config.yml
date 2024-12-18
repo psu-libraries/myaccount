@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker@2.1.2
+  docker: circleci/docker@2.6.0
 
 jobs:
   release:
@@ -113,7 +113,7 @@ jobs:
           bundle exec rspec
           ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.rails.json coverage/coverage.json
           ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.jest.json coverage/lcov.info
-          ./cc-test-reporter sum-coverage  coverage/codeclimate.*.json -p 2 
+          ./cc-test-reporter sum-coverage  coverage/codeclimate.*.json -p 2
           ./cc-test-reporter upload-coverage
     - store_artifacts:
         path: coverage
