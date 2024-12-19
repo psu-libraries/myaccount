@@ -1,3 +1,4 @@
+version: 2.1
 
 orbs:
   docker: circleci/docker@2.6.0
@@ -93,10 +94,6 @@ jobs:
         name: "Yarn"
         command: |
           yarn install --cache-folder ~/.cache/yarn --frozen-lockfile
-    - run:
-        name: "Install libffi"
-        command: |
-          sudo apt-get install libffi6
     - save_cache:
         key: yarn-{{ checksum "yarn.lock" }}-v3
         paths:
