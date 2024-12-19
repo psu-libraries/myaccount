@@ -78,11 +78,11 @@ jobs:
     - restore_cache:
         keys:
           - bundle-{{ checksum "Gemfile.lock" }}-v3
-    - run:
-        name: Install dependencies
-        command: |
-          sudo apt-get update
-          sudo apt-get install -y libffi-dev build-essential
+    # - run:
+    #     name: Install dependencies
+    #     command: |
+    #       sudo apt-get update
+    #       sudo apt-get install -y libffi-dev build-essential
     - run:
         name: "Bundle"
         command: |
