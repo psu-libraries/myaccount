@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker@2.6.0
+  docker: circleci/docker@2.1.2
 
 jobs:
   release:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.2
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.4
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
       REGISTRY_REPO: library/myaccount
@@ -25,7 +25,7 @@ jobs:
 
   publish:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.2
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.4
         user: root
     steps:
       - setup_remote_docker:
@@ -43,6 +43,7 @@ jobs:
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
           use-buildkit: true
+          tag: circle-3.1.6
           extra_build_args: "--target ci"
       - docker/push:
           digest-path: /tmp/digest.txt
@@ -54,7 +55,7 @@ jobs:
             echo "Digest is: $(</tmp/digest.txt)"
   deploy:
     docker:
-      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.2
+      - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.4
     environment:
       CONFIG_REPO: git@github.com:psu-libraries/myaccount-config.git
     steps:
