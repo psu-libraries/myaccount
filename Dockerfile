@@ -4,9 +4,9 @@ ARG UID=2000
 WORKDIR /app
 RUN useradd -u $UID app -d /app
 RUN mkdir /app/tmp
+COPY Gemfile Gemfile.lock /app/
 RUN chown -R app /app
 USER app
-COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler:2.1.4
 RUN bundle config set path 'vendor/bundle'
 RUN bundle install && \
@@ -20,7 +20,7 @@ COPY --chown=app . /app
 
 CMD ["/app/bin/start"]
 
-FROM base as production 
+FROM base as production
 RUN RAILS_ENV=production \
   bundle exec rails assets:precompile
 CMD ["/app/bin/start"]
@@ -30,7 +30,7 @@ FROM base as ci
 
 USER root
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list    
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 
 ENV RAILS_ENV=test
 
