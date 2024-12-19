@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20240827 as base
+=======
+
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-16:20241218 AS base
+>>>>>>> preview/ruby-upgrade
 ARG UID=2000
 WORKDIR /app
 # Create the app user and set permissions before switching user
