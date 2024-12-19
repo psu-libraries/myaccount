@@ -1,36 +1,35 @@
-
 FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.3-node-16:20240827 as base
 ARG UID=2000
 WORKDIR /app
-RUN useradd -u $UID app -d /app
-RUN mkdir /app/tmp
-RUN chown -R app /app
+# Create the app user and set permissions before switching user
+RUN useradd -u $UID app -d /app && \
+    mkdir /app/tmp && \
+    chown -R app /app
 USER app
 COPY Gemfile Gemfile.lock /app/
 RUN gem install bundler:2.1.4
 RUN bundle config set path 'vendor/bundle'
 RUN bundle install && \
-  rm -rf /app/.bundle/cache && \
-  rm -rf /app/vendor/bundle/ruby/*/cache
+    rm -rf /app/.bundle/cache && \
+    rm -rf /app/vendor/bundle/ruby/*/cache
 COPY package.json yarn.lock /app/
 RUN yarn --frozen-lockfile && \
-  rm -rf /app/.cache && \
-  rm -rf /app/tmp
+    rm -rf /app/.cache && \
+    rm -rf /app/tmp
 COPY --chown=app . /app
 
 CMD ["/app/bin/start"]
 
-FROM base as production 
+FROM base as production
 RUN RAILS_ENV=production \
-  bundle exec rails assets:precompile
+    bundle exec rails assets:precompile
 CMD ["/app/bin/start"]
-
 
 FROM base as ci
 
 USER root
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list    
+    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 
 ENV RAILS_ENV=test
 
@@ -49,6 +48,3 @@ FROM ci as test
 RUN bundle
 
 CMD ["sleep", "99999999"]
-
-
-
