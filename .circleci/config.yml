@@ -49,7 +49,7 @@ jobs:
           digest-path: /tmp/digest.txt
           image: library/myaccount
           registry: harbor.k8s.libraries.psu.edu
-          tag: "$CIRCLE_SHA1,circle-3.1.6,cache"
+          tag: "$CIRCLE_SHA1, circle-3.1.6, cache"
       - run:
           command: |
             echo "Digest is: $(</tmp/digest.txt)"
@@ -93,7 +93,7 @@ jobs:
     - run:
         name: "Yarn"
         command: |
-          yarn install --cache-folder ~/.cache/yarn --frozen-lockfile
+          yarn install --cache-folder ~/.cache/yarn --frozen-lockfile --prefer-offline
     - save_cache:
         key: yarn-{{ checksum "yarn.lock" }}-v3
         paths:
@@ -103,11 +103,23 @@ jobs:
         command: |
           bundle exec niftany
           yarn lint
+    - restore_cache:
+        keys:
+          - cc-test-reporter-v1
+    - run:
+        name: "Download cc-test-reporter"
+        command: |
+          if [ ! -f ./cc-test-reporter ]; then
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+          fi
+    - save_cache:
+        key: cc-test-reporter-v1
+        paths:
+          - ./cc-test-reporter
     - run:
         name: "Test"
         command: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
           yarn test
           bundle exec rspec
