@@ -28,8 +28,7 @@ jobs:
       - image: harbor.k8s.libraries.psu.edu/library/ci-utils:v4.0.4
         user: root
     steps:
-      - setup_remote_docker:
-          version: default
+      - setup_remote_docker
       - checkout
       - docker/check:
           registry: harbor.k8s.libraries.psu.edu
