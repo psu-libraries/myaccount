@@ -17,7 +17,7 @@
             aria-expanded="false">
             Export All Checkouts
           </button>
-          <div class="dropdown-menu" aria-labelledby="export-checkout-btn">
+          <div class="dropdown-menu" aria-labelledby="export-checkouts-btn">
             <%= link_to 'RIS File', "#{Settings.catalog.bulk_ris_url}#{(checkouts.map { |c| c.catkey.to_s }).join(',')}", class: 'dropdown-item' %>
             <%= link_to 'Email', export_checkouts_email_path, class: 'dropdown-item' %>
           </div>
@@ -38,14 +38,14 @@
       </thead>
       <tfoot>
       <tr>
-        <th scope="col" colspan="6">
+        <td scope="col" colspan="6">
           <% unless Settings.maintenance_mode -%>
             <%= submit_tag 'Renew',
                            class: 'btn btn-primary deflatten',
                            aria: { controls: 'checkouts-table' },
                            data: { disable_with: 'Please wait...' } %>
           <% end -%>
-        </th>
+        </td>
       </tr>
       </tfoot>
       <tbody>
