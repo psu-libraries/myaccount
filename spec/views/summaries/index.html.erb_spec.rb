@@ -35,13 +35,9 @@ RSpec.describe 'summaries/index' do
     assign(:illiad_response, illiad_response)
 
     without_partial_double_verification {
-      allow(view).to receive(:patron).and_return(patron)
-      allow(view).to receive(:current_user?).and_return(true)
-      allow(illiad_response).to receive(:illiad_checkouts).and_return([])
-      allow(illiad_response).to receive(:illiad_holds).and_return([])
-      allow(illiad_response).to receive(:ill_recalled).and_return(0)
-      allow(illiad_response).to receive(:ill_overdue).and_return(0)
-      allow(illiad_response).to receive(:ill_ready_for_pickup).and_return(0)
+      allow(view).to receive_messages(patron: patron, current_user?: true)
+      allow(illiad_response).to receive_messages(illiad_checkouts: [], illiad_holds: [], ill_recalled: 0,
+                                                 ill_overdue: 0, ill_ready_for_pickup: 0)
     }
   end
 
@@ -51,7 +47,7 @@ RSpec.describe 'summaries/index' do
     it 'renders without alerts' do
       render
 
-      expect(rendered).not_to have_css('h3', text: 'Alerts:')
+      expect(rendered).to have_no_css('h3', text: 'Alerts:')
     end
   end
 
@@ -79,7 +75,7 @@ RSpec.describe 'summaries/index' do
       it 'does not show a link to the accept lending policy page' do
         render
 
-        expect(rendered).not_to have_link('accept the University Libraries lending policy')
+        expect(rendered).to have_no_link('accept the University Libraries lending policy')
       end
     end
   end

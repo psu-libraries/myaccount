@@ -22,15 +22,15 @@ RSpec.describe PlaceHoldForm::Builder do
   end
 
   describe '#generate' do
-    it 'will pass along catkey' do
+    it 'passes along catkey' do
       expect(builder.generate[:catkey]).to eq '1'
     end
 
-    it 'will pass along title' do
+    it 'passes along title' do
       expect(builder.generate[:title]).to eq 'Hill Street blues. The complete series'
     end
 
-    it 'will pass along author' do
+    it 'passes along author' do
       expect(builder.generate[:author]).to eq 'Hill Street blues (Television program)'
     end
 
@@ -38,7 +38,7 @@ RSpec.describe PlaceHoldForm::Builder do
       let(:catkey) { 'a1' }
       let(:bib_info_params) { { catkey: '1', session_token: 'fake-token' } }
 
-      it 'will pass along the catkey after deleting the prefix' do
+      it 'passes along the catkey after deleting the prefix' do
         expect(builder.generate[:catkey]).to eq '1'
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe PlaceHoldForm::Builder do
         bib_info.record['fields']['callList'] = ''
       end
 
-      it 'will return an empty hash' do
+      it 'returns an empty hash' do
         expect(builder.generate).to be_empty
       end
     end
@@ -56,17 +56,17 @@ RSpec.describe PlaceHoldForm::Builder do
     context 'when bib response has no holdable items' do
       let(:bib_info) { build(:bib_with_no_holdable_locations) }
 
-      it 'will return an empty hash' do
+      it 'returns an empty hash' do
         expect(builder.generate).to be_empty
       end
     end
 
     context 'when there are volumetric calls to present to the user' do
-      it 'will generate holdables when supplied with a body that has a callList' do
+      it 'generates holdables when supplied with a body that has a callList' do
         expect(builder.generate[:volumetric_calls].count).to be 8
       end
 
-      it 'will return a list of holdable items naturally sorted on volumetric' do
+      it 'returns a list of holdable items naturally sorted on volumetric' do
         expected_order = [['bklet'], ['v', 1.0], ['v', 2.0], ['v', 3.0], ['v', 4.0], ['v', 5.0], ['v', 6.0], ['v', 7.0]]
         volumetrics_in_order = builder.generate[:volumetric_calls].map { |h| h.record['naturalized_volumetric'] }
         expect(volumetrics_in_order).to eq expected_order
@@ -78,7 +78,7 @@ RSpec.describe PlaceHoldForm::Builder do
             .first['fields']['currentLocation']['key'] = 'ARCHIVE-MP'
         end
 
-        it 'will not pass along that item\'s parent call to the user' do
+        it 'does not pass along that item\'s parent call to the user' do
           expect(builder.generate[:volumetric_calls].count).to be 7
         end
       end
@@ -86,7 +86,7 @@ RSpec.describe PlaceHoldForm::Builder do
       context 'when multiple calls that are not volumetric are mixed in' do
         let(:bib_info) { build(:bib_with_multiple_non_volumetrics) }
 
-        it 'will keep only one non-volumetric call' do
+        it 'keeps only one non-volumetric call' do
           non_volumetrics = builder.generate[:volumetric_calls].select { |c| c.volumetric.nil? }
 
           expect(non_volumetrics.count).to be 1
@@ -96,7 +96,7 @@ RSpec.describe PlaceHoldForm::Builder do
       context 'when multiple volumetric calls of the same call number are mixed in' do
         let(:bib_info) { build(:bib_with_dupe_call_number_volumetrics) }
 
-        it 'will remove calls that are not unique' do
+        it 'removes calls that are not unique' do
           expect(builder.generate[:volumetric_calls].count).to be 8
         end
       end
@@ -105,7 +105,7 @@ RSpec.describe PlaceHoldForm::Builder do
               'number' do
         let(:bib_info) { build(:bib_with_dupe_call_number_volumetrics_one_unique) }
 
-        it 'will remove calls that are not unique' do
+        it 'removes calls that are not unique' do
           expect(builder.generate[:volumetric_calls].count).to be 0
         end
       end
@@ -114,11 +114,11 @@ RSpec.describe PlaceHoldForm::Builder do
     context 'when there aren\'t enough volumetric calls to present to require user select' do
       let(:bib_info) { build(:bib_without_holdables) }
 
-      it 'will not generate any volumetric holdables' do
+      it 'does not generate any volumetric holdables' do
         expect(builder.generate[:volumetric_calls]).to be_empty
       end
 
-      it 'will pass along a random barcode' do
+      it 'passes along a random barcode' do
         # The list of possible_barcodes was generated from the following block processing. Because @call_list isn't a
         # public instance variable it is not something that client code can find.
         # @call_list.collect {|c| c.items.collect { |i| i.barcode }}.flatten
@@ -130,7 +130,7 @@ RSpec.describe PlaceHoldForm::Builder do
     context 'when volumetric_natural_sort fails' do
       let(:bib_info) { build(:bib_with_bad_volumetric_data) }
 
-      it 'will log an error' do
+      it 'logs an error' do
         allow(Rails.logger).to receive(:error)
 
         expect(builder.generate[:volumetric_calls].count).to be 5

@@ -69,7 +69,7 @@ RSpec.describe 'checkouts/all.html.erb' do
       end
 
       it 'does not display a renew button' do
-        expect(rendered).not_to have_button 'Renew'
+        expect(rendered).to have_no_button 'Renew'
       end
     end
   end

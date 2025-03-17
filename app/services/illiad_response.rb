@@ -7,13 +7,13 @@ class IlliadResponse
   end
 
   def illiad_holds
-    holds = IlliadClient.new.send("get_loan_#{:holds}", @current_user_username)
-    (holds.presence || [])
+    holds = IlliadClient.new.send(:"get_loan_#{:holds}", @current_user_username)
+    holds.presence || []
   end
 
   def illiad_checkouts
-    checkouts = IlliadClient.new.send("get_loan_#{:checkouts}", @current_user_username)
-    (checkouts.presence || [])
+    checkouts = IlliadClient.new.send(:"get_loan_#{:checkouts}", @current_user_username)
+    checkouts.presence || []
   end
 
   def ill_recalled

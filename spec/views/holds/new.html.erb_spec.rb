@@ -36,7 +36,7 @@ RSpec.describe 'holds/new.html.erb' do
     it 'does not display a message suggesting patron checks with their local library' do
       render
 
-      expect(rendered).not_to have_content 'consider checking at your local library'
+      expect(rendered).to have_no_content 'consider checking at your local library'
     end
   end
 

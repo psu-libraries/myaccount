@@ -8,14 +8,14 @@ RSpec.describe 'Summaries' do
     'Connection' => 'close',
     'Content-Type' => 'application/json',
     'Host' => 'illiad.illiad',
-    'User-Agent' => 'http.rb/4.4.1'
+    'User-Agent' => 'http.rb/5.2.0'
   } }
 
   after do
     Warden::Manager._on_request.clear
   end
 
-  describe 'the summaries page', js: true do
+  describe 'the summaries page', :js do
     context 'when there are no ILLiad checkouts or holds' do
       let(:mock_user) { 'patron1' }
       let(:return_body) { '[]' }

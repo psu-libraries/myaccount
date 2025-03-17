@@ -3,6 +3,9 @@
 class ApplicationController < ActionController::Base
   helper_method :current_user, :current_user?, :patron, :symphony_client
 
+  MAX_SESSION_LIFE = 12.hours - 5.minutes
+  MAX_INACTIVE_TIME = 2.hours - 5.minutes
+
   def current_user
     session_data = request.env['warden'].user
     # Assuming the && is used solely to guard against nil. A new User is minted with every request based upon details
@@ -22,14 +25,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-    MAX_SESSION_LIFE = 12.hours - 5.minutes
-    MAX_INACTIVE_TIME = 2.hours - 5.minutes
-
     def authenticate_webaccess
       # if we aren't given a REMOTE_USER variable we are unauthorized.
       # this maybe should be a 401, however if apache is misconfigured
       # there's no amount of retrying that will fix this for the guest
-      redirect_to '/500' unless request.env.fetch(Settings.remote_user_header, nil)
+      unless request.env.fetch(Settings.remote_user_header, nil)
+        redirect_to '/500'
+      end
     end
 
     def symphony_client

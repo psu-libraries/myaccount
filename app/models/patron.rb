@@ -102,8 +102,8 @@ class Patron
 
   def checkouts
     @checkouts ||= fields['circRecordList']
-                     &.map { |checkout| Checkout.new(checkout) }
-                     &.select { |checkout| checkout.status == 'ACTIVE' }
+      &.map { |checkout| Checkout.new(checkout) }
+      &.select { |checkout| checkout.status == 'ACTIVE' }
   end
 
   def holds

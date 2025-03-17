@@ -41,7 +41,7 @@ require 'view_component/test_helpers'
 require 'axe/rspec'
 
 ## Below picks up our mock objects as well as factory_bot config
-Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
 
 # allow connections to localhost, webdrivers
 WebMock.disable_net_connect!(
@@ -113,7 +113,7 @@ RSpec.configure do |config|
   config.include Capybara::RSpecMatchers, type: :component
 end
 
-Capybara.register_driver :chrome_headless do |app| \
+Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,

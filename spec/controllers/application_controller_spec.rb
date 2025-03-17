@@ -67,8 +67,7 @@ RSpec.describe ApplicationController do
       before do
         allow(mock_client).to receive(:patron_info)
         warden.set_user(user)
-        allow(controller).to receive(:item_details).and_return(some: :value)
-        allow(controller).to receive(:current_user).and_return(user)
+        allow(controller).to receive_messages(item_details: { some: :value }, current_user: user)
       end
 
       it 'passes through the details' do

@@ -16,7 +16,7 @@ RSpec.describe 'Checkouts' do
       login_as username: 'PATRON2', patron_key: mock_user
     end
 
-    it 'shows a modal telling the user to start a new session', js: true do
+    it 'shows a modal telling the user to start a new session', :js do
       visit checkouts_path
       page.driver.browser.manage.delete_cookie '_myaccount_session'
       page.check 'renewal_list__2145643:5:1'
@@ -34,7 +34,7 @@ RSpec.describe 'Checkouts' do
       visit holds_path
     end
 
-    it 'interrupts a change of library with a modal explaining the problem', js: true do
+    it 'interrupts a change of library with a modal explaining the problem', :js do
       page.driver.browser.manage.delete_cookie '_myaccount_session'
       page.check 'hold_list__3911148'
       page.select 'Penn State Berks', from: 'pickup_library'
@@ -43,7 +43,7 @@ RSpec.describe 'Checkouts' do
       expect(page).to have_css '#expiryModal'
     end
 
-    it 'interrupts a change of pick up by with a modal explaining the problem', js: true do
+    it 'interrupts a change of pick up by with a modal explaining the problem', :js do
       page.driver.browser.manage.delete_cookie '_myaccount_session'
       page.check 'hold_list__3911148'
       page.fill_in 'pickup_by_date', with: '01-01-9999'
@@ -52,7 +52,7 @@ RSpec.describe 'Checkouts' do
       expect(page).to have_css '#expiryModal'
     end
 
-    it 'interrupts a cancel with a modal explaining the problem', js: true do
+    it 'interrupts a cancel with a modal explaining the problem', :js do
       page.driver.browser.manage.delete_cookie '_myaccount_session'
       page.check 'hold_list__3911148'
       page.click_button 'Cancel'

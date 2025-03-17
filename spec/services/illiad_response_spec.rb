@@ -46,7 +46,7 @@ RSpec.describe IlliadResponse do
     'Connection' => 'close',
     'Content-Type' => 'application/json',
     'Host' => 'illiad.illiad',
-    'User-Agent' => 'http.rb/4.4.1'
+    'User-Agent' => 'http.rb/5.2.0'
   } }
 
   before do

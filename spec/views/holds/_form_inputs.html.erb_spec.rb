@@ -18,19 +18,19 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
                                                      selected: 'UP-PAT' }
     end
 
-    it 'will set a min attribute for pickup by date' do
+    it 'sets a min attribute for pickup by date' do
       input = page.find('input#pickup_by_date')
       expect(input['min']).not_to be_nil
     end
 
-    it 'will mark pickup by date as required' do
+    it 'marks pickup by date as required' do
       input = page.find('input#pickup_by_date')
 
       expect(input['required']).not_to be_nil
       expect(input['value']).to eq DateTime.now.+(14.days).strftime('%Y-%m-%d')
     end
 
-    it 'will mark pickup library as required' do
+    it 'marks pickup library as required' do
       input = page.find('select#pickup_library')
 
       expect(input['required']).not_to be_nil
@@ -45,13 +45,13 @@ RSpec.describe 'holds/_form_inputs.html.erb' do
                                                      selected: 'UP-PAT' }
     end
 
-    it 'will not mark pickup date as required' do
+    it 'does not mark pickup date as required' do
       input = page.find('input#pickup_by_date')
 
       expect(input['required']).to be_nil
     end
 
-    it 'will not mark pickup library as required' do
+    it 'does not mark pickup library as required' do
       input = page.find('select#pickup_library')
 
       expect(input['required']).to be_nil
