@@ -130,10 +130,6 @@ GEM
       rexml
     crass (1.0.6)
     date (3.3.4)
-    ddtrace (0.54.2)
-      debase-ruby_core_source (<= 0.10.14)
-      msgpack
-    debase-ruby_core_source (0.10.14)
     debug_inspector (1.1.0)
     deep_merge (1.2.2)
     descendants_tracker (0.0.4)
@@ -496,7 +492,6 @@ DEPENDENCIES
   byebug
   capybara
   config (~> 2.0)
-  ddtrace (~> 0.45)
   factory_bot_rails
   hiredis
   http
