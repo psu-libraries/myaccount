@@ -19,7 +19,7 @@ RSpec.describe 'Checkouts' do
             'Connection' => 'close',
             'Content-Type' => 'application/json',
             'Host' => 'illiad.illiad',
-            'User-Agent' => 'http.rb/4.4.1'
+            'User-Agent' => 'http.rb/5.2.0'
           }
         )
         .to_return(status: 200, body: '[]', headers: {})
@@ -27,18 +27,18 @@ RSpec.describe 'Checkouts' do
       visit checkouts_path
     end
 
-    context 'when visiting the checkouts page', js: true do
+    context 'when visiting the checkouts page', :js do
       it 'displays accessible checkouts section' do
         expect(page).to be_accessible
         expect(page).to have_content 'Checkouts/Renewals'
-        expect(page).not_to have_content 'Interlibrary Loan Checkouts'
+        expect(page).to have_no_content 'Interlibrary Loan Checkouts'
         click_button 'Export All Checkouts'
         expect(page).to have_link 'RIS File', href: 'https://catalog.qa.k8s.libraries.psu.edu/bookmarks/bulk_ris/2145643,3591032'
         expect(page).to have_link 'Email', href: %r{#{Regexp.escape(export_checkouts_email_path)}}
       end
     end
 
-    context 'when patron renews a checkout successfully', js: true do
+    context 'when patron renews a checkout successfully', :js do
       before do
         page.check 'renewal_list__2145643:5:1'
         page.click_button 'Renew', match: :first
@@ -69,7 +69,7 @@ RSpec.describe 'Checkouts' do
       end
     end
 
-    context 'when patron fails to renew a checkout successfully', js: true do
+    context 'when patron fails to renew a checkout successfully', :js do
       before do
         page.check 'renewal_list__3591032:1:1'
         page.click_button 'Renew', match: :first
@@ -90,7 +90,7 @@ RSpec.describe 'Checkouts' do
     end
 
     context 'when patron uses browser back button to checkouts page' do
-      it 'forces checkout page to reload', js: true do
+      it 'forces checkout page to reload', :js do
         visit summaries_path
         page.go_back
         expect(page).to have_css '[id="checkout2145643:5:1"]'
@@ -116,7 +116,7 @@ RSpec.describe 'Checkouts' do
             'Connection' => 'close',
             'Content-Type' => 'application/json',
             'Host' => 'illiad.illiad',
-            'User-Agent' => 'http.rb/4.4.1'
+            'User-Agent' => 'http.rb/5.2.0'
           }
         )
         .to_return(status: 200, body: return_body, headers: {})
@@ -124,7 +124,7 @@ RSpec.describe 'Checkouts' do
       visit checkouts_path
     end
 
-    context 'when visiting the checkouts page', js: true do
+    context 'when visiting the checkouts page', :js do
       it 'displays accessible Interlibrary Loan Checkouts section' do
         expect(page).to be_accessible
         expect(page).to have_content 'Interlibrary Loan Checkouts'

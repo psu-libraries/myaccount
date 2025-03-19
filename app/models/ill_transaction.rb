@@ -79,7 +79,7 @@ class IllTransaction
     def tag(tag)
       fields
         &.select { |field| field['tag'] == tag }
-        &.map { |t| t['subfields'] }
+        &.pluck('subfields')
         &.flatten
     end
 end

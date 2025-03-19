@@ -15,9 +15,7 @@ RSpec.describe 'ill/result.html.erb' do
   end
 
   before do
-    allow(mock_patron).to receive(:display_name).and_return('Jane Doe')
-    allow(mock_patron).to receive(:key).and_return('12345')
-    allow(mock_patron).to receive(:library_ill_path_key).and_return('upm')
+    allow(mock_patron).to receive_messages(display_name: 'Jane Doe', key: '12345', library_ill_path_key: 'upm')
 
     controller.singleton_class.class_eval do
       protected
@@ -42,7 +40,7 @@ RSpec.describe 'ill/result.html.erb' do
   end
 
   it 'sets the patron\'s key' do
-    expect(rendered).to have_selector '[@data-patron-key="12345"]'
+    expect(rendered).to have_css '[@data-patron-key="12345"]'
   end
 
   it 'renders a link to back to catalog' do

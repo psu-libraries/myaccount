@@ -28,7 +28,7 @@ RSpec.describe 'layouts/application' do
 
         render
 
-        expect(rendered).not_to have_text 'System Maintenance'
+        expect(rendered).to have_no_text 'System Maintenance'
       end
     end
 
@@ -58,7 +58,7 @@ RSpec.describe 'layouts/application' do
 
         render
 
-        expect(rendered).to have_selector '.announcement'
+        expect(rendered).to have_css '.announcement'
       end
     end
   end

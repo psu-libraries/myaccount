@@ -24,8 +24,7 @@ RSpec.describe LendingPolicyController do
 
     before do
       warden.set_user(user)
-      allow(controller).to receive(:patron).and_return(mock_patron)
-      allow(controller).to receive(:current_user).and_return(user)
+      allow(controller).to receive_messages(patron: mock_patron, current_user: user)
       allow(SymphonyClient).to receive(:new).and_return(mock_client)
       allow(mock_client).to receive(:accept_lending_policy).and_return(double(status: 200))
     end

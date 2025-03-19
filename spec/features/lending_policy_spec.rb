@@ -15,7 +15,7 @@ RSpec.describe 'Lending Policy' do
     Redis.current.flushall
   end
 
-  describe 'when the user clicks the checkbox', js: true do
+  describe 'when the user clicks the checkbox', :js do
     it 'toggles the enabled state of the button' do
       expect(page).to have_button('Accept & Continue', disabled: true)
 
@@ -25,10 +25,10 @@ RSpec.describe 'Lending Policy' do
     end
   end
 
-  describe 'when the user submits the form', js: true do
+  describe 'when the user submits the form', :js do
     it 'redirects the user to the thank you page' do
       page.check 'accept-lending-policy-checkbox'
-      page.click_button 'Accept & Continue'
+      page.click_on 'Accept & Continue'
 
       expect(page).to have_current_path lending_policy_thank_you_path, ignore_query: true
     end

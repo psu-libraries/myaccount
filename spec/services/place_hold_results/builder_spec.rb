@@ -19,7 +19,7 @@ RSpec.describe PlaceHoldResults::Builder, type: :service do
   end
 
   describe '#generate' do
-    it 'will pass along processed placed holds results' do
+    it 'passes along processed placed holds results' do
       expect(processed_results[:success].first).to include(hold_key: '3912325')
         .and include(barcode: 'holdable_barcode')
         .and include(:placed_hold)
@@ -34,7 +34,7 @@ RSpec.describe PlaceHoldResults::Builder, type: :service do
       expect(processed_results[:success].first[:placed_hold].key).to eq '3912325'
     end
 
-    it 'will pass along processed failed holds results' do
+    it 'passes along processed failed holds results' do
       expect(processed_results[:error].first).to include(barcode: 'not_holdable_barcode')
         .and include(error_message: 'User already has a hold on this material')
         .and include(:failed_hold)

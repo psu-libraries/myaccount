@@ -89,7 +89,7 @@ class PlaceHoldForm::Builder
 
       @call_list.filter! do |call|
         current_locations = call.items.map(&:current_location)
-        current_locations.filter { |loc| holdable_locations.include? loc }.present?
+        current_locations.any? { |loc| holdable_locations.include? loc }
       end
     end
 
@@ -119,7 +119,7 @@ class PlaceHoldForm::Builder
     # characters that aren't whitespace and digits to prep the sort. After that collect the array to
     # cast strings containing digits to Float (leave non-digits alone).
     def naturalize(value)
-      value.gsub(/\./, ' ')
+      value.gsub('.', ' ')
         .scan(/[^\s\d]+|\d+/)
         .map { |term| /\d+/.match?(term) ? term.to_f : term }
     end

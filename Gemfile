@@ -3,13 +3,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.6'
+ruby '3.4.1'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bugsnag', '~> 6.26'
 gem 'config', '~> 2.0'
 gem 'hiredis'
-gem 'http', '~> 4.0'
+gem 'http'
 gem 'lograge'
 gem 'logstash-event'
 gem 'matrix'
@@ -17,16 +17,16 @@ gem 'net-imap'
 gem 'net-pop'
 gem 'net-smtp'
 gem 'okcomputer', '~> 1.18'
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6'
 gem 'rails', '~> 7.1.3'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
-gem 'shakapacker', '~> 7.1'
+gem 'shakapacker', '~> 8'
 gem 'sidekiq', '~> 7.1.5'
 gem 'simplecov', '~> 0.22', require: false, group: :test
 gem 'simple_json_log_formatter'
 gem 'view_component'
-gem 'warden', '~> 1.2'
+gem 'warden'
 
 group :development do
   gem 'better_errors'
@@ -41,16 +41,13 @@ group :development, :test do
   gem 'byebug'
   gem 'capybara'
   gem 'factory_bot_rails'
-  gem 'niftany'
+  gem 'niftany', '~> 0.11.0'
+  gem 'observer'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 6.0.1'
   gem 'selenium-webdriver'
-  gem 'sinatra', require: false # used for faking the symphony api for integration tests
+  gem 'sinatra' # used for faking the symphony api for integration tests
   gem 'warden-rspec-rails'
   gem 'webmock'
-end
-
-group :production do
-  gem 'ddtrace', '~> 0.45'
 end

@@ -1,5 +1,4 @@
-
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.1.6-node-16:20241218 AS base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.4.1-node-22:20250131 AS base
 ARG UID=2000
 WORKDIR /app
 RUN useradd -u $UID app -d /app
@@ -32,6 +31,19 @@ USER root
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 
+RUN apt-get update && apt-get install -y google-chrome-stable
+
+RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') && \
+    MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d. -f1) && \
+    LATEST_DRIVER=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_${MAJOR_VERSION}) && \
+    if [ -z "$LATEST_DRIVER" ]; then \
+      LATEST_DRIVER=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE); \
+    fi && \
+    wget -q "https://storage.googleapis.com/chrome-for-testing-public/${LATEST_DRIVER}/linux64/chromedriver-linux64.zip" && \
+    unzip chromedriver-linux64.zip && \
+    mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
+    chmod +x /usr/local/bin/chromedriver && \
+    rm -rf chromedriver-linux64.zip chromedriver-linux64
 ENV RAILS_ENV=test
 
 RUN apt-get update && apt-get install -y x11vnc \
@@ -39,8 +51,7 @@ RUN apt-get update && apt-get install -y x11vnc \
     fluxbox \
     wget \
     libnss3 \
-    wmctrl \
-    google-chrome-stable
+    wmctrl
 
 USER app
 

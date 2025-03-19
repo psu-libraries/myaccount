@@ -12,7 +12,7 @@ RSpec.describe 'Session cookies' do
               'Connection' => 'close',
               'Content-Type' => 'application/json',
               'Host' => 'illiad.illiad',
-              'User-Agent' => 'http.rb/4.4.1'
+              'User-Agent' => 'http.rb/5.2.0'
             })
       .to_return(status: 200, body: '[]', headers: {})
     login_permanently_as username: 'PATRON1', patron_key: mock_user
@@ -23,7 +23,7 @@ RSpec.describe 'Session cookies' do
     Warden::Manager._on_request.clear
   end
 
-  describe 'the session cookies', js: true do
+  describe 'the session cookies', :js do
     context 'when starting a fresh session' do
       it 'sets session cookies' do
         session_began_cookie = page.driver.browser.manage.cookie_named(:session_began)

@@ -10,7 +10,7 @@ class ViewIlliadLoansJob < ApplicationJob
   def perform(webaccess_id:, type:, library_key:)
     raise StandardError, "Invalid Loan Type '#{type}'.  Must be :holds or :checkouts." unless LOAN_TYPES.include?(type)
 
-    illiad_loans = IlliadClient.new.send("get_loan_#{type}", webaccess_id)
+    illiad_loans = IlliadClient.new.send(:"get_loan_#{type}", webaccess_id)
 
     # IlliadClient usually returns an array, If we don't return an array we send the
     # result to process_failure. We do this to avoid raising an exception in IlliadClient

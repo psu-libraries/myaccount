@@ -12,13 +12,13 @@ RSpec.describe 'Ask a librarian' do
               'Connection' => 'close',
               'Content-Type' => 'application/json',
               'Host' => 'illiad.illiad',
-              'User-Agent' => 'http.rb/4.4.1'
+              'User-Agent' => 'http.rb/5.2.0'
             })
       .to_return(status: 200, body: '[]', headers: {})
     login_as username: 'PATRON2', patron_key: mock_user
   end
 
-  describe 'side tab widget', js: true do
+  describe 'side tab widget', :js do
     it 'shows up on the homepage' do
       visit summaries_path
       expect(page).to have_css('button[class^="libchat"]')

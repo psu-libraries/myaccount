@@ -63,7 +63,7 @@ RSpec.describe 'Errors' do
         before { get '/user_not_found', headers: { Settings.remote_user_header => 'abc123@psu.edu' } }
 
         it 'has http status 500' do
-          expect(response).to have_http_status('500')
+          expect(response).to have_http_status(:internal_server_error)
         end
 
         it 'redirects to customized user_not_found error page' do

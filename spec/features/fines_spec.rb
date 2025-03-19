@@ -14,7 +14,7 @@ RSpec.describe 'Fines' do
     Warden::Manager._on_request.clear
   end
 
-  it 'is accessible', js: true do
+  it 'is accessible', :js do
     visit fines_path
 
     expect(page).to be_accessible

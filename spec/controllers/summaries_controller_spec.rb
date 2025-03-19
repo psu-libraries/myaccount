@@ -14,7 +14,7 @@ RSpec.describe SummariesController do
               'Connection' => 'close',
               'Content-Type' => 'application/json',
               'Host' => 'illiad.illiad',
-              'User-Agent' => 'http.rb/4.4.1'
+              'User-Agent' => 'http.rb/5.2.0'
             })
       .to_return(status: 200, body: '[]', headers: {})
   end

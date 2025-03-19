@@ -33,7 +33,7 @@ RSpec.describe IllPlaceHoldCheckboxWrapperComponent, type: :component do
     end
 
     it 'renders an input with a unique id attribute by call number' do
-      expect(component).to have_selector('input[id="call_numbers_HN13.D52 2019 v.2"]')
+      expect(component).to have_css('input[id="call_numbers_HN13.D52 2019 v.2"]')
     end
 
     it 'renders a label with a matching unique for attribute based on call number' do

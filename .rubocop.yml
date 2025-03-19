@@ -6,7 +6,7 @@ inherit_from:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.1.3
+  TargetRubyVersion: 3.4.1
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
@@ -14,6 +14,10 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'spec/support/data/**/*'
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Exclude:
+    - 'spec/factories/ill_transaction.rb'
 
 Metrics/ClassLength:
   Exclude:
@@ -71,6 +75,10 @@ RSpec/MultipleMemoizedHelpers:
     - 'spec/views/summaries/index.html.erb_spec.rb'
     - 'spec/controllers/checkouts_controller_spec.rb'
 
+RSpec/SpecFilePathFormat:
+  Exclude:
+    - 'spec/lib/healthchecks/version_check_spec.rb'
+
 Rails/I18nLocaleTexts:
   Exclude:
     - 'spec/views/shared/flash_msg.html.erb_spec.rb'
@@ -79,6 +87,10 @@ Rails/I18nLocaleTexts:
 Rails/ApplicationMailer:
   Exclude:
     - 'app/mailers/checkouts_mailer.rb'
+
+Style/SafeNavigationChainLength:
+  Exclude:
+    - 'app/services/place_hold_form/builder.rb'
 
 Style/RescueStandardError:
   Exclude:

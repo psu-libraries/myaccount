@@ -67,7 +67,7 @@ class IlliadClient
   def place_loan(transaction_info, params)
     response = add_loan_transaction(transaction_info, params)
 
-    note = params&.dig(:note)&.dig(:body)
+    note = params&.dig(:note, :body)
     if note.present? && response.status == 200
       transaction_id = JSON.parse(response.body)['TransactionNumber']
       # If add note fails, we will not inform

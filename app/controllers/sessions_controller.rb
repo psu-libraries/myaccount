@@ -8,12 +8,12 @@ class SessionsController < ApplicationController
     if request.env['warden'].authenticate(:library_id) == nil
       # Run it through webaccess and have it come back to this same method
       authenticate_webaccess
+      return if performed?
     end
 
     if current_user?
       original_fullpath = session[:original_fullpath]
       session.delete(:original_fullpath)
-
       return redirect_to original_fullpath if original_fullpath.present?
 
       redirect_to summaries_url
