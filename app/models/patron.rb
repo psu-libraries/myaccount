@@ -9,8 +9,8 @@ class Patron
   attr_reader :record
 
   CAMPUSES = { 'UP-PAT' => 'UNIVERSITY PARK or WORLD CAMPUS',
-               'DSL-CARL' => 'DICKINSON SCHOOL OF LAW - CARLISLE',
-               'DSL-UP' => 'PENN STATE LAW - UNIVERSITY PARK',
+               'DSL-CARL' => 'DICKINSON LAW - CARLISLE',
+               'DSL-UP' => 'DICKINSON LAW - UNIVERSITY PARK',
                'ABINGTON' => 'ABINGTON',
                'ALTOONA' => 'ALTOONA',
                'BEAVER' => 'BEAVER',
