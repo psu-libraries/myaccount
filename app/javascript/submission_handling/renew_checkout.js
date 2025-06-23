@@ -38,8 +38,8 @@ const initializeRenewalSummary = function () {
 
 const updateRenewalSummary = function () {
     if (document.querySelector('.renewals-summary .alert-info')) {
-        const successCount = document.querySelectorAll('.bibitem .badge-success').length;
-        const failsCount = document.querySelectorAll('.bibitem .badge-danger').length;
+        const successCount = document.querySelectorAll('.bibitem .bg-success').length;
+        const failsCount = document.querySelectorAll('.bibitem .bg-danger').length;
         const allCheckedCount = allChecked(findForm('checkouts')).length;
         let info = 'Your renewals are processing...';
         if (allCheckedCount === failsCount + successCount) {

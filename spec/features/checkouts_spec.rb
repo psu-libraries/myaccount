@@ -45,7 +45,7 @@ RSpec.describe 'Checkouts' do
       end
 
       it 'adds a success badge' do
-        expect(page).to have_css '.badge-success', text: 'Successfully renewed'
+        expect(page).to have_css '.bg-success', text: 'Successfully renewed'
       end
 
       it 'displays renewals summary' do
@@ -64,7 +64,7 @@ RSpec.describe 'Checkouts' do
           page.check 'renewal_list__2145643:5:1'
           page.click_button 'Renew', match: :first
 
-          expect(page).to have_css '.badge-success', text: 'Successfully renewed', count: 1
+          expect(page).to have_css '.bg-success', text: 'Successfully renewed', count: 1
         end
       end
     end
@@ -76,7 +76,7 @@ RSpec.describe 'Checkouts' do
       end
 
       it 'adds a badge for failed renewal' do
-        expect(page).to have_css '.badge-danger', text: 'Failed to renew'
+        expect(page).to have_css '.bg-danger', text: 'Failed to renew'
       end
 
       it 'generates an error message (a "toast")' do
