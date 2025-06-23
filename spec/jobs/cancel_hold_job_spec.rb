@@ -29,7 +29,7 @@ RSpec.describe CancelHoldJob do
         results = Redis.current.get 'cancel_hold_1'
 
         expect(JSON.parse(results)).to eq('badge' =>
-                                              '<span class="badge bg-success">Hold canceled</span>',
+                                              '<span class="badge rounded-pill bg-success">Hold canceled</span>',
                                           'id' => 1,
                                           'response' => "<p class='text-danger'>Canceled</p>",
                                           'result' => 'success')

@@ -8,7 +8,7 @@ RSpec.describe RenewCheckoutJob do
                       resource: '/catalog/item',
                       session_token: '1s2fa21465' } }
     let(:success_hash) { { 'id' => '2145643:5:1',
-                           'response' => { 'badge' => '<span class="badge bg-success">Successfully ' \
+                           'response' => { 'badge' => '<span class="badge rounded-pill bg-success">Successfully ' \
                                                       'renewed</span>',
                                            'due_date' => 'August 13, 2020',
                                            'renewal_count' => 70,
