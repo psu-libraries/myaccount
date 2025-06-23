@@ -87,7 +87,9 @@ RSpec.describe 'Holds' do
 
       it 'lets the user cancel a pending hold', :js do
         page.check 'hold_list__3911148'
-        page.click_on 'Cancel Selected Holds'
+        element = find('input[type="submit"][value="Cancel"]', visible: true, wait: 5)
+        page.execute_script('arguments[0].scrollIntoView({ behavior: "instant", block: "center" });', element)
+        element.click
         expect(page).to have_css '#hold3911148 .hold_status', text: 'Canceled'
         expect(page).to have_css '.bg-success', text: 'Hold canceled'
         expect(page).to have_unchecked_field 'hold_list__3911148'
