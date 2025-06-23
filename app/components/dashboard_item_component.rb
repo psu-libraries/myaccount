@@ -28,7 +28,7 @@ class DashboardItemComponent < ViewComponent::Base
   def item_link
     url = url_for(controller: @model.to_s.downcase, action: 'index')
 
-    link_to "See all #{@model}", url, class: 'btn btn-primary float-right deflatten'
+    link_to "See all #{@model}", url, class: 'btn btn-primary float-end deflatten'
   end
 
   def render?

@@ -11,7 +11,9 @@ import 'typeface-open-sans'
 import 'typeface-roboto-slab'
 
 // Vendor
-import 'bootstrap/dist/js/bootstrap'
+import * as bootstrap from 'bootstrap'
+window.bootstrap = bootstrap;
+
 
 // Application styles
 import './styles'
@@ -22,12 +24,17 @@ import checkouts from "../view_checkouts"
 import holds from "../view_holds"
 import selectAll from "../select_all";
 import viewRequestedHolds from "../view_requested_holds"
+import { Dropdown } from 'bootstrap';
 
 // Rails stuff
 require("@rails/ujs").start()
 require("@rails/activestorage").start();
 
 document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((el) => {
+        new Dropdown(el);
+    });
+
     selectAll.start();
     holds();
     checkouts();
