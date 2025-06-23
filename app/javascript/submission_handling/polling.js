@@ -1,6 +1,6 @@
 // jquery and bootstrap are only needed for reportError
 import 'jquery'
-import 'bootstrap'
+import * as bootstrap from 'bootstrap'
 
 const defaultIndex = 0;
 
