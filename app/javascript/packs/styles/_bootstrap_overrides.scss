@@ -16,11 +16,15 @@ caption {
 
 a {
   text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 }
 
-a:hover,
-a:focus {
-  text-decoration: underline;
+.btn[href] {
+  text-decoration: none;
 }
 
 .site-title {
