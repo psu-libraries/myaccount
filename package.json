@@ -29,7 +29,6 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "jquery": "1.9.1 - 3",
     "mini-css-extract-plugin": "^2.7.6",
-    "popper.js": "^1.14.7",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "shakapacker": "^8.0.0",
