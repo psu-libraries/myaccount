@@ -44,7 +44,7 @@ RSpec.describe 'Holds' do
         end
 
         it 'lets the user change the pickup library of a hold', :js do
-          expect(page).to have_css '.badge-success', text: 'Successfully changed pickup location'
+          expect(page).to have_css '.bg-success', text: 'Successfully changed pickup location'
           expect(page).to have_css '#hold3911148 .pickup_at', text: 'York'
           expect(page).to have_unchecked_field 'hold_list__3911148'
         end
@@ -55,7 +55,7 @@ RSpec.describe 'Holds' do
             page.select 'Berks Campus Library', from: 'pickup_library'
             page.click_on 'Update Selected Holds'
 
-            expect(page.find('.badge-success')).to have_text 'Successfully changed pickup location', count: 1
+            expect(page.find('.bg-success')).to have_text 'Successfully changed pickup location', count: 1
           end
         end
       end
@@ -69,7 +69,7 @@ RSpec.describe 'Holds' do
         end
 
         it 'lets the user change the pickup by date of a hold', :js do
-          expect(page).to have_css '.badge-success', text: 'Successfully updated pickup by date'
+          expect(page).to have_css '.bg-success', text: 'Successfully updated pickup by date'
           expect(page).to have_css '#hold3911148 .pickup-by', text: 'January 1, 9999'
           expect(page).to have_unchecked_field 'hold_list__3911148'
         end
@@ -80,16 +80,18 @@ RSpec.describe 'Holds' do
             page.fill_in 'pickup_by_date', with: '01-01-2020'
             page.click_on 'Update Selected Holds'
 
-            expect(page.find('.badge-success')).to have_text 'Successfully updated pickup by date', count: 1
+            expect(page.find('.bg-success')).to have_text 'Successfully updated pickup by date', count: 1
           end
         end
       end
 
       it 'lets the user cancel a pending hold', :js do
         page.check 'hold_list__3911148'
-        page.click_on 'Cancel'
+        element = find('input[type="submit"][value="Cancel"]', visible: true, wait: 5)
+        page.execute_script('arguments[0].scrollIntoView({ behavior: "instant", block: "center" });', element)
+        element.click
         expect(page).to have_css '#hold3911148 .hold_status', text: 'Canceled'
-        expect(page).to have_css '.badge-success', text: 'Hold canceled'
+        expect(page).to have_css '.bg-success', text: 'Hold canceled'
         expect(page).to have_unchecked_field 'hold_list__3911148'
       end
 
@@ -97,7 +99,7 @@ RSpec.describe 'Holds' do
         page.check 'hold_list__3906718'
         page.click_on 'Cancel Selected Holds'
         expect(page).to have_css '#hold3906718 .hold_status', text: 'Canceled'
-        expect(page).to have_css '.badge-success', text: 'Hold canceled'
+        expect(page).to have_css '.bg-success', text: 'Hold canceled'
         expect(page).to have_unchecked_field 'hold_list__3911148'
       end
     end

@@ -52,5 +52,5 @@ export const scrollToTop = () => {
 };
 
 export const clearBadges = () => {
-    document.querySelectorAll('.badge-success, .badge-danger').forEach((badge) => badge.parentNode.removeChild(badge));
+    document.querySelectorAll('.bg-success, .bg-danger').forEach((badge) => badge.parentNode.removeChild(badge));
 };

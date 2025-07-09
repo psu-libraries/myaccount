@@ -10,11 +10,13 @@ import './images'
 import 'typeface-open-sans'
 import 'typeface-roboto-slab'
 
-// Vendor
-import 'bootstrap/dist/js/bootstrap'
-
 // Application styles
 import './styles'
+
+// Vendor
+import * as bootstrap from 'bootstrap'
+import { Dropdown } from 'bootstrap'
+window.bootstrap = bootstrap;
 
 // Application javascript
 import acceptLendingPolicy from '../accept_lending_policy'
@@ -28,6 +30,10 @@ require("@rails/ujs").start()
 require("@rails/activestorage").start();
 
 document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((el) => {
+        el.dropdownInstance = new Dropdown(el);
+    });
+
     selectAll.start();
     holds();
     checkouts();

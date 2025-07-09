@@ -1,6 +1,6 @@
 // jquery and bootstrap are only needed for reportError
 import 'jquery'
-import 'bootstrap'
+import * as bootstrap from 'bootstrap'
 
 const defaultIndex = 0;
 
@@ -8,7 +8,9 @@ export const reportError = async function (error) {
     const regex = /id="(?<id>[^"]*)/gm;
     let idResults = regex.exec(error);
     await document.querySelector('.toast-insertion-point').insertAdjacentHTML("beforeend", error);
-    $(`#${idResults.groups.id}`).toast('show');
+    const toastElement = document.getElementById(idResults.groups.id);
+    const toast = bootstrap.Toast.getOrCreateInstance(toastElement);
+    toast.show();
 };
 
 export const getJobInfo = async (jobId) => {

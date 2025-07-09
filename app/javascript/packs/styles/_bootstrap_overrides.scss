@@ -9,3 +9,36 @@ caption {
 .navbar {
   display: block;
 }
+
+.container {
+  max-width: 1140px;
+}
+
+a {
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.btn[href] {
+  text-decoration: none;
+}
+
+.site-title {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.nav-link {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
