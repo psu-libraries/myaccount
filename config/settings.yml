@@ -80,6 +80,7 @@ illiad_locations:
   UP-SPECCOL: Pattee Commons Services Desk
 pickup_locations:
   UP-PAT: 'Pattee and Paterno Library - Commons Services Desk'
+  UP-ANNEX: 'Cato Park Library Annex II, 3110 Research Dr., State College, PA'
   UP-ARCHIT: 'Architecture & Landscape Architecture Library, 111 Stuckeman'
   UP-MEDICAL: 'College of Medicine (University Park)'
   HERSHEY: 'College of Medicine (Hershey)'
@@ -137,7 +138,7 @@ pickup_locations_actual:
   SCHUYLKILL: 'Penn State Schuylkill'
   SERIAL-SRV: 'Acquisitions (UP)'
   SHENANGO: 'Penn State Shenango'
-  UP-ANNEX: 'Library Storage'
+  UP-ANNEX: 'Cato Park Library Annex II, 3110 Research Dr., State College, PA'
   UP-ARCHIT: 'Architecture & Landscape Architecture Library, 111 Stuckeman'
   UP-ARTSHUM: 'Arts & Humanities Library (Pattee)'
   UP-BUSINES: 'Business Library (Paterno)'
