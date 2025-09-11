@@ -41,7 +41,7 @@ group :development, :test do
   gem 'byebug'
   gem 'capybara'
   gem 'factory_bot_rails'
-  gem 'niftany', '~> 0.11.0'
+  gem 'niftany', '~> 0.12.1'
   gem 'observer'
   gem 'pry-byebug'
   gem 'rails-controller-testing'
