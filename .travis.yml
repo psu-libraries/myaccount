@@ -10,7 +10,6 @@ cache:
 env:
   global:
     - RAILS_ENV=test
-    - CC_TEST_REPORTER_ID=8f8554cdb6c9dd989fac690002e68f97075010f27f9fd9929dd87a8fc35587ac
 addons:
   chrome: stable
 
@@ -28,9 +27,6 @@ before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
   - bundle exec rails assets:precompile
 
 script:
@@ -38,9 +34,3 @@ script:
   - yarn lint
   - bundle exec rake
   - yarn test
-
-after_script:
-  - ./cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.rails.json coverage/.resultset.json # Format rspec
-  - ./cc-test-reporter format-coverage -t lcov -o coverage/codeclimate.jest.json coverage/lcov.info  # Format jest
-  - ./cc-test-reporter sum-coverage  coverage/codeclimate.*.json -p 2                  # Sum both coverage parts into coverage/codeclimate.json
-  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./cc-test-reporter upload-coverage; fi  # Upload coverage/codeclimate.json
