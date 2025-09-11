@@ -3,6 +3,7 @@
 # Model for call-level information in Symphony
 class Call
   include BibRecord
+
   attr_reader :record, :items
 
   def initialize(record:)

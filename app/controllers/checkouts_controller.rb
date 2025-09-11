@@ -2,6 +2,7 @@
 
 class CheckoutsController < ApplicationController
   include ActionView::Helpers::TagHelper
+
   before_action :set_cache_headers
   before_action :authenticate_user!
 

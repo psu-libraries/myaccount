@@ -43,3 +43,7 @@ Style/OpenStructUse:
     - 'app/components/place_loan_success_component.rb'
     - 'app/controllers/ill_controller.rb'
     - 'spec/views/ill/result.html.erb_spec.rb'
+
+Capybara/NegationMatcherAfterVisit:
+  Exclude:
+    - 'spec/features/holds_spec.rb'
