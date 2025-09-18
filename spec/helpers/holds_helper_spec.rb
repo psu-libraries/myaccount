@@ -128,7 +128,7 @@ RSpec.describe HoldsHelper do
       date_time = class_double(DateTime)
         .as_stubbed_const(transfer_nested_constants: true)
       allow(date_time).to receive(:now).and_return arbitrary_datetime
-      allow(date_time).to receive(:civil).with(2001, 2, 17, 0, 0, (0 / 1), (0 / 1), 2299161.0)
+      allow(date_time).to receive(:civil).with(2001, 2, 17, 0, 0, 0 / 1, 0 / 1, 2299161.0)
         .and_return arbitrary_datetime_plus
     end
 

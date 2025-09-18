@@ -37,7 +37,7 @@ class PlaceHoldForm::Builder
       return false if bib_info.call_list.blank?
 
       @call_list = bib_info.call_list.map { |call| Call.new record: call }
-      filter_holdables if @call_list.count.positive?
+      filter_holdables if @call_list.any?
 
       @call_list.present?
     end
@@ -60,9 +60,9 @@ class PlaceHoldForm::Builder
     #
     # Fourth: Only pass along the volumetric calls that have unique Call#call_number (and there has to be more than 1)
     def process_volumetric_calls
-      @volumetric_calls = @call_list.dup if volumetric? && @call_list.count > 1
+      @volumetric_calls = @call_list.dup if volumetric? && @call_list.many?
       volumetric_natural_sort
-      compact_non_volumetric_calls if @volumetric_calls.select { |call| call.volumetric.nil? }.count > 1
+      compact_non_volumetric_calls if @volumetric_calls.many? { |call| call.volumetric.nil? }
       reduce_to_unique_call_numbers
 
       nil_if_only_one

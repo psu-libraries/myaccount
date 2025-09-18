@@ -3,6 +3,7 @@
 # Model for bib-level information in Symphony, it's basically a hold request factory
 class Bib
   include BibRecord
+
   attr_reader :record
 
   def initialize(record)

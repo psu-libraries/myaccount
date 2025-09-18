@@ -3,6 +3,7 @@
 # Class to model User information
 class User
   include ActiveModel::Model
+
   attr_accessor :username, :name, :patron_key, :session_token
 
   def initialize(attributes)
