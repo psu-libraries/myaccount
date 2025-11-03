@@ -1,5 +1,5 @@
 [![<psu-libraries>](https://circleci.com/gh/psu-libraries/myaccount.svg?style=svg)](<https://circleci.com/gh/psu-libraries/myaccount>)
-# Setup Your Environment 
+# Setup Your Environment
 
 ## Mac
 
@@ -7,38 +7,38 @@
 * Get `homebrew` installed and configured using [these instructions](https://brew.sh)
 * `ruby` via `rbenv` ([Upgrading Ruby Version Using rbenv](https://github.com/psu-libraries/psulib_blacklight/wiki/Upgrading-Ruby-Version-Using-rbenv))
 
-# Dependencies 
+# Dependencies
 
 | Software |  Version |
 |----------|------|
 | `ruby`    |  3.4.1 |
-| `rails`   |  6.1.7 |
+| `rails`   |  7.1.5 |
 | `redis`   | 5.0.7 |
 
 # Development Setup
 
 1.  [Make sure you have ssh keys established on your machine](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key)
 1.  Clone the application and install:
-    ``` 
+    ```
     git clone git@github.com:psu-libraries/myaccount.git
     cd myaccount
     bundle install --without production
     ```
 1.  Set local environment variables with values from [vault](https://vault.dsrd.libraries.psu.edu:8200/ui/vault/auth?with=oidc%2F)
 1.  Run `yarn`
-1.  Use [Modify Header Value](https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/) browser extension to set the following headers: 
+1.  Use [Modify Header Value](https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/) browser extension to set the following headers:
     ```
     URL: localhost
     Header Name: X_AUTH_REQUEST_EMAIL
     Header Value: [access id]@psu.edu
-    
+
     URL: localhost
     Header Name: REMOTE_USER
     Header Value: [access id]
     ```
 1.  Use one of the following options to run myaccount
 
-    
+
 ## Option 1: Redis locally
 
 Use the [redis docker image](https://hub.docker.com/_/redis/).
@@ -48,26 +48,26 @@ Should be able to just run it with a command listed in the docker hub page:
 `docker run -d -p <REDIS_PORT>:6379 --name redis-the-new-black redis:5.0.7`
 
 Then boot up the rails server with caching turned on and you'll be all set.
- 
+
  `bundle exec rails s --dev-caching`
- 
+
 Monitor the behavior by tailing the logs:
 
  `docker exec -it redis-the-new-black redis-cli monitor`
- 
+
  ### Sidekiq
- 
+
  Sidekiq is also a part of this application, so start it:
- 
+
  ```
  bundle exec sidekiq
  ```
- 
- Sidekiq is being used as a means of speeding things up for our end users. This is especially true for large batches of changes being requested and most true for large batches of changes that apply to a single bib (multiple calls). Without the concurrency that Sidekiq provides, these requests would take significantly more time. For example a request to place a hold on 32 volumes might take 106 seconds without Sidekiq and with Sidekiq that comes down to a still long, but much quicker 15 seconds. 
- 
+
+ Sidekiq is being used as a means of speeding things up for our end users. This is especially true for large batches of changes being requested and most true for large batches of changes that apply to a single bib (multiple calls). Without the concurrency that Sidekiq provides, these requests would take significantly more time. For example a request to place a hold on 32 volumes might take 106 seconds without Sidekiq and with Sidekiq that comes down to a still long, but much quicker 15 seconds.
+
  Another option could have been hijacking the HTML and sending individual HTTP requests from JavaScript and then handling the response on each in JavaScript as well, but, we feel that this approach is less attractive due to the fact that it's even more complex than the Sidekiq and polling apparatus and seems to work against the intention of a form in HTML rather than with it.
- 
- We have also decided to not allow Sidekiq jobs to retry due to failure. This is because we have already built in retries due to expected problems that could occur when attempting to interact with the web service. A retry could potentially be harmful given the immediate response needed by the user. 
+
+ We have also decided to not allow Sidekiq jobs to retry due to failure. This is because we have already built in retries due to expected problems that could occur when attempting to interact with the web service. A retry could potentially be harmful given the immediate response needed by the user.
 
 ### Putting it all together
 
@@ -79,10 +79,10 @@ docker start redis-the-new-black
 bundle exec sidekiq
 ```
 
-## Option 2: Docker-compose 
-You can run the whole myaccount stack via docker-compose. This will build a container for myaccount, sidekiq, and run web, sidekiq, and redis services. You will need a SYMWS_PIN to run locally. 
+## Option 2: Docker-compose
+You can run the whole myaccount stack via docker-compose. This will build a container for myaccount, sidekiq, and run web, sidekiq, and redis services. You will need a SYMWS_PIN to run locally.
 
-1.) copy example .envrc file 
+1.) copy example .envrc file
 ```
 cp .envrc.example .envrc
 ```
@@ -136,8 +136,8 @@ docker-compose exec web bundle
 ```
 
 Attach to the running container
-If you want to do byebug, or pry you can attach your current session into the running container 
-A Ctrl+C in this window will halt the web process, you can reload it by running 
+If you want to do byebug, or pry you can attach your current session into the running container
+A Ctrl+C in this window will halt the web process, you can reload it by running
 `docker-compose restart web`
 ```
 ./bin/attach
@@ -165,12 +165,12 @@ Now, myaccount redis will be exposed on port 9999, and myaccount will be exposed
 There is a lot of domain terminology that can be confusing. Here are some of the bigger things to keep in mind:
 
 * _Bib_ - a bibliographic container that holds calls and items, contains global information about the bibliographic record described like author and title which is the same throughout the entire record (p.s., bibs can be *large*).
-* _Call_ - a call number based container that contains items and is contained within a bib. There can be multiple calls in a bib. There can be multiple items in a call. 
+* _Call_ - a call number based container that contains items and is contained within a bib. There can be multiple calls in a bib. There can be multiple items in a call.
 * _Item_ - info that describes the thing that is actually held or checked out. Has a barcode and checkout status.
 
 This is an attempt at a quick and rough "[ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html)"
 
-# CI 
+# CI
 We use Circle CI to test myaccount. In the event of a test failure you can visit <https://circleci.com/gh/psu-libraries/myaccount> to see the jobs output. You can gain shell access to the build by choosing "Rerun with SSH" once logged in, your code will be checked out at the `/project` path.
 
 # Healthcheck endpoint `/health`
@@ -190,9 +190,9 @@ When changing these values you must restart the web server (passenger) _and_ sid
 
 ## Overriding pickup location labels
 
-Pickup locations for holds placed are manually dictated by Lending and Reserves Services. Meaning, that although the Symphony system does have the ability to automate this and could be deriven from web service calls we do not do this (for reasons). The workflow is: they tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. For production we use `production.local.yml` to override these values. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overridable. 
+Pickup locations for holds placed are manually dictated by Lending and Reserves Services. Meaning, that although the Symphony system does have the ability to automate this and could be deriven from web service calls we do not do this (for reasons). The workflow is: they tell us what they want for the labels and we add them in `settings.yml`. This means we can override them as needed too by following the inheritance flow of the `config` gem. For production we use `production.local.yml` to override these values. Note that `Settings.pickup_locations` does _not_ affect the labels used in displaying the "Pickup at" column in the holds tables. That is currently not overridable.
 
-*Knockout prefix* - because we sometimes need to remove only certain keys in a Hash stored in settings we need to make use of the [`knockout_prefix`](https://github.com/rubyconfig/config#merge-customization) feature in the Config gem. The override of the Hash goes like this: 
+*Knockout prefix* - because we sometimes need to remove only certain keys in a Hash stored in settings we need to make use of the [`knockout_prefix`](https://github.com/rubyconfig/config#merge-customization) feature in the Config gem. The override of the Hash goes like this:
 
 1. Defined initially in settings.yml and tracked in repo
 1. Overridden to be knocked out in settings.local.yml (i.e., `pickup_locations: --`)
