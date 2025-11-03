@@ -48,7 +48,7 @@ module Myaccount
         port: Settings.action_mailer.smtp_port
       }
     config.action_mailer.raise_delivery_errors = Settings.action_mailer.raise_delivery_errors
-    config.action_mailer.preview_path = Rails.root.join('lib/mailer_previews')
+    config.action_mailer.preview_paths = [Rails.root.join('lib/mailer_previews')]
 
     # Don't generate system test files.
     config.generators.system_tests = nil
