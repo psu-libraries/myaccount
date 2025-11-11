@@ -91,10 +91,10 @@ jobs:
           name: Save Docker image to workspace
           command: |
             source $BASH_ENV
-            REPO=$(echo "$REGISTRY_REPO" | tr '[:upper:]' '[:lower:]')
-            echo "Saving image: $REGISTRY_HOST/$REPO:$TAG"
+            IMAGE_NAME="harbor.k8s.libraries.psu.edu/library/${CIRCLE_PROJECT_REPONAME}:${TAG}"
+            echo "Saving image: $IMAGE_NAME"
             docker images
-            docker save $REGISTRY_HOST/$REPO:$TAG -o myaccount-image.tar
+            docker save $IMAGE_NAME -o myaccount-image.tar
       - persist_to_workspace:
           root: .
           paths:
