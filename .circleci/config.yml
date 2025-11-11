@@ -90,7 +90,8 @@ jobs:
       - run:
           name: Save Docker image to workspace
           command: |
-            docker save $REGISTRY_HOST/$REGISTRY_REPO:$TAG -o myaccount-image.tar
+            REPO=$(echo "$REGISTRY_REPO" | tr '[:upper:]' '[:lower:]')
+            docker save $REGISTRY_HOST/$REPO:$TAG -o myaccount-image.tar
       - persist_to_workspace:
           root: .
           paths:
