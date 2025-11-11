@@ -60,7 +60,7 @@ jobs:
   build-image:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_REPO: "library/$CIRCLE_PROJECT_REPONAME"
+      REGISTRY_REPO: library/${CIRCLE_PROJECT_REPONAME}
     executor:
       name: ci-utils
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
@@ -103,7 +103,7 @@ jobs:
   push-image:
     environment:
       REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_REPO: "library/$CIRCLE_PROJECT_REPONAME"
+      REGISTRY_REPO: library/${CIRCLE_PROJECT_REPONAME}
     executor:
       name: ci-utils
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
@@ -204,7 +204,7 @@ jobs:
         environment:
           RAILS_ENV: test
           REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-          REGISTRY_REPO: library/myaccount
+          REGISTRY_REPO: library/${CIRCLE_PROJECT_REPONAME}
           GITHUB_USER: 'psu-stewardship-bot'
           CONFIG_REPO: git@github.com:psu-libraries/myaccount-config.git
     steps:
