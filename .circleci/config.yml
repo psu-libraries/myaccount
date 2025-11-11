@@ -65,7 +65,7 @@ jobs:
       name: ci-utils
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
         docker_layer_caching: true
       - checkout
       - run:
