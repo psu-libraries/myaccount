@@ -87,6 +87,14 @@ jobs:
           tag: $TAG
           extra_build_args: "--target production"
           use-buildkit: true
+      - run:
+          name: Save Docker image to workspace
+          command: |
+            docker save $REGISTRY_HOST/$REGISTRY_REPO:$TAG -o myaccount-image.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - myaccount-image.tar
 
   push-image:
     environment:
@@ -97,6 +105,12 @@ jobs:
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
       - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: Load Docker image from workspace
+          command: |
+            docker load -i myaccount-image.tar
       - compute-docker-tag
       - docker/push:
           image: $REGISTRY_REPO
