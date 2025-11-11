@@ -96,6 +96,7 @@ jobs:
       name: ci-utils
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
+      - setup_remote_docker
       - compute-docker-tag
       - docker/push:
           image: $REGISTRY_REPO
