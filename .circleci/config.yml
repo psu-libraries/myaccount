@@ -90,6 +90,7 @@ jobs:
       - run:
           name: Save Docker image to workspace
           command: |
+            source $BASH_ENV
             REPO=$(echo "$REGISTRY_REPO" | tr '[:upper:]' '[:lower:]')
             docker save $REGISTRY_HOST/$REPO:$TAG -o myaccount-image.tar
       - persist_to_workspace:
