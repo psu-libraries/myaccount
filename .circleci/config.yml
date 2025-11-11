@@ -102,26 +102,20 @@ jobs:
 
   push-image:
     environment:
-      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
-      REGISTRY_REPO: library/${CIRCLE_PROJECT_REPONAME}
+      DOCKER_LOGIN: your-harbor-username
+      DOCKER_PASSWORD: your-harbor-password
+      DOCKER_REGISTRY: harbor.k8s.libraries.psu.edu
+      REGISTRY_IMAGE: library/${CIRCLE_PROJECT_REPONAME}
+      IMAGE_TAG: $TAG
     executor:
       name: ci-utils
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
       - setup_remote_docker
       - run:
-          name: Docker Login
+          name: Build and Push Image
           command: |
-            echo $HARBOR_PASSWORD | docker login harbor.k8s.libraries.psu.edu -u $HARBOR_USERNAME --password-stdin
-      - run:
-          name: Load Docker image from workspace
-          command: |
-            docker load -i myaccount-image.tar
-      - compute-docker-tag
-      - docker/push:
-          image: $REGISTRY_REPO
-          registry: $REGISTRY_HOST
-          tag: $TAG
+            build-and-push
 
   delete-deployment:
     parameters:
