@@ -109,8 +109,10 @@ jobs:
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
       - setup_remote_docker
-      - attach_workspace:
-          at: .
+      - run:
+          name: Docker Login
+          command: |
+            echo $HARBOR_PASSWORD | docker login harbor.k8s.libraries.psu.edu -u $HARBOR_USERNAME --password-stdin
       - run:
           name: Load Docker image from workspace
           command: |
