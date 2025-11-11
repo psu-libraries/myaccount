@@ -66,6 +66,7 @@ jobs:
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
       - setup_remote_docker
+        docker_layer_caching: true
       - checkout
       - run:
           name: Checkout Branch
@@ -88,34 +89,42 @@ jobs:
           extra_build_args: "--target production"
           use-buildkit: true
       - run:
-          name: Save Docker image to workspace
+          name: Save image info for push job
           command: |
-            source $BASH_ENV
-            IMAGE_NAME="harbor.k8s.libraries.psu.edu/library/${CIRCLE_PROJECT_REPONAME}:${TAG}"
-            echo "Saving image: $IMAGE_NAME"
-            docker images
-            docker save $IMAGE_NAME -o myaccount-image.tar
+            mkdir -p /tmp/docker-image-info
+            echo "$REGISTRY_HOST/$REGISTRY_REPO:$TAG" > /tmp/docker-image-info/image-name.txt
       - persist_to_workspace:
-          root: .
+          root: /tmp
           paths:
-            - myaccount-image.tar
+            - docker-image-info
 
   push-image:
     environment:
-      DOCKER_LOGIN: your-harbor-username
-      DOCKER_PASSWORD: your-harbor-password
-      DOCKER_REGISTRY: harbor.k8s.libraries.psu.edu
-      REGISTRY_IMAGE: library/${CIRCLE_PROJECT_REPONAME}
-      IMAGE_TAG: $TAG
+      REGISTRY_HOST: harbor.k8s.libraries.psu.edu
+      REGISTRY_REPO: "library/$CIRCLE_PROJECT_REPONAME"
     executor:
       name: ci-utils
       image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
     steps:
-      - setup_remote_docker
-      - run:
-          name: Build and Push Image
-          command: |
-            build-and-push
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - checkout
+      - compute-docker-tag
+      - attach_workspace:
+          at: /tmp
+      - docker/check:
+          registry: $REGISTRY_HOST
+      - docker/build:
+          image: $REGISTRY_REPO
+          registry: $REGISTRY_HOST
+          tag: $TAG
+          extra_build_args: "--target production"
+          use-buildkit: true
+          cache_from: $REGISTRY_REPO:$TAG
+      - docker/push:
+          image: $REGISTRY_REPO
+          registry: $REGISTRY_HOST
+          tag: $TAG
 
   delete-deployment:
     parameters:
