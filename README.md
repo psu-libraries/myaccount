@@ -1,5 +1,5 @@
 [![<psu-libraries>](https://circleci.com/gh/psu-libraries/myaccount.svg?style=svg)](<https://circleci.com/gh/psu-libraries/myaccount>)
-# Setup Your Environment
+# Setup Your Environment:
 
 ## Mac
 
