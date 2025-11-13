@@ -31,6 +31,12 @@ parameters:
   REGISTRY_HOST:
     type: string
     default: "harbor.k8s.libraries.psu.edu"
+  CLUSTERS_DEV:
+    type: string
+    default: "uldev"
+  CLUSTERS_PROD:
+    type: string
+    default: "prod"
 
 commands:
 
@@ -84,7 +90,7 @@ jobs:
           name: Checkout Branch
           command: |
             export TRIGGERED_BY="$CIRCLE_USERNAME"
-            if [[ "$CIRCLE_BRANCH" == update/* ]]; then
+            if [[ "$CIRCLE_BRANCH" == preview/* ]]; then
               git fetch origin "$CIRCLE_BRANCH"
               git checkout "$CIRCLE_BRANCH"
               echo "Now on branch: $(git rev-parse --abbrev-ref HEAD)"
@@ -101,13 +107,18 @@ jobs:
           extra_build_args: "--target production"
           use-buildkit: true
       - run:
+          name: Save Docker image
+          command: |
+            docker save $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG -o /tmp/docker-image.tar
+      - run:
           name: Save image info for push job
           command: |
             mkdir -p /tmp/docker-image-info
-            echo "$REGISTRY_HOST/$REGISTRY_REPO:$TAG" > /tmp/docker-image-info/image-name.txt
+            echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG" > /tmp/docker-image-info/image-name.txt
       - persist_to_workspace:
           root: /tmp
           paths:
+            - docker-image.tar
             - docker-image-info
 
   push-image:
@@ -120,24 +131,22 @@ jobs:
       registry_host: << pipeline.parameters.REGISTRY_HOST >>
     steps:
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false
       - checkout
       - compute-docker-tag
       - attach_workspace:
           at: /tmp
+      - run:
+          name: Load Docker image
+          command: |
+            docker load -i /tmp/docker-image.tar
       - docker/check:
           registry: $REGISTRY_HOST
-      - docker/build:
-          image: $REGISTRY_REPO
-          registry: $REGISTRY_HOST
-          tag: $TAG
-          extra_build_args: "--target production"
-          use-buildkit: true
-          cache_from: $REGISTRY_REPO:$TAG
       - docker/push:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
           tag: $TAG
+
   delete-deployment:
     parameters:
       delete_branch:
@@ -209,12 +218,14 @@ jobs:
       TO_TAG: << parameters.to_tag >>
       CONFIG_REPO_NAME: << pipeline.parameters.CONFIG_REPO_NAME >>
       CONFIG_REPO_URL: << pipeline.parameters.CONFIG_REPO_URL >>
+      CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
       REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
     steps:
       - clone-config-repo
       - run:
           name: Tag & Release Image
           command: |
+            export CONFIG_REPO="$CONFIG_REPO_URL"
             export TRIGGERED_BY="$CIRCLE_USERNAME"
             export REGISTRY_REPO="$CIRCLE_PROJECT_REPONAME"
             /usr/local/bin/image-tag
@@ -301,21 +312,11 @@ workflows:
           name: deploy-application
           context:
             - org-global
-          clusters: "uldev"
+          clusters: << pipeline.parameters.CLUSTERS_DEV >>
           filters:
             branches:
               only:
                 - main
-          requires:
-            - push-image
-      - deploy-application:
-          name: deploy-application
-          context:
-            - org-global
-          clusters: "uldev"
-          filters:
-            branches:
-              only:
                 - /preview\/.*/
           requires:
             - push-image
@@ -333,7 +334,7 @@ workflows:
             - test-application
       - release-image:
           name: release-image
-          clusters: "prod"
+          clusters: << pipeline.parameters.CLUSTERS_PROD >>
           context:
             - org-global
           from_tag: "<< pipeline.git.revision >>"
