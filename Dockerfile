@@ -1,9 +1,10 @@
-FROM harbor.k8s.libraries.psu.edu/library/ruby-3.4.1-node-22:20250825 AS base
+FROM harbor.k8s.libraries.psu.edu/library/ruby-3.4.9-node-22:20260317 AS base
 ARG UID=2000
 WORKDIR /app
 RUN useradd -u $UID app -d /app
 RUN mkdir /app/tmp
 COPY Gemfile Gemfile.lock /app/
+RUN apt-get update && apt-get install -y libyaml-dev
 RUN chown -R app /app
 USER app
 RUN gem install bundler:2.1.4
@@ -19,13 +20,13 @@ COPY --chown=app . /app
 
 CMD ["/app/bin/start"]
 
-FROM base as production
+FROM base AS production
 RUN RAILS_ENV=production \
   bundle exec rails assets:precompile
 CMD ["/app/bin/start"]
 
 
-FROM base as ci
+FROM base AS ci
 
 USER root
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -55,7 +56,7 @@ RUN apt-get update && apt-get install -y x11vnc \
 
 USER app
 
-FROM ci as test
+FROM ci AS test
 
 RUN bundle
 
