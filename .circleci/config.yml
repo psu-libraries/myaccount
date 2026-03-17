@@ -92,7 +92,7 @@ jobs:
       - docker/build:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
-          tag: $TAG
+          tag: circle-3.4.9
           extra_build_args: "--target production"
           use-buildkit: true
       - run:
@@ -134,7 +134,7 @@ jobs:
       - docker/push:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
-          tag: $TAG
+          tag: "$CIRCLE_SHA1, circle-3.4.9, cache"
 
   delete-deployment:
     parameters:
@@ -223,7 +223,7 @@ jobs:
 
   test-application:
     docker:
-      - image: cimg/ruby:3.4.9
+      - image: << pipeline.parameters.REGISTRY_HOST >>/library/${CIRCLE_PROJECT_REPONAME}:circle-3.4.9
       - image: redis:7.2.2-alpine
         environment:
           RAILS_ENV: test
