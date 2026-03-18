@@ -95,6 +95,9 @@ jobs:
           tag: circle-3.4.9
           extra_build_args: "--target production"
           use-buildkit: true
+        - run:
+          name: Debug image name
+          command: echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG"
       - run:
           name: Save Docker image
           command: |
