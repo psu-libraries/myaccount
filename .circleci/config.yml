@@ -129,6 +129,12 @@ jobs:
           name: Load Docker image
           command: |
             docker load -i /tmp/docker-image.tar
+      - run:
+          name: Tag Docker image for push
+          command: |
+            docker tag $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+            docker tag $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:circle-3.4.9
+            docker tag $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache
       - docker/check:
           registry: $REGISTRY_HOST
       - docker/push:
