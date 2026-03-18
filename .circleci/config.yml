@@ -240,7 +240,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Install libyaml-dev
-          command: sudo apt-get update && sudo apt-get install -y libyaml-dev
+          command: apt-get update && apt-get install -y libyaml-dev
       - run:
           name: Install dependencies
           command: |
