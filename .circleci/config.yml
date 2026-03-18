@@ -228,55 +228,56 @@ jobs:
             /usr/local/bin/image-release-pr clusters/prod/manifests/prod.yaml
 
   test-application:
-    docker:
-      - image: << pipeline.parameters.REGISTRY_HOST >>/library/ruby-3.4.9-node-22:20260317
-      - image: redis:7.2.2-alpine
-        environment:
-          RAILS_ENV: test
-          REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
-          REGISTRY_REPO: library/${CIRCLE_PROJECT_REPONAME}
-          GITHUB_USER: 'psu-stewardship-bot'
-          CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
+    environment:
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      TEST_IMAGE: myaccount:test
+      TEST_NETWORK: myaccount-test
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - bundle-{{ checksum "Gemfile.lock" }}-v3
       - setup_remote_docker:
           docker_layer_caching: true
+      - docker/check:
+          registry: $REGISTRY_HOST
       - run:
-          name: Install libyaml-dev
-          command: apt-get update && apt-get install -y libyaml-dev
-      - run:
-          name: Install dependencies
+          name: Build test image
           command: |
-            gem install bundler -v "$(grep -A 1 'BUNDLED WITH' Gemfile.lock | tail -n 1 | xargs)"
-            bundle _$(grep -A 1 'BUNDLED WITH' Gemfile.lock | tail -n 1 | xargs)_ install
-      - save_cache:
-          paths:
-            - vendor/bundle
-          key: bundle-{{ checksum "Gemfile.lock" }}-v3
-      - restore_cache:
-          keys:
-            - yarn-{{ checksum "yarn.lock" }}-v3
+            docker build --target test -t "$TEST_IMAGE" .
       - run:
-          name: "Yarn"
+          name: Start Redis
           command: |
-            yarn install --cache-folder ~/.cache/yarn --frozen-lockfile --prefer-offline
-      - save_cache:
-          key: yarn-{{ checksum "yarn.lock" }}-v3
-          paths:
-            - ~/.cache/yarn
+            docker network create "$TEST_NETWORK"
+            docker run -d --network "$TEST_NETWORK" --name redis redis:7.2.2-alpine
       - run:
-          name: "Lint"
+          name: Lint
           command: |
-            bundle exec niftany
-            yarn lint
+            docker run --rm \
+              --network "$TEST_NETWORK" \
+              -e RAILS_ENV=test \
+              -e REDIS_SIDEKIQ_URI=redis://redis:6379/1 \
+              -e REDIS_DATABASE_URI=redis://redis:6379/2 \
+              "$TEST_IMAGE" \
+              sh -lc 'bundle exec niftany && yarn lint'
       - run:
-          name: "Test"
+          name: Test
           command: |
-            yarn test
-            bundle exec rspec
+            CONTAINER_NAME=myaccount-test-run
+            docker create \
+              --name "$CONTAINER_NAME" \
+              --network "$TEST_NETWORK" \
+              -e RAILS_ENV=test \
+              -e REDIS_SIDEKIQ_URI=redis://redis:6379/1 \
+              -e REDIS_DATABASE_URI=redis://redis:6379/2 \
+              "$TEST_IMAGE" \
+              sh -lc 'yarn test && bundle exec rspec'
+            docker start -a "$CONTAINER_NAME"
+            test_status=$?
+            docker cp "$CONTAINER_NAME:/app/coverage" ./coverage || true
+            docker rm -f "$CONTAINER_NAME"
+            exit $test_status
       - store_artifacts:
           path: coverage
 workflows:
