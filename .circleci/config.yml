@@ -239,6 +239,9 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
+          name: Install libyaml-dev
+          command: sudo apt-get update && sudo apt-get install -y libyaml-dev
+      - run:
           name: Install dependencies
           command: |
             gem install bundler -v "$(grep -A 1 'BUNDLED WITH' Gemfile.lock | tail -n 1 | xargs)"
