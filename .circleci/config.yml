@@ -223,7 +223,7 @@ jobs:
 
   test-application:
     docker:
-      - image: << pipeline.parameters.REGISTRY_HOST >>/library/${CIRCLE_PROJECT_REPONAME}:circle-3.4.9
+      - image: << pipeline.parameters.REGISTRY_HOST >>/library/ruby-3.4.9-node-22:20260317
       - image: redis:7.2.2-alpine
         environment:
           RAILS_ENV: test
