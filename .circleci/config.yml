@@ -92,22 +92,18 @@ jobs:
       - docker/build:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
-          tag: circle-3.4.9
+          tag: ruby-in-progress
           extra_build_args: "--target production"
           use-buildkit: true
       - run:
-          name: Debug image name
-          command: |
-            command: echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG"
-      - run:
           name: Save Docker image
           command: |
-            docker save $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG -o /tmp/docker-image.tar
+            docker save $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress -o /tmp/docker-image.tar
       - run:
           name: Save image info for push job
           command: |
             mkdir -p /tmp/docker-image-info
-            echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG" > /tmp/docker-image-info/image-name.txt
+            echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress" > /tmp/docker-image-info/image-name.txt
       - persist_to_workspace:
           root: /tmp
           paths:
