@@ -89,7 +89,7 @@ jobs:
       - compute-docker-tag
       - docker/check:
           registry: $REGISTRY_HOST
-      - docker/build:
+        - docker/build:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
           tag: circle-3.4.9
