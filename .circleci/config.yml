@@ -226,6 +226,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
+      - compute-docker-tag
       - attach_workspace:
           at: /tmp
       - run:
