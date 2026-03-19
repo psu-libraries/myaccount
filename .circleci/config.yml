@@ -240,7 +240,7 @@ jobs:
           name: Start Redis
           command: |
             docker network create "$TEST_NETWORK"
-            docker run -d --network "$TEST_NETWORK" --name redis redis:7.2.2-alpine
+            docker run -d --network "$TEST_NETWORK" --name redis redis:8.6.1-alpine
       - run:
           name: Lint
           command: |
