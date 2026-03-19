@@ -91,7 +91,7 @@ jobs:
           tag: $TAG
           extra_build_args: "--target production"
           # Use buildx cache to speed up repeated CI builds
-          cache_from: "ref=$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache"
+          cache_from: "type=registry,ref=$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache"
           cache_to: "type=registry,ref=$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache,mode=max"
       - run:
           name: Save Docker image
