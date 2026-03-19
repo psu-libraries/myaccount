@@ -1,12 +1,10 @@
 version: 2.1
 
 orbs:
-
   docker: circleci/docker@2.8.2
   browser-tools: circleci/browser-tools@1.5.2
 
 parameters:
-
   GHA_Action:
     type: string
     default: ""
@@ -39,7 +37,6 @@ parameters:
     default: "prod"
 
 commands:
-
   clone-config-repo:
     steps:
       - add_ssh_keys
@@ -63,7 +60,6 @@ commands:
             echo "export TAG=$TAG" >> "$BASH_ENV"
 
 executors:
-
   ci-utils:
     parameters:
       image_tag:
@@ -92,23 +88,17 @@ jobs:
       - docker/build:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
-          tag: ruby-in-progress
+          tag: $TAG
           extra_build_args: "--target production"
           use-buildkit: true
       - run:
           name: Save Docker image
           command: |
-            docker save $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress -o /tmp/docker-image.tar
-      - run:
-          name: Save image info for push job
-          command: |
-            mkdir -p /tmp/docker-image-info
-            echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress" > /tmp/docker-image-info/image-name.txt
+            docker save $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG -o /tmp/docker-image.tar
       - persist_to_workspace:
           root: /tmp
           paths:
             - docker-image.tar
-            - docker-image-info
 
   push-image:
     environment:
@@ -129,18 +119,12 @@ jobs:
           name: Load Docker image
           command: |
             docker load -i /tmp/docker-image.tar
-      - run:
-          name: Tag Docker image for push
-          command: |
-            docker tag $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
-            docker tag $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:circle-3.4.9
-            docker tag $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:ruby-in-progress $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache
       - docker/check:
           registry: $REGISTRY_HOST
       - docker/push:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
-          tag: "$CIRCLE_SHA1, circle-3.4.9, cache"
+          tag: "$TAG"
 
   delete-deployment:
     parameters:
@@ -240,12 +224,15 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Load built image
+          command: |
+            docker load -i /tmp/docker-image.tar
+            docker tag "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG" "$TEST_IMAGE"
       - docker/check:
           registry: $REGISTRY_HOST
-      - run:
-          name: Build test image
-          command: |
-            docker build --target test -t "$TEST_IMAGE" .
       - run:
           name: Start Redis
           command: |
@@ -329,7 +316,6 @@ workflows:
                 - main
                 - /preview\/.*/
           requires:
-            - build-image
             - test-application
       - release-image:
           name: release-image
@@ -347,6 +333,8 @@ workflows:
           name: test-application
           context:
             - org-global
+          requires:
+            - build-image
           filters:
             branches:
               only:
