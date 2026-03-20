@@ -226,14 +226,10 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - compute-docker-tag
-      - attach_workspace:
-          at: /tmp
       - run:
-          name: Load built image
+          name: Build test image
           command: |
-            docker load -i /tmp/docker-image.tar
-            docker tag "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG" "$TEST_IMAGE"
+            docker build --target test -t "$TEST_IMAGE" .
       - docker/check:
           registry: $REGISTRY_HOST
       - run:
