@@ -7,7 +7,7 @@ COPY Gemfile Gemfile.lock /app/
 RUN apt-get update && apt-get install -y libyaml-dev
 RUN chown -R app /app
 USER app
-RUN gem install bundler:2.1.4
+RUN gem install bundler:4.0.8
 RUN bundle config set path 'vendor/bundle'
 RUN bundle install && \
   rm -rf /app/.bundle/cache && \
