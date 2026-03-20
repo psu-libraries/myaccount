@@ -22,7 +22,8 @@ CMD ["/app/bin/start"]
 
 FROM base AS production
 RUN RAILS_ENV=production \
-  bundle exec rails assets:precompile
+  bundle exec rails assets:precompile && \
+  rm -rf /app/node_modules /app/.cache /app/tmp/cache
 CMD ["/app/bin/start"]
 
 
