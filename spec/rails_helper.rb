@@ -118,7 +118,14 @@ Capybara.register_driver :chrome_headless do |app|
     app,
     browser: :chrome,
     options: Selenium::WebDriver::Chrome::Options.new(
-      args: %w[no-sandbox headless disable-gpu]
+      args: %w[
+        no-sandbox
+        headless=new
+        disable-dev-shm-usage
+        disable-gpu
+        window-size=1400,1400
+        remote-debugging-pipe
+      ]
     )
   )
 end
