@@ -1,12 +1,10 @@
 version: 2.1
 
 orbs:
-
-  docker: circleci/docker@2.8.2
+  docker: circleci/docker@3.0.1
   browser-tools: circleci/browser-tools@1.5.2
 
 parameters:
-
   GHA_Action:
     type: string
     default: ""
@@ -39,7 +37,6 @@ parameters:
     default: "prod"
 
 commands:
-
   clone-config-repo:
     steps:
       - add_ssh_keys
@@ -63,7 +60,6 @@ commands:
             echo "export TAG=$TAG" >> "$BASH_ENV"
 
 executors:
-
   ci-utils:
     parameters:
       image_tag:
@@ -94,21 +90,17 @@ jobs:
           registry: $REGISTRY_HOST
           tag: $TAG
           extra_build_args: "--target production"
-          use-buildkit: true
+          # Use buildx cache to speed up repeated CI builds
+          cache_from: "type=registry,ref=$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache"
+          cache_to: "type=registry,ref=$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:cache,mode=max"
       - run:
           name: Save Docker image
           command: |
             docker save $REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG -o /tmp/docker-image.tar
-      - run:
-          name: Save image info for push job
-          command: |
-            mkdir -p /tmp/docker-image-info
-            echo "$REGISTRY_HOST/library/$CIRCLE_PROJECT_REPONAME:$TAG" > /tmp/docker-image-info/image-name.txt
       - persist_to_workspace:
           root: /tmp
           paths:
             - docker-image.tar
-            - docker-image-info
 
   push-image:
     environment:
@@ -134,7 +126,7 @@ jobs:
       - docker/push:
           image: $REGISTRY_REPO
           registry: $REGISTRY_HOST
-          tag: $TAG
+          tag: "$TAG"
 
   delete-deployment:
     parameters:
@@ -222,52 +214,56 @@ jobs:
             /usr/local/bin/image-release-pr clusters/prod/manifests/prod.yaml
 
   test-application:
-    docker:
-      - image: << pipeline.parameters.REGISTRY_HOST >>/library/${CIRCLE_PROJECT_REPONAME}:circle-3.4.1
-      - image: redis:7.2.2-alpine
-        environment:
-          RAILS_ENV: test
-          REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
-          REGISTRY_REPO: library/${CIRCLE_PROJECT_REPONAME}
-          GITHUB_USER: 'psu-stewardship-bot'
-          CONFIG_REPO: << pipeline.parameters.CONFIG_REPO_URL >>
+    executor:
+      name: ci-utils
+      image_tag: << pipeline.parameters.CI_UTILS_IMAGE_TAG >>
+      registry_host: << pipeline.parameters.REGISTRY_HOST >>
+    environment:
+      REGISTRY_HOST: << pipeline.parameters.REGISTRY_HOST >>
+      TEST_IMAGE: myaccount:test
+      TEST_NETWORK: myaccount-test
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - bundle-{{ checksum "Gemfile.lock" }}-v3
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
-          name: Install dependencies
+          name: Build test image
           command: |
-            gem install bundler -v "$(grep -A 1 'BUNDLED WITH' Gemfile.lock | tail -n 1 | xargs)"
-            bundle _$(grep -A 1 'BUNDLED WITH' Gemfile.lock | tail -n 1 | xargs)_ install
-      - save_cache:
-          paths:
-            - vendor/bundle
-          key: bundle-{{ checksum "Gemfile.lock" }}-v3
-      - restore_cache:
-          keys:
-            - yarn-{{ checksum "yarn.lock" }}-v3
+            docker build --target test -t "$TEST_IMAGE" .
+      - docker/check:
+          registry: $REGISTRY_HOST
       - run:
-          name: "Yarn"
+          name: Start Redis
           command: |
-            yarn install --cache-folder ~/.cache/yarn --frozen-lockfile --prefer-offline
-      - save_cache:
-          key: yarn-{{ checksum "yarn.lock" }}-v3
-          paths:
-            - ~/.cache/yarn
+            docker network create "$TEST_NETWORK"
+            docker run -d --network "$TEST_NETWORK" --name redis redis:8.6.1-alpine
       - run:
-          name: "Lint"
+          name: Lint
           command: |
-            bundle exec niftany
-            yarn lint
+            docker run --rm \
+              --network "$TEST_NETWORK" \
+              -e RAILS_ENV=test \
+              -e REDIS_SIDEKIQ_URI=redis://redis:6379/1 \
+              -e REDIS_DATABASE_URI=redis://redis:6379/2 \
+              "$TEST_IMAGE" \
+              sh -lc 'bundle exec niftany && yarn lint'
       - run:
-          name: "Test"
+          name: Test
           command: |
-            yarn test
-            bundle exec rspec
+            CONTAINER_NAME=myaccount-test-run
+            docker create \
+              --name "$CONTAINER_NAME" \
+              --network "$TEST_NETWORK" \
+              -e RAILS_ENV=test \
+              -e REDIS_SIDEKIQ_URI=redis://redis:6379/1 \
+              -e REDIS_DATABASE_URI=redis://redis:6379/2 \
+              "$TEST_IMAGE" \
+              sh -lc 'yarn test && bundle exec rspec'
+            docker start -a "$CONTAINER_NAME"
+            test_status=$?
+            docker cp "$CONTAINER_NAME:/app/coverage" ./coverage || true
+            docker rm -f "$CONTAINER_NAME"
+            exit $test_status
       - store_artifacts:
           path: coverage
 workflows:
@@ -319,7 +315,6 @@ workflows:
                 - main
                 - /preview\/.*/
           requires:
-            - build-image
             - test-application
       - release-image:
           name: release-image
@@ -337,6 +332,8 @@ workflows:
           name: test-application
           context:
             - org-global
+          requires:
+            - build-image
           filters:
             branches:
               only:

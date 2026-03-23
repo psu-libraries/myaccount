@@ -6,7 +6,7 @@ inherit_from:
 
 AllCops:
   NewCops: enable
-  TargetRubyVersion: 3.4.1
+  TargetRubyVersion: 3.4
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
@@ -101,7 +101,7 @@ Style/HashSyntax:
     - 'spec/helpers/holds_helper_spec.rb'
     - 'app/controllers/checkouts_controller.rb'
 
-RSpec/Capybara/SpecificMatcher:
+Capybara/SpecificMatcher:
   Exclude:
     - 'spec/features/holds_spec.rb'
     - 'spec/views/holds/new.html.erb_spec.rb'

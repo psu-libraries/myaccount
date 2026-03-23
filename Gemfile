@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.1'
+ruby '3.4.9'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bugsnag', '~> 6.26'
@@ -22,7 +22,7 @@ gem 'puma', '~> 6'
 gem 'rails', '~> 7.2'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
-gem 'shakapacker', '~> 8'
+gem 'shakapacker', '9.5.0'
 gem 'sidekiq', '~> 7.1.5'
 gem 'simplecov', '~> 0.22', require: false, group: :test
 gem 'simple_json_log_formatter'
