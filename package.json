@@ -36,7 +36,7 @@
     "terser-webpack-plugin": "5",
     "typeface-open-sans": "^0.0.75",
     "typeface-roboto-slab": "^1.1.4",
-    "webpack": "^5.91.0",
+    "webpack": "^5.105.4",
     "webpack-assets-manifest": "^5.1.0",
     "webpack-cli": "^5.1.4",
     "webpack-merge": "5",
@@ -54,7 +54,7 @@
     "eslint-plugin-promise": "^6.1.2",
     "eslint-plugin-standard": "^5.0.0",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^30"
   },
   "babel": {
     "presets": [
