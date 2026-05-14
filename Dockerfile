@@ -19,7 +19,7 @@ RUN yarn --frozen-lockfile && \
 COPY --chown=app . /app
 
 CMD ["/app/bin/start"]
-
+# testing
 FROM base as production 
 RUN RAILS_ENV=production \
   bundle exec rails assets:precompile
