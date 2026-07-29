@@ -18,6 +18,8 @@ services:
       RAILS_ENV: "test"
       REDIS_DATABASE_URI: "redis://redis:6379/2"
       SYMWS_PIN: "${SYMWS_PIN}"
+      ILL_URL: "${ILL_URL}"
+      ILL_API_KEY: "${ILL_API_KEY}"
     tty: true
     stdin_open: true
     build:
@@ -59,6 +61,8 @@ services:
       RAILS_ENV: "development"
       REDIS_DATABASE_URI: "redis://redis:6379/2"
       SYMWS_PIN: "${SYMWS_PIN}"
+      ILL_URL: "${ILL_URL}"
+      ILL_API_KEY: "${ILL_API_KEY}"
     tty: true
     stdin_open: true
     build:
