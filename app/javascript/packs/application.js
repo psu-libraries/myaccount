@@ -29,7 +29,7 @@ import viewRequestedHolds from "../view_requested_holds"
 require("@rails/ujs").start()
 require("@rails/activestorage").start();
 
-document.addEventListener("DOMContentLoaded", function() {
+const initializePage = () => {
     document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((el) => {
         el.dropdownInstance = new Dropdown(el);
     });
@@ -39,6 +39,14 @@ document.addEventListener("DOMContentLoaded", function() {
     checkouts();
     viewRequestedHolds();
     acceptLendingPolicy();
+};
+
+document.addEventListener("DOMContentLoaded", initializePage);
+document.addEventListener("turbo:load", initializePage);
+window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+        initializePage();
+    }
 });
 
 // Uncomment to copy all static images under ../images to the output folder and reference

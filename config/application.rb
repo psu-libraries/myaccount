@@ -24,7 +24,7 @@ module Myaccount
   class Application < Rails::Application
     require 'healthchecks'
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 8.1
 
     config.time_zone = 'Eastern Time (US & Canada)'
     config.catalog_url = 'https://catalog.libraries.psu.edu/catalog/'
