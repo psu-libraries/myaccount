@@ -1,6 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "docker" 
-    directory: "/" 
+  - package-ecosystem: "docker"
+    directory: "/"
     schedule:
       interval: "daily"
+
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
