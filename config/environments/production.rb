@@ -79,4 +79,19 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Adds lograge and parametrizes log name. Capture parameters other than `controller` and `action` in lograge.
+  # Also captures timestamp.
+  config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Json.new
+  params_to_include = %w(controller action)
+  config.lograge.custom_options = lambda do |event|
+    params = event.payload[:params].reject { |k| params_to_include.include?(k) }
+    {
+      params:,
+      time: Time.now
+    }
+  end
+  hostname = Socket.gethostname || 'production'
+  config.paths['log'] = "log/#{hostname}.log"
 end
