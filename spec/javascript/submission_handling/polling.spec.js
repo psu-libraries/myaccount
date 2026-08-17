@@ -1,9 +1,12 @@
 import { renderData } from "submission_handling/polling";
 
 describe('renderData', () => {
+    const JOB_ID = 'job_1';
+    const RETRY_DELAY_MS = 1000;
+
     beforeEach(() => {
         jest.useFakeTimers();
-        global.fetch = jest.fn();
+        window.fetch = jest.fn();
     });
 
     afterEach(() => {
@@ -13,21 +16,25 @@ describe('renderData', () => {
 
     it('retries polling after a transient network error', async () => {
         const resultCallback = jest.fn();
-        global.fetch
-            .mockRejectedValueOnce(new Error('disconnected'))
-            .mockResolvedValueOnce({
-                json: async () => ({ result: 'success', id: 'job_1' })
+        window.fetch.mockRejectedValueOnce(new Error('disconnected'));
+        window.fetch.mockResolvedValueOnce({
+            "json": () => Promise.resolve({
+                "result": 'success',
+                "id": JOB_ID
             })
-            .mockResolvedValueOnce({
-                json: async () => ({ result: 'deleted' })
-            });
+        });
+        window.fetch.mockResolvedValueOnce({
+            "json": () => Promise.resolve({
+                "result": 'deleted'
+            })
+        });
 
-        renderData('job_1', resultCallback);
-        await Promise.resolve();
-        jest.advanceTimersByTime(1000);
-        await Promise.resolve();
-        await Promise.resolve();
+        renderData(JOB_ID, resultCallback);
+        await jest.advanceTimersByTimeAsync(RETRY_DELAY_MS);
 
-        expect(resultCallback).toHaveBeenCalledWith({ result: 'success', id: 'job_1' });
+        expect(resultCallback).toHaveBeenCalledWith({
+            "result": 'success',
+            "id": JOB_ID
+        });
     });
 });
