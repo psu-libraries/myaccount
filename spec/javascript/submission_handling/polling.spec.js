@@ -23,11 +23,6 @@ describe('renderData', () => {
                 "id": JOB_ID
             })
         });
-        window.fetch.mockResolvedValueOnce({
-            "json": () => Promise.resolve({
-                "result": 'deleted'
-            })
-        });
 
         renderData(JOB_ID, resultCallback);
         await jest.advanceTimersByTimeAsync(RETRY_DELAY_MS);

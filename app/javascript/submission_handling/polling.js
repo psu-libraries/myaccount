@@ -70,7 +70,7 @@ const pollFetch = function(arg, otherRule = null) {
             if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, pollInterval, resolve, reject);
             } else {
-                reject(new Error(`timed out for ${getJobInfo} `));
+                reject(new Error(`timed out for ${getJobInfo}`));
             }
         });
     };
