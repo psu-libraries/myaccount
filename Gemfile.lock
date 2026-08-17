@@ -318,7 +318,7 @@ GEM
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
     public_suffix (7.0.5)
-    puma (6.6.0)
+    puma (7.2.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
@@ -568,7 +568,7 @@ DEPENDENCIES
   observer
   okcomputer (~> 1.19)
   pry-byebug
-  puma (~> 6)
+  puma (~> 7)
   rails (~> 8.1)
   rails-controller-testing
   redis (~> 4.2.5)
