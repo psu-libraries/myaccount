@@ -23,7 +23,7 @@ gem 'rails', '~> 8.1'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
 gem 'shakapacker', '9.5.0'
-gem 'sidekiq', '~> 7.1.5'
+gem 'sidekiq', '~> 8.1.6'
 gem 'simplecov', '~> 0.22', require: false, group: :test
 gem 'simple_json_log_formatter'
 gem 'view_component'
