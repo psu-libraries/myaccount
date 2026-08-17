@@ -67,6 +67,11 @@ const pollFetch = function(arg, otherRule = null) {
             // @todo: create a logging service
             // eslint-disable-next-line no-console
             console.error(error);
+            if (Number(new Date()) < endTime) {
+                setTimeout(checkCondition, pollInterval, resolve, reject);
+            } else {
+                reject(new Error(`timed out for ${getJobInfo} `));
+            }
         });
     };
 
