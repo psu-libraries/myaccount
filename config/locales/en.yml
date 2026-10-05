@@ -75,7 +75,7 @@ en:
         success_html: For placed hold(s), you will receive a library notice once items are available for pick up. Items generally arrive within 2-3 weekdays.
         error_html: We could not process your request. Please visit our website for more information under <a href="https://libraries.psu.edu/services/borrow-renew#QuestionsReLibraryAcct">"Why did my hold fail?"</a>
       new_hold:
-        catkey_missing: There was a problem processing your hold request, please contact your library if you need assistance.
+        catkey_missing: Sorry, the system experienced an error. Please attempt to place the hold again. If you continue to experience this error, contact the library for assistance.
         patron_barred: Sorry, you cannot request items while your account is barred. If you have not accepted our lending policy, please use the link below and retry your request. Otherwise, please contact your library for assistance.
         error_html: <strong>Sorry!</strong> You cannot place a hold on this item. Contact your library if you need assistance.<br>
     ill:
