@@ -49,6 +49,8 @@ class ApplicationController < ActionController::Base
       unless current_user?
         set_original_fullpath
         set_original_catkey
+        logger.info "TROUBLESHOOTING: session original fullpath: #{session[:original_fullpath]} and original catkey: #{session[:original_catkey]}"
+        logger.info "TROUBLESHOOTING: params before redirect: #{params.inspect}"
         return redirect_to root_url
       end
 
