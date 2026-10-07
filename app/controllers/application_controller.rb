@@ -48,6 +48,7 @@ class ApplicationController < ActionController::Base
       # Go through auth (which happens at the root_url which is the SessionsController)
       unless current_user?
         set_original_fullpath
+        set_original_catkey
         return redirect_to root_url
       end
 
@@ -86,6 +87,10 @@ class ApplicationController < ActionController::Base
     # user back to this originally requested URL after the authentication has taken place.
     def set_original_fullpath
       session[:original_fullpath] = request.original_fullpath unless request.original_fullpath == '/'
+    end
+
+    def set_original_catkey
+      session[:original_catkey] = params[:catkey] if params[:catkey].present?
     end
 
     # Things have gotten stale, clear user out by logging Warden out and send back through the authentication pipes.

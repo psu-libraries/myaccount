@@ -47,9 +47,12 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
-    raise NewHoldException, 'Error' if params[:catkey].blank?
+    catkey = params[:catkey] || session[:original_catkey]
+    session.delete(:original_catkey)
 
-    form_builder = PlaceHoldForm::Builder.new(catkey: params[:catkey],
+    raise NewHoldException, 'Error' if catkey.blank?
+
+    form_builder = PlaceHoldForm::Builder.new(catkey: catkey,
                                               user_token: current_user.session_token,
                                               client: symphony_client,
                                               library: patron.library)
