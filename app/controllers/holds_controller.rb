@@ -48,7 +48,7 @@ class HoldsController < ApplicationController
   # GET /holds/new
   def new
     catkey = params[:catkey].presence || session[:original_catkey]
-    logger.info "TROUBLESHOOTING: on holds controller received catkey: #{params[:catkey]}, original catkey: #{session[:original_catkey]}"
+    logger.info "TROUBLESHOOTING: hc param catkey: #{params[:catkey]}, session catkey: #{session[:original_catkey]}"
     session.delete(:original_catkey)
     logger.info "TROUBLESHOOTING: final catkey to be used: #{catkey}"
 
