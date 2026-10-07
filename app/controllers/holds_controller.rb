@@ -47,7 +47,7 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
-    catkey = params[:catkey].present? ? params[:catkey] : session[:original_catkey]
+    catkey = params[:catkey].presence || session[:original_catkey]
     session.delete(:original_catkey)
 
     raise NewHoldException, 'Error' if catkey.blank?
