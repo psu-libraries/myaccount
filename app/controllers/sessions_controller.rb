@@ -13,6 +13,9 @@ class SessionsController < ApplicationController
 
     if current_user?
       original_fullpath = session[:original_fullpath]
+      logger.info "TROUBLESHOOTING: session original fullpath: #{original_fullpath}"
+      logger.info "TROUBLESHOOTING: session original catkey: #{session[:original_catkey]}"
+      logger.info "TROUBLESHOOTING: params before redirect: #{params.inspect}"
       session.delete(:original_fullpath)
       return redirect_to original_fullpath if original_fullpath.present?
 
