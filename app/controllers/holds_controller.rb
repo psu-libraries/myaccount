@@ -47,7 +47,7 @@ class HoldsController < ApplicationController
   #
   # GET /holds/new
   def new
-    catkey = params[:catkey] || session[:original_catkey]
+    catkey = params[:catkey].present? ? params[:catkey] : session[:original_catkey]
     session.delete(:original_catkey)
 
     raise NewHoldException, 'Error' if catkey.blank?
@@ -108,7 +108,7 @@ class HoldsController < ApplicationController
     end
 
     def deny_new
-      flash[:error] = if params['catkey'].blank?
+      flash[:error] = if params['catkey'].blank? && session[:original_catkey].blank?
                         t 'myaccount.hold.new_hold.catkey_missing'
                       else
                         t 'myaccount.hold.new_hold.error_html'
