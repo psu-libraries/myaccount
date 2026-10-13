@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.9'
+ruby '3.4.11'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bugsnag', '~> 6.26'
@@ -19,7 +19,7 @@ gem 'net-pop'
 gem 'net-smtp'
 gem 'okcomputer', '~> 1.19'
 gem 'puma', '~> 7'
-gem 'rails', '~> 8.1'
+gem 'rails', '~> 8.1.4'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
 gem 'shakapacker', '9.5.0'
