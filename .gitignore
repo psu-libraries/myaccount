@@ -55,3 +55,4 @@ coverage/
 .webdrivers/*
 vendor/*
 .cache/*
+.bash_history
