@@ -1,12 +1,16 @@
 # move this file to .envrc and source:
 # source .envrc
 # OR use direnv https://direnv.net/
-export SYMWS_PIN='some-password'
-export SYMWS_URL='some-url'
-export SYMWS_USERNAME='some-username'
-export SYMWS_EDIT_OVERRIDE="enter-overide-here"
-export ILL_URL='some-url'
-export ILL_API_KEY='some-key'
+
+# Use the following format:
+# export KEY_NAME='value'
+
+export SYMWS_PIN=''
+export SYMWS_URL=''
+export SYMWS_USERNAME=''
+export SYMWS_EDIT_OVERRIDE=''
+export ILL_URL=''
+export ILL_API_KEY=''
 
 ## Ports exposed on the system Change these from the defaults
 # export APP_PORT=3001

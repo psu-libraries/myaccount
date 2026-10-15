@@ -32,10 +32,12 @@ Metrics/BlockLength:
   - 'config/initializers/warden.rb'
   - 'spec/**/*'
   - 'config/routes.rb'
+  - 'setup.rb'
 
 Layout/LineLength:
   Exclude:
   - 'spec/factories/bibs.rb'
+  - 'setup.rb'
 
 Naming/AccessorMethodName:
   Exclude:
@@ -105,3 +107,15 @@ Capybara/SpecificMatcher:
   Exclude:
     - 'spec/features/holds_spec.rb'
     - 'spec/views/holds/new.html.erb_spec.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'setup.rb'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'setup.rb'
+
+Rails/NegateInclude:
+  Exclude:
+    - 'setup.rb'
