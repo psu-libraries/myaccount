@@ -44,6 +44,22 @@ def execute_commands(commands, allow_failure: false)
   end
 end
 
+def get_user_input(text, accepted_chars)
+  unless accepted_chars.is_a?(Set)
+    abort("#{Colors.red} accepted_chars must be a Set. Setup aborted!")
+  end
+
+  user_input = ''
+
+  while !accepted_chars.include?(user_input)
+    print text
+    user_input = gets.chomp
+    user_input.downcase!
+  end
+
+  user_input
+end
+
 # ! ################################################## Logic Code ################################################## ! #
 
 def ruby_install
@@ -121,28 +137,24 @@ def setup_envrc(vault_path = 'secret/app/myaccount/dev', environment_file = '.en
           overwrite_line = true
         else
           unless always_overwrite_line || always_ignore_overwrite
-            user_input = ''
-            approved_chars = Set['y', 'a', 'n', 'x']
+            user_input = get_user_input(
+              colorize(Colors.yellow, "#{key} already has a set value." \
+                                      "\n\n\tSubmit 'y' to overwrite this value." \
+                                      "\n\tSubmit 'n' to ignore this value." \
+                                      "\n\tSubmit 'a' to overwrite the current value and all future conflicts." \
+                                      "\n\tSubmit 'x' to ignore this value and all future conflicts." \
+                                      "\n\nSubmit your response here: "),
+              Set['y', 'a', 'n', 'x']
+            )
 
-            while !approved_chars.include?(user_input)
-              puts colorize(Colors.yellow, "#{key} already has a set value." \
-                                           "\n\n\tSubmit 'y' to overwrite this value." \
-                                           "\n\tSubmit 'n' to ignore this value." \
-                                           "\n\tSubmit 'a' to overwrite the current value and all future conflicts." \
-                                           "\n\tSubmit 'x' to ignore this value and all future conflicts.\n")
-              print colorize(Colors.yellow, 'Submit your response here: ')
-              user_input = gets.chomp
-              user_input.downcase!
+            case user_input
+            when 'y'
+              overwrite_line = true
+            when 'a'
+              always_overwrite_line = true
+            when 'x'
+              always_ignore_overwrite = true
             end
-          end
-
-          case user_input
-          when 'y'
-            overwrite_line = true
-          when 'a'
-            always_overwrite_line = true
-          when 'x'
-            always_ignore_overwrite = true
           end
         end
 
@@ -158,13 +170,10 @@ def setup_envrc(vault_path = 'secret/app/myaccount/dev', environment_file = '.en
     puts colorize(Colors.yellow, "\t- Abort this program, install Vault CLI or ensure authentication, and rerun this program when it is configured.\n" \
                                  "\t- Manually populate .envrc file.\n")
 
-    user_input = ''
-
-    while user_input != 'c' && user_input != 'a'
-      print colorize(Colors.yellow, "Submit 'a' to abort this program, or submit 'c' to continue (after populating .envrc): ")
-      user_input = gets.chomp
-      user_input.downcase!
-    end
+    user_input = get_user_input(
+      colorize(Colors.yellow, "Submit 'a' to abort this program, or submit 'c' to continue (after populating .envrc): "),
+      Set['a', 'c']
+    )
 
     if user_input == 'a'
       exit
@@ -210,13 +219,10 @@ def modify_header_value
        "\n\tHEADER NAME: #{colorize(Colors.magenta, 'REMOTE_USER')}" \
        "\n\tHEADER VALUE: #{colorize(Colors.magenta, '[access_id]')}"
 
-  user_input = ''
-
-  while user_input != 'y'
-    print colorize(Colors.yellow, "Submit 'y' to continue: ")
-    user_input = gets.chomp
-    user_input.downcase!
-  end
+  get_user_input(
+    colorize(Colors.yellow, "Submit 'y' to continue: "),
+    Set['y']
+  )
 end
 
 def build_containers
