@@ -2,7 +2,7 @@
 
 # ! ################################################### Helpers #################################################### ! #
 
-class Colors
+module Colors
   class << self
     # Failure
     def red; "\e[31m" end
