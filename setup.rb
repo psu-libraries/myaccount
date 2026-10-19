@@ -31,16 +31,16 @@ def colorize(color, string)
 end
 
 def execute_commands(commands, allow_failure: false)
-  if commands.is_a?(Array)
-    commands.each do |cmd|
-      if allow_failure
-        system(cmd)
-      elsif !system(cmd)
-        abort("#{Colors.red}#{cmd} failed. Setup aborted!")
-      end
-    end
-  else
+  unless commands.is_a?(Array)
     abort("#{Colors.red}#{commands} is not an array. Setup aborted!")
+  end
+
+  commands.each do |cmd|
+    if allow_failure
+      system(cmd)
+    elsif !system(cmd)
+      abort("#{Colors.red}#{cmd} failed. Setup aborted!")
+    end
   end
 end
 
