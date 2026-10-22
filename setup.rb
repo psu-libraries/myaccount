@@ -60,6 +60,28 @@ def get_user_input(text, accepted_chars)
   user_input
 end
 
+def parse_options
+  require 'optparse'
+
+  options = {}
+
+  OptionParser.new do |parser|
+    parser.banner = 'Usage: setup.rb [options]'
+
+    parser.on('-h', '--help', 'Prints this help text') do
+      puts parser
+      exit
+    end
+
+    parser.on('-v', '--vault', 'Only populate .envrc file with values from Vault.') do |v|
+      options[:vault] = v
+    end
+  end.parse!
+
+  options
+end
+@options = parse_options
+
 # ! ################################################## Logic Code ################################################## ! #
 
 def ruby_install
@@ -242,14 +264,20 @@ def finish
 end
 
 def main
-  puts colorize(Colors.blue, 'Setting up myaccount...')
-  ruby_install
-  bundle_install
+  unless @options[:vault]
+    puts colorize(Colors.blue, 'Setting up myaccount...')
+    ruby_install
+    bundle_install
+  end
+
   setup_envrc
-  yarn
-  modify_header_value
-  build_containers
-  finish
+
+  unless @options[:vault]
+    yarn
+    modify_header_value
+    build_containers
+    finish
+  end
 end
 
 main
