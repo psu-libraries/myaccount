@@ -17,12 +17,16 @@
 
 # Development Setup
 
+>[!Tip]
+> This repo comes with a setup script, which handles the below setup steps for you. To setup the entire developer environment, run `ruby setup.rb`. If you have already set up your developer environment and just want to update your environment variables, run `ruby setup.rb -v`.
+
 1.  [Make sure you have ssh keys established on your machine](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key)
 1.  Clone the application and install:
     ```
     git clone git@github.com:psu-libraries/myaccount.git
     cd myaccount
-    bundle install --without production
+    bundle config set without production
+    bundle install
     ```
 1.  Set local environment variables with values from [vault](https://vault.dsrd.libraries.psu.edu:8200/ui/vault/auth?with=oidc%2F)
 1.  Run `yarn`
