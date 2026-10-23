@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 # Ignore secrets
 .envrc
+.envrc.history
 
 # Ignore bundler config.
 /.bundle
@@ -55,3 +56,4 @@ coverage/
 .webdrivers/*
 vendor/*
 .cache/*
+.bash_history
