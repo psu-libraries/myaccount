@@ -43,6 +43,17 @@ Header Value: [access id]
 ## Docker Compose
 You can run the whole myaccount stack via docker-compose. This will build a container for myaccount, sidekiq, and run web, sidekiq, and redis services. You will need a SYMWS_PIN to run locally.
 
+### Use the `vault` script
+
+The `vault` script will automatically acquire up-to-date environment variable values and populate them
+in your `.envrc` file. From the root of this project:
+
+```bash
+bash bin/vault
+```
+
+### Manually Populate `.envrc` file
+
 1. Copy example .envrc file
 
 ```bash

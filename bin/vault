@@ -1,0 +1,34 @@
+#!/bin/bash
+
+ENV_FILE=.envrc
+SAMPLE_ENV_FILE=.envrc.example
+VAULT_PATH=secret/app/myaccount/dev
+
+vault token lookup
+if [ $? -eq 2 ]; then
+  vault login -method=oidc
+fi
+
+echo ""
+
+output=()
+
+while IFS= read -r line; do
+  if [[ $line == \#* || -z $line ]]; then
+    output+=("${line}")
+  else
+    key="${line#export }"
+    key="${key%=*}"
+    value=`vault kv get -field="${key}" $VAULT_PATH`
+    output+=("export ${key}='${value}'")
+  fi
+done < $SAMPLE_ENV_FILE
+
+> .envrc
+for i in "${output[@]}"; do
+  echo "${i}" >> $ENV_FILE
+done
+
+echo ""
+
+direnv allow

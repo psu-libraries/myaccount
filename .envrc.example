@@ -1,6 +1,9 @@
 # move this file to .envrc and source:
 # source .envrc
 # OR use direnv https://direnv.net/
+#
+# OR use direnv https://direnv.net/:
+# direnv allow
 
 # Use the following format:
 # export KEY_NAME='value'
