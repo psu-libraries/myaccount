@@ -9,6 +9,14 @@ if [ $? -eq 2 ]; then
   vault login -method=oidc
 fi
 
+if [ -f "$ENV_FILE" ]; then
+  history_file=$ENV_FILE.history
+
+  echo "" >> $history_file
+  echo "Record created: `date`" >> $history_file
+  cat $ENV_FILE >> $history_file
+fi
+
 echo ""
 
 output=()
