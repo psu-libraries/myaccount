@@ -10,9 +10,9 @@
 
 | Software |  Version |
 |----------|------|
-| `ruby`    |  3.4.1 |
-| `rails`   |  7.1.5 |
-| `redis`   | 5.0.7 |
+| `ruby`    |  3.4.11 |
+| `rails`   |  8.1.4 |
+| `redis`   | 7.2.2 |
 
 # Development Setup
 
