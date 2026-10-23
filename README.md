@@ -18,18 +18,23 @@
 
 1.  [Make sure you have ssh keys established on your machine](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key)
 
-2.  Clone the application and install:
+2.  Clone the application:
 
 ```bash
 git clone git@github.com:psu-libraries/myaccount.git
 cd myaccount
+```
+
+3. Install dependencies
+
+```bash
 bundle config set without production
 bundle install
 ```
 
-3.  Set local environment variables with values from [vault](https://vault.dsrd.libraries.psu.edu:8200/ui/vault/auth?with=oidc%2F)
+4. Set local environment variables with values from [vault](https://vault.dsrd.libraries.psu.edu:8200/ui/vault/auth?with=oidc%2F)
 
-4.  Use Modify Header Value ([Chrome](https://chromewebstore.google.com/detail/modify-header-value-http/cbdibdfhahmknbkkojljfncpnhmacdek)) ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/)) browser extension to set the following headers (substitute `[access id]` for your Penn State ID (ex: abc1234)):
+5. Use Modify Header Value ([Chrome](https://chromewebstore.google.com/detail/modify-header-value-http/cbdibdfhahmknbkkojljfncpnhmacdek)) ([Firefox](https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/)) browser extension to set the following headers (substitute `[access id]` for your Penn State ID (ex: abc1234)):
 ```
 URL: localhost
 Header Name: X_AUTH_REQUEST_EMAIL
