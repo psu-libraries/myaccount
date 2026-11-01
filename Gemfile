@@ -7,7 +7,7 @@ ruby '3.4.11'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'bugsnag', '~> 6.26'
-gem 'config', '~> 2.0'
+gem 'config', '~> 5.6'
 gem 'hiredis'
 gem 'http'
 gem 'lograge'
