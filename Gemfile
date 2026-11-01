@@ -22,7 +22,7 @@ gem 'puma', '~> 7'
 gem 'rails', '~> 8.1.4'
 gem 'redis', '~> 4.2.5'
 gem 'rexml'
-gem 'shakapacker', '9.5.0'
+gem 'shakapacker', '10.3.2'
 gem 'sidekiq', '~> 7.1.5'
 gem 'simplecov', '~> 0.22', require: false, group: :test
 gem 'simple_json_log_formatter'
