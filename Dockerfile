@@ -30,22 +30,19 @@ CMD ["/app/bin/start"]
 FROM base AS ci
 
 USER root
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
-
-RUN apt-get update && apt-get install -y google-chrome-stable
-
-RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+') && \
-    MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d. -f1) && \
-    LATEST_DRIVER=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_${MAJOR_VERSION}) && \
-    if [ -z "$LATEST_DRIVER" ]; then \
-      LATEST_DRIVER=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE); \
-    fi && \
-    wget -q "https://storage.googleapis.com/chrome-for-testing-public/${LATEST_DRIVER}/linux64/chromedriver-linux64.zip" && \
-    unzip chromedriver-linux64.zip && \
-    mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
-    chmod +x /usr/local/bin/chromedriver && \
-    rm -rf chromedriver-linux64.zip chromedriver-linux64
+# Pinned: Chrome 158 rejects Capybara 3.40's reset (Storage.clearDataForOrigin origin '*')
+ARG CHROME_VERSION=157.0.8103.78
+RUN apt-get purge -y google-chrome-stable || true; \
+    rm -f /etc/apt/sources.list.d/google-chrome.sources /etc/apt/sources.list.d/google-chrome.list /etc/apt/sources.list.d/google.list && \
+    cd /tmp && \
+    wget -q "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chrome-linux64.zip" && \
+    wget -q "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip" && \
+    unzip -q chrome-linux64.zip -d /opt && \
+    unzip -q chromedriver-linux64.zip -d /opt && \
+    ln -sf /opt/chrome-linux64/chrome /usr/bin/google-chrome && \
+    ln -sf /opt/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver && \
+    rm -f chrome-linux64.zip chromedriver-linux64.zip && \
+    google-chrome --version && chromedriver --version
 ENV RAILS_ENV=test
 
 RUN apt-get update && apt-get install -y x11vnc \
